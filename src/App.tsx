@@ -36,13 +36,13 @@ const router = createBrowserRouter(
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<DashboardLoader />} />
           <Route path="/dashboard" element={<div>Dashboard</div>} />
-          <Route path="*" element={<NotFound />} />
         </Route>
       </Route>
       <Route element={<Auth />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );
