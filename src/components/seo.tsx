@@ -11,7 +11,7 @@ export default function Seo({ title, description }: SeoProps) {
   return (
     <HelmetProvider context={helmetContext}>
       <Helmet>
-        <title>ATO - {title}</title>
+        <title>Open South - {title}</title>
         <meta name="title" content={`Title — ${title}`} />
         <meta name="description" content={description} />
       </Helmet>
