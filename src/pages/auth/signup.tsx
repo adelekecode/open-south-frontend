@@ -10,6 +10,8 @@ import Button from "~/components/button";
 import useSignUp from "~/mutations/auth/signup";
 
 const signupSchema = Yup.object({
+  firstName: Yup.string().trim().required("First name is required"),
+  lastName: Yup.string().trim().required("Last name is required"),
   email: Yup.string().email("Invalid email address").required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
@@ -42,6 +44,8 @@ export default function Signup() {
         </header>
         <Formik
           initialValues={{
+            firstName: "",
+            lastName: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -49,6 +53,8 @@ export default function Signup() {
           validationSchema={signupSchema}
           onSubmit={async (values) => {
             const data = await signup.mutateAsync({
+              firstName: values.firstName,
+              lastName: values.lastName,
               email: values.email,
               password: values.password,
               re_password: values.confirmPassword,
