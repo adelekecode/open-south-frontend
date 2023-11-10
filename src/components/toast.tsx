@@ -10,9 +10,9 @@ export default function Toast() {
         style: {
           color: "#fff",
           backgroundColor: "#DEFBE6",
-          borderWidth: "1px 1px 1px 5px",
+          borderWidth: "1px 1px 1px 1px",
           borderColor: "#10B981",
-          borderRadius: "0px",
+          borderRadius: "4px",
           maxWidth: "80%",
         },
         loading: {
