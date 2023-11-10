@@ -29,6 +29,29 @@ const theme = createTheme({
       900: "#0e592f",
     },
   },
+  components: {
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          "& .MuiFormControlLabel-root .MuiTypography-root": {
+            fontSize: "0.4rem !important",
+          },
+        },
+      },
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        body1: {
+          fontSize: "0.875rem",
+          color: "#161616",
+          fontFamily: '"Work Sans", "sans-serif"',
+        },
+      },
+    },
+  },
 });
 
 export default theme;

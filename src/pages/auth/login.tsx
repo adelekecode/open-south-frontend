@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Checkbox, IconButton } from "@mui/material";
+import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
 import { Formik } from "formik";
@@ -82,18 +82,21 @@ export default function Login() {
                     </IconButton>
                   }
                 />
-                <div className="flex w-full justify-between items-center gap-4 smallMobile:flex-col-reverse">
-                  <button className="flex items-center text-sm cursor-pointer smallMobile:self-start">
-                    <Checkbox
-                      size="small"
-                      onChange={() => {
-                        setFieldValue("rememberMe", !values.rememberMe);
-                      }}
-                      checked={values.rememberMe}
-                      name="rememberMe"
-                    />
-                    <p>Remember me</p>
-                  </button>
+                <div className="flex w-full justify-between items-center gap-4 smallMobile:flex-col-reverse px-2">
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={() => {
+                          setFieldValue("rememberMe", !values.rememberMe);
+                        }}
+                        checked={values.rememberMe}
+                        color="primary"
+                        name="rememberMe"
+                      />
+                    }
+                    className="text-sm"
+                    label="Remember me"
+                  />
                   <Link to={"/forgot-password"} className="hover:underline smallMobile:self-end">
                     <small className="text-sm">Forgot Password?</small>
                   </Link>

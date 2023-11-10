@@ -10,10 +10,7 @@ export default function ErrorBoundary() {
   return (
     <>
       <div className="w-full min-h-screen flex flex-col items-center justify-center gap-2 p-8">
-        <h1 className=" text-4xl !font-semibold text-center largeMobile:text-3xl mediumMobile:!text-2xl">
-          An Error Occured
-        </h1>
-        <figure className="w-[35%] largeMobile:w-[55%] mediumMobile:!w-[70%]">
+        <figure className="w-[28%] largeMobile:w-[55%] mediumMobile:!w-[70%]">
           <img src={ErrorOccured} alt="Error Boundary Illustration" />
         </figure>
         <p className="mt-6 mb-2 text-center mediumMobile:text-sm">
