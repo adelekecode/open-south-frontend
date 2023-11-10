@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { KeyboardBackspace } from "@mui/icons-material";
+import { IoArrowBack } from "react-icons/io5";
 import Button from "~/components/button";
 import NotFoundIllustration from "~/assets/illustrations/404.png";
 
@@ -8,9 +8,6 @@ export default function NotFound() {
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center justify-center gap-2 p-8">
-      {/* <h1 className=" text-4xl !font-semibold text-center tablet:text-3xl largeMobile:!text-2xl">
-        Page not found
-      </h1> */}
       <figure className="w-[28%] tablet:w-[55%] largeMobile:!w-[70%]">
         <img src={NotFoundIllustration} alt="Not found Illustration" />
       </figure>
@@ -31,7 +28,7 @@ export default function NotFound() {
           onClick={() => {
             navigate(-1);
           }}
-          startIcon={<KeyboardBackspace className="!fill-white largeMobile:!w-4" />}
+          startIcon={<IoArrowBack className="!fill-white largeMobile:!w-4" />}
         >
           Go Back
         </Button>

@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { IconButton } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { AiOutlineEye } from "react-icons/ai";
+import { BsEyeSlash } from "react-icons/bs";
 import FormField from "~/components/form-field";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
@@ -95,7 +96,7 @@ export default function Signup() {
                     }
                     edge="end"
                   >
-                    {showPassword.password ? <VisibilityOff /> : <Visibility />}
+                    {showPassword.password ? <BsEyeSlash /> : <AiOutlineEye />}
                   </IconButton>
                 }
               />
@@ -116,7 +117,7 @@ export default function Signup() {
                     }
                     edge="end"
                   >
-                    {showPassword.confirmPassword ? <VisibilityOff /> : <Visibility />}
+                    {showPassword.confirmPassword ? <BsEyeSlash /> : <AiOutlineEye />}
                   </IconButton>
                 }
               />

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Checkbox, IconButton } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { AiOutlineEye } from "react-icons/ai";
+import { BsEyeSlash } from "react-icons/bs";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormField from "~/components/form-field";
@@ -33,7 +34,7 @@ export default function Login() {
       >
         <header className="mb-3 flex items-center flex-col">
           <h1 className="text-2xl font-semibold text-center">Log in</h1>
-          <p className="text-sm text-center">Welcome, Kindly enter your details to gain access.</p>
+          <p className="text-sm text-center">Welcome, kindly enter your details to gain access.</p>
         </header>
         <Formik
           initialValues={{
@@ -77,7 +78,7 @@ export default function Login() {
                       onClick={() => setShowPassword((prev) => !prev)}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <BsEyeSlash /> : <AiOutlineEye />}
                     </IconButton>
                   }
                 />
