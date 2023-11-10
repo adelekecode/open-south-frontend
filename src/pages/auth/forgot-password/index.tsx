@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
 import FormField from "~/components/form-field";
+import { useForgotPassword } from "~/mutations/auth/password";
 import Success from "./success";
 
 const ValidationSchema = Yup.object().shape({
@@ -14,10 +15,13 @@ const ValidationSchema = Yup.object().shape({
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
+
   const [instructionsSent, setInstructionsSent] = useState({
     value: false,
     email: "",
   });
+
+  const forgotPassword = useForgotPassword();
 
   return (
     <>
@@ -36,10 +40,14 @@ export default function ForgotPassword() {
             }}
             validationSchema={ValidationSchema}
             onSubmit={async (values) => {
-              setInstructionsSent({
-                value: true,
-                email: values.email,
-              });
+              const data = await forgotPassword.mutateAsync(values);
+
+              if (data) {
+                setInstructionsSent({
+                  value: true,
+                  email: values.email,
+                });
+              }
             }}
             validateOnBlur={false}
           >
