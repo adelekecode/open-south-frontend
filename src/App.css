@@ -9,12 +9,12 @@ html {
 }
 @media (min-width: 1300px) {
   html {
-    font-size: 115% !important;
+    font-size: 105% !important;
   }
 }
 @media (min-width: 1666px) {
   html {
-    font-size: 130% !important;
+    font-size: 110% !important;
   }
 }
 

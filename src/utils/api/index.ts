@@ -77,7 +77,7 @@ export async function fetchUserIfTokenExists() {
 
 // On localStorage value change from another tab, logout
 window.addEventListener("storage", (event) => {
-  if (event.key === "t-token" && !event.newValue) {
+  if (event.key === REFRESH_TOKEN_KEY && !event.newValue) {
     logout();
   }
 });

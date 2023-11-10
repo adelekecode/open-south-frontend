@@ -6,6 +6,12 @@ export default {
       fontFamily: {
         "Work-Sans": ["Work Sans", "sans-serif"],
       },
+      maxWidth: {
+        maxAppWidth: "1666px",
+      },
+      boxShadow: {
+        appNavBar: "0 1px 3px #00001229",
+      },
       colors: {
         primary: {
           50: "#f1f9fe",

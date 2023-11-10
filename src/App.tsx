@@ -11,8 +11,10 @@ import { Login, Signup } from "./pages/auth";
 import NotFound from "./pages/404";
 import ErrorBoundary from "./components/error-boundary";
 import DashboardLoader from "./components/loader/dashboard-loader";
-import DashboardLayout from "./layouts/protected/dashboard";
+import DashboardLayout from "./layouts/dashboard";
 import Auth from "./layouts/auth";
+import AppLayout from "./layouts/app";
+import { Dataset, Home } from "./pages";
 
 async function loader() {
   try {
@@ -34,13 +36,16 @@ const router = createBrowserRouter(
     <Route errorElement={<ErrorBoundary />}>
       <Route loader={loader} element={<Protected />}>
         <Route element={<DashboardLayout />}>
-          <Route path="/" element={<DashboardLoader />} />
           <Route path="/dashboard" element={<div>Dashboard</div>} />
         </Route>
       </Route>
       <Route element={<Auth />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+      </Route>
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/datasets" element={<Dataset />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
