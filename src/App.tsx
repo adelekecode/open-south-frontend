@@ -7,7 +7,7 @@ import {
 import "./App.css";
 import Protected from "./layouts/protected";
 import { fetchUserIfTokenExists } from "./utils/api";
-import { Login, Signup } from "./pages/auth";
+import { ForgotPassword, Login, Signup } from "./pages/auth";
 import NotFound from "./pages/404";
 import ErrorBoundary from "./components/error-boundary";
 import DashboardLoader from "./components/loader/dashboard-loader";
@@ -42,6 +42,7 @@ const router = createBrowserRouter(
       <Route element={<Auth />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Route>
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
