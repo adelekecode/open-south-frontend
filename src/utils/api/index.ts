@@ -2,6 +2,7 @@ import axios from "axios";
 import { logout } from "./logout";
 import { REFRESH_TOKEN_KEY } from "~/app-constants";
 import refreshToken from "./refresh-token";
+import { notifyError } from "../toast";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -24,7 +25,9 @@ axiosPrivate.interceptors.response.use(
       error?.message ||
       "Network Error";
 
-    if (error?.response?.status === 401) {
+    const status = error?.response?.status;
+
+    if (status === 401) {
       if (message === "Token is invalid or expired" || message === "Token is blacklisted") {
         logout();
       } else if (
@@ -53,6 +56,11 @@ axiosPrivate.interceptors.response.use(
         } else {
           logout();
         }
+        // } else if (status && status.toString().includes("50")) {
+      } else if (status === 500) {
+        notifyError("Something went wrong. Please try again later.");
+
+        return Promise.reject(message);
       } else return Promise.reject(message);
     } else return Promise.reject(message);
   }

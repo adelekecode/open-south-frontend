@@ -54,8 +54,8 @@ export default function Signup() {
           validationSchema={signupSchema}
           onSubmit={async (values) => {
             const data = await signup.mutateAsync({
-              firstName: values.firstName,
-              lastName: values.lastName,
+              first_name: values.firstName,
+              last_name: values.lastName,
               email: values.email,
               password: values.password,
               re_password: values.confirmPassword,

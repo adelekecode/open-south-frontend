@@ -5,9 +5,9 @@ import { notifyError, notifySuccess } from "~/utils/toast";
 function useSignUp() {
   return useMutation(
     async (
-      data: Record<"firstName" | "lastName" | "email" | "password" | "re_password", string>
+      data: Record<"first_name" | "last_name" | "email" | "password" | "re_password", string>
     ) => {
-      const { data: response } = await axios.post("/auth/users/", data);
+      const { data: response } = await axios.post("/auth/users/", { ...data, role: "user" });
 
       return response.data;
     },
