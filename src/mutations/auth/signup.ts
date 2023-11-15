@@ -9,7 +9,7 @@ function useSignUp() {
     ) => {
       const { data: response } = await axios.post("/auth/users/", { ...data, role: "user" });
 
-      return response.data;
+      return response;
     },
     {
       onSuccess() {
