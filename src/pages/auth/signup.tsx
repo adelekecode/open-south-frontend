@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
 import FormField from "~/components/form-field";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
@@ -70,13 +71,14 @@ export default function Signup() {
             }
           }}
           validateOnBlur={false}
+          validateOnChange={false}
         >
           {({ handleSubmit, isSubmitting }) => (
             <form action="post" onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
               <FormField label="First Name" required placeholder="John" name="firstName" />
               <FormField label="Last Name" required placeholder="Doe" name="lastName" />
               <FormField
-                label="Email Address"
+                label="Email"
                 required
                 placeholder="example@gmail.com"
                 name="email"
@@ -133,6 +135,16 @@ export default function Signup() {
             Login
           </Link>
         </p>
+        <p className="text-sm mt-2 mb-2 font-semibold">Or</p>
+        <Button
+          variant="outlined"
+          className="!w-full flex item-center gap-[1.3rem] !p-3 !px-[0.8rem]"
+        >
+          <div>
+            <FcGoogle className="text-xl" />
+          </div>
+          <p>Signup with Google</p>
+        </Button>
       </div>
     </>
   );

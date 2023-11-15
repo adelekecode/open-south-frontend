@@ -50,13 +50,14 @@ export default function ForgotPassword() {
               }
             }}
             validateOnBlur={false}
+            validateOnChange={false}
           >
             {({ handleSubmit, isSubmitting }) => (
               <form
                 onSubmit={handleSubmit}
                 className="flex flex-col justify-center items-center w-full gap-4"
               >
-                <FormField type="email" name="email" label="Email Address" required />
+                <FormField type="email" name="email" label="Email" required />
                 <Button color="info" type="submit" className="w-full !mt-4" loading={isSubmitting}>
                   Send reset link
                 </Button>

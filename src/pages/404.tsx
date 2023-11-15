@@ -16,8 +16,7 @@ export default function NotFound() {
       </p>
       <div className="flex items-center gap-8 mt-4">
         <Button
-          // variant="text"
-          // color="primary"
+          variant="outlined"
           onClick={() => {
             navigate("/dashboard");
           }}

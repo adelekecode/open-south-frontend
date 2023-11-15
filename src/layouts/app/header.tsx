@@ -36,14 +36,14 @@ export default function Header() {
             <div className="flex item-center gap-4 [&_a]:rounded-full [&_a>p]:text-primary-700 [&_a]:p-2 [&_a]:py-1 [&_a>p]:text-sm [&_a>p]:font-medium [&_a]:flex [&_a]:items-center [&_a]:gap-2">
               <Link to="/login" className="hover:bg-zinc-100">
                 <BiLock className="text-primary-700" />
-                <p>To log in</p>
+                <p>login</p>
               </Link>
               <Link to="/signup" className="hover:bg-zinc-100">
                 <IoPersonCircleOutline className="text-primary-700" />
                 <p>Signup</p>
               </Link>
             </div>
-            <SearchField placeholder="Research" className="w-[300px]" />
+            <SearchField placeholder="Search" className="w-[300px]" />
           </div>
         </div>
       </div>

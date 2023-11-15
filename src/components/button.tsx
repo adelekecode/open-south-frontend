@@ -5,6 +5,7 @@ export default function Button({
   loading,
   variant = "contained",
   className,
+  sx,
   ...props
 }: LoadingButtonProps) {
   return (
@@ -16,6 +17,9 @@ export default function Button({
         `${className}`
       )}
       {...props}
+      sx={{
+        ...sx,
+      }}
       loading={loading}
       disableElevation
     >

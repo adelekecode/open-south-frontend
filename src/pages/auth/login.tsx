@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormField from "~/components/form-field";
@@ -33,7 +34,7 @@ export default function Login() {
         className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
       >
         <header className="mb-3 flex items-center flex-col">
-          <h1 className="text-2xl font-semibold text-center">Log in</h1>
+          <h1 className="text-2xl font-semibold text-center">Login</h1>
           <p className="text-sm text-center">Welcome, kindly enter your details to gain access.</p>
         </header>
         <Formik
@@ -54,11 +55,12 @@ export default function Login() {
             }
           }}
           validateOnBlur={false}
+          validateOnChange={false}
         >
           {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
             <form action="post" onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
               <FormField
-                label="Email Address"
+                label="Email"
                 required
                 placeholder="example@gmail.com"
                 name="email"
@@ -104,7 +106,7 @@ export default function Login() {
               </div>
               {/* {handleActivationError(values.email)} */}
               <Button className="w-full !mt-2" type="submit" loading={isSubmitting}>
-                Log In
+                Login
               </Button>
             </form>
           )}
@@ -115,6 +117,16 @@ export default function Login() {
             Signup
           </Link>
         </p>
+        <p className="text-sm mt-2 mb-2 font-semibold">Or</p>
+        <Button
+          variant="outlined"
+          className="!w-full flex item-center gap-[1.3rem] !p-3 !px-[0.8rem]"
+        >
+          <div>
+            <FcGoogle className="text-xl" />
+          </div>
+          <p>Login with Google</p>
+        </Button>
       </div>
     </>
   );
