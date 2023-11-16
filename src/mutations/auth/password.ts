@@ -32,3 +32,27 @@ export function useChangePassword() {
     return response.data;
   });
 }
+
+export function useResetPassword() {
+  return useMutation(
+    async (data: Record<"password" | "re_password", string>) => {
+      const { data: response } = await axios.post("auth/reset-password/verify/", data);
+
+      return response.data;
+    },
+    {
+      onSuccess() {
+        notifySuccess("Password reset successfully!, please login to continue");
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Invalid OTP!, please check your input and try again");
+          } else if (error.response?.status === 401) {
+            notifyError(error.response.data.detail);
+          }
+        }
+      },
+    }
+  );
+}

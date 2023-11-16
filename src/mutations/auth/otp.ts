@@ -4,10 +4,10 @@ import { notifyError, notifySuccess } from "~/utils/toast";
 
 export function useRequestOTP() {
   return useMutation(
-    async (body: Record<string, any>) => {
-      const { data } = await axios.post("/auth/otp/new/", body);
+    async (data: Record<"email", string>) => {
+      const { data: response } = await axios.post("/auth/otp/new/", data);
 
-      return data;
+      return response;
     },
     {
       onSuccess() {
@@ -26,10 +26,10 @@ export function useRequestOTP() {
 
 export function useVerifyOTP() {
   return useMutation(
-    async (body: Record<string, any>) => {
-      const { data } = await axios.post("/auth/otp/verify/", body);
+    async (data: Record<"otp", number>) => {
+      const { data: response } = await axios.post("/auth/otp/verify/", data);
 
-      return data;
+      return response;
     },
     {
       onSuccess() {
