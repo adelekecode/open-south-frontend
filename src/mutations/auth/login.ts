@@ -19,7 +19,7 @@ export default function useLogin() {
     },
     {
       onSuccess(data) {
-        localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh);
+        localStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
         axios.defaults.headers.common["Authorization"] = "Bearer " + data.access;
         queryClient.setQueriesData(["/auth/users/me/"], data);
         notifySuccess("Login successful");
