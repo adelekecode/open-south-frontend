@@ -43,7 +43,7 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/reset-password/:token/:uuid" element={<ResetPassword />} />
       </Route>
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
