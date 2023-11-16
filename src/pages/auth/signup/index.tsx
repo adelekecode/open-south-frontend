@@ -11,6 +11,7 @@ import Seo from "~/components/seo";
 import Button from "~/components/button";
 import useSignUp from "~/mutations/auth/signup";
 import Otp from "./otp";
+import useAppStore from "~/store/app";
 
 const signupSchema = Yup.object({
   firstName: Yup.string().trim().required("First name is required"),
@@ -29,18 +30,16 @@ export default function Signup() {
     password: false,
     confirmPassword: false,
   });
-  const [state, setState] = useState({
-    signuped: false,
-    email: "",
-  });
+  const { signupState, setSignupState } = useAppStore();
 
   const signup = useSignUp();
 
   return (
     <>
       <Seo title="Signup" description="Create an ATO account" />
-      {state.signuped ? (
-        <Otp email={state.email} />
+
+      {signupState.signuped ? (
+        <Otp email={signupState.email} />
       ) : (
         <div
           className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
@@ -70,7 +69,7 @@ export default function Signup() {
               });
 
               if (data) {
-                setState({
+                setSignupState({
                   signuped: true,
                   email: values.email,
                 });
@@ -98,7 +97,6 @@ export default function Signup() {
                   type={showPassword.password ? "text" : "password"}
                   endAdornment={
                     <IconButton
-                      aria-label="toggle password visibility"
                       onClick={() =>
                         setShowPassword((prev) => ({ ...prev, password: !prev.password }))
                       }
@@ -116,7 +114,6 @@ export default function Signup() {
                   type={showPassword.confirmPassword ? "text" : "password"}
                   endAdornment={
                     <IconButton
-                      aria-label="toggle password visibility"
                       onClick={() =>
                         setShowPassword((prev) => ({
                           ...prev,

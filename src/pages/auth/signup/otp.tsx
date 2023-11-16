@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import Button from "~/components/button";
 import { useRequestOTP, useVerifyOTP } from "~/mutations/auth/otp";
+import useAppStore from "~/store/app";
 
 type OtpProps = {
   email: string;
@@ -14,12 +15,26 @@ export default function Otp({ email }: OtpProps) {
   const [otp, setOtp] = useState("");
   const [isComplete, setIsComplete] = useState(false);
 
+  const { signupState, setSignupState } = useAppStore();
+
   const verifyOtp = useVerifyOTP();
   const requestOtp = useRequestOTP();
 
+  useEffect(() => {
+    return () => {
+      if (signupState.signuped && otp.length === 6) {
+        setSignupState({
+          email: "",
+          signuped: false,
+        });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div
-      className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
+      className={`w-full tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
     >
       <header className="mb-3 flex items-center flex-col">
         <h1 className="text-2xl font-semibold text-center">Enter Code</h1>
@@ -27,7 +42,7 @@ export default function Otp({ email }: OtpProps) {
           We sent a code to <span className="font-semibold">{email}</span>
         </p>
       </header>
-      <div className="flex flex-col gap-6 py-4 w-full">
+      <div className="flex flex-col items-center gap-12 py-4 w-full">
         <MuiOtpInput
           value={otp}
           onChange={(value) => {
@@ -62,11 +77,11 @@ export default function Otp({ email }: OtpProps) {
           disabled={!isComplete}
           onClick={async () => {
             const response = await verifyOtp.mutateAsync({
-              code: Number(otp),
+              otp: Number(otp),
             });
 
             if (response) {
-              navigate("/login");
+              navigate("/");
             }
           }}
           loading={verifyOtp.isLoading}

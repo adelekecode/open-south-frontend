@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, ReactNode, Fragment } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
@@ -10,6 +11,8 @@ import FormField from "~/components/form-field";
 import useLogin from "~/mutations/auth/login";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
+import useAppStore from "~/store/app";
+import { useRequestOTP } from "~/mutations/auth/otp";
 
 const loginSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Email is required"),
@@ -20,11 +23,50 @@ const loginSchema = Yup.object({
 });
 
 export default function Login() {
-  const login = useLogin();
   const navigate = useNavigate();
   const { state } = useLocation();
 
+  const login = useLogin();
+  const requestOtp = useRequestOTP();
+
+  const { setSignupState } = useAppStore();
+
   const [showPassword, setShowPassword] = useState(false);
+
+  function handleActivationError(email: string): ReactNode {
+    if (!login.error) return <Fragment />;
+
+    if (isAxiosError(login.error)) {
+      const errorMsg = login.error.response?.data.error;
+
+      if (errorMsg === "This account has not been activated") {
+        return (
+          <div className="flex items-center gap-4">
+            <p className={`text-red-600 font-medium text-xs pl-1`}>{errorMsg}</p>
+            <Button
+              loading={requestOtp.isLoading}
+              className="w-fit !p-2 !text-xs"
+              onClick={async () => {
+                const data = await requestOtp.mutateAsync({ email });
+
+                if (data) {
+                  navigate("/signup");
+                  setSignupState({
+                    email,
+                    signuped: true,
+                  });
+                }
+              }}
+            >
+              Activate
+            </Button>
+          </div>
+        );
+      }
+    }
+
+    return <Fragment />;
+  }
 
   return (
     <>
@@ -75,11 +117,7 @@ export default function Login() {
                   name="password"
                   className="placeholder:leading-3"
                   endAdornment={
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      edge="end"
-                    >
+                    <IconButton onClick={() => setShowPassword((prev) => !prev)} edge="end">
                       {showPassword ? <BsEyeSlash /> : <AiOutlineEye />}
                     </IconButton>
                   }
@@ -104,7 +142,7 @@ export default function Login() {
                   </Link>
                 </div>
               </div>
-              {/* {handleActivationError(values.email)} */}
+              {handleActivationError(values.email)}
               <Button className="w-full !mt-2" type="submit" loading={isSubmitting}>
                 Login
               </Button>

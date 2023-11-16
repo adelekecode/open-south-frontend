@@ -1,8 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
 import { REFRESH_TOKEN_KEY } from "~/app-constants";
-import { notifyError } from "~/utils/toast";
+import { notifyError, notifySuccess } from "~/utils/toast";
 
 export default function useLogin() {
   const queryClient = useQueryClient();
@@ -23,7 +22,7 @@ export default function useLogin() {
         localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh);
         axios.defaults.headers.common["Authorization"] = "Bearer " + data.access;
         queryClient.setQueriesData(["/auth/users/me/"], data);
-        toast.success("Login successful!");
+        notifySuccess("Login successful");
       },
       onError(error) {
         if (isAxiosError(error)) {
