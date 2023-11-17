@@ -14,7 +14,9 @@ import DashboardLoader from "./components/loader/dashboard-loader";
 import DashboardLayout from "./layouts/dashboard";
 import Auth from "./layouts/auth";
 import AppLayout from "./layouts/app";
-import { Dataset, Home } from "./pages";
+import Home from "./pages/home";
+import Dataset from "./pages/dataset";
+import About from "./pages/about";
 
 async function loader() {
   try {
@@ -48,6 +50,7 @@ const router = createBrowserRouter(
       <Route element={<AppLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/datasets" element={<Dataset />} />
+        <Route path="/about" element={<About />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
