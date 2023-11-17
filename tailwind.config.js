@@ -5,6 +5,7 @@ export default {
     extend: {
       fontFamily: {
         "Work-Sans": ["Work Sans", "sans-serif"],
+        Marhey: ["Marhey", "sans-serif"],
       },
       maxWidth: {
         maxAppWidth: "1666px",

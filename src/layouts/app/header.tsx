@@ -4,6 +4,7 @@ import { IoPersonCircleOutline } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 import Logo from "~/components/logo";
 import SearchField from "~/components/search-field";
+import useAppStore from "~/store/app";
 // import { useQueryClient } from "@tanstack/react-query";
 
 const routes = [
@@ -20,11 +21,11 @@ const routes = [
     name: "Organizations",
   },
   {
-    to: "/about-us",
+    to: "/about",
     name: "About Us",
   },
   {
-    to: "/contact-us",
+    to: "/contact",
     name: "Contact Us",
   },
 ];
@@ -35,6 +36,8 @@ export default function Header() {
   // const currentUser = queryClient.getQueryData(["/auth/users/me"]);
 
   // console.log(currentUser);
+
+  const { setCurrentPageName } = useAppStore();
 
   return (
     <nav className="w-full shadow-appNavBar flex flex-col items-center">
@@ -87,6 +90,9 @@ export default function Header() {
                 isActive && "border-primary-700"
               )
             }
+            onClick={() => {
+              setCurrentPageName(item.name);
+            }}
           >
             {({ isActive }) => (
               <p className={twMerge(`text-sm`, isActive && "text-primary-700")}>{item.name}</p>
