@@ -16,7 +16,7 @@ export function useForgotPassword() {
       },
       onError(error) {
         if (isAxiosError(error)) {
-          if (error.response?.status === 400) {
+          if (error.response?.status === 404) {
             notifyError("User with this email does not exist!");
           }
         }
