@@ -37,7 +37,7 @@ export default function ResetPassword() {
 
   return (
     <>
-      {!resetPassword.isSuccess ? (
+      {resetPassword.isSuccess ? (
         <Success />
       ) : (
         <div
