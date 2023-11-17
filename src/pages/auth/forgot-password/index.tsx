@@ -28,10 +28,12 @@ export default function ForgotPassword() {
       <Seo title="Forgot Password" description="Can't remember your password? change it." />
       {!instructionsSent.value && !instructionsSent.email ? (
         <div
-          className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
+          className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 pt-12 largeMobile:p-0`}
         >
           <header className="mb-3 flex items-center flex-col">
-            <h1 className="text-2xl font-semibold text-center">Forgot Password?</h1>
+            <h1 className="text-2xl font-semibold text-center largeMobile:text-xl">
+              Forgot Password?
+            </h1>
             <p className="text-sm text-center">No worries, we'll send you reset instructions</p>
           </header>
           <Formik

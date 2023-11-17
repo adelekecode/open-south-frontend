@@ -5,10 +5,12 @@ type State = {
     signuped: boolean;
     email: string;
   };
+  currentPageName: string;
 };
 
 type Action = {
   setSignupState: (state: State["signupState"]) => void;
+  setCurrentPageName: (state: State["currentPageName"]) => void;
 };
 
 const useAppStore = create<State & Action>((set) => ({
@@ -21,6 +23,11 @@ const useAppStore = create<State & Action>((set) => ({
       signupState: {
         ...state,
       },
+    }),
+  currentPageName: "",
+  setCurrentPageName: (val) =>
+    set({
+      currentPageName: val,
     }),
 }));
 

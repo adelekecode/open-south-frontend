@@ -6,9 +6,9 @@ import { notifyError, notifySuccess } from "~/utils/toast";
 export function useForgotPassword() {
   return useMutation(
     async (data: Record<"email", string>) => {
-      const { data: response } = await axios.post("/auth/users/reset_password/", data);
+      const { data: response } = await axios.post("/auth/reset-password/", data);
 
-      return response.data;
+      return response;
     },
     {
       onSuccess() {
@@ -35,8 +35,17 @@ export function useChangePassword() {
 
 export function useResetPassword() {
   return useMutation(
-    async (data: Record<"password" | "re_password", string>) => {
-      const { data: response } = await axios.post("auth/reset-password/verify/", data);
+    async ({
+      path,
+      body,
+    }: {
+      path: Record<"uuid" | "token", string>;
+      body: Record<"password" | "re_password", string>;
+    }) => {
+      const { data: response } = await axios.post(
+        `/auth/reset-password/verify/${path.token}/${path.uuid}/`,
+        body
+      );
 
       return response.data;
     },
@@ -47,7 +56,7 @@ export function useResetPassword() {
       onError(error) {
         if (isAxiosError(error)) {
           if (error.response?.status === 400) {
-            notifyError("Invalid OTP!, please check your input and try again");
+            notifyError("Token not valid or has expired, please try again");
           } else if (error.response?.status === 401) {
             notifyError(error.response.data.detail);
           }

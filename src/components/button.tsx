@@ -18,6 +18,10 @@ export default function Button({
       )}
       {...props}
       sx={{
+        "&.MuiButton-outlinedPrimary": {
+          color: "#0e82bb !important",
+          borderColor: "#0e82bb !important",
+        },
         ...sx,
       }}
       loading={loading}

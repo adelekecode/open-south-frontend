@@ -93,7 +93,7 @@ export default function Login() {
             });
 
             if (data) {
-              navigate(state?.from ? state.from : "/");
+              navigate(state?.from ? state.from : "/dashboard");
             }
           }}
           validateOnBlur={false}

@@ -11,10 +11,10 @@ export default function Success({ email }: SuccessProps) {
 
   return (
     <div
-      className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
+      className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 pt-12 largeMobile:p-0`}
     >
       <header className="flex items-center flex-col">
-        <h1 className="text-2xl font-semibold text-center">Check your mail</h1>
+        <h1 className="text-2xl font-semibold text-center largeMobile:text-xl">Check your mail</h1>
       </header>
       <div className="flex flex-col justify-center items-center w-full gap-4">
         <p className="text-base mb-5 flex flex-col items-center">
@@ -22,7 +22,6 @@ export default function Success({ email }: SuccessProps) {
           <span className="!text-primary-700 font-medium">{email}</span>
         </p>
         <Button
-          color="info"
           type="submit"
           className="w-full"
           onClick={() => {
@@ -31,12 +30,12 @@ export default function Success({ email }: SuccessProps) {
         >
           Open email app
         </Button>
-        <p className="mt-5 text-sm">
+        {/* <p className="mt-5 text-sm">
           Didin't receive the email?{" "}
           <button className="text-primary-700 font-semibold hover:underline cursor-pointer">
-            resend
+            Resend
           </button>
-        </p>
+        </p> */}
         <button
           className="flex items-center cursor-pointer gap-2"
           onClick={() => {
