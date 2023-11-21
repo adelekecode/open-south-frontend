@@ -17,6 +17,7 @@ import AppLayout from "./layouts/app";
 import Home from "./pages/home";
 import Dataset from "./pages/dataset";
 import About from "./pages/about";
+import Terms from "./pages/terms";
 
 async function loader() {
   try {
@@ -51,6 +52,7 @@ const router = createBrowserRouter(
         <Route path="/" element={<Home />} />
         <Route path="/datasets" element={<Dataset />} />
         <Route path="/about" element={<About />} />
+        <Route path="/terms" element={<Terms />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

@@ -1,4 +1,5 @@
 import Seo from "~/components/seo";
+import Panel from "./panel";
 import Banner from "./banner";
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <>
       <Seo title="Home" description="Welcome to open south a data storage platform" />
       <main>
+        <Panel />
         <Banner />
       </main>
     </>

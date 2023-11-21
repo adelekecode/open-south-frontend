@@ -28,3 +28,16 @@ h6,
 p {
   color: #161616;
 }
+
+/* ol.order-list {
+  counter-reset: "section 1";
+} */
+
+ol.order-list li {
+  counter-increment: subsection;
+  font-size: 1rem;
+}
+
+ol.order-list li::marker {
+  content: counters(item, ".") "." counters(subsection, ".") " ";
+}

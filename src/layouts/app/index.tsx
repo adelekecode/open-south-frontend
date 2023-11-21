@@ -22,7 +22,7 @@ const AppLayout = () => {
       <Header />
       <main className="flex-grow">
         {currentPageName && (
-          <div className="flex items-center max-w-maxAppWidth p-6">
+          <div className="flex items-center max-w-maxAppWidth p-6 mx-auto">
             <Breadcrumbs separator={<GrFormNext />}>{breadcrumbs}</Breadcrumbs>
           </div>
         )}

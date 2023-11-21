@@ -23,9 +23,7 @@ const useAppStore = create<State & Action>()(
       },
       setSignupState: (state) =>
         set({
-          signupState: {
-            ...state,
-          },
+          signupState: state,
         }),
       currentPageName: "",
       setCurrentPageName: (val) =>

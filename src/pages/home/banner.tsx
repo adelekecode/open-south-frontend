@@ -1,45 +1,33 @@
+import { Link } from "react-router-dom";
+import { IoChevronBack } from "react-icons/io5";
+import Button from "~/components/button";
+
 export default function Banner() {
   return (
-    <div className="w-full max-w-maxAppWidth p-6">
-      <div className="shadow-md rounded-lg w-full p-6 gap-5 flex flex-col">
-        <h3 className="text-base font-semibold">Open South</h3>
-        <div className="grid grid-cols-5 [@media(max-width:900px)]:grid-cols-3 gap-8 [&>div]:flex [&>div]:gap-3 [&>div>span]:bg-primary-700 [&>div>span]:rounded-full [&>div>span]:w-1 [&>div>div]:flex [&>div>div]:items-start [&>div>div]:flex-col [&>div>div]:gap-1 [&>div>div>h1]:text-3xl [&>div>div>h1]:font-semibold [&>div>div>p]:text-zinc-700">
-          <div>
-            <span></span>
-            <div>
-              <h1>46,897</h1>
-              <p>Datasets</p>
-            </div>
-          </div>
-          <div>
-            <span></span>
-            <div>
-              <h1>201,475</h1>
-              <p>Files</p>
-            </div>
-          </div>
-          <div>
-            <span></span>
-            <div>
-              <h1>26,897</h1>
-              <p>Categories</p>
-            </div>
-          </div>
-          <div>
-            <span></span>
-            <div>
-              <h1>123,567</h1>
-              <p>Users</p>
-            </div>
-          </div>
-          <div>
-            <span></span>
-            <div>
-              <h1>4,666</h1>
-              <p>Organiztions</p>
+    <div className="w-full max-w-maxAppWidth p-4 py-12 mx-auto bg-primary-700 flex justify-between">
+      <div className="flex gap-3">
+        <span className="w-1 bg-white rounded-full"></span>
+        <div className="flex flex-col gap-6 py-4">
+          <h1 className="text-3xl font-semibold text-white">Participate</h1>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-1">
+              <IoChevronBack className="text-white rotate-180 text-sm" />
+              <Link to={""}>
+                <p className="text-white font-medium text-base">Create or find your organization</p>
+              </Link>
             </div>
           </div>
         </div>
+      </div>
+      <div className="flex items-center gap-24 justify-between pr-[10vw]">
+        <Button variant="outlined" color="inherit" className="!rounded-full !gap-3">
+          <p className="text-white">Publish a dataset</p>
+          <IoChevronBack className="text-white rotate-180 text-base" />
+        </Button>
+        <Button variant="outlined" color="inherit" className="!rounded-full !gap-3">
+          <p className="text-white">Publish a category</p>
+          <IoChevronBack className="text-white rotate-180 text-base" />
+        </Button>
       </div>
     </div>
   );
