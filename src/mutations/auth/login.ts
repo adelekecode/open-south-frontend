@@ -12,7 +12,7 @@ export default function useLogin() {
         data: {
           access: string;
           refresh: string;
-        } & User;
+        } & CurrentUser;
       }>("/auth/login/", data);
 
       return response.data;
