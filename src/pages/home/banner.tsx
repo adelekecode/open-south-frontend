@@ -4,27 +4,37 @@ import Button from "~/components/button";
 
 export default function Banner() {
   return (
-    <div className="w-full max-w-maxAppWidth p-4 py-12 mx-auto bg-primary-700 flex justify-between">
+    <div className="w-full max-w-maxAppWidth p-4 py-12 mx-auto bg-primary-700 grid grid-cols-2 gap-4 tablet:flex tablet:flex-col tablet:gap-8">
       <div className="flex gap-3">
         <span className="w-1 bg-white rounded-full"></span>
         <div className="flex flex-col gap-6 py-4">
-          <h1 className="text-3xl font-semibold text-white">Participate</h1>
+          <h1 className="text-3xl font-semibold text-white mediumMobile:text-2xl">Participate</h1>
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-1">
               <IoChevronBack className="text-white rotate-180 text-sm" />
               <Link to={""}>
-                <p className="text-white font-medium text-base">Create or find your organization</p>
+                <p className="text-white font-medium text-base mediumMobile:text-sm">
+                  Create or find your organization
+                </p>
               </Link>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-24 justify-between pr-[10vw]">
-        <Button variant="outlined" color="inherit" className="!rounded-full !gap-3">
+      <div className="flex items-center flex-wrap justify-between tablet:justify-end pr-[18%] gap-4 tablet:pr-0">
+        <Button
+          variant="outlined"
+          color="inherit"
+          className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5"
+        >
           <p className="text-white">Publish a dataset</p>
           <IoChevronBack className="text-white rotate-180 text-base" />
         </Button>
-        <Button variant="outlined" color="inherit" className="!rounded-full !gap-3">
+        <Button
+          variant="outlined"
+          color="inherit"
+          className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5"
+        >
           <p className="text-white">Publish a category</p>
           <IoChevronBack className="text-white rotate-180 text-base" />
         </Button>
