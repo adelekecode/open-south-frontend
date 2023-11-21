@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { FaSquareXTwitter } from "react-icons/fa6";
+import { FaLinkedin } from "react-icons/fa";
 import Logo from "./logo";
 import DataGouv from "~/assets/images/sponsor-logos/data-gouv.svg";
 import AnalyzeBoston from "~/assets/images/sponsor-logos/analyze-boston.svg";
@@ -7,7 +9,7 @@ import Dribbble from "~/assets/images/sponsor-logos/dribbble.svg";
 export default function Footer() {
   return (
     <footer className="w-full max-w-maxAppWidth mx-auto">
-      <div className="bg-[#f4f4f5b3] px-6 py-8 [&_h3]:text-base [&_h3]:font-semibold grid grid-cols-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-4 [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:gap-2 [&>div>div>a]:w-fit tablet:grid-cols-2 tablet:gap-8">
+      <div className="bg-[#f4f4f5b3] px-6 py-8 [&_h3]:text-base [&_h3]:font-semibold grid grid-cols-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-4 [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:gap-2 [&>div>div>a]:w-fit [&>div>div>a]:text-[0.91rem] tablet:grid-cols-2 tablet:gap-8">
         <div>
           <h3>Useful Links</h3>
           <div>
@@ -20,7 +22,7 @@ export default function Footer() {
           </div>
         </div>
         <div>
-          <h3>Social Media</h3>
+          <h3>Support</h3>
           <div>
             <Link className="hover:underline" to="/contact">
               Contact
@@ -31,16 +33,24 @@ export default function Footer() {
             <Link className="hover:underline" to="/about">
               About us
             </Link>
+            <a
+              className="hover:underline"
+              href="https://tally.so/r/w2KPR9"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Feedback
+            </a>
           </div>
         </div>
         <div>
           <h3>Social Media</h3>
-          <div>
-            <a className="hover:underline" href="">
-              Twitter
+          <div className="flex items-start">
+            <a href="" target="_blank" rel="noopener noreferrer">
+              <FaSquareXTwitter className="text-2xl text-black" />
             </a>
-            <a className="hover:underline" href="">
-              LinkedIn
+            <a href="" target="_blank" rel="noopener noreferrer">
+              <FaLinkedin className="text-2xl text-[#0a66c2]" />
             </a>
           </div>
         </div>
