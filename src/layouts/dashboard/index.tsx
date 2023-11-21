@@ -4,10 +4,12 @@ import SideBar from "./side-bar";
 
 export default function DashboardLayout() {
   return (
-    <>
-      <Header />
+    <div className="flex min-h-screen">
       <SideBar />
-      <Outlet />
-    </>
+      <main className="w-full min-h-screen flex flex-col">
+        <Header />
+        <Outlet />
+      </main>
+    </div>
   );
 }
