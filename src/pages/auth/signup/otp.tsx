@@ -81,7 +81,7 @@ export default function Otp({ email }: OtpProps) {
             });
 
             if (response) {
-              navigate("/");
+              navigate("/login");
             }
           }}
           loading={verifyOtp.isLoading}

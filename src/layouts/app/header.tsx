@@ -59,7 +59,7 @@ export default function Header() {
                 }}
               >
                 <BiLock className="text-primary-700" />
-                <p>login</p>
+                <p>Login</p>
               </button>
               <button
                 className="hover:bg-zinc-100"
