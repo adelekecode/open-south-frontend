@@ -1,9 +1,9 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { BiLock } from "react-icons/bi";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 import Logo from "~/components/logo";
-import SearchField from "~/components/search-field";
+import SearchInput from "~/components/search-input";
 import useAppStore from "~/store/app";
 // import { useQueryClient } from "@tanstack/react-query";
 
@@ -25,6 +25,10 @@ const routes = [
     name: "About Us",
   },
   {
+    to: "/news",
+    name: "News",
+  },
+  {
     to: "/contact",
     name: "Contact Us",
   },
@@ -32,10 +36,10 @@ const routes = [
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   // const queryClient = useQueryClient();
   // const currentUser = queryClient.getQueryData(["/auth/users/me"]);
-
-  // console.log(currentUser);
 
   const { setCurrentPageName } = useAppStore();
 
@@ -43,7 +47,7 @@ export default function Header() {
     <nav className="w-full shadow-appNavBar flex flex-col items-center">
       <div className="w-full border-b-[1.5px] border-zinc-200 flex items-center justify-center">
         <div className=" w-full max-w-maxAppWidth flex items-center justify-between gap-4 p-4 px-6">
-          <Link to={"/"} className="p-6 w-fit hover:bg-zinc-100">
+          <Link to={"/"} className="p-6 px-4 w-fit hover:bg-zinc-100">
             <Logo className="w-[10rem]" />
           </Link>
           <div className="flex flex-col items-end gap-4">
@@ -53,29 +57,29 @@ export default function Header() {
                 onClick={() => {
                   navigate("/login", {
                     state: {
-                      from: "/",
+                      from: location.pathname,
                     },
                   });
                 }}
               >
                 <BiLock className="text-primary-700" />
-                <p>Login</p>
+                <p>Log In</p>
               </button>
               <button
                 className="hover:bg-zinc-100"
                 onClick={() => {
-                  navigate("/login", {
+                  navigate("/signup", {
                     state: {
-                      from: "/",
+                      from: location.pathname,
                     },
                   });
                 }}
               >
                 <IoPersonCircleOutline className="text-primary-700" />
-                <p>Signup</p>
+                <p>Sign Up</p>
               </button>
             </div>
-            <SearchField placeholder="Search" className="w-[300px]" />
+            <SearchInput placeholder="Search" className="w-[300px]" />
           </div>
         </div>
       </div>

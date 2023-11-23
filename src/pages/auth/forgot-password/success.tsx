@@ -13,7 +13,7 @@ export default function Success({ email }: SuccessProps) {
     <div
       className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 pt-12 largeMobile:p-0`}
     >
-      <header className="flex items-center flex-col">
+      <header className="flex items-center flex-col mb-2">
         <h1 className="text-2xl font-semibold text-center largeMobile:text-xl">Check your mail</h1>
       </header>
       <div className="flex flex-col justify-center items-center w-full gap-4">

@@ -6,7 +6,7 @@ export default function Auth() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className={"grid authTablet:grid-cols-1 flex-grow"}>
-        <div className="w-full flex justify-center items-center py-12 authTablet:justify-center authTablet:py-4 authTablet:pb-12 authTablet:pt-14 relative">
+        <div className="w-full flex justify-center items-center py-20 authTablet:justify-center authTablet:pb-12 relative">
           <Link to={"/"} className="absolute top-0 left-0 p-6">
             <Logo className="largeMobile:w-[6rem]" />
           </Link>
