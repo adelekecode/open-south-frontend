@@ -9,8 +9,10 @@ export default function Terms() {
         title="Terms of services"
         description="See what are terms of services are before you agree to it"
       />
-      <main className="w-full mx-auto max-w-maxAppWidth p-6 largeMobile:px-4 pb-16 flex flex-col gap-6 [&>article>div]:flex [&>article>div]:flex-col [&>article>div]:gap-2 [&>article>div]:px-2 largeMobile:[&>article>div]:px-0 [&>article>div>h3]:font-bold [&>article>div>ol]:pl-8 [&>article>div>ol]:flex [&>article>div>ol]:flex-col [&>article>div>ol]:gap-2 [&>article>div>ol_strong]:font-semibold">
-        <h1 className="text-2xl font-semibold">Terms of Service</h1>
+      <main className="w-full mx-auto max-w-maxAppWidth p-6 px-10 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 [&>article>div]:flex [&>article>div]:flex-col [&>article>div]:gap-2 [&>article>div]:px-2 largeMobile:[&>article>div]:px-0 [&>article>div>h3]:font-bold [&>article>div>ol]:pl-8 [&>article>div>ol]:flex [&>article>div>ol]:flex-col [&>article>div>ol]:gap-2 [&>article>div>ol_strong]:font-semibold">
+        <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold">
+          Terms of Service
+        </h1>
         <p>
           Welcome to Open South! These terms and conditions ("Terms") govern your use of the Open
           South open data platform ("Platform"). By accessing or using the Platform, you agree to

@@ -9,3 +9,20 @@ type CurrentUser = {
   } | null;
   image: string | null;
 };
+
+type Dataset = {
+  title: string;
+  organization: {
+    name: string;
+    image: string;
+    slug?: string;
+  } | null;
+  user: {
+    firstName: string;
+    lastName: string;
+    image: string;
+  } | null;
+  description: string;
+  slug: string;
+  updatedAt: string;
+};

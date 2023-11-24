@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoChevronBack } from "react-icons/io5";
 import Button from "~/components/button";
 
 export default function Banner() {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full max-w-maxAppWidth p-4 py-12 mx-auto bg-primary-700 grid grid-cols-2 gap-4 tablet:flex tablet:flex-col tablet:gap-8">
       <div className="flex gap-3">
@@ -26,6 +28,9 @@ export default function Banner() {
           variant="outlined"
           color="inherit"
           className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5"
+          onClick={() => {
+            navigate("/datasets/new");
+          }}
         >
           <p className="text-white">Publish a dataset</p>
           <IoChevronBack className="text-white rotate-180 text-base" />
@@ -34,8 +39,11 @@ export default function Banner() {
           variant="outlined"
           color="inherit"
           className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5"
+          onClick={() => {
+            navigate("/datasets");
+          }}
         >
-          <p className="text-white">Publish a category</p>
+          <p className="text-white">Find a dataset</p>
           <IoChevronBack className="text-white rotate-180 text-base" />
         </Button>
       </div>

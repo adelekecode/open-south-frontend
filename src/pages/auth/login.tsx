@@ -70,13 +70,13 @@ export default function Login() {
 
   return (
     <>
-      <Seo title="Login" description="Login to your ATO account" />
+      <Seo title="Log In" description="Log in to your ATO account" />
 
       <div
         className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
       >
-        <header className="mb-3 flex items-center flex-col">
-          <h1 className="text-2xl font-semibold text-center">Login</h1>
+        <header className="mb-3 flex items-center flex-col gap-2">
+          <h1 className="text-2xl font-semibold text-center">Log In</h1>
           <p className="text-sm text-center">Welcome, kindly enter your details to gain access.</p>
         </header>
         <Formik
@@ -144,7 +144,7 @@ export default function Login() {
               </div>
               {handleActivationError(values.email)}
               <Button className="w-full !mt-2" type="submit" loading={isSubmitting}>
-                Login
+                Log In
               </Button>
             </form>
           )}
@@ -152,7 +152,7 @@ export default function Login() {
         <p className="text-sm">
           Don't have an account?{" "}
           <Link to={"/signup"} className="text-secondary-700 font-semibold hover:underline">
-            Signup
+            Sign Up
           </Link>
         </p>
         <p className="text-sm mt-2 mb-2 font-semibold">Or</p>
@@ -163,7 +163,7 @@ export default function Login() {
           <div>
             <FcGoogle className="text-xl" />
           </div>
-          <p>Login with Google</p>
+          <p>Log in with Google</p>
         </Button>
       </div>
     </>

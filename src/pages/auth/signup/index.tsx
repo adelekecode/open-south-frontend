@@ -36,7 +36,7 @@ export default function Signup() {
 
   return (
     <>
-      <Seo title="Signup" description="Create an ATO account" />
+      <Seo title="Sign Up" description="Create an ATO account" />
 
       {signupState.signuped ? (
         <Otp email={signupState.email} />
@@ -44,8 +44,8 @@ export default function Signup() {
         <div
           className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
         >
-          <header className="mb-3 flex items-center flex-col">
-            <h1 className="text-2xl font-semibold text-center">Signup</h1>
+          <header className="mb-3 flex items-center flex-col gap-2">
+            <h1 className="text-2xl font-semibold text-center">Sign Up</h1>
             <p className="text-sm text-center">
               Welcome to our platform! Please fill out the form below to get started.{" "}
             </p>
@@ -127,7 +127,7 @@ export default function Signup() {
                   }
                 />
                 <Button className="w-full !mt-4" type="submit" loading={isSubmitting}>
-                  Signup
+                  Sign Up
                 </Button>
               </form>
             )}
@@ -135,7 +135,7 @@ export default function Signup() {
           <p className="text-sm">
             Already have an account?{" "}
             <Link to={"/login"} className="text-secondary-700 font-semibold hover:underline">
-              Login
+              Log In
             </Link>
           </p>
           <p className="text-sm mt-2 mb-2 font-semibold">Or</p>
@@ -146,7 +146,7 @@ export default function Signup() {
             <div>
               <FcGoogle className="text-xl" />
             </div>
-            <p>Signup with Google</p>
+            <p>Sign up with Google</p>
           </Button>
         </div>
       )}

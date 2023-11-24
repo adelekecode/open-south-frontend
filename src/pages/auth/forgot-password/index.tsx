@@ -30,7 +30,7 @@ export default function ForgotPassword() {
         <div
           className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 pt-12 largeMobile:p-0`}
         >
-          <header className="mb-3 flex items-center flex-col">
+          <header className="mb-3 flex items-center flex-col gap-2">
             <h1 className="text-2xl font-semibold text-center largeMobile:text-xl">
               Forgot Password?
             </h1>

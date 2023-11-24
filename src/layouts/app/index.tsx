@@ -9,8 +9,8 @@ const AppLayout = () => {
   const { currentPageName } = useAppStore();
 
   const breadcrumbs = [
-    <Link key="1" to={"/"} className="text-sm hover:underline">
-      Home
+    <Link key="1" to={"/"} className="text-sm hover:underline font-medium">
+      Welcome
     </Link>,
     <p key={"2"} className="capitalize">
       {currentPageName}
@@ -22,7 +22,7 @@ const AppLayout = () => {
       <Header />
       <main className="flex-grow">
         {currentPageName && (
-          <div className="flex items-center max-w-maxAppWidth p-6 mx-auto">
+          <div className="flex items-center max-w-maxAppWidth mx-auto p-6 px-10 tablet:px-6 largeMobile:!px-4">
             <Breadcrumbs separator={<GrFormNext />}>{breadcrumbs}</Breadcrumbs>
           </div>
         )}
