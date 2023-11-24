@@ -45,7 +45,7 @@ export default function Footer() {
         </div>
         <div>
           <h3>Social Media</h3>
-          <div className="flex items-start">
+          <div className="!flex-row">
             <a href="" target="_blank" rel="noopener noreferrer">
               <FaSquareXTwitter className="text-2xl text-black" />
             </a>
