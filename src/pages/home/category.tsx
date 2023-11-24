@@ -49,7 +49,7 @@ export default function Category() {
           </Link>
         </div>
       </header>
-      <main className="grid grid-cols-3 gap-4">
+      <main className="grid grid-cols-4 gap-4">
         <button
           onClick={() => {
             navigate(`./categories/environment`);
