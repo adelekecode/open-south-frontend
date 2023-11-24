@@ -36,7 +36,7 @@ export default function Card({
           {organization ? (
             <Link
               className="text-primary-600 capitalize hover:underline relative z-10"
-              to={organization.slug || "/44"}
+              to={`/organization/${organization.slug}`}
             >
               {organization.name}
             </Link>

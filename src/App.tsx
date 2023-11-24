@@ -40,6 +40,7 @@ const router = createBrowserRouter(
       <Route loader={loader} element={<Protected />}>
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<div>Dashboard</div>} />
+          <Route path="/datasets/new" element={<div>Create new dataset</div>} />
         </Route>
       </Route>
       <Route element={<Auth />}>
