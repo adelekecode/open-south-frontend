@@ -9,7 +9,7 @@ import Dribbble from "~/assets/images/sponsor-logos/dribbble.svg";
 export default function Footer() {
   return (
     <footer className="w-full max-w-maxAppWidth mx-auto">
-      <div className="bg-[#f4f4f5b3] px-6 largeMobile:px-4 py-8 [&_h3]:text-[0.8rem] [&_h3]:font-semibold grid grid-cols-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-4 [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:gap-4 [&>div>div>a]:w-fit [&>div>div>a]:text-[0.8rem] tablet:grid-cols-2 largeMobile:!grid-cols-1 tablet:gap-8">
+      <div className="bg-[#f4f4f5b3] px-8 tablet:px-6 largeMobile:!px-4 py-8 [&_h3]:text-[0.8rem] [&_h3]:font-semibold grid grid-cols-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-4 [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:gap-4 [&>div>div>a]:w-fit [&>div>div>a]:text-[0.8rem] tablet:grid-cols-2 largeMobile:!grid-cols-1 tablet:gap-8">
         <div>
           <h3>Useful Links</h3>
           <div>

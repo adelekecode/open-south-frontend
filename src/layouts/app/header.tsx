@@ -1,11 +1,15 @@
+import { useEffect } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { BiLock } from "react-icons/bi";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 import Logo from "~/components/logo";
 import SearchInput from "~/components/search-input";
-import useAppStore from "~/store/app";
 // import { useQueryClient } from "@tanstack/react-query";
+
+type HeaderProps = {
+  setRoutePath: (data: React.ReactNode[]) => void;
+};
 
 const routes = [
   {
@@ -34,14 +38,38 @@ const routes = [
   },
 ];
 
-export default function Header() {
+export default function Header({ setRoutePath }: HeaderProps) {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { pathname, state } = useLocation();
+
+  useEffect(() => {
+    const route = routes.find((item) => pathname.startsWith(item.to));
+
+    if (route) {
+      const arr = [];
+
+      arr[0] = state ? (
+        <Link to={`${route.to}`} key="2" className={`hover:underline`}>
+          {route.name}
+        </Link>
+      ) : (
+        <p key="2">{route.name}</p>
+      );
+
+      if (state) {
+        arr[1] = <p key="3">{state.name}</p>;
+      }
+      setRoutePath(arr);
+    }
+
+    return () => {
+      setRoutePath([]);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   // const queryClient = useQueryClient();
   // const currentUser = queryClient.getQueryData(["/auth/users/me"]);
-
-  const { setCurrentPageName } = useAppStore();
 
   return (
     <nav className="w-full shadow-appNavBar flex flex-col items-center">
@@ -57,7 +85,7 @@ export default function Header() {
                 onClick={() => {
                   navigate("/login", {
                     state: {
-                      from: location.pathname,
+                      from: pathname,
                     },
                   });
                 }}
@@ -70,7 +98,7 @@ export default function Header() {
                 onClick={() => {
                   navigate("/signup", {
                     state: {
-                      from: location.pathname,
+                      from: pathname,
                     },
                   });
                 }}
@@ -94,9 +122,6 @@ export default function Header() {
                 isActive && "border-primary-700"
               )
             }
-            onClick={() => {
-              setCurrentPageName(item.name);
-            }}
           >
             {({ isActive }) => (
               <p className={twMerge(`text-sm`, isActive && "text-primary-700")}>{item.name}</p>

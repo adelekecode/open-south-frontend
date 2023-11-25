@@ -67,7 +67,11 @@ export default function Dataset() {
             <button
               key={index + 1}
               onClick={() => {
-                navigate(`/datasets/${slug}`);
+                navigate(`/datasets/${slug}`, {
+                  state: {
+                    name: item.title,
+                  },
+                });
               }}
               className="flex items-start gap-6 border-[1.5px] border-info-200 p-6 hover:bg-info-50"
             >
