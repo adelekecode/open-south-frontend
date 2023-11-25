@@ -21,6 +21,7 @@ import Terms from "./pages/terms";
 import Category from "./pages/category";
 import CategoryDetails from "./pages/category-details";
 import DatasetDetails from "./pages/dataset-details";
+import PrivacyPolicy from "./pages/privacy-policy";
 
 async function loader() {
   try {
@@ -60,6 +61,7 @@ const router = createBrowserRouter(
         <Route path="/categories/:slug" element={<CategoryDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>
