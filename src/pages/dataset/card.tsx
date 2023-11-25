@@ -18,7 +18,11 @@ export default function Card({
   return (
     <button
       onClick={() => {
-        navigate(`./${slug}`);
+        navigate(`./${slug}`, {
+          state: {
+            name: title,
+          },
+        });
       }}
       className="flex items-start gap-6 border-[1.5px] border-info-200 p-6 hover:bg-info-50"
     >

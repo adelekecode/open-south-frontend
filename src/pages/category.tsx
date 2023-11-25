@@ -25,7 +25,11 @@ export default function Category() {
         <div className="grid grid-cols-4 gap-4">
           <button
             onClick={() => {
-              navigate(`./environment`);
+              navigate(`./environment`, {
+                state: {
+                  name: "Environment",
+                },
+              });
             }}
             className="flex flex-col border-[1.5px] border-info-200 hover:bg-info-50"
           >
