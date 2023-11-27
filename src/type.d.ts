@@ -1,6 +1,8 @@
 type CurrentUser = {
   id: string;
   email: string;
+  first_name?: string;
+  last_name?: string;
   role: "user" | "admin";
   profile_data: {
     first_name: string;

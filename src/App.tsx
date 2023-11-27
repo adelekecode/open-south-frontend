@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import Protected from "./layouts/protected";
-import { fetchUserIfTokenExists } from "./utils/api";
+import { fetchAccessTokenIfRefreshTokenExists } from "./utils/api";
 import { ForgotPassword, Login, ResetPassword, Signup } from "./pages/auth";
 import NotFound from "./pages/404";
 import ErrorBoundary from "./components/error-boundary";
@@ -22,10 +22,11 @@ import Category from "./pages/category";
 import CategoryDetails from "./pages/category-details";
 import DatasetDetails from "./pages/dataset-details";
 import PrivacyPolicy from "./pages/privacy-policy";
+import GetCurrentUser from "./layouts/get-current-user";
 
 async function loader() {
   try {
-    await fetchUserIfTokenExists();
+    await fetchAccessTokenIfRefreshTokenExists();
 
     return null;
   } catch (error) {
@@ -38,30 +39,46 @@ async function loader() {
   }
 }
 
+async function appLoader() {
+  try {
+    await fetchAccessTokenIfRefreshTokenExists();
+
+    return null;
+  } catch (error) {
+    return null;
+  }
+}
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route errorElement={<ErrorBoundary />}>
-      <Route loader={loader} element={<Protected />}>
-        <Route element={<DashboardLayout />}>
-          <Route path="/dashboard" element={<div>Dashboard</div>} />
-          <Route path="/datasets/new" element={<div>Create new dataset</div>} />
-        </Route>
-      </Route>
       <Route element={<Auth />}>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token/:uuid" element={<ResetPassword />} />
       </Route>
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/datasets" element={<Dataset />} />
-        <Route path="/datasets/:slug" element={<DatasetDetails />} />
-        <Route path="/categories" element={<Category />} />
-        <Route path="/categories/:slug" element={<CategoryDetails />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route loader={loader}>
+        <Route element={<Protected />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<div>Dashboard</div>} />
+            <Route path="/datasets/new" element={<div>Create new dataset</div>} />
+          </Route>
+        </Route>
+      </Route>
+      <Route loader={appLoader}>
+        <Route element={<GetCurrentUser />}>
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/datasets" element={<Dataset />} />
+            <Route path="/datasets/:slug" element={<DatasetDetails />} />
+            <Route path="/categories" element={<Category />} />
+            <Route path="/categories/:slug" element={<CategoryDetails />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          </Route>
+        </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

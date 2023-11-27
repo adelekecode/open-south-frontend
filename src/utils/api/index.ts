@@ -68,27 +68,8 @@ axiosPrivate.interceptors.response.use(
   }
 );
 
-// export async function fetchUserIfTokenExists() {
-//   const token = localStorage.getItem(REFRESH_TOKEN_KEY);
-
-//   if (token && axiosPrivate.defaults.headers.common["Authorization"]) {
-//     return null;
-//   }
-
-//   if (token) {
-//     const data = await refreshToken(token);
-
-//     localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh);
-//     axiosPrivate.defaults.headers.common["Authorization"] = "Bearer " + data.access;
-//   } else {
-//     throw new Error("No token found");
-//   }
-// }
-
-export async function fetchUserIfTokenExists() {
+export async function fetchAccessTokenIfRefreshTokenExists() {
   let token = localStorage.getItem(REFRESH_TOKEN_KEY);
-
-  // console.log(token);
 
   token = token ? JSON.parse(token) : undefined;
 
@@ -101,15 +82,8 @@ export async function fetchUserIfTokenExists() {
 
     localStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
     axiosPrivate.defaults.headers.common["Authorization"] = "Bearer " + data.access;
-    // const { data: user } = await axios.get("/auth/users/me/", {
-    //   headers: {
-    //     Authorization: "Bearer " + data.access,
-    //   },
-    // });
-
-    // queryClient.setQueriesData(["/auth/users/me/"], user);
   } else {
-    throw new Error("No token found");
+    throw new Error("Token not found");
   }
 }
 
