@@ -104,7 +104,7 @@ export default function Header({ setRoutePath }: HeaderProps) {
                   <button
                     className="hover:bg-zinc-100"
                     onClick={() => {
-                      navigate("/dashboard");
+                      navigate("/account/dashboard");
                     }}
                   >
                     <IoSettingsOutline className="text-primary-700" />

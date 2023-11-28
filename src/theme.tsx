@@ -65,6 +65,26 @@ const theme = createTheme({
         },
       },
     },
+    MuiPagination: {
+      defaultProps: {
+        color: "primary",
+      },
+    },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#F3F3F3",
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          whiteSpace: "nowrap",
+          fontSize: "0.9rem",
+        },
+      },
+    },
   },
 });
 

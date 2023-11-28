@@ -25,6 +25,7 @@ import PrivacyPolicy from "./pages/privacy-policy";
 import GetCurrentUser from "./layouts/get-current-user";
 import Faq from "./pages/faq";
 import Organization from "./pages/organization";
+import { Dashboard, Dataset as AccountDataset, OrgDashboard, OrgDataset } from "./pages/account";
 
 async function loader() {
   try {
@@ -63,8 +64,11 @@ const router = createBrowserRouter(
       <Route loader={loader}>
         <Route element={<Protected />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<div>Dashboard</div>} />
-            <Route path="/datasets/new" element={<div>Create new dataset</div>} />
+            <Route path="/account/dashboard" element={<Dashboard />} />
+            <Route path="/account/datasets" element={<AccountDataset />} />
+            <Route path="/account/:slug/dashboard" element={<OrgDashboard />} />
+            <Route path="/account/:slug/datasets" element={<OrgDataset />} />
+            <Route path="/account/datasets/new" element={<div>Create new dataset</div>} />
           </Route>
         </Route>
       </Route>

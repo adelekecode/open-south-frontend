@@ -18,7 +18,7 @@ export default function NotFound() {
         <Button
           variant="outlined"
           onClick={() => {
-            navigate("/dashboard");
+            navigate("/account/dashboard");
           }}
         >
           Go to Dashboard
