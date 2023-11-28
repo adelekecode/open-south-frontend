@@ -8,7 +8,7 @@ export default {
         Marhey: ["Marhey", "sans-serif"],
       },
       maxWidth: {
-        maxAppWidth: "1666px",
+        maxAppWidth: "1290px",
       },
       boxShadow: {
         appNavBar: "0 1px 3px #00001229",
