@@ -11,7 +11,7 @@ export default function Dataset() {
   const [filterState, setFilterState] = useState<FilterState>("data-highlighted");
 
   return (
-    <section className="w-full max-w-maxAppWidth mx-auto p-8 py-12 flex flex-col gap-4">
+    <section className="w-full max-w-maxAppWidth mx-auto p-8 tablet:px-5 largeMobile:!px-4 py-12 flex flex-col gap-4">
       <header className="flex items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold">Datasets</h2>
         <div className="flex items-center gap-6">
@@ -59,7 +59,7 @@ export default function Dataset() {
           </Link>
         </div>
       </header>
-      <main className="grid grid-cols-3 gap-4">
+      <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
         {dataset.slice(0, 9).map((item, index) => {
           const { slug, title, organization, user } = item;
 
@@ -73,22 +73,23 @@ export default function Dataset() {
                   },
                 });
               }}
-              className="flex items-start gap-6 border-[1.5px] border-info-200 p-6 hover:bg-info-50"
+              className="grid grid-cols-[80px,1fr] tabletAndBelow:grid-cols-[70px,1fr] gap-4 border-[1.5px] border-info-100 p-4 hover:bg-info-50"
             >
-              <figure className="border border-zinc-300 w-[9.5rem] aspect-square bg-white">
+              <figure className="w-full border border-zinc-300 bg-white">
                 <img
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover"
                   src={organization ? organization.image : user ? user.image : ""}
                   alt="organization or profile photo"
+                  loading="lazy"
                 />
               </figure>
               <div className="flex flex-col gap-2">
-                <h1 className="text-base font-semibold text-start capitalize">{title}</h1>
-                <p className="flex items-center text-sm gap-1">
-                  by
+                <h1 className="text-sm font-semibold text-start capitalize">{title}</h1>
+                <p className="text-start text-xs">
+                  <span className="pr-1">by</span>
                   {organization ? (
                     <Link
-                      className="text-primary-600 capitalize hover:underline relative z-10"
+                      className="text-start text-primary-600 capitalize hover:underline relative z-10"
                       to={`/organization/${organization.slug}`}
                     >
                       {organization.name}

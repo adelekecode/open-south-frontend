@@ -17,7 +17,7 @@
     "user": {
       "firstName": "John",
       "lastName": "Doe",
-      "image": "john-doe.jpg"
+      "image": "https://static.data.gouv.fr/avatars/64/efa546af334b4cbf07e36f694db4fe-100.png"
     },
     "description": "Comprehensive dataset providing real-time and historical data on air quality in Beijing, China. The dataset includes information on air pollutants, sources, and the impact on public health.",
     "slug": "air-quality-monitoring-beijing-china",
@@ -29,7 +29,7 @@
     "user": {
       "firstName": "Alice",
       "lastName": "Smith",
-      "image": "alice-smith.jpg"
+      "image": "https://static.data.gouv.fr/avatars/09/1ba932cbfa48dc8c158981de6c700a-100.jpeg"
     },
     "description": "Dataset focusing on water scarcity issues in Cape Town, South Africa. The data includes information on water consumption, reservoir levels, and measures taken to address the water crisis.",
     "slug": "water-scarcity-cape-town-south-africa",
@@ -40,7 +40,7 @@
     "organization": {
       "name": "Urban Development Council",
       "slug": "urban-development-council",
-      "image": "urban-development-council.jpg"
+      "image": "https://static.data.gouv.fr/avatars/50/e53e0ad0f04cfea000f69ffec9393e-100.png"
     },
     "user": null,
     "description": "Dataset highlighting urbanization challenges in Mumbai, India. The data includes information on population growth, infrastructure development, and the impact on the city's environment.",
@@ -53,7 +53,7 @@
     "user": {
       "firstName": "Maria",
       "lastName": "Silva",
-      "image": "maria-silva.jpg"
+      "image": "https://static.data.gouv.fr/avatars/50/e53e0ad0f04cfea000f69ffec9393e-100.png"
     },
     "description": "Dataset focusing on educational disparities in Rio de Janeiro, Brazil. The data includes information on access to education, literacy rates, and challenges faced by marginalized communities.",
     "slug": "educational-disparities-rio-de-janeiro-brazil",
@@ -64,7 +64,7 @@
     "organization": {
       "name": "Green Energy Alliance",
       "slug": "green-energy-alliance",
-      "image": "green-energy-alliance.jpg"
+      "image": "https://static.data.gouv.fr/avatars/64/efa546af334b4cbf07e36f694db4fe-100.png"
     },
     "user": null,
     "description": "Dataset highlighting the usage of renewable energy in Berlin, Germany. The data includes information on renewable energy sources, energy consumption patterns, and the city's efforts to promote sustainability.",
@@ -76,7 +76,7 @@
     "organization": {
       "name": "Tokyo Transit Authority",
       "slug": "tokyo-transit-authority",
-      "image": "tokyo-transit-authority.jpg"
+      "image": "https://static.data.gouv.fr/avatars/09/1ba932cbfa48dc8c158981de6c700a-100.jpeg"
     },
     "user": null,
     "description": "Dataset focusing on the efficiency of public transportation in Tokyo, Japan. The data includes information on transit times, ridership patterns, and initiatives to improve public transportation services.",
@@ -89,7 +89,7 @@
     "user": {
       "firstName": "Linda",
       "lastName": "Omondi",
-      "image": "linda-omondi.jpg"
+      "image": "https://static.data.gouv.fr/avatars/cd/6d9c448556476ca76e8c4fcf0221a3-100.jpg"
     },
     "description": "Dataset highlighting wildlife conservation efforts in Nairobi, Kenya. The data includes information on endangered species, conservation projects, and the impact of human activities on local ecosystems.",
     "slug": "wildlife-conservation-nairobi-kenya",
@@ -100,7 +100,7 @@
     "organization": {
       "name": "Climate Action Coalition",
       "slug": "climate-action-coalition",
-      "image": "climate-action-coalition.jpg"
+      "image": "https://static.data.gouv.fr/avatars/cd/6d9c448556476ca76e8c4fcf0221a3-100.jpg"
     },
     "user": null,
     "description": "Dataset focusing on climate change adaptation strategies in Sydney, Australia. The data includes information on temperature trends, sea-level rise, and initiatives to mitigate the impact of climate change on the city.",
@@ -112,7 +112,7 @@
     "organization": {
       "name": "Affordable Housing Coalition",
       "slug": "affordable-housing-coalition",
-      "image": "affordable-housing-coalition.jpg"
+      "image": "https://static.data.gouv.fr/avatars/cd/6d9c448556476ca76e8c4fcf0221a3-100.jpg"
     },
     "user": null,
     "description": "Dataset highlighting housing affordability challenges in Vancouver, Canada. The data includes information on property prices, rental rates, and policies aimed at addressing housing affordability issues.",
@@ -124,7 +124,7 @@
     "organization": {
       "name": "Heritage Conservation Society",
       "slug": "heritage-conservation-society",
-      "image": "heritage-conservation-society.jpg"
+      "image": "https://static.data.gouv.fr/avatars/64/efa546af334b4cbf07e36f694db4fe-100.png"
     },
     "user": null,
     "description": "Dataset focusing on the preservation of cultural heritage in Rome, Italy. The data includes information on historical sites, conservation efforts, and the impact of tourism on cultural landmarks.",
