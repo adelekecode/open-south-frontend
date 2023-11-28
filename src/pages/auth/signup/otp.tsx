@@ -36,7 +36,7 @@ export default function Otp({ email }: OtpProps) {
     <div
       className={`w-full tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
     >
-      <header className="mb-3 flex items-center flex-col">
+      <header className="mb-3 flex items-center flex-col gap-2">
         <h1 className="text-2xl font-semibold text-center">Enter Code</h1>
         <p className="text-sm text-center">
           We sent a code to <span className="font-semibold">{email}</span>

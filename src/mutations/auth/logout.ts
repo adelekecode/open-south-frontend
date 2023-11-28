@@ -1,12 +1,15 @@
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { axiosPrivate } from "~/utils/api";
 import { notifyError } from "~/utils/toast";
 import { logout } from "~/utils/api/logout";
 
 export default function useLogout() {
   return useMutation(
-    async (token: string) => {
-      const { data: response } = await axios.post("/auth/logout/", token);
+    async (refresh_token: string) => {
+      const { data: response } = await axiosPrivate.post("/auth/logout/", {
+        refresh_token,
+      });
 
       return response;
     },

@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider, QueryFunctionContext } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { APP_MODE } from "~/app-constants";
 import { axiosPrivate } from "~/utils/api";
@@ -6,7 +6,7 @@ import { axiosPrivate } from "~/utils/api";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: async ({ queryKey }: QueryFunctionContext) => {
+      queryFn: async ({ queryKey }) => {
         const { data } = await axiosPrivate.get(queryKey.join("/"));
 
         return data;

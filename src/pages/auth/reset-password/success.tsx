@@ -9,7 +9,7 @@ export default function Success() {
     <div
       className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 pt-12 largeMobile:p-0`}
     >
-      <header className="flex items-center flex-col">
+      <header className="flex items-center flex-col mb-2">
         <h1 className="text-2xl font-semibold text-center largeMobile:text-xl">
           Password changed successfully
         </h1>

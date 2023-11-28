@@ -1,44 +1,32 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 
 type State = {
   signupState: {
     signuped: boolean;
     email: string;
   };
-  currentPageName: string;
+  displayLogoutModal: boolean;
 };
 
 type Action = {
   setSignupState: (state: State["signupState"]) => void;
-  setCurrentPageName: (state: State["currentPageName"]) => void;
+  setDisplayLogoutModal: (state: State["displayLogoutModal"]) => void;
 };
 
-const useAppStore = create<State & Action>()(
-  persist(
-    (set) => ({
-      signupState: {
-        signuped: false,
-        email: "",
-      },
-      setSignupState: (state) =>
-        set({
-          signupState: state,
-        }),
-      currentPageName: "",
-      setCurrentPageName: (val) =>
-        set({
-          currentPageName: val,
-        }),
+const useAppStore = create<State & Action>()((set) => ({
+  signupState: {
+    signuped: false,
+    email: "",
+  },
+  setSignupState: (state) =>
+    set({
+      signupState: state,
     }),
-    {
-      name: "app-store",
-      partialize: ({ currentPageName }) => {
-        currentPageName;
-      },
-      storage: createJSONStorage(() => localStorage),
-    }
-  )
-);
+  displayLogoutModal: false,
+  setDisplayLogoutModal: (bool) =>
+    set({
+      displayLogoutModal: bool,
+    }),
+}));
 
 export default useAppStore;
