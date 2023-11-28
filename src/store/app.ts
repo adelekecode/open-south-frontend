@@ -5,12 +5,12 @@ type State = {
     signuped: boolean;
     email: string;
   };
-  // currentPageName: string;
+  displayLogoutModal: boolean;
 };
 
 type Action = {
   setSignupState: (state: State["signupState"]) => void;
-  // setCurrentPageName: (state: State["currentPageName"]) => void;
+  setDisplayLogoutModal: (state: State["displayLogoutModal"]) => void;
 };
 
 const useAppStore = create<State & Action>()((set) => ({
@@ -22,11 +22,11 @@ const useAppStore = create<State & Action>()((set) => ({
     set({
       signupState: state,
     }),
-  // currentPageName: "",
-  // setCurrentPageName: (val) =>
-  //   set({
-  //     currentPageName: val,
-  //   }),
+  displayLogoutModal: false,
+  setDisplayLogoutModal: (bool) =>
+    set({
+      displayLogoutModal: bool,
+    }),
 }));
 
 export default useAppStore;

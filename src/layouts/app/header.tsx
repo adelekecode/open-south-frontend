@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import Logo from "~/components/logo";
 import SearchInput from "~/components/search-input";
 import CurrentUserAvatar from "~/components/current-user-avatar";
+import useAppStore from "~/store/app";
 
 type HeaderProps = {
   setRoutePath: (data: React.ReactNode[]) => void;
@@ -69,6 +70,8 @@ export default function Header({ setRoutePath }: HeaderProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  const { setDisplayLogoutModal } = useAppStore();
+
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
 
@@ -101,7 +104,7 @@ export default function Header({ setRoutePath }: HeaderProps) {
                   <button
                     className="hover:bg-zinc-100"
                     onClick={() => {
-                      navigate("/dashboard");
+                      navigate("/account/dashboard");
                     }}
                   >
                     <IoSettingsOutline className="text-primary-700" />
@@ -110,7 +113,7 @@ export default function Header({ setRoutePath }: HeaderProps) {
                   <button
                     className="hover:bg-zinc-100"
                     onClick={() => {
-                      // setDisplayLogoutModal(true)
+                      setDisplayLogoutModal(true);
                     }}
                   >
                     <IoLogOutOutline className="text-primary-700" />
