@@ -5,7 +5,7 @@ export default function About() {
     <>
       <Seo title="About" description="See what we are about" />
 
-      <main className="w-full mx-auto max-w-maxAppWidth p-6 px-10 tablet:px-6 largeMobile:!px-4 pt-0 pb-8 flex flex-col gap-6">
+      <main className="w-full mx-auto max-w-maxAppWidth p-6 px-10 tablet:px-5 largeMobile:!px-4 pt-0 pb-8 flex flex-col gap-6">
         <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold">
           About Open South
         </h1>
