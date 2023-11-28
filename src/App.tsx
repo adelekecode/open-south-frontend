@@ -24,6 +24,7 @@ import DatasetDetails from "./pages/dataset-details";
 import PrivacyPolicy from "./pages/privacy-policy";
 import GetCurrentUser from "./layouts/get-current-user";
 import Faq from "./pages/faq";
+import Organization from "./pages/organization";
 
 async function loader() {
   try {
@@ -75,6 +76,8 @@ const router = createBrowserRouter(
             <Route path="/datasets/:slug" element={<DatasetDetails />} />
             <Route path="/categories" element={<Category />} />
             <Route path="/categories/:slug" element={<CategoryDetails />} />
+            <Route path="/organizations" element={<Organization />} />
+            <Route path="/organizations/:slug" element={<CategoryDetails />} />
             <Route path="/about" element={<About />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
