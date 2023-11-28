@@ -23,6 +23,7 @@ import CategoryDetails from "./pages/category-details";
 import DatasetDetails from "./pages/dataset-details";
 import PrivacyPolicy from "./pages/privacy-policy";
 import GetCurrentUser from "./layouts/get-current-user";
+import Faq from "./pages/faq";
 
 async function loader() {
   try {
@@ -77,6 +78,7 @@ const router = createBrowserRouter(
             <Route path="/about" element={<About />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/faq" element={<Faq />} />
           </Route>
         </Route>
       </Route>
