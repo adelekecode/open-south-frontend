@@ -6,15 +6,17 @@ export default function Map() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1IjoiaGVuenlkIiwiYSI6ImNscGFoMjhhbzA4YjIya3FyZ2k1dHVvY3cifQ.BXdS3AGFaYxLJGU928a_5g";
+    mapboxgl.accessToken = import.meta.env.VITE_MAPBOXGL_ACCESS_TOKEN;
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current || "map",
       style: "mapbox://styles/mapbox/streets-v12",
       center: [-74.5, 40],
       zoom: 9,
+      scrollZoom: false,
     });
+
+    map.addControl(new mapboxgl.NavigationControl());
 
     return () => {
       map.remove();
@@ -23,7 +25,7 @@ export default function Map() {
 
   return (
     <div className="w-full">
-      <div ref={mapContainerRef} id="map" className="w-full" />
+      <div ref={mapContainerRef} id="map" className="w-full h-[70vh]" />
     </div>
   );
 }
