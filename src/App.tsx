@@ -19,12 +19,13 @@ import Dataset from "./pages/dataset";
 import About from "./pages/about";
 import Terms from "./pages/terms";
 import Category from "./pages/category";
+import Organization from "./pages/organization";
 import CategoryDetails from "./pages/category-details";
 import DatasetDetails from "./pages/dataset-details";
+import OrganizationDetails from "./pages/organization-details";
 import PrivacyPolicy from "./pages/privacy-policy";
 import GetCurrentUser from "./layouts/get-current-user";
 import Faq from "./pages/faq";
-import Organization from "./pages/organization";
 import { Dashboard, Dataset as AccountDataset, OrgDashboard, OrgDataset } from "./pages/account";
 
 async function loader() {
@@ -81,7 +82,7 @@ const router = createBrowserRouter(
             <Route path="/categories" element={<Category />} />
             <Route path="/categories/:slug" element={<CategoryDetails />} />
             <Route path="/organizations" element={<Organization />} />
-            <Route path="/organizations/:slug" element={<CategoryDetails />} />
+            <Route path="/organizations/:slug" element={<OrganizationDetails />} />
             <Route path="/about" element={<About />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
