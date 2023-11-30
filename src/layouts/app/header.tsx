@@ -16,7 +16,7 @@ type HeaderProps = {
 const routes = [
   {
     to: "/datasets",
-    name: "Data",
+    name: "Datasets",
   },
   {
     to: "/categories",
