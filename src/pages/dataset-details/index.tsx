@@ -21,7 +21,7 @@ export default function DatasetDetails() {
   return (
     <>
       <Seo title={data.title || ""} description={data.description || ""} />
-      <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 tablet:px-6 largeMobile:!px-4">
+      <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 pb-12 tablet:px-6 largeMobile:!px-4">
         <h1 className="text-2xl font-semibold">{data.title}</h1>
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">Description</h3>
@@ -83,7 +83,7 @@ export default function DatasetDetails() {
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
+        <div className="flex gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>License</h3>
             <p>{"Licence Ouverte / Open Licence version 2.0"}</p>
@@ -93,7 +93,7 @@ export default function DatasetDetails() {
             <p>{"5b7ffc618b4c4169d30727e0"}</p>
           </div>
         </div>
-        <div className="flex flex-col gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
+        <div className="flex gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Creation</h3>
             <p>{"August 24, 2018"}</p>
@@ -107,11 +107,11 @@ export default function DatasetDetails() {
             <p>{"December 1, 2023"}</p>
           </div>
         </div>
-        <div className="flex flex-col gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
+        <div className="flex flex-col gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Temporal coverage</h3>
-            <p>
-              From {"August 24, 2018"} to {"june 10, 2021"}
+            <p className="[&>span]:font-medium">
+              From <span>{"August 24, 2018"}</span> to <span>{"june 10, 2021"}</span>
             </p>
           </div>
         </div>
