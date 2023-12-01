@@ -20,7 +20,6 @@ import About from "./pages/about";
 import Terms from "./pages/terms";
 import Category from "./pages/category";
 import Organization from "./pages/organization";
-import CategoryDetails from "./pages/category-details";
 import DatasetDetails from "./pages/dataset-details";
 import OrganizationDetails from "./pages/organization-details";
 import PrivacyPolicy from "./pages/privacy-policy";
@@ -79,8 +78,8 @@ const router = createBrowserRouter(
             <Route path="/" element={<Home />} />
             <Route path="/datasets" element={<Dataset />} />
             <Route path="/datasets/:slug" element={<DatasetDetails />} />
+            <Route path="/datasets/:slug/resources/:id" element={<div>File Preview</div>} />
             <Route path="/categories" element={<Category />} />
-            <Route path="/categories/:slug" element={<CategoryDetails />} />
             <Route path="/organizations" element={<Organization />} />
             <Route path="/organizations/:slug" element={<OrganizationDetails />} />
             <Route path="/about" element={<About />} />

@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Environment from "~/assets/illustrations/categories/environment.png";
 import Seo from "~/components/seo";
 
 export default function Category() {
-  const navigate = useNavigate();
-
   return (
     <>
       <Seo
@@ -23,13 +21,12 @@ export default function Category() {
           </p>
         </header>
         <div className="grid grid-cols-4 gap-4">
-          <button
-            onClick={() => {
-              navigate(`./environment`, {
-                state: {
-                  name: "Environment",
-                },
-              });
+          <Link
+            to={{
+              pathname: "/datasets",
+              search: `?${new URLSearchParams({
+                category: "environment",
+              }).toString()}`,
             }}
             className="flex flex-col border-[1.5px] border-info-200 hover:bg-info-50"
           >
@@ -47,7 +44,7 @@ export default function Category() {
                 quality, water scarcity, wildlife conservation, and renewable energy.
               </p>
             </div>
-          </button>
+          </Link>
         </div>
       </main>
     </>

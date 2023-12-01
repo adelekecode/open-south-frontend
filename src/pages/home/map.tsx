@@ -25,7 +25,7 @@ export default function Map() {
 
   return (
     <div className="w-full">
-      <div ref={mapContainerRef} id="map" className="w-full h-[70vh]" />
+      <div ref={mapContainerRef} id="map" className="w-full h-[100vh]" />
     </div>
   );
 }
