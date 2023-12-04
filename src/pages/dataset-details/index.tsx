@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 
 export default function DatasetDetails() {
   const data: Dataset = {
-    title: "Public Transportation Efficiency in Tokyo, Japan",
+    title: "Public Transportation Efficiency in Mombasa, Japan",
     organization: {
-      name: "Tokyo Transit Authority",
-      slug: "tokyo-transit-authority",
+      name: "Mombasa Transit Authority",
+      slug: "mombasa-transit-authority",
       image: "https://static.data.gouv.fr/avatars/09/1ba932cbfa48dc8c158981de6c700a-100.jpeg",
     },
     user: null,
     description:
-      "Dataset focusing on the efficiency of public transportation in Tokyo, Japan. The data includes information on transit times, ridership patterns, and initiatives to improve public transportation services.",
-    slug: "public-transportation-efficiency-tokyo-japan",
+      "Dataset focusing on the efficiency of public transportation in Mombasa, Japan. The data includes information on transit times, ridership patterns, and initiatives to improve public transportation services.",
+    slug: "public-transportation-efficiency-mombasa-japan",
     updatedAt: "2023-11-22T16:45:00+0100",
   };
 
@@ -110,7 +110,7 @@ export default function DatasetDetails() {
         <div className="flex flex-col gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Temporal coverage</h3>
-            <p className="[&>span]:font-medium">
+            <p className="[&>span]:font-medium [&>span]:capitalize">
               From <span>{"August 24, 2018"}</span> to <span>{"june 10, 2021"}</span>
             </p>
           </div>

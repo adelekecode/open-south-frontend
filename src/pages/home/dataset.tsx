@@ -1,55 +1,15 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
 import dataset from "~/utils/data/dataset.json";
 
-type FilterState = "data-highlighted" | "reference-data" | "latest-data";
-
 export default function Dataset() {
   const navigate = useNavigate();
-
-  const [filterState, setFilterState] = useState<FilterState>("data-highlighted");
 
   return (
     <section className="w-full max-w-maxAppWidth mx-auto p-8 tablet:px-5 largeMobile:!px-4 py-12 flex flex-col gap-4">
       <header className="flex items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold">Datasets</h2>
         <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2 [&>button]:px-4 [&>button]:py-2 [&>button]:rounded-full [&>button]:bg-primary-100 [&>button]:text-sm [&>button]:text-primary-700">
-            <button
-              onClick={() => {
-                const state = "data-highlighted";
-
-                if (filterState !== state) {
-                  setFilterState(state);
-                }
-              }}
-            >
-              Data highlighted
-            </button>
-            <button
-              onClick={() => {
-                const state = "latest-data";
-
-                if (filterState !== state) {
-                  setFilterState(state);
-                }
-              }}
-            >
-              Latest data
-            </button>
-            {/* <button
-              onClick={() => {
-                const state = "reference-data";
-
-                if (filterState !== state) {
-                  setFilterState(state);
-                }
-              }}
-            >
-              Reference data
-            </button> */}
-          </div>
           <Link
             to={"/datasets"}
             className="flex items-center gap-4 border-b-[1.5px] border-primary-600 hover:border-primary-700"

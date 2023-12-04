@@ -72,15 +72,15 @@
     "updatedAt": "2023-11-24T16:00:00+0100"
   },
   {
-    "title": "Public Transportation Efficiency in Tokyo, Japan",
+    "title": "Public Transportation Efficiency in Mombasa, Japan",
     "organization": {
-      "name": "Tokyo Transit Authority",
-      "slug": "tokyo-transit-authority",
+      "name": "Mombasa Transit Authority",
+      "slug": "mombasa-transit-authority",
       "image": "https://static.data.gouv.fr/avatars/09/1ba932cbfa48dc8c158981de6c700a-100.jpeg"
     },
     "user": null,
-    "description": "Dataset focusing on the efficiency of public transportation in Tokyo, Japan. The data includes information on transit times, ridership patterns, and initiatives to improve public transportation services.",
-    "slug": "public-transportation-efficiency-tokyo-japan",
+    "description": "Dataset focusing on the efficiency of public transportation in Mombasa, Japan. The data includes information on transit times, ridership patterns, and initiatives to improve public transportation services.",
+    "slug": "public-transportation-efficiency-mombasa-japan",
     "updatedAt": "2023-11-22T16:45:00+0100"
   },
   {

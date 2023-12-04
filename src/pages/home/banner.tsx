@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoChevronBack } from "react-icons/io5";
 import Button from "~/components/button";
 
@@ -15,11 +15,9 @@ export default function Banner() {
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <IoChevronBack className="text-white rotate-180 text-sm" />
-                <Link to={""}>
-                  <p className="text-white font-medium text-base mediumMobile:text-sm">
-                    Create or find your organization
-                  </p>
-                </Link>
+                <p className="text-white font-medium text-base mediumMobile:text-sm">
+                  Create or find your dataset
+                </p>
               </div>
             </div>
           </div>
