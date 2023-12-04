@@ -4,8 +4,10 @@ import SideBar from "./side-bar";
 
 export default function DashboardLayout() {
   return (
-    <div className="flex min-h-screen">
-      <SideBar />
+    <div className="min-h-screen flex">
+      <div className="w-[250px]">
+        <SideBar />
+      </div>
       <main className="w-full min-h-screen flex flex-col">
         <Header />
         <Outlet />

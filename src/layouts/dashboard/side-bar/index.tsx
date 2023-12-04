@@ -1,12 +1,15 @@
-import { IoLogOutOutline } from "react-icons/io5";
-import { Button } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
+import { IoLogOutOutline } from "react-icons/io5";
 import { IoGridOutline } from "react-icons/io5";
-import { logout } from "~/utils/api/logout";
+import { GoDatabase } from "react-icons/go";
 import Logo from "~/components/logo";
+import Button from "~/components/button";
+import useAppStore from "~/store/app";
 import OrgDropdown from "./org-dropdown";
 
 export default function SideBar() {
+  const { setDisplayLogoutModal } = useAppStore();
+
   function navLinkClassNameHandler({
     isActive,
   }: {
@@ -23,14 +26,14 @@ export default function SideBar() {
       <Link to="/" className="flex justify-center items-center w-full py-8">
         <Logo />
       </Link>
-      <div className="h-[100%] overflow-auto flex flex-col gap-8">
+      <div className="h-[100%] overflow-auto flex flex-col gap-8 justify-between pb-10">
         <div>
           <NavLink to={"/account/dashboard"} className={navLinkClassNameHandler}>
             <IoGridOutline />
             <p className="text-sm">Dashboard</p>
           </NavLink>
           <NavLink to={"/account/datasets"} className={navLinkClassNameHandler}>
-            <IoGridOutline />
+            <GoDatabase />
             <p className="text-sm">Datasets</p>
           </NavLink>
           <div className="py-4">
@@ -47,9 +50,17 @@ export default function SideBar() {
             </div>
           </div>
         </div>
-        <Button startIcon={<IoLogOutOutline />} onClick={logout}>
-          Log out
-        </Button>
+        <div className="flex items-center justify-center">
+          <Button
+            className="!w-fit"
+            startIcon={<IoLogOutOutline />}
+            onClick={() => {
+              setDisplayLogoutModal(true);
+            }}
+          >
+            Log out
+          </Button>
+        </div>
       </div>
     </aside>
   );

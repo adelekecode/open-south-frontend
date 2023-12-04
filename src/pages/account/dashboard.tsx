@@ -57,9 +57,11 @@ export default function Dashboard() {
               <TableHead>
                 <TableRow>
                   <TableCell>Title</TableCell>
+                  <TableCell align="left">Created by</TableCell>
                   <TableCell align="left">Created at</TableCell>
                   <TableCell align="left">Updated at</TableCell>
-                  <TableCell align="left">Created by</TableCell>
+                  <TableCell align="left">Views</TableCell>
+                  <TableCell align="left">Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -75,10 +77,6 @@ export default function Dashboard() {
                         {title}
                       </TableCell>
                       <TableCell align="left">
-                        {moment(Date.now()).format("Do MMM, YYYY")}
-                      </TableCell>
-                      <TableCell align="left">{moment(updatedAt).fromNow()}</TableCell>
-                      <TableCell align="left">
                         {organization ? (
                           <Link
                             className="text-primary-600 capitalize hover:underline relative z-10"
@@ -90,6 +88,18 @@ export default function Dashboard() {
                           <span className="capitalize">{`${user.firstName} ${user.lastName}`}</span>
                         ) : (
                           "-------"
+                        )}
+                      </TableCell>
+                      <TableCell align="left">
+                        {moment(Date.now()).format("Do MMM, YYYY")}
+                      </TableCell>
+                      <TableCell align="left">{moment(updatedAt).fromNow()}</TableCell>
+                      <TableCell align="left">{Math.floor(Math.random() * 1000) + 1}</TableCell>
+                      <TableCell align="left">
+                        {(index + 1) % 2 === 0 ? (
+                          <p className="text-orange-500 font-medium">Pending</p>
+                        ) : (
+                          <p className="text-green-500 font-medium">Published</p>
                         )}
                       </TableCell>
                     </TableRow>
