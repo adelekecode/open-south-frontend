@@ -19,17 +19,20 @@ export default function SearchInput({
   ...props
 }: SearchInputProps) {
   return (
-    <div className={`flex rounded-t-[4px] overflow-hidden ${wrapperClassName}`}>
+    <div className={twMerge(`flex rounded-t-[4px] overflow-hidden`, wrapperClassName)}>
       <OutlinedInput
         className={twMerge(``, className)}
         sx={{
+          "& input": {
+            borderRadius: "4px 0 0 0",
+          },
           "& .MuiOutlinedInput-notchedOutline": {
             borderTop: "0px",
             borderRight: "0px",
             borderLeft: "0px",
             borderWidth: "2px",
             borderColor: "#0e82bb !important",
-            borderRadius: "4px 0 0 0",
+            borderRadius: "0 0 0 0",
           },
           "& .MuiOutlinedInput-input": {
             height: "-webkit-fill-available",
