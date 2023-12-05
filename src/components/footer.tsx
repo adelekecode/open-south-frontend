@@ -93,21 +93,21 @@ export default function Footer() {
           {/* <Link to="/accessibility" className="hover:underline">
             Accessibility: partially compliant
           </Link> */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <p className="text-xs">This platform is licensed under</p>
             <a
               href="http://creativecommons.org/licenses/by-nd/4.0/?ref=chooser-v1"
               target="_blank"
               rel="license noopener noreferrer"
-              className="flex items-center gap-4 text-xs [&_img]:w-4"
+              className="flex items-center gap-2 text-xs hover:underline"
             >
               CC BY-ND 4.0
-              <div className="flex items-center gap-2">
-                <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" />
-                <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" />
-                <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" />
-              </div>
             </a>
+            <div className="flex items-center gap-2 [&_img]:w-4">
+              <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" />
+              <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" />
+              <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" />
+            </div>
           </div>
         </div>
       </div>
