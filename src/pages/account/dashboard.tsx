@@ -82,7 +82,7 @@ export default function Dashboard() {
                         {organization ? (
                           <Link
                             className="text-primary-600 capitalize hover:underline relative z-10"
-                            to={`/organization/${organization.slug}`}
+                            to={`/organizations/${organization.slug}`}
                           >
                             {organization.name}
                           </Link>

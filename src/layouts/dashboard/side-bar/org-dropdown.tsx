@@ -20,7 +20,7 @@ export default function OrgDropdown({ name, slug }: OrgDropdownProps) {
     isPending: boolean;
   }): string {
     return `flex items-center gap-4 p-4 py-3 transition-all border-primary-800 ${
-      isActive && "border-l-[3px] bg-primary-50"
+      isActive && "border-l-[3px] bg-primary-100"
     }`;
   }
 
@@ -28,7 +28,7 @@ export default function OrgDropdown({ name, slug }: OrgDropdownProps) {
     <div className="w-full">
       <button
         className={`w-full flex items-center transition-all p-4 justify-between gap-4 ${
-          clicked && "bg-info-100"
+          clicked && "bg-info-200"
         }`}
         onClick={() => {
           setClicked((prev) => !prev);
