@@ -52,6 +52,24 @@ export default function Dataset() {
       },
       type: "string",
     },
+    {
+      field: "views",
+      headerName: "Views",
+      width: 100,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params: GridRenderCellParams<any, typeof data>) => {
+        return (params.id as number) % 2 === 0 ? (
+          <p className="text-orange-500 font-medium">Pending</p>
+        ) : (
+          <p className="text-green-500 font-medium">Published</p>
+        );
+      },
+      sortable: false,
+    },
   ];
 
   return (
@@ -77,6 +95,7 @@ export default function Dataset() {
                   updatedAt,
                   organization,
                   user,
+                  views: Math.floor(Math.random() * 1000) + 1,
                 };
               })}
               columns={columns}

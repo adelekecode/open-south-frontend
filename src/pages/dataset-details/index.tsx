@@ -110,7 +110,7 @@ export default function DatasetDetails() {
         <div className="flex flex-col gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Temporal coverage</h3>
-            <p className="[&>span]:font-medium">
+            <p className="[&>span]:font-medium [&>span]:capitalize">
               From <span>{"August 24, 2018"}</span> to <span>{"june 10, 2021"}</span>
             </p>
           </div>
