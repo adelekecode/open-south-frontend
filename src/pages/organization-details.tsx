@@ -8,8 +8,8 @@ export default function OrganizationDetails() {
   const navigate = useNavigate();
 
   const data = {
-    id: state.id || Math.random(),
-    title: state.name || "National Institute of Statistics and Economic Studies (INSEE)",
+    id: state?.id || Math.random(),
+    title: state?.name || "National Institute of Statistics and Economic Studies (INSEE)",
     slug: "national-institute-of-statistics-and-economic-studies-insee",
     description:
       "The National Institute of Statistics and Economic Studies (Insee) collects, produces, analyzes and disseminates information on the French economy and society. This information is of interest to public authorities, administrations, businesses, researchers, the media, teachers, students and individuals. They allow them to enrich their knowledge, carry out studies, make forecasts and make decisions. To satisfy its users, INSEE listens to their needs and directs its work accordingly while pursuing one main objective: to shed light on the economic and social debate.",

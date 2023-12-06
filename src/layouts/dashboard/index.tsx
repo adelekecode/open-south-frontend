@@ -4,11 +4,9 @@ import SideBar from "./side-bar";
 
 export default function DashboardLayout() {
   return (
-    <div className="min-h-screen flex">
-      <div className="w-[250px]">
-        <SideBar />
-      </div>
-      <main className="w-full min-h-screen flex flex-col">
+    <div className="flex min-h-screen w-full">
+      <SideBar />
+      <main className="min-h-screen flex flex-col w-[calc(100%-250px)] tabletAndBelow:w-full">
         <Header />
         <Outlet />
       </main>
