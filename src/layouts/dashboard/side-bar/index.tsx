@@ -23,7 +23,7 @@ export default function SideBar() {
 
   return (
     <div>
-      <aside className="tabletAndBelow:!hidden bg-info-50 border-r border-info-300 min-h-screen flex flex-col w-[250px] sticky top-0 left-0 overflow-y-auto h-screen">
+      <aside className="tabletAndBelow:!hidden bg-info-50 border-r border-info-300 min-h-screen flex flex-col w-[230px] sticky top-0 left-0 overflow-y-auto h-screen">
         <Link to="/" className="flex justify-center items-center w-full py-8">
           <Logo />
         </Link>

@@ -6,7 +6,7 @@ export default function DashboardLayout() {
   return (
     <div className="flex min-h-screen w-full">
       <SideBar />
-      <main className="min-h-screen flex flex-col w-[calc(100%-250px)] tabletAndBelow:w-full">
+      <main className="min-h-screen flex flex-col w-[calc(100%-230px)] tabletAndBelow:w-full">
         <Header />
         <Outlet />
       </main>

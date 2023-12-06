@@ -3,12 +3,23 @@ import NoData from "~/assets/illustrations/no-data.png";
 
 type DataGridProps = MuiDataGridProps;
 
-export default function DataGrid({ sx, initialState, slots, ...props }: DataGridProps) {
+export default function DataGrid({
+  sx,
+  initialState,
+  pageSizeOptions = [5, 10, 100],
+  disableColumnMenu = true,
+  disableRowSelectionOnClick = true,
+  slots,
+  ...props
+}: DataGridProps) {
   return (
     <MuiDataGrid
       {...props}
       sx={{
         overflowX: "auto",
+        "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+          outline: "none !important",
+        },
         ...sx,
       }}
       slots={{
@@ -31,9 +42,9 @@ export default function DataGrid({ sx, initialState, slots, ...props }: DataGrid
         pagination: { paginationModel: { pageSize: 10 } },
         ...initialState,
       }}
-      pageSizeOptions={[5, 10, 100]}
-      disableColumnMenu
-      disableRowSelectionOnClick
+      pageSizeOptions={pageSizeOptions}
+      disableColumnMenu={disableColumnMenu}
+      disableRowSelectionOnClick={disableRowSelectionOnClick}
     />
   );
 }

@@ -51,6 +51,9 @@ export default function Dataset() {
                     <Link
                       className="text-start text-primary-600 capitalize hover:underline relative z-10"
                       to={`/organization/${organization.slug}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
                     >
                       {organization.name}
                     </Link>

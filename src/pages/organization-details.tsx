@@ -84,7 +84,10 @@ export default function OrganizationDetails() {
                         {organization ? (
                           <Link
                             className="text-start text-primary-600 capitalize hover:underline relative z-10"
-                            to={`/organization/${organization.slug}`}
+                            to={`/organizations/${organization.slug}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
                           >
                             {organization.name}
                           </Link>
