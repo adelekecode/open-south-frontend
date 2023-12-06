@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 
 export default function DatasetDetails() {
   const data: Dataset = {
-    title: "Public Transportation Efficiency in Tokyo, Japan",
+    title: "Public Transportation Efficiency in Kenya",
     organization: {
-      name: "Tokyo Transit Authority",
-      slug: "tokyo-transit-authority",
+      name: "Kenya Transit Authority",
+      slug: "kenya-transit-authority",
       image: "https://static.data.gouv.fr/avatars/09/1ba932cbfa48dc8c158981de6c700a-100.jpeg",
     },
     user: null,
     description:
-      "Dataset focusing on the efficiency of public transportation in Tokyo, Japan. The data includes information on transit times, ridership patterns, and initiatives to improve public transportation services.",
-    slug: "public-transportation-efficiency-tokyo-japan",
+      "Dataset focusing on the efficiency of public transportation in Kenya. The data includes information on transit times, ridership patterns, and initiatives to improve public transportation services.",
+    slug: "public-transportation-efficiency-kenya",
     updatedAt: "2023-11-22T16:45:00+0100",
   };
 
