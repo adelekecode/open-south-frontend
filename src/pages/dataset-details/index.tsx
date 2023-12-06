@@ -53,7 +53,10 @@ export default function DatasetDetails() {
             {data.organization ? (
               <Link
                 className="w-fit text-start text-primary-600 capitalize hover:underline relative z-10"
-                to={`/organization/${data.organization.slug}`}
+                to={`/organizations/${data.organization.slug}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
               >
                 {data.organization.name}
               </Link>
@@ -111,7 +114,7 @@ export default function DatasetDetails() {
           <div>
             <h3>Temporal coverage</h3>
             <p className="[&>span]:font-medium [&>span]:capitalize">
-              From <span>{"August 24, 2018"}</span> to <span>{"june 10, 2021"}</span>
+              From <span>{"August 24, 2018"}</span> to <span>{"June 10, 2021"}</span>
             </p>
           </div>
         </div>

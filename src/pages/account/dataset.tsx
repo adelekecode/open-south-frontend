@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { OutlinedInput } from "@mui/material";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
 import moment from "moment";
 import data from "~/utils/data/dataset.json";
 import DataGrid from "~/components/data-grid";
 
 export default function Dataset() {
+  const navigate = useNavigate();
+
   const columns: GridColDef[] = [
     {
       field: "title",
@@ -41,6 +43,9 @@ export default function Dataset() {
           <Link
             className="text-primary-600 capitalize hover:underline relative z-10"
             to={`/organizations/${organization.slug}`}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
           >
             {organization.name}
           </Link>
@@ -98,6 +103,10 @@ export default function Dataset() {
                   views: Math.floor(Math.random() * 1000) + 1,
                 };
               })}
+              onRowClick={(params: GridRowParams<(typeof data)[0]>) => {
+                navigate(`./${params.id}`);
+              }}
+              getRowClassName={() => `cursor-pointer`}
               columns={columns}
             />
           </div>

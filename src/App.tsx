@@ -25,7 +25,14 @@ import OrganizationDetails from "./pages/organization-details";
 import PrivacyPolicy from "./pages/privacy-policy";
 import GetCurrentUser from "./layouts/get-current-user";
 import Faq from "./pages/faq";
-import { Dashboard, Dataset as AccountDataset, OrgDashboard, OrgDataset } from "./pages/account";
+import {
+  Dashboard,
+  Dataset as AccountDataset,
+  DatasetDetails as AccountDatasetDetails,
+  OrgDashboard,
+  OrgDataset,
+} from "./pages/account";
+import GetDataset from "./layouts/get-dataset";
 
 async function loader() {
   try {
@@ -66,6 +73,9 @@ const router = createBrowserRouter(
           <Route element={<DashboardLayout />}>
             <Route path="/account/dashboard" element={<Dashboard />} />
             <Route path="/account/datasets" element={<AccountDataset />} />
+            <Route element={<GetDataset />}>
+              <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
+            </Route>
             <Route path="/account/:slug/dashboard" element={<OrgDashboard />} />
             <Route path="/account/:slug/datasets" element={<OrgDataset />} />
             <Route path="/account/datasets/new" element={<div>Create new dataset</div>} />
