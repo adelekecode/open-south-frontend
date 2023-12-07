@@ -26,7 +26,7 @@ export default function Banner() {
           <Button
             variant="outlined"
             color="inherit"
-            className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5"
+            className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5 !text-white"
             onClick={() => {
               navigate("/datasets/new");
             }}
@@ -37,7 +37,7 @@ export default function Banner() {
           <Button
             variant="outlined"
             color="inherit"
-            className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5"
+            className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5 !text-white"
             onClick={() => {
               navigate("/datasets");
             }}
