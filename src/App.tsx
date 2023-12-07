@@ -34,6 +34,7 @@ import {
 } from "./pages/account";
 import GetDataset from "./layouts/get-dataset";
 import News from "./pages/news";
+import NewsDetails from "./pages/news-details";
 
 async function loader() {
   try {
@@ -95,6 +96,7 @@ const router = createBrowserRouter(
             <Route path="/organizations/:slug" element={<OrganizationDetails />} />
             <Route path="/about" element={<About />} />
             <Route path="/news" element={<News />} />
+            <Route path="/news/:slug" element={<NewsDetails />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/faq" element={<Faq />} />

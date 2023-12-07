@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { Link } from "react-router-dom";
 import Seo from "~/components/seo";
 import data from "~/utils/data/news.json";
 
 export default function News() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Seo title="News" description="See what we are about" />
@@ -15,7 +17,17 @@ export default function News() {
             const { title, slug, banner, description, publishedAt } = item;
 
             return (
-              <Link key={index + 1} to={`/news/${slug}`} className="flex flex-col hover:bg-info-50">
+              <button
+                key={index + 1}
+                onClick={() => {
+                  navigate(`./${slug}`, {
+                    state: {
+                      name: title,
+                    },
+                  });
+                }}
+                className="flex flex-col hover:bg-info-50"
+              >
                 <figure className="bg-primary-50 flex items-center justify-center w-full h-[210px]">
                   <img
                     src={banner}
@@ -34,7 +46,7 @@ export default function News() {
                       : description}
                   </p>
                 </div>
-              </Link>
+              </button>
             );
           })}
         </div>
