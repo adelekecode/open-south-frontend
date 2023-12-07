@@ -33,6 +33,7 @@ import {
   OrgDataset,
 } from "./pages/account";
 import GetDataset from "./layouts/get-dataset";
+import News from "./pages/news";
 
 async function loader() {
   try {
@@ -93,6 +94,7 @@ const router = createBrowserRouter(
             <Route path="/organizations" element={<Organization />} />
             <Route path="/organizations/:slug" element={<OrganizationDetails />} />
             <Route path="/about" element={<About />} />
+            <Route path="/news" element={<News />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/faq" element={<Faq />} />
