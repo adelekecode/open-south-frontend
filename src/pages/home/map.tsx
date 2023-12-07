@@ -10,9 +10,9 @@ export default function Map() {
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current || "map",
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: [-74.5, 40],
-      zoom: 9,
+      style: "mapbox://styles/mapbox/light-v11",
+      center: [-95, 40],
+      zoom: 3,
       scrollZoom: false,
     });
 
