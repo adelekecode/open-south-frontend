@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import Seo from "~/components/seo";
-import data from "~/utils/data/news.json";
+import data from "~/utils/data/news";
 
 export default function News() {
   const navigate = useNavigate();
