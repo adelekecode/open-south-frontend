@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuItem } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
@@ -13,6 +13,10 @@ export default function Organization() {
   const navigate = useNavigate();
 
   const [sortBy, setSortBy] = useState<SortByValue>("relevance");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

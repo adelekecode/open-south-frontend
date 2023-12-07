@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
 import Seo from "~/components/seo";
@@ -15,6 +16,10 @@ export default function OrganizationDetails() {
       "The National Institute of Statistics and Economic Studies (Insee) collects, produces, analyzes and disseminates information on the French economy and society. This information is of interest to public authorities, administrations, businesses, researchers, the media, teachers, students and individuals. They allow them to enrich their knowledge, carry out studies, make forecasts and make decisions. To satisfy its users, INSEE listens to their needs and directs its work accordingly while pursuing one main objective: to shed light on the economic and social debate.",
     image: "https://static.data.gouv.fr/avatars/db/fbfd745ae543f6856ed59e3d44eb71-100.jpg",
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
