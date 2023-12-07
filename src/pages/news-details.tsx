@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import Seo from "~/components/seo";
-import newsData from "~/utils/data/news.json";
+import newsData from "~/utils/data/news";
 import NotFound from "./404";
 
 export default function NewsDetails() {
