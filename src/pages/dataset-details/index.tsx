@@ -1,7 +1,8 @@
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Pagination } from "@mui/material";
 import Seo from "~/components/seo";
 import File from "./file";
-import { Link } from "react-router-dom";
 
 export default function DatasetDetails() {
   const data: Dataset = {
@@ -17,6 +18,10 @@ export default function DatasetDetails() {
     slug: "public-transportation-efficiency-kenya",
     updatedAt: "2023-11-22T16:45:00+0100",
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

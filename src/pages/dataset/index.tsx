@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuItem, Pagination } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import SearchInput from "~/components/search-input";
@@ -12,6 +12,10 @@ type SortByValue = "relevance" | "creation-date" | "last-update";
 
 export default function Dataset() {
   const [sortBy, setSortBy] = useState<SortByValue>("relevance");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
