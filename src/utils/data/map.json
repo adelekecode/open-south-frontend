@@ -1,0 +1,365 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Canada"
+      },
+      "geometry": {
+        "coordinates": [-105.750595856519, 55.5859012851966],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Canada"
+      },
+      "geometry": {
+        "coordinates": [-105.750595856519, 55.5859012851966],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Canada"
+      },
+      "geometry": {
+        "coordinates": [-105.750595856519, 55.5859012851966],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Canada"
+      },
+      "geometry": {
+        "coordinates": [-105.750595856519, 55.5859012851966],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Canada"
+      },
+      "geometry": {
+        "coordinates": [-105.750595856519, 55.5859012851966],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Canada"
+      },
+      "geometry": {
+        "coordinates": [-105.750595856519, 55.5859012851966],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Canada"
+      },
+      "geometry": {
+        "coordinates": [-105.750595856519, 55.5859012851966],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Canada"
+      },
+      "geometry": {
+        "coordinates": [-105.750595856519, 55.5859012851966],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Nigeria"
+      },
+      "geometry": {
+        "coordinates": [8.10530640960786, 9.59395988695573],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Nigeria"
+      },
+      "geometry": {
+        "coordinates": [8.10530640960786, 9.59395988695573],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Nigeria"
+      },
+      "geometry": {
+        "coordinates": [8.10530640960786, 9.59395988695573],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Nigeria"
+      },
+      "geometry": {
+        "coordinates": [8.10530640960786, 9.59395988695573],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Nigeria"
+      },
+      "geometry": {
+        "coordinates": [8.10530640960786, 9.59395988695573],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Kenya"
+      },
+      "geometry": {
+        "coordinates": [37.8578818658854, 0.529862476788944],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Kenya"
+      },
+      "geometry": {
+        "coordinates": [37.8578818658854, 0.529862476788944],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Kenya"
+      },
+      "geometry": {
+        "coordinates": [37.8578818658854, 0.529862476788944],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Kenya"
+      },
+      "geometry": {
+        "coordinates": [37.8578818658854, 0.529862476788944],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Kenya"
+      },
+      "geometry": {
+        "coordinates": [37.8578818658854, 0.529862476788944],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "country": "Brazil"
+      },
+      "geometry": {
+        "coordinates": [-51.6197890205486, -9.58890301712257],
+        "type": "Point"
+      }
+    }
+  ]
+}
