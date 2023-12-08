@@ -78,7 +78,7 @@ export default function Organization() {
                 className="flex flex-col gap-6 border-[1.5px] border-info-200 border-b-2 border-b-primary-700 p-4 hover:bg-info-50"
               >
                 <div className="w-full grid grid-cols-[70px,1fr] gap-4">
-                  <figure className="border border-zinc-300 aspect-square bg-white">
+                  <figure className="border w-full aspect-square border-zinc-300 bg-white">
                     <img
                       className="w-full h-full object-contain"
                       src={image || ""}
