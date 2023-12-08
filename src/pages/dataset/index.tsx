@@ -6,7 +6,11 @@ import Seo from "~/components/seo";
 import SelectInput from "~/components/select-input";
 import Card from "./card";
 import data from "~/utils/data/dataset.json";
-// import AutocompleteInput from "~/components/auto-complete-input";
+import AutocompleteInput from "~/components/auto-complete-input";
+import organizationData from "~/utils/data/organization.json";
+import tagData from "~/utils/data/tag.json";
+import formatData from "~/utils/data/format.json";
+import spatialCoverageData from "~/utils/data/spatial-coverage.json";
 
 type SortByValue = "relevance" | "creation-date" | "last-update";
 
@@ -39,37 +43,39 @@ export default function Dataset() {
             }
           />
         </div>
-        <div className="w-full grid grid-cols-[0.6fr,2fr] py-6 gap-8 tablet:grid-cols-1">
-          <div className="w-full flex flex-col gap-3 pr-6 border-r-[1.5px] tablet:border-none border-zinc-300 [&>main]:flex [&>main]:flex-col [&>main]:gap-4 [&>main>div]:flex [&>main>div]:flex-col [&>main>div]:w-full">
+        <div className="w-full grid grid-cols-[0.8fr,2fr] py-6 gap-6 tablet:grid-cols-1">
+          <div className="w-full flex flex-col gap-3 pr-6 border-r-[1.5px] tablet:border-none border-zinc-300">
             <header>
               <h4 className="font-semibold text-base">Filter</h4>
             </header>
-            <main>
+            <main className="flex flex-col gap-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-1">
               <div>
                 <label htmlFor="organization">Organizations</label>
-                {/* <AutocompleteInput
-            id="organization"
-                  options={[
-                    { label: "The Shawshank Redemption", year: 1994 },
-                    { label: "The Godfather", year: 1972 },
-                    { label: "The Godfather: Part II", year: 1974 },
-                    { label: "The Dark Knight", year: 2008 },
-                    { label: "12 Angry Men", year: 1957 },
-                  ]}
-                /> */}
+                <AutocompleteInput
+                  id="organization"
+                  options={organizationData.map((item) => ({
+                    label: item.name,
+                    slug: item.slug,
+                    id: item.id,
+                  }))}
+                  placeholder="All Organization"
+                />
               </div>
               <div>
-                <label htmlFor="keyword">Keywords</label>
-                {/* <AutocompleteInput
-            id="keyword"
-                  options={[
-                    { label: "The Shawshank Redemption", year: 1994 },
-                    { label: "The Godfather", year: 1972 },
-                    { label: "The Godfather: Part II", year: 1974 },
-                    { label: "The Dark Knight", year: 2008 },
-                    { label: "12 Angry Men", year: 1957 },
-                  ]}
-                /> */}
+                <label htmlFor="tag">Tags</label>
+                <AutocompleteInput id="tag" options={tagData} />
+              </div>
+              <div>
+                <label htmlFor="format">Formats</label>
+                <AutocompleteInput id="format" options={formatData} />
+              </div>
+              <div>
+                <label htmlFor="licenses">Licenses</label>
+                <AutocompleteInput id="license" options={tagData} />
+              </div>
+              <div>
+                <label htmlFor="spatial-coverage">Spatial coverage</label>
+                <AutocompleteInput id="spatial-coverage" options={spatialCoverageData} />
               </div>
             </main>
           </div>
