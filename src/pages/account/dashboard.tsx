@@ -1,21 +1,85 @@
-import { Link } from "react-router-dom";
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
 import { FaAngleDown } from "react-icons/fa6";
 import moment from "moment";
 import Button from "~/components/button";
+import DataGrid from "~/components/data-grid";
 import data from "~/utils/data/dataset.json";
 import DatesetIllustration from "~/assets/illustrations/dataset.png";
 import OrganizationIllustration from "~/assets/illustrations/organization.png";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+
+  const columns: GridColDef[] = [
+    {
+      field: "title",
+      headerName: "Title",
+      minWidth: 300,
+    },
+    { field: "createdAt", headerName: "Created at", width: 150 },
+    {
+      field: "updatedAt",
+      headerName: "Updated at",
+      width: 150,
+      valueFormatter: (params) => {
+        return moment(params.value).fromNow();
+      },
+      sortComparator: (v1, v2) => {
+        return new Date(v1).getTime() - new Date(v2).getTime();
+      },
+      type: "string",
+    },
+    {
+      field: "createdBy",
+      headerName: "Created by",
+      width: 300,
+      valueGetter: (params) => {
+        const { organization, user } = params.row;
+
+        return organization ? organization.name : `${user.firstName} ${user.lastName}`;
+      },
+      renderCell: (params: GridRenderCellParams<any, typeof data>) => {
+        const { organization, user } = params.row;
+
+        return organization ? (
+          <Link
+            className="text-primary-600 capitalize hover:underline relative z-10"
+            to={`/organizations/${organization.slug}`}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            {organization.name}
+          </Link>
+        ) : user ? (
+          <span className="capitalize">{`${user.firstName} ${user.lastName}`}</span>
+        ) : (
+          "-------"
+        );
+      },
+      type: "string",
+    },
+    {
+      field: "views",
+      headerName: "Views",
+      width: 100,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params: GridRenderCellParams<any, typeof data>) => {
+        return (params.id as number) % 2 === 0 ? (
+          <p className="text-orange-500 font-medium">Pending</p>
+        ) : (
+          <p className="text-green-500 font-medium">Published</p>
+        );
+      },
+      sortable: false,
+    },
+  ];
+
   return (
     <>
       <main className="p-6 px-8 pb-12">
@@ -52,62 +116,27 @@ export default function Dashboard() {
         </div>
         <div className="pt-4">
           <h1 className="text-xl font-semibold p-4">Latest dataset created</h1>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Title</TableCell>
-                  <TableCell align="left">Created by</TableCell>
-                  <TableCell align="left">Created at</TableCell>
-                  <TableCell align="left">Updated at</TableCell>
-                  <TableCell align="left">Views</TableCell>
-                  <TableCell align="left">Status</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.map((item, index) => {
-                  const { title, organization, user, updatedAt } = item;
+          <DataGrid
+            rows={data.slice(0, 10).map((item, index) => {
+              const { title, organization, user, updatedAt } = item;
 
-                  return (
-                    <TableRow
-                      key={index + 1}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {title}
-                      </TableCell>
-                      <TableCell align="left">
-                        {organization ? (
-                          <Link
-                            className="text-primary-600 capitalize hover:underline relative z-10"
-                            to={`/organizations/${organization.slug}`}
-                          >
-                            {organization.name}
-                          </Link>
-                        ) : user ? (
-                          <span className="capitalize">{`${user.firstName} ${user.lastName}`}</span>
-                        ) : (
-                          "-------"
-                        )}
-                      </TableCell>
-                      <TableCell align="left">
-                        {moment(Date.now()).format("Do MMM, YYYY")}
-                      </TableCell>
-                      <TableCell align="left">{moment(updatedAt).fromNow()}</TableCell>
-                      <TableCell align="left">{Math.floor(Math.random() * 1000) + 1}</TableCell>
-                      <TableCell align="left">
-                        {(index + 1) % 2 === 0 ? (
-                          <p className="text-orange-500 font-medium">Pending</p>
-                        ) : (
-                          <p className="text-green-500 font-medium">Published</p>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+              return {
+                id: index + 1,
+                title,
+                createdAt: moment(Date.now()).format("Do MMM, YYYY"),
+                updatedAt,
+                organization,
+                user,
+                views: Math.floor(Math.random() * 1000) + 1,
+              };
+            })}
+            onRowClick={(params: GridRowParams<(typeof data)[0]>) => {
+              navigate(`./${params.id}`);
+            }}
+            getRowClassName={() => `cursor-pointer`}
+            columns={columns}
+            hideFooter
+          />
         </div>
       </main>
     </>

@@ -2,9 +2,9 @@
   {
     "title": "Sectors of departmental solidarity spaces (EDS) of the Department of Loire-Atlantique",
     "organization": {
-      "name": "Department of Loire-Atlantique",
-      "slug": "department-of-loire-atlantique",
-      "image": "https://static.data.gouv.fr/avatars/cd/6d9c448556476ca76e8c4fcf0221a3-100.jpg"
+      "name": "National Institute of Statistics and Economic Studies (INSEE)",
+      "slug": "national-institute-of-statistics-and-economic-studies-insee",
+      "image": "https://static.data.gouv.fr/avatars/db/fbfd745ae543f6856ed59e3d44eb71-100.jpg"
     },
     "user": null,
     "description": "Scope of intervention of departmental solidarity spaces (EDS). These constitute places to welcome users in the areas of maternal and child protection, social life and integration.",
@@ -38,9 +38,9 @@
   {
     "title": "Urbanization Challenges in Mumbai, India",
     "organization": {
-      "name": "Urban Development Council",
-      "slug": "urban-development-council",
-      "image": "https://static.data.gouv.fr/avatars/50/e53e0ad0f04cfea000f69ffec9393e-100.png"
+      "name": "French Economic Research Institute",
+      "slug": "french-economic-research-institute",
+      "image": "https://res.cloudinary.com/dqqkokon9/image/upload/v1702042547/Personal/hrzaptwivywcogay6xvw.jpg"
     },
     "user": null,
     "description": "Dataset highlighting urbanization challenges in Mumbai, India. The data includes information on population growth, infrastructure development, and the impact on the city's environment.",
@@ -62,9 +62,9 @@
   {
     "title": "Renewable Energy Usage in Berlin, Germany",
     "organization": {
-      "name": "Green Energy Alliance",
-      "slug": "green-energy-alliance",
-      "image": "https://static.data.gouv.fr/avatars/64/efa546af334b4cbf07e36f694db4fe-100.png"
+      "name": "Statistical Data Solutions Company",
+      "slug": "statistical-data-solutions-company",
+      "image": "https://res.cloudinary.com/dqqkokon9/image/upload/v1702042481/Personal/syeff6dimmtpwysmz9gf.jpg"
     },
     "user": null,
     "description": "Dataset highlighting the usage of renewable energy in Berlin, Germany. The data includes information on renewable energy sources, energy consumption patterns, and the city's efforts to promote sustainability.",
