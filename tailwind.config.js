@@ -5,6 +5,13 @@ export default {
     extend: {
       fontFamily: {
         "Work-Sans": ["Work Sans", "sans-serif"],
+        Marhey: ["Marhey", "sans-serif"],
+      },
+      maxWidth: {
+        maxAppWidth: "1290px",
+      },
+      boxShadow: {
+        appNavBar: "0 1px 3px #00001229",
       },
       colors: {
         primary: {
@@ -32,6 +39,19 @@ export default {
           800: "#0f6c36",
           900: "#0e592f",
           950: "#013217",
+        },
+        info: {
+          50: "#f6f6f7",
+          100: "#efeff0",
+          200: "#e1e1e4",
+          300: "#d4d4d8",
+          400: "#b9b9c0",
+          500: "#a7a6ae",
+          600: "#94919a",
+          700: "#7f7d85",
+          800: "#68676c",
+          900: "#56555a",
+          950: "#323234",
         },
       },
       screens: {

@@ -1,5 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-export function useCurrentUser() {
-  return useQuery<User>(["auth/users/me/"]);
+export function useCurrentUser(
+  queryKey = ["/auth/users/me/"],
+  options?: UseQueryOptions<CurrentUser>
+) {
+  return useQuery<CurrentUser>(queryKey, options);
 }

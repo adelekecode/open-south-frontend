@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Marhey:wght@400&display=swap");
 
 * {
   font-family: "Work Sans", sans-serif;
@@ -9,12 +10,12 @@ html {
 }
 @media (min-width: 1300px) {
   html {
-    font-size: 115% !important;
+    font-size: 105% !important;
   }
 }
 @media (min-width: 1666px) {
   html {
-    font-size: 130% !important;
+    font-size: 110% !important;
   }
 }
 
@@ -26,4 +27,21 @@ h5,
 h6,
 p {
   color: #161616;
+}
+
+/* ol.order-list {
+  counter-reset: "section 1";
+} */
+
+ol.order-list li {
+  counter-increment: subsection;
+  font-size: 1rem;
+}
+
+ol.order-list li::marker {
+  content: counters(item, ".") "." counters(subsection, ".") " ";
+}
+
+.mapboxgl-ctrl-bottom-right {
+  display: none;
 }

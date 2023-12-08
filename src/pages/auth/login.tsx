@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useState, ReactNode, Fragment } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Checkbox, IconButton } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { isAxiosError } from "axios";
+import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
+import { AiOutlineEye } from "react-icons/ai";
+import { BsEyeSlash } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormField from "~/components/form-field";
 import useLogin from "~/mutations/auth/login";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
+import useAppStore from "~/store/app";
+import { useRequestOTP } from "~/mutations/auth/otp";
 
 const loginSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Email is required"),
@@ -18,22 +23,61 @@ const loginSchema = Yup.object({
 });
 
 export default function Login() {
-  const login = useLogin();
   const navigate = useNavigate();
   const { state } = useLocation();
 
+  const login = useLogin();
+  const requestOtp = useRequestOTP();
+
+  const { setSignupState } = useAppStore();
+
   const [showPassword, setShowPassword] = useState(false);
+
+  function handleActivationError(email: string): ReactNode {
+    if (!login.error) return <Fragment />;
+
+    if (isAxiosError(login.error)) {
+      const errorMsg = login.error.response?.data.error;
+
+      if (errorMsg === "This account has not been activated") {
+        return (
+          <div className="flex items-center gap-4">
+            <p className={`text-red-600 font-medium text-xs pl-1`}>{errorMsg}</p>
+            <Button
+              loading={requestOtp.isLoading}
+              className="w-fit !p-2 !text-xs"
+              onClick={async () => {
+                const data = await requestOtp.mutateAsync({ email });
+
+                if (data) {
+                  navigate("/signup");
+                  setSignupState({
+                    email,
+                    signuped: true,
+                  });
+                }
+              }}
+            >
+              Activate
+            </Button>
+          </div>
+        );
+      }
+    }
+
+    return <Fragment />;
+  }
 
   return (
     <>
-      <Seo title="Login" description="Login to your ATO account" />
+      <Seo title="Log In" description="Log in to your ATO account" />
 
       <div
         className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
       >
-        <header className="mb-3 flex items-center flex-col">
-          <h1 className="text-2xl font-semibold text-center">Log in</h1>
-          <p className="text-sm text-center">Welcome, Kindly enter your details to gain access.</p>
+        <header className="mb-3 flex items-center flex-col gap-2">
+          <h1 className="text-2xl font-semibold text-center">Log In</h1>
+          <p className="text-sm text-center">Welcome, kindly enter your details to gain access.</p>
         </header>
         <Formik
           initialValues={{
@@ -49,15 +93,16 @@ export default function Login() {
             });
 
             if (data) {
-              navigate(state?.from ? state.from : "/");
+              navigate(state?.from ? state.from : "/account/dashboard");
             }
           }}
           validateOnBlur={false}
+          validateOnChange={false}
         >
           {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
             <form action="post" onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
               <FormField
-                label="Email Address"
+                label="Email"
                 required
                 placeholder="example@gmail.com"
                 name="email"
@@ -72,33 +117,32 @@ export default function Login() {
                   name="password"
                   className="placeholder:leading-3"
                   endAdornment={
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    <IconButton onClick={() => setShowPassword((prev) => !prev)} edge="end">
+                      {showPassword ? <BsEyeSlash /> : <AiOutlineEye />}
                     </IconButton>
                   }
                 />
-                <div className="flex w-full justify-between items-center gap-4 smallMobile:flex-col-reverse">
-                  <button className="flex items-center text-sm cursor-pointer smallMobile:self-start">
-                    <Checkbox
-                      size="small"
-                      onChange={() => {
-                        setFieldValue("rememberMe", !values.rememberMe);
-                      }}
-                      checked={values.rememberMe}
-                      name="rememberMe"
-                    />
-                    <p>Remember me</p>
-                  </button>
+                <div className="flex w-full justify-between items-center gap-4 smallMobile:flex-col-reverse px-2">
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={() => {
+                          setFieldValue("rememberMe", !values.rememberMe);
+                        }}
+                        checked={values.rememberMe}
+                        color="primary"
+                        name="rememberMe"
+                      />
+                    }
+                    className="text-sm"
+                    label="Remember me"
+                  />
                   <Link to={"/forgot-password"} className="hover:underline smallMobile:self-end">
                     <small className="text-sm">Forgot Password?</small>
                   </Link>
                 </div>
               </div>
-              {/* {handleActivationError(values.email)} */}
+              {handleActivationError(values.email)}
               <Button className="w-full !mt-2" type="submit" loading={isSubmitting}>
                 Log In
               </Button>
@@ -108,9 +152,19 @@ export default function Login() {
         <p className="text-sm">
           Don't have an account?{" "}
           <Link to={"/signup"} className="text-secondary-700 font-semibold hover:underline">
-            Signup
+            Sign Up
           </Link>
         </p>
+        <p className="text-sm mt-2 mb-2 font-semibold">Or</p>
+        <Button
+          variant="outlined"
+          className="!w-full flex item-center gap-[1.3rem] !p-3 !px-[0.8rem]"
+        >
+          <div>
+            <FcGoogle className="text-xl" />
+          </div>
+          <p>Log in with Google</p>
+        </Button>
       </div>
     </>
   );

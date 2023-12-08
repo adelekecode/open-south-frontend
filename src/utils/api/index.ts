@@ -2,6 +2,7 @@ import axios from "axios";
 import { logout } from "./logout";
 import { REFRESH_TOKEN_KEY } from "~/app-constants";
 import refreshToken from "./refresh-token";
+import { notifyError } from "../toast";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -24,14 +25,18 @@ axiosPrivate.interceptors.response.use(
       error?.message ||
       "Network Error";
 
-    if (error?.response?.status === 401) {
+    const status = error?.response?.status;
+
+    if (status === 401) {
       if (message === "Token is invalid or expired" || message === "Token is blacklisted") {
         logout();
       } else if (
         message === "Given token not valid for any token type" ||
         message === "Authentication credentials were not provided."
       ) {
-        const token = localStorage.getItem(REFRESH_TOKEN_KEY);
+        let token = localStorage.getItem(REFRESH_TOKEN_KEY);
+
+        token = token ? JSON.parse(token) : undefined;
 
         if (token) {
           if (!refreshPromise) {
@@ -53,13 +58,20 @@ axiosPrivate.interceptors.response.use(
         } else {
           logout();
         }
+        // } else if (status && status.toString().includes("50")) {
+      } else if (status === 500) {
+        notifyError("Something went wrong. Please try again later.");
+
+        return Promise.reject(message);
       } else return Promise.reject(message);
     } else return Promise.reject(message);
   }
 );
 
-export async function fetchUserIfTokenExists() {
-  const token = localStorage.getItem(REFRESH_TOKEN_KEY);
+export async function fetchAccessTokenIfRefreshTokenExists() {
+  let token = localStorage.getItem(REFRESH_TOKEN_KEY);
+
+  token = token ? JSON.parse(token) : undefined;
 
   if (token && axiosPrivate.defaults.headers.common["Authorization"]) {
     return null;
@@ -68,16 +80,16 @@ export async function fetchUserIfTokenExists() {
   if (token) {
     const data = await refreshToken(token);
 
-    localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh);
+    localStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
     axiosPrivate.defaults.headers.common["Authorization"] = "Bearer " + data.access;
   } else {
-    throw new Error("No token found");
+    throw new Error("Token not found");
   }
 }
 
 // On localStorage value change from another tab, logout
 window.addEventListener("storage", (event) => {
-  if (event.key === "t-token" && !event.newValue) {
+  if (event.key === REFRESH_TOKEN_KEY && !event.newValue) {
     logout();
   }
 });

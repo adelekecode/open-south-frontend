@@ -1,0 +1,62 @@
+[
+  {
+    "question": "What is Open South?",
+    "answer": "Open South is an open data platform dedicated to providing access to freely downloadable data for researchers, scholars, practitioners, policymakers, and communities within countries in the Global South."
+  },
+  {
+    "question": "How can I access data on Open South?",
+    "answer": "You can access the data on Open South by visiting our website and browsing through the available datasets. All the data is freely downloadable for your convenience."
+  },
+  {
+    "question": "Is registration required to access data on Open South?",
+    "answer": "No, registration is not required. You can access and download the data without creating an account."
+  },
+  {
+    "question": "Can I use the data on Open South for my research or projects?",
+    "answer": "Absolutely. The data on Open South is provided for research, analysis, and project purposes. You are encouraged to utilize the data to drive positive change and innovation."
+  },
+  {
+    "question": "How often is the data on Open South updated?",
+    "answer": "The frequency of data updates varies depending on the dataset. We strive to keep the data as current as possible and continually work with data providers to ensure regular updates."
+  },
+  {
+    "question": "Can I contribute my own data to Open South?",
+    "answer": "Yes! We encourage you to submit your data to Open South. Our moderators will ensure your data conforms to our standard."
+  },
+  {
+    "question": "Are there any restrictions on the usage of the data?",
+    "answer": "The data on Open South is generally released under open licenses, which means you are free to use, share, and adapt the data for your specific needs. However, it is essential to review the license associated with each dataset for any specific restrictions."
+  },
+  {
+    "question": "How can I cite the data I download from Open South?",
+    "answer": "Each dataset on Open South includes citation guidelines. Please refer to the documentation provided with the dataset to ensure proper attribution."
+  },
+  {
+    "question": "Can I request specific data that is not currently available on Open South?",
+    "answer": "Yes, you can submit a data request through our platform. While we cannot guarantee fulfillment, we actively consider user requests and work towards expanding our dataset offerings."
+  },
+  {
+    "question": "Are there any tutorials or guides available to help me analyze the data?",
+    "answer": "Yes, Open South provides tutorials and guides to assist users in data analysis, visualization, and interpretation. You can find these resources in the 'Help' section of our website."
+  },
+  {
+    "question": "How can I collaborate or connect with other users on Open South?",
+    "answer": "Open South offers a community forum where users can engage in discussions, share insights, and collaborate on projects. You can join the forum to connect with like-minded individuals and foster collaborations."
+  },
+  {
+    "question": "Can I provide feedback or report issues with the data or platform?",
+    "answer": "Absolutely! We value your feedback and encourage you to report any issues you encounter or provide suggestions for improvement. You can reach out to us through the 'Contact' page on our website."
+  },
+  {
+    "question": "Is the data on Open South available in multiple languages?",
+    "answer": "Open South aims to enhance platform accessibility and localization. While the availability of data in multiple languages may vary, we strive to accommodate diverse linguistic needs and continually work towards expanding language support."
+  },
+  {
+    "question": "Can I use the data from Open South for commercial purposes?",
+    "answer": "The permissions for commercial use may vary depending on the specific dataset and its associated license. Please review the license details for each dataset to determine if commercial usage is permitted."
+  },
+  {
+    "question": "How can I stay updated on new datasets and platform developments?",
+    "answer": "To stay updated, you can subscribe to our newsletter, follow us on social media, or regularly visit the Open South website, where we share announcements, new dataset releases, and platform enhancements."
+  }
+]

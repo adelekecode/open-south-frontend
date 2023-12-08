@@ -28,6 +28,78 @@ const theme = createTheme({
       800: "#0f6c36",
       900: "#0e592f",
     },
+
+    info: {
+      main: "#d4d4d8",
+      50: "#f6f6f7",
+      100: "#efeff0",
+      200: "#e1e1e4",
+      300: "#d4d4d8",
+      400: "#b9b9c0",
+      500: "#a7a6ae",
+      600: "#94919a",
+      700: "#7f7d85",
+      800: "#68676c",
+      900: "#56555a",
+    },
+  },
+  components: {
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          "& .MuiFormControlLabel-root .MuiTypography-root": {
+            fontSize: "0.4rem !important",
+          },
+        },
+      },
+      defaultProps: {
+        size: "small",
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        body1: {
+          fontSize: "0.875rem",
+          color: "#161616",
+          fontFamily: '"Work Sans", "sans-serif"',
+        },
+      },
+    },
+    MuiPagination: {
+      defaultProps: {
+        color: "primary",
+      },
+    },
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#F3F3F3",
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          whiteSpace: "nowrap",
+          fontSize: "0.9rem",
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-input": {
+            padding: "11px 13.5px",
+          },
+        },
+      },
+    },
+    MuiPopper: {
+      defaultProps: {
+        placement: "bottom-end",
+        transition: true,
+      },
+    },
   },
 });
 

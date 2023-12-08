@@ -6,5 +6,5 @@ type LogoProps = {
 };
 
 export default function Logo({ className = "" }: LogoProps) {
-  return <img src={_logo} alt="Open-South-logo" className={twMerge(`w-24`, `${className}`)} />;
+  return <img src={_logo} alt="Open-South-logo" className={twMerge(`w-[8rem]`, `${className}`)} />;
 }
