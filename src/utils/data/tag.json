@@ -1,0 +1,82 @@
+[
+  {
+    "id": "d3c2a37e-2a64-4f25-b1d7-28a6d9b2eab1",
+    "label": "car"
+  },
+  {
+    "id": "f5a61c4b-663f-4d84-a173-5a74f8c901cf",
+    "label": "fitness"
+  },
+  {
+    "id": "b6e3feaa-0c2b-4d91-9e88-9140e3e4d2f0",
+    "label": "youth"
+  },
+  {
+    "id": "59aef7e3-cdc2-4c24-9b9b-aa50edf6a839",
+    "label": "technology"
+  },
+  {
+    "id": "17343e0c-3d3e-4e9f-b37b-0b19e1d1d2b2",
+    "label": "travel"
+  },
+  {
+    "id": "c7a4b8c1-01f4-4be7-9d8d-bf2f07c9f928",
+    "label": "music"
+  },
+  {
+    "id": "2c826164-6539-4ac2-834b-e5b9cb5276f5",
+    "label": "food"
+  },
+  {
+    "id": "a41e35aa-36a7-4d18-b56d-8f8c1d6f7c42",
+    "label": "fashion"
+  },
+  {
+    "id": "6c1a2a7f-77c1-4d1c-95b8-3b5a9f3c09e8",
+    "label": "art"
+  },
+  {
+    "id": "f69aa1e5-09fc-4a2a-9e7e-07f3eab0b5d1",
+    "label": "science"
+  },
+  {
+    "id": "c94e8e4c-dc31-4c0d-84c6-835f9e05005c",
+    "label": "business"
+  },
+  {
+    "id": "a416c823-788f-49c0-9c9f-8e53663623ad",
+    "label": "health"
+  },
+  {
+    "id": "1bf77d10-2920-45bb-899b-e3f674e727ef",
+    "label": "movies"
+  },
+  {
+    "id": "96bf25bf-217c-41c2-bca5-7c9f897c12b3",
+    "label": "nature"
+  },
+  {
+    "id": "2c50e21f-1312-41b9-8b1b-cf4c1d991c6a",
+    "label": "sports"
+  },
+  {
+    "id": "a8ee1810-59e5-4c82-aef6-3f59b2e2ad6f",
+    "label": "books"
+  },
+  {
+    "id": "2b522c1b-82b5-45a8-9de5-1bae6a051a78",
+    "label": "pets"
+  },
+  {
+    "id": "c02a0987-5ba6-4ef8-88f0-5215a84372b5",
+    "label": "architecture"
+  },
+  {
+    "id": "e1c0f710-4a82-4650-b534-07ff4a74d0a7",
+    "label": "photography"
+  },
+  {
+    "id": "48a92465-5db7-46af-a9cb-09e7a87ee15b",
+    "label": "gaming"
+  }
+]

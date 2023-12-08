@@ -94,12 +94,12 @@ const theme = createTheme({
         },
       },
     },
-    MuiPopper: {
-      defaultProps: {
-        placement: "bottom-end",
-        transition: true,
-      },
-    },
+    // MuiPopper: {
+    //   defaultProps: {
+    //     placement: "bottom-end",
+    //     transition: true,
+    //   },
+    // },
   },
 });
 

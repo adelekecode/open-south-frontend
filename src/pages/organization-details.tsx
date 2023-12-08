@@ -1,29 +1,29 @@
 import { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaAngleRight } from "react-icons/fa6";
 import Seo from "~/components/seo";
+import organization from "~/utils/data/organization.json";
 import dataset from "~/utils/data/dataset.json";
+import NotFound from "./404";
 
 export default function OrganizationDetails() {
   const { state } = useLocation();
   const navigate = useNavigate();
-
-  const data = {
-    id: state?.id || Math.random(),
-    title: state?.name || "National Institute of Statistics and Economic Studies (INSEE)",
-    slug: "national-institute-of-statistics-and-economic-studies-insee",
-    description:
-      "The National Institute of Statistics and Economic Studies (Insee) collects, produces, analyzes and disseminates information on the French economy and society. This information is of interest to public authorities, administrations, businesses, researchers, the media, teachers, students and individuals. They allow them to enrich their knowledge, carry out studies, make forecasts and make decisions. To satisfy its users, INSEE listens to their needs and directs its work accordingly while pursuing one main objective: to shed light on the economic and social debate.",
-    image: "https://static.data.gouv.fr/avatars/db/fbfd745ae543f6856ed59e3d44eb71-100.jpg",
-  };
+  const { slug } = useParams();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
+  const data = organization.find((item) => item.slug === slug || item.id === state?.id);
+
+  if (!data) {
+    return <NotFound />;
+  }
+
   return (
     <>
-      <Seo title={data.title || ""} description={data.description || ""} />
+      <Seo title={data.name || ""} description={data.description || ""} />
       <main className="w-full pb-16 flex flex-col gap-4">
         <div className="bg-primary-50 pt-16 pb-8">
           <header className="flex flex-col gap-6 max-w-maxAppWidth mx-auto px-10 tablet:px-6 largeMobile:!px-4">
@@ -34,7 +34,7 @@ export default function OrganizationDetails() {
                 className="w-full h-full object-contain"
               />
             </figure>
-            <h1 className="text-2xl font-semibold">{data.title || "----------"}</h1>
+            <h1 className="text-2xl font-semibold">{data.name || "----------"}</h1>
           </header>
         </div>
         <main className="max-w-maxAppWidth mx-auto flex flex-col gap-12 p-6 px-10 tablet:px-6 largeMobile:!px-4">
