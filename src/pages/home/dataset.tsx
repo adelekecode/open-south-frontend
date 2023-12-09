@@ -35,9 +35,9 @@ export default function Dataset() {
               }}
               className="grid grid-cols-[80px,1fr] tabletAndBelow:grid-cols-[70px,1fr] gap-4 border-[1.5px] border-info-100 p-4 hover:bg-info-50"
             >
-              <figure className="w-full border border-zinc-300 bg-white">
+              <figure className="w-full border border-zinc-300 bg-white aspect-square">
                 <img
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   src={organization ? organization.image : user ? user.image : ""}
                   alt="organization or profile photo"
                   loading="lazy"
