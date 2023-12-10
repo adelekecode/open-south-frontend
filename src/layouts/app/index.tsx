@@ -31,6 +31,10 @@ const routes = [
     to: "/contact",
     name: "Contact Us",
   },
+  {
+    to: "/sponsors",
+    name: "Sponsors",
+  },
 ];
 
 export default function AppLayout() {
