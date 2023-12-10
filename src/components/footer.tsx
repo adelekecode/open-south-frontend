@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import Logo from "./logo";
-import DataGouv from "~/assets/images/sponsor-logos/data-gouv.svg";
+import Bus from "~/assets/images/sponsor-logos/bus.svg";
 import AnalyzeBoston from "~/assets/images/sponsor-logos/analyze-boston.svg";
 import Dribbble from "~/assets/images/sponsor-logos/dribbble.svg";
 
@@ -72,8 +72,8 @@ export default function Footer() {
           </Link>
           <div className="flex flex-col gap-4">
             <p className="text-sm font-medium text-center">Our Sponsors</p>
-            <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:580px)]:!flex [@media(max-width:580px)]:flex-wrap gap-6 [&>img]:max-w-[10rem]">
-              <img src={DataGouv} alt="sponsor-logo" />
+            <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:580px)]:!flex [@media(max-width:580px)]:flex-wrap gap-6 [&>img]:max-w-[8rem] [&>img]:aspect-square">
+              <img src={Bus} alt="sponsor-logo" />
               <img src={AnalyzeBoston} alt="sponsor-logo" />
               <img src={Dribbble} alt="sponsor-logo" />
             </div>
