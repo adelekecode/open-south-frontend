@@ -31,6 +31,7 @@ import {
   DatasetDetails as AccountDatasetDetails,
   OrgDashboard,
   OrgDataset,
+  CreateDataset,
 } from "./pages/account";
 import GetDataset from "./layouts/get-dataset";
 import News from "./pages/news";
@@ -76,12 +77,12 @@ const router = createBrowserRouter(
           <Route element={<DashboardLayout />}>
             <Route path="/account/dashboard" element={<Dashboard />} />
             <Route path="/account/datasets" element={<AccountDataset />} />
+            <Route path="/account/datasets/new" element={<CreateDataset />} />
             <Route element={<GetDataset />}>
               <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
             </Route>
             <Route path="/account/:slug/dashboard" element={<OrgDashboard />} />
             <Route path="/account/:slug/datasets" element={<OrgDataset />} />
-            <Route path="/account/datasets/new" element={<div>Create new dataset</div>} />
           </Route>
         </Route>
       </Route>

@@ -2,7 +2,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import useDeleteDataset from "~/mutations/dataset";
+import { useDeleteDataset } from "~/mutations/dataset";
 
 type DeleteConfirmationProps = {
   open: boolean;

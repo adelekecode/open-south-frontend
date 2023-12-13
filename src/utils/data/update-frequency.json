@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Unknown"
+  },
+  {
+    "name": "Punctual"
+  },
+  {
+    "name": "Real Time"
+  },
+  {
+    "name": "Hourly"
+  },
+  {
+    "name": "Four times a day"
+  },
+  {
+    "name": "Three times a day"
+  },
+  {
+    "name": "Semidaily"
+  },
+  {
+    "name": "Daily"
+  },
+  {
+    "name": "Weekly"
+  },
+  {
+    "name": "Bi-weekly"
+  },
+  {
+    "name": "Monthly"
+  },
+  {
+    "name": "Quarterly"
+  },
+  {
+    "name": "Semiannual"
+  },
+  {
+    "name": "Annual"
+  }
+]

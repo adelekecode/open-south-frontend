@@ -1,15 +1,20 @@
-import { InputLabel, InputLabelProps, OutlinedInputProps, OutlinedInput } from "@mui/material";
-import { ErrorMessage, Field, FieldConfig, FieldProps } from "formik";
+import {
+  Select as MuiSelect,
+  InputLabel,
+  SelectProps as MuiSelectProps,
+  InputLabelProps,
+} from "@mui/material";
+import { FieldConfig, Field, FieldProps, ErrorMessage } from "formik";
 import { twMerge } from "tailwind-merge";
 
-type FormFieldProps = OutlinedInputProps &
+type SelectFieldProps = MuiSelectProps &
   FieldConfig & {
     labelProps?: InputLabelProps;
   };
 
-export default function FormField({ label, className, labelProps, ...props }: FormFieldProps) {
+export default function SelectField({ label, className, labelProps, ...props }: SelectFieldProps) {
   return (
-    <Field {...props}>
+    <Field>
       {({ field }: FieldProps) => (
         <div className="w-full">
           {label && (
@@ -24,26 +29,24 @@ export default function FormField({ label, className, labelProps, ...props }: Fo
               </InputLabel>
             </div>
           )}
-          <OutlinedInput
-            className={twMerge(
-              "w-full !rounded-md !border-[0px] placeholder:!text-base !p-0",
-              className
-            )}
+          <MuiSelect
+            className={twMerge(`w-full !text-[0.9rem] ${!props.value && "font-normal"}`, className)}
             {...field}
             {...props}
+            value={props.value}
             sx={{
-              input: {
-                fontSize: "1rem",
-              },
-              "& .MuiOutlinedInput-input": {
+              "& .MuiSelect-select": {
                 padding: "11px 13.5px",
-                borderColor: `${props.readOnly ? "transparent" : "#0071B9"}`,
               },
-              "& .Mui-focused": {
-                borderColor: "#0071B9",
+              input: {
+                fontSize: "0.9rem",
               },
             }}
-          />
+            renderValue={(value) => {
+              return value || "";
+            }}
+            displayEmpty={true}
+          ></MuiSelect>
           <ErrorMessage
             name={props.name}
             className={`!text-red-600 !font-medium !text-xs pl-1`}
