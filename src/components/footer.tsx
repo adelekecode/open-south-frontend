@@ -2,9 +2,8 @@ import { Link } from "react-router-dom";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import Logo from "./logo";
-import Bus from "~/assets/images/sponsor-logos/bus.svg";
-import AnalyzeBoston from "~/assets/images/sponsor-logos/analyze-boston.svg";
-import Dribbble from "~/assets/images/sponsor-logos/dribbble.svg";
+import BIDS from "~/assets/images/partner-logos/bids.jpg";
+import CHAI from "~/assets/images/partner-logos/chai.jpg";
 
 export default function Footer() {
   return (
@@ -71,11 +70,14 @@ export default function Footer() {
             <Logo className="w-40 [@media(max-width:580px)]:w-36 largeMobile:!w-32" />
           </Link>
           <div className="flex flex-col gap-4">
-            <p className="text-sm font-medium text-center">Our Sponsors</p>
-            <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:580px)]:!flex [@media(max-width:580px)]:flex-wrap gap-6 [&>img]:max-w-[8rem] [&>img]:aspect-square">
-              <img src={Bus} alt="sponsor-logo" />
-              <img src={AnalyzeBoston} alt="sponsor-logo" />
-              <img src={Dribbble} alt="sponsor-logo" />
+            <p className="text-sm font-medium text-center">Our Partners</p>
+            <div className="grid grid-cols-2 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:580px)]:!flex [@media(max-width:580px)]:flex-wrap gap-6 [&>figure]:max-w-[8rem] [&>figure]:w-full [&>figure]:aspect-square [&>figure>img]:w-full [&>figure>img]:h-full [&>figure>img]:object-contain">
+              <figure>
+                <img src={CHAI} alt="CHAI logo" />
+              </figure>
+              <figure>
+                <img src={BIDS} alt="partner logo" />
+              </figure>
             </div>
           </div>
         </div>
@@ -90,24 +92,29 @@ export default function Footer() {
             Privacy Policy
           </Link>
           <span></span>
-          <div className="flex items-center gap-2">
-            <p className="text-xs">This platform is licensed under</p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <p className="text-xs">Open South is licensed under</p>
             <a
-              href="http://creativecommons.org/licenses/by-nd/4.0/?ref=chooser-v1"
+              href="http://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
               target="_blank"
               rel="license noopener noreferrer"
               className="flex items-center gap-2 text-xs hover:underline text-orange-600 font-medium"
             >
-              CC BY-ND 4.0
+              CC BY-NC-ND 4.0
             </a>
-            <div className="flex items-center gap-2 [&_img]:w-4">
+            <div className="flex items-center gap-1 [&_img]:w-4">
               <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" />
               <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" />
-              {/* <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" /> */}
+              <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" />
+              <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" />
             </div>
           </div>
         </div>
       </div>
     </footer>
   );
+}
+
+{
+  /* <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><span property="dct:title">Open South</span> is licensed under </p> */
 }

@@ -21,7 +21,7 @@ export default function Panel() {
           <div>
             <span></span>
             <div>
-              <h1>26,897</h1>
+              <h1>15</h1>
               <p>Categories</p>
             </div>
           </div>
