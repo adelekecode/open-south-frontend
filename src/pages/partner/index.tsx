@@ -20,7 +20,7 @@ export default function Partner() {
           {/* <h4 className="text-sm font-semibold">Top Partners</h4> */}
           <div className="flex flex-col">
             {/* <img src={Bus} className="w-[130px] aspect-square self-center" alt="partner logo" /> */}
-            <div className="grid gap-12 grid-cols-[170px,170px] [&>figure]:w-full [&>figure]:aspect-square [&>figure>img]:w-full [&>figure>img]:h-full [&>figure>img]:object-contain self-center">
+            <div className="grid gap-12 grid-cols-[200px,200px] items-center [&>figure]:w-full [&>figure]:h-fit [&>figure>img]:w-full [&>figure>img]:object-contain self-center [@media(max-width:600px)]:grid-cols-[200px] [@media(max-width:600px)]:gap-8">
               <figure>
                 <img src={CHAI} alt="CHAI logo" />
               </figure>

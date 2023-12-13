@@ -11,10 +11,7 @@ export default function FormField({ label, className, ...props }: FormFieldProps
         <div className="w-full">
           {label && (
             <div className="w-full flex justify-between items-center">
-              <InputLabel
-                htmlFor={props.name}
-                className="!text-sm !text-texts-primary mb-[0.35rem] !font-Work-Sans"
-              >
+              <InputLabel htmlFor={props.name} className="!text-sm mb-[0.35rem] !font-Work-Sans">
                 {label}
                 {props.required && <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>}
               </InputLabel>
@@ -22,7 +19,7 @@ export default function FormField({ label, className, ...props }: FormFieldProps
           )}
           <OutlinedInput
             className={twMerge(
-              "w-full placeholder:!text-texts-placeholder !rounded-md !border-[0px] placeholder:!text-base",
+              "w-full !rounded-md !border-[0px] placeholder:!text-base !p-0",
               className
             )}
             {...field}

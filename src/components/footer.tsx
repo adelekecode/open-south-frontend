@@ -70,7 +70,7 @@ export default function Footer() {
             <Logo className="w-40 [@media(max-width:580px)]:w-36 largeMobile:!w-32" />
           </Link>
           <div className="flex flex-col gap-4">
-            <p className="text-sm font-medium text-center">Our Sponsors</p>
+            <p className="text-sm font-medium text-center">Our Partners</p>
             <div className="grid grid-cols-2 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:580px)]:!flex [@media(max-width:580px)]:flex-wrap gap-6 [&>figure]:max-w-[8rem] [&>figure]:w-full [&>figure]:aspect-square [&>figure>img]:w-full [&>figure>img]:h-full [&>figure>img]:object-contain">
               <figure>
                 <img src={CHAI} alt="CHAI logo" />
@@ -92,7 +92,7 @@ export default function Footer() {
             Privacy Policy
           </Link>
           <span></span>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <p className="text-xs">Open South is licensed under</p>
             <a
               href="http://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
