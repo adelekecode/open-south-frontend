@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 
-type FormFieldProps = FieldConfig & {
+type PhoneNumberFieldProps = FieldConfig & {
   id?: string;
   label: string;
   required?: boolean;
@@ -13,7 +13,7 @@ type FormFieldProps = FieldConfig & {
   readOnly?: boolean;
 };
 
-export default function PhoneNumberField({ label, className, ...props }: FormFieldProps) {
+export default function PhoneNumberField({ label, className, ...props }: PhoneNumberFieldProps) {
   return (
     <Field {...props}>
       {({ field, form }: FieldProps) => (

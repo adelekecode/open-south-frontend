@@ -1,16 +1,25 @@
-import { InputLabel, InputLabelProps, OutlinedInputProps, OutlinedInput } from "@mui/material";
+import { InputLabel, InputLabelProps } from "@mui/material";
 import { ErrorMessage, Field, FieldConfig, FieldProps } from "formik";
 import { twMerge } from "tailwind-merge";
+import ReactQuill, { ReactQuillProps } from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-type FormFieldProps = OutlinedInputProps &
+type TextEditorFieldProps = ReactQuillProps &
   FieldConfig & {
+    label?: string;
+    required?: boolean;
     labelProps?: InputLabelProps;
   };
 
-export default function FormField({ label, className, labelProps, ...props }: FormFieldProps) {
+export default function TextEditorField({
+  label,
+  className,
+  labelProps,
+  ...props
+}: TextEditorFieldProps) {
   return (
-    <Field {...props}>
-      {({ field }: FieldProps) => (
+    <Field name={props.name}>
+      {({ field, form }: FieldProps) => (
         <div className="w-full">
           {label && (
             <div className="w-full flex justify-between items-center">
@@ -24,24 +33,18 @@ export default function FormField({ label, className, labelProps, ...props }: Fo
               </InputLabel>
             </div>
           )}
-          <OutlinedInput
+          <ReactQuill
             className={twMerge(
-              "w-full !rounded-md !border-[0px] placeholder:!text-base !p-0",
+              `[&_.ql-editor]:h-[15rem] [&_.ql-editor]:text-sm [&_.ql-container]:h-[15rem] [&_.ql-toolbar]:rounded-t-md [&_.ql-container]:rounded-b-md [&_.ql-editor::before]:!not-italic`,
               className
             )}
-            {...field}
             {...props}
-            sx={{
-              input: {
-                fontSize: "1rem",
-              },
-              "& .MuiOutlinedInput-input": {
-                padding: "11px 13.5px",
-                borderColor: `${props.readOnly ? "transparent" : "#0071B9"}`,
-              },
-              "& .Mui-focused": {
-                borderColor: "#0071B9",
-              },
+            onChange={(value) => form.setFieldValue(field.name, value)}
+            value={field.value}
+            style={{
+              wordBreak: "break-all",
+              display: "flex",
+              flexDirection: "column",
             }}
           />
           <ErrorMessage

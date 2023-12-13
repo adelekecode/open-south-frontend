@@ -7,6 +7,8 @@ import DataGrid from "~/components/data-grid";
 import data from "~/utils/data/dataset.json";
 import DatesetIllustration from "~/assets/illustrations/dataset.png";
 import OrganizationIllustration from "~/assets/illustrations/organization.png";
+import { ClickAwayListener, Fade, Paper, Popper } from "@mui/material";
+import { useState } from "react";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -80,15 +82,43 @@ export default function Dashboard() {
     },
   ];
 
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const dropdownDisplay = Boolean(anchorEl);
+
   return (
     <>
       <main className="p-6 px-8 pb-12">
         <header className="flex items-center gap-8 justify-between">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <Button className="!rounded !py-0 !px-0">
-            <p className="text-white border-r p-6 py-2">Add</p>
-            <FaAngleDown className="mx-2" />
-          </Button>
+          <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+            <div>
+              <Button
+                className="!rounded !py-0 !px-0"
+                onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)}
+              >
+                <p className="text-white border-r p-6 py-2">Add</p>
+                <FaAngleDown className="mx-2" />
+              </Button>
+              <Popper transition open={dropdownDisplay} anchorEl={anchorEl}>
+                {({ TransitionProps }) => (
+                  <Fade {...TransitionProps} timeout={200}>
+                    <Paper className="flex flex-col [&>button]:p-4 overflow-hidden">
+                      <button
+                        className="hover:bg-info-100"
+                        onClick={() => {
+                          navigate("/account/datasets/new");
+                        }}
+                      >
+                        Add a dataset
+                      </button>
+                      <button className="hover:bg-info-100">Add an organization</button>
+                    </Paper>
+                  </Fade>
+                )}
+              </Popper>
+            </div>
+          </ClickAwayListener>
         </header>
         <div className="flex items-center gap-8 py-8">
           <div className="shadow w-[300px] rounded-md bg-red-500 aspect-video p-4 flex flex-col relative overflow-hidden">

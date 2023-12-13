@@ -19,7 +19,7 @@ export default function Category() {
       </header>
       <main className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:550px)]:!grid-cols-1 gap-6 tablet:gap-4">
         {data.slice(0, 3).map((item, index) => {
-          const { slug, illustration, description, name } = item;
+          const { slug, illustration, description, label } = item;
 
           return (
             <Link
@@ -40,7 +40,7 @@ export default function Category() {
                 />
               </figure>
               <div className="flex flex-col items-start gap-4 p-4">
-                <h2 className="text-base font-semibold">{name}</h2>
+                <h2 className="text-base font-semibold">{label}</h2>
                 <p className="text-start text-sm">{description}</p>
               </div>
             </Link>
