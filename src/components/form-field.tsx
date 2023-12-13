@@ -26,7 +26,7 @@ export default function FormField({ label, className, labelProps, ...props }: Fo
           )}
           <OutlinedInput
             className={twMerge(
-              "w-full !rounded-md !border-[0px] placeholder:!text-base !p-0",
+              "w-full !rounded-md !border-[0px] placeholder:!text-base",
               className
             )}
             {...field}
