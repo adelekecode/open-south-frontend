@@ -35,7 +35,7 @@ import {
 import GetDataset from "./layouts/get-dataset";
 import News from "./pages/news";
 import NewsDetails from "./pages/news-details";
-import Sponsor from "./pages/sponsor";
+import Partner from "./pages/partner";
 
 async function loader() {
   try {
@@ -101,7 +101,7 @@ const router = createBrowserRouter(
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/faq" element={<Faq />} />
-            <Route path="/sponsors" element={<Sponsor />} />
+            <Route path="/partners" element={<Partner />} />
           </Route>
         </Route>
       </Route>

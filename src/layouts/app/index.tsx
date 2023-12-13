@@ -32,8 +32,8 @@ const routes = [
     name: "Contact Us",
   },
   {
-    to: "/sponsors",
-    name: "Sponsors",
+    to: "/partners",
+    name: "Partners",
   },
 ];
 

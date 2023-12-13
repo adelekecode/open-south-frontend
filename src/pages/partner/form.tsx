@@ -27,7 +27,7 @@ export default function Form() {
             onSubmit={handleSubmit}
             className="flex flex-col gap-4 w-full max-w-[700px]"
           >
-            <h3 className="text-xl font-semibold">Become a sponsor</h3>
+            <h3 className="text-xl font-semibold">Become a partner</h3>
             <FormField label="Company Name" required placeholder="Example" name="companyName" />
             <FormField
               label="Email"

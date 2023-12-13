@@ -91,23 +91,28 @@ export default function Footer() {
           </Link>
           <span></span>
           <div className="flex items-center gap-2">
-            <p className="text-xs">This platform is licensed under</p>
+            <p className="text-xs">Open South is licensed under</p>
             <a
-              href="http://creativecommons.org/licenses/by-nd/4.0/?ref=chooser-v1"
+              href="http://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
               target="_blank"
               rel="license noopener noreferrer"
               className="flex items-center gap-2 text-xs hover:underline text-orange-600 font-medium"
             >
-              CC BY-ND 4.0
+              CC BY-NC-ND 4.0
             </a>
-            <div className="flex items-center gap-2 [&_img]:w-4">
+            <div className="flex items-center gap-1 [&_img]:w-4">
               <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" />
               <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" />
-              {/* <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" /> */}
+              <img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" />
+              <img src="https://mirrors.creativecommons.org/presskit/icons/nd.svg?ref=chooser-v1" />
             </div>
           </div>
         </div>
       </div>
     </footer>
   );
+}
+
+{
+  /* <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><span property="dct:title">Open South</span> is licensed under </p> */
 }
