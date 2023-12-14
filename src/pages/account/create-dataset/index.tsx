@@ -33,8 +33,8 @@ export default function CreateDataset() {
   return (
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
-        <h1 className="text-2xl font-semibold mb-2">New Dataset</h1>
-        <div className="w-full grid grid-cols-4 overflow-x-auto border p-2 rounded-md">
+        <h1 className="text-2xl font-semibold mb-2 largeMobile:text-xl">New Dataset</h1>
+        <div className="w-full grid grid-cols-4 [@media(max-width:560px)]:flex justify-between overflow-x-auto border p-2 rounded-md">
           {data.map((item, index) => {
             const newIndex = index + 1;
             const isActive = newIndex === activeIndex;
@@ -42,14 +42,23 @@ export default function CreateDataset() {
             return (
               <div
                 key={newIndex}
-                className={`flex flex-col items-center justify-center gap-2 p-6 rounded ${
+                className={`flex flex-col items-center justify-center gap-2 p-6 tablet:px-2 tablet:py-4 rounded ${
                   isActive ? "bg-primary-600 [&>*]:text-white [&>*]:font-medium" : ""
                 }`}
               >
                 <h3 className="text-sm text-center">
-                  {newIndex}. {item.title}
+                  <span
+                    className={`${
+                      !isActive && "[@media(max-width:560px)]:px-4 mediumMobile:!px-1"
+                    }`}
+                  >
+                    {newIndex}.
+                  </span>{" "}
+                  <span className={`${!isActive && "[@media(max-width:560px)]:hidden"}`}>
+                    {item.title}
+                  </span>
                 </h3>
-                <p className="text-xs text-center">{item.description}</p>
+                <p className="text-xs text-center tablet:hidden">{item.description}</p>
               </div>
             );
           })}

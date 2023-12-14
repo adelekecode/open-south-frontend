@@ -167,7 +167,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                   Temporal Coverage
                   <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
                 </InputLabel>
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-4 items-center [@media(max-width:560px)]:flex-col [@media(max-width:560px)]:gap-2">
                   <DatePickerField
                     className="[&_input]:!text-[0.9rem]"
                     name="start"

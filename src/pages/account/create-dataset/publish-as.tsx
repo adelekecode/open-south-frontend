@@ -23,13 +23,13 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
   return (
     <div className="pt-4 flex flex-col gap-10">
       <div className="px-4 flex flex-col gap-6">
-        <h2 className="w-full text-center text-base font-semibold">
+        <h2 className="w-full text-center text-base font-semibold largeMobile:text-sm">
           Choose under which identity you want to publish
         </h2>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <p className="text-sm font-medium">Publish from your account</p>
-            <div className="grid grid-cols-3 gap-4">
+            <p className="text-sm font-medium largeMobile:text-xs">Publish from your account</p>
+            <div className="grid grid-cols-3 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1 gap-4">
               <button
                 className={`border p-2 h-[7rem] rounded-sm flex items-start ${
                   !selectedOrg && "border-primary-600 bg-secondary-50"
@@ -62,15 +62,17 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
             </div>
           </div>
           {isLoadingOrganizations ? (
-            <div className="grid grid-cols-3 gap-4 tablet:grid-cols-2 largeMobile:grid-cols-1">
+            <div className="grid grid-cols-3 gap-4 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index + 1} className="animate-pulse rounded-lg bg-gray-200 h-28" />
               ))}
             </div>
           ) : organizations && organizations.length > 0 ? (
             <div className="flex flex-col gap-2">
-              <p className="text-sm font-medium">Publish from an organization</p>
-              <div className="grid grid-cols-3 gap-4">
+              <p className="text-sm font-medium largeMobile:text-xs">
+                Publish from an organization
+              </p>
+              <div className="grid grid-cols-3 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1 gap-4">
                 {OrgData.map((item, index) => {
                   const isActive = selectedOrg === item.id;
 
@@ -101,7 +103,7 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
             </div>
           ) : (
             <div className="flex items-center flex-col justify-center gap-4 py-4">
-              <p className="text-sm">
+              <p className="text-sm text-center largeMobile:text-xs">
                 You are not a member of any organization. Maybe you should find yours or create your
                 own.
               </p>
