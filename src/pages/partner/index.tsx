@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Seo from "~/components/seo";
-import BIDS from "~/assets/images/partner-logos/bids.jpg";
-import CHAI from "~/assets/images/partner-logos/chai.jpg";
+import BIDS from "~/assets/images/partner-logos/bids.png";
+import CHAI from "~/assets/images/partner-logos/chai.png";
 import Button from "~/components/button";
 import Form from "./form";
 

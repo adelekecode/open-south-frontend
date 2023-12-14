@@ -1,18 +1,24 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import Button from "~/components/button";
 import OrgData from "~/utils/data/organization.json";
 import CurrentUserAvatar from "~/components/current-user-avatar";
+import { useOrganizations } from "~/queries/organizations";
 
 type PublishAsProps = {
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export default function PublishAs({ setActiveIndex }: PublishAsProps) {
+  const navigate = useNavigate();
+
   const [selectedOrg, setSelectedOrg] = useState<string | null>(null);
 
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
+
+  const { data: organizations, isLoading: isLoadingOrganizations } = useOrganizations();
 
   return (
     <div className="pt-4 flex flex-col gap-10">
@@ -55,7 +61,13 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
               </button>
             </div>
           </div>
-          {OrgData.length > 0 ? (
+          {isLoadingOrganizations ? (
+            <div className="grid grid-cols-3 gap-4 tablet:grid-cols-2 largeMobile:grid-cols-1">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index + 1} className="animate-pulse rounded-lg bg-gray-200 h-28" />
+              ))}
+            </div>
+          ) : organizations && organizations.length > 0 ? (
             <div className="flex flex-col gap-2">
               <p className="text-sm font-medium">Publish from an organization</p>
               <div className="grid grid-cols-3 gap-4">
@@ -88,12 +100,19 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
               </div>
             </div>
           ) : (
-            <div>
-              <p>
+            <div className="flex items-center flex-col justify-center gap-4 py-4">
+              <p className="text-sm">
                 You are not a member of any organization. Maybe you should find yours or create your
                 own.
               </p>
-              <Button>Create your organization</Button>
+              <Button
+                className="!py-3 !text-xs"
+                onClick={() => {
+                  navigate("/account/organizations/new");
+                }}
+              >
+                Create your organization
+              </Button>
             </div>
           )}
         </div>

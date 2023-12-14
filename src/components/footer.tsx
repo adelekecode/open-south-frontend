@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import Logo from "./logo";
-import BIDS from "~/assets/images/partner-logos/bids.jpg";
-import CHAI from "~/assets/images/partner-logos/chai.jpg";
+import BIDS from "~/assets/images/partner-logos/bids.png";
+import CHAI from "~/assets/images/partner-logos/chai.png";
 
 export default function Footer() {
   return (

@@ -32,8 +32,8 @@ export default function SelectField({ label, className, labelProps, ...props }: 
           <MuiSelect
             className={twMerge(`w-full !text-[0.9rem] ${!props.value && "font-normal"}`, className)}
             {...field}
-            {...props}
             value={props.value}
+            {...props}
             sx={{
               "& .MuiSelect-select": {
                 padding: "11px 13.5px",

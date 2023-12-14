@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Autocomplete, InputLabel, MenuItem, TextField } from "@mui/material";
-import { Formik } from "formik";
+import { ErrorMessage, Formik } from "formik";
 import * as Yup from "yup";
 import Button from "~/components/button";
 import DatePickerField from "~/components/date-picker-field";
@@ -9,23 +10,26 @@ import TextEditorField from "~/components/text-editor-field";
 import { useCreateDataset } from "~/mutations/dataset";
 import { useCreateTags } from "~/mutations/tags";
 import UpdateFrequencyData from "~/utils/data/update-frequency.json";
-import categoryData from "~/utils/data/category";
 import countryData from "~/utils/data/country.json";
+import TagsField from "~/components/tags-field";
+import { useCategories } from "~/queries/category";
 
 const validationSchema = Yup.object({
   title: Yup.string()
     .trim()
-    .required("Title is required")
+    .required("Title field is required")
     .min(3, "Title must be atleast 3 characters"),
   description: Yup.string()
     .trim()
-    .required("Description is required")
+    .required("Description field is required")
     .min(3, "Description must be atleast 3 characters"),
-  license: Yup.string().trim().required("License is required"),
-  updateFrequency: Yup.string().trim().required("Update Frequency is required"),
-  lastestUpdate: Yup.string().optional(),
+  license: Yup.string().trim().required("License field is required"),
+  updateFrequency: Yup.string().trim().required("Update Frequency field is required"),
+  tags: Yup.array().min(1, "Tags is a required field"),
   start: Yup.string().trim().required("This field is required"),
   end: Yup.string().trim().required("This field is required"),
+  category: Yup.string().trim().required("Category field is required"),
+  spatialCoverage: Yup.string().trim().required("Spatial Coverage field is required"),
 });
 
 type NewDatasetProps = {
@@ -33,6 +37,10 @@ type NewDatasetProps = {
 };
 
 export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
+  const [chosenCategoryObj, setChosenCategoryObj] = useState<Category | null>(null);
+
+  const { data: categories, isLoading: isLoadingCategories } = useCategories();
+
   const createDataset = useCreateDataset();
   const createTags = useCreateTags();
 
@@ -42,22 +50,35 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
         title: "",
         description: "",
         license: "Licence Ouverte / Open Licence version 2.0",
+        tags: [],
         updateFrequency: "",
-        lastestUpdate: "",
-        category: "",
         start: "",
         end: "",
+        category: "",
+        spatialCoverage: "",
       }}
       validateOnBlur={false}
       validationSchema={validationSchema}
       onSubmit={async (values) => {
+        if (!chosenCategoryObj) return;
+
+        const newValues: Omit<typeof values, "category"> & {
+          category?: string;
+        } = structuredClone(values);
+
+        delete newValues.category;
+
+        const { tags, ...rest } = newValues;
+
         const datasetResponse = await createDataset.mutateAsync({
-          ...values,
+          ...rest,
+          category: chosenCategoryObj,
         });
 
         if (datasetResponse) {
           const tagsResponse = await createTags.mutateAsync({
-            ...values,
+            datasetId: datasetResponse.id,
+            tags,
           });
 
           if (tagsResponse) {
@@ -66,7 +87,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
         }
       }}
     >
-      {({ handleSubmit, isSubmitting, values }) => (
+      {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
         <form className="pt-4 flex flex-col gap-10" onSubmit={handleSubmit}>
           <div className="px-4 flex flex-col gap-6">
             <h2 className="w-full text-center text-base font-semibold">
@@ -94,7 +115,6 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                     [{ header: [1, 2, false] }],
                     ["bold", "italic", "underline", "strike", "blockquote"],
                     [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
-                    // ['image'],
                     ["clean"],
                   ],
                 }}
@@ -132,6 +152,16 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                   </MenuItem>
                 ))}
               </SelectField>
+              <div>
+                <TagsField
+                  name="tags"
+                  required
+                  label="Tags"
+                  labelProps={{
+                    className: "!font-medium",
+                  }}
+                />
+              </div>
               <div className="w-full flex flex-col">
                 <InputLabel className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}>
                   Temporal Coverage
@@ -160,13 +190,29 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                 labelProps={{
                   className: "!font-medium",
                 }}
-                value={values.category}
+                value={values.category || ""}
               >
-                {categoryData.map((item, index) => (
-                  <MenuItem key={index + 1} value={item.label}>
-                    {item.label}
-                  </MenuItem>
-                ))}
+                {!isLoadingCategories &&
+                  categories &&
+                  categories?.length > 0 &&
+                  categories.map((item, index) => (
+                    <MenuItem
+                      key={index + 1}
+                      value={item.name}
+                      onClick={() => {
+                        setChosenCategoryObj(item);
+                      }}
+                    >
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                {isLoadingCategories &&
+                  Array.from({ length: 5 }).map((_, index) => (
+                    <MenuItem
+                      key={index + 1}
+                      className="animate-pulse rounded-lg bg-gray-200 h-24"
+                    ></MenuItem>
+                  ))}
               </SelectField>
               <div>
                 <InputLabel className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}>
@@ -175,9 +221,21 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                 </InputLabel>
                 <Autocomplete
                   options={countryData}
+                  onChange={(_, value) => setFieldValue("spatialCoverage", value?.label)}
                   renderInput={(params) => (
-                    <TextField {...params} className="[&_input]:!text-[0.9rem]" />
+                    <TextField
+                      {...params}
+                      required
+                      value={values.spatialCoverage || ""}
+                      name="spatialCoverage"
+                      className="[&_input]:!text-[0.9rem]"
+                    />
                   )}
+                />
+                <ErrorMessage
+                  name={"spatialCoverage"}
+                  className={`!text-red-600 !font-medium !text-xs pl-1`}
+                  component={"p"}
                 />
               </div>
             </div>
