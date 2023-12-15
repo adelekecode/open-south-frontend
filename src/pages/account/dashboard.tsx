@@ -1,14 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ClickAwayListener, Fade, Paper, Popper } from "@mui/material";
 import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
 import { FaAngleDown } from "react-icons/fa6";
 import moment from "moment";
 import Button from "~/components/button";
 import DataGrid from "~/components/data-grid";
 import data from "~/utils/data/dataset.json";
-import DatesetIllustration from "~/assets/illustrations/dataset.png";
-import OrganizationIllustration from "~/assets/illustrations/organization.png";
-import { ClickAwayListener, Fade, Paper, Popper } from "@mui/material";
-import { useState } from "react";
+import DatesetIllustration from "~/assets/illustrations/dashboard-cards/dataset.png";
+import OrganizationIllustration from "~/assets/illustrations/dashboard-cards/organization.png";
+import ViewsIllustration from "~/assets/illustrations/dashboard-cards/views.png";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -29,36 +30,6 @@ export default function Dashboard() {
       },
       sortComparator: (v1, v2) => {
         return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      type: "string",
-    },
-    {
-      field: "createdBy",
-      headerName: "Created by",
-      width: 300,
-      valueGetter: (params) => {
-        const { organization, user } = params.row;
-
-        return organization ? organization.name : `${user.firstName} ${user.lastName}`;
-      },
-      renderCell: (params: GridRenderCellParams<any, typeof data>) => {
-        const { organization, user } = params.row;
-
-        return organization ? (
-          <Link
-            className="text-primary-600 capitalize hover:underline relative z-10"
-            to={`/organizations/${organization.slug}`}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            {organization.name}
-          </Link>
-        ) : user ? (
-          <span className="capitalize">{`${user.firstName} ${user.lastName}`}</span>
-        ) : (
-          "-------"
-        );
       },
       type: "string",
     },
@@ -88,7 +59,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <main className="p-6 px-8 pb-12">
+      <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4">
         <header className="flex items-center gap-8 justify-between">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
           <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
@@ -120,48 +91,43 @@ export default function Dashboard() {
             </div>
           </ClickAwayListener>
         </header>
-        <div className="flex items-center gap-8 py-8">
-          <div className="shadow w-[300px] rounded-md bg-red-500 aspect-video p-4 flex flex-col relative overflow-hidden">
-            <p className="text-white font-medium">Datasets</p>
-            <h1 className="text-4xl font-semibold text-white flex-grow flex items-center break-all">
-              {"0"}
-            </h1>
-            <img
-              className={`w-[150px] absolute right-[10px] top-[7px] opacity-50`}
-              src={DatesetIllustration}
-              alt="dataset illustration"
-            />
+        <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4 py-8   [&>div]:shadow [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:aspect-video [&>div]:max-h-[16rem] [&>div]:flex-col [&>div]:relative [&>div]:overflow-hidden  [&>div>p]:text-white [&>div>p]:font-medium  [&>div>h1]:text-4xl [&>div>h1]:font-semibold [&>div>h1]:text-white [&>div>h1]:flex-grow [&>div>h1]:flex [&>div>h1]:items-center [&>div>h1]:break-all  [&>div>img]:w-[55%] [&>div>img]:absolute [&>div>img]:right-[6px] [&>div>img]:top-[7px] [&>div>img]:opacity-50">
+          <div className="bg-red-500/95">
+            <p>Datasets</p>
+            <h1>{"0"}</h1>
+            <img src={DatesetIllustration} alt="dataset illustration" />
           </div>
-          <div className="shadow w-[300px] rounded-md bg-yellow-500 aspect-video p-4 flex flex-col relative overflow-hidden">
-            <p className="text-white font-medium">Organizations</p>
-            <h1 className="text-4xl font-semibold text-white flex-grow flex items-center break-all">
-              {"0"}
-            </h1>
+          <div className="bg-yellow-500/95">
+            <p>Organizations</p>
+            <h1>{"0"}</h1>
             <img
-              className={`w-[114px] absolute right-[15px] top-[33px] opacity-50`}
               src={OrganizationIllustration}
               alt="organizations illustration"
+              className="!w-[40%] !right-[15px] !top-[33px]"
             />
+          </div>
+          <div className="bg-purple-500/80">
+            <p>Views</p>
+            <h1>{"0"}</h1>
+            <img src={ViewsIllustration} alt="views illustration" />
           </div>
         </div>
         <div className="pt-4">
           <h1 className="text-xl font-semibold p-4">Latest dataset created</h1>
           <DataGrid
             rows={data.slice(0, 10).map((item, index) => {
-              const { title, organization, user, updatedAt } = item;
+              const { title, updatedAt } = item;
 
               return {
                 id: index + 1,
                 title,
                 createdAt: moment(Date.now()).format("Do MMM, YYYY"),
                 updatedAt,
-                organization,
-                user,
                 views: Math.floor(Math.random() * 1000) + 1,
               };
             })}
             onRowClick={(params: GridRowParams<(typeof data)[0]>) => {
-              navigate(`./${params.id}`);
+              navigate(`/account/datasets/${params.id}`);
             }}
             getRowClassName={() => `cursor-pointer`}
             columns={columns}
