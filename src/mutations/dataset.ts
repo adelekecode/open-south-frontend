@@ -43,6 +43,68 @@ function useCreateDataset() {
   );
 }
 
+function useCreateDatasetTags() {
+  return useMutation(
+    async ({ datasetId, tags }: { datasetId: string; tags: string[] }) => {
+      const { data: response } = await axiosPrivate.post(`/datasets/tags/${datasetId}/`, {
+        keywords: tags,
+      });
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured while creating tags");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+function useUploadDatasetFile() {
+  return useMutation(
+    async ({
+      datasetId,
+      file,
+      format,
+      size,
+    }: {
+      datasetId: string;
+      file: File;
+      format: string;
+      size: string;
+    }) => {
+      const { data: response } = await axiosPrivate.postForm(`/datasets/files/${datasetId}/`, {
+        file,
+        format,
+        size,
+      });
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured while creating tags");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
 function useDeleteDataset() {
   return useMutation(
     async (id: string) => {
@@ -69,4 +131,4 @@ function useDeleteDataset() {
   );
 }
 
-export { useDeleteDataset, useCreateDataset };
+export { useDeleteDataset, useCreateDataset, useCreateDatasetTags, useUploadDatasetFile };

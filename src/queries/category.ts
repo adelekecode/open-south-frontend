@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 export function useCategories() {
-  return useQuery<Category[]>([`/categories/`]);
+  return useQuery<{ count: number; data: Category[] }>([`/categories/`]);
 }
 
 export function useCategoryDetails(id: string) {

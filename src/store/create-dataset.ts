@@ -1,19 +1,27 @@
 import { create } from "zustand";
 
 type State = {
-  selectedOrg: string | null;
+  dataset: {
+    id: string;
+    title: string;
+    description: string;
+    license: string;
+    tags: string[];
+    updateFrequency: string;
+    start: string;
+    end: string;
+    category: string;
+    spatialCoverage: string;
+  } | null;
 };
 
 type Action = {
-  setSelectedOrg: (val: State["selectedOrg"]) => void;
+  setDataset: (data: State["dataset"]) => void;
 };
 
 const useCreateDatasetStore = create<State & Action>()((set) => ({
-  selectedOrg: null,
-  setSelectedOrg: (val) =>
-    set({
-      selectedOrg: val,
-    }),
+  dataset: null,
+  setDataset: (dataset) => set({ dataset }),
 }));
 
 export default useCreateDatasetStore;
