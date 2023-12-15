@@ -71,13 +71,9 @@ export default function Footer() {
           </Link>
           <div className="flex flex-col gap-4">
             <p className="text-sm font-medium text-center">Our Partners</p>
-            <div className="grid grid-cols-2 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:580px)]:!flex [@media(max-width:580px)]:flex-wrap gap-6 [&>figure]:max-w-[8rem] [&>figure]:w-full [&>figure]:aspect-square [&>figure>img]:w-full [&>figure>img]:h-full [&>figure>img]:object-contain">
-              <figure>
-                <img src={CHAI} alt="CHAI logo" />
-              </figure>
-              <figure>
-                <img src={BIDS} alt="partner logo" />
-              </figure>
+            <div className="flex [@media(max-width:580px)]:flex-wrap gap-6 [&>img]:h-[4rem]">
+              <img src={CHAI} alt="CHAI logo" />
+              <img src={BIDS} alt="partner logo" />
             </div>
           </div>
         </div>

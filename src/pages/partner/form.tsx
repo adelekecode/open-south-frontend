@@ -74,6 +74,7 @@ export default function Form() {
               placeholder="Briefly describe why you want to be our partner."
               name="purposeOfPartnership"
               rows={6}
+              className="!p-0"
             />
             <Button className="w-full !mt-6" type="submit" loading={isSubmitting}>
               Submit

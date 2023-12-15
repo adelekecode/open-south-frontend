@@ -18,6 +18,10 @@ const loginSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
+    )
     .required("Password is required"),
   rememberMe: Yup.boolean(),
 });
@@ -97,7 +101,6 @@ export default function Login() {
             }
           }}
           validateOnBlur={false}
-          validateOnChange={false}
         >
           {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
             <form action="post" onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
@@ -122,6 +125,7 @@ export default function Login() {
                     </IconButton>
                   }
                 />
+
                 <div className="flex w-full justify-between items-center gap-4 smallMobile:flex-col-reverse px-2">
                   <FormControlLabel
                     control={
