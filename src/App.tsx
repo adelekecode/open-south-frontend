@@ -53,8 +53,22 @@ const router = createBrowserRouter(
       <Route loader={dashboardLoader}>
         <Route element={<Protected />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/account/dashboard" element={<Dashboard />} />
-            <Route path="/account/datasets" element={<AccountDataset />} />
+            <Route
+              path="/account/dashboard"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <Dashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/account/datasets"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AccountDataset />
+                </Suspense>
+              }
+            />
             <Route
               path="/account/datasets/new"
               element={
@@ -66,8 +80,22 @@ const router = createBrowserRouter(
             <Route element={<GetUserDataset />}>
               <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
             </Route>
-            <Route path="/account/:slug/dashboard" element={<OrgDashboard />} />
-            <Route path="/account/:slug/datasets" element={<OrgDataset />} />
+            <Route
+              path="/account/:slug/dashboard"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <OrgDashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/account/:slug/datasets"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <OrgDataset />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
       </Route>
