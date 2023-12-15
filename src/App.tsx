@@ -33,7 +33,7 @@ import {
   OrgDataset,
   CreateDataset,
 } from "./pages/account";
-import GetDataset from "./layouts/get-dataset";
+import GetUserDataset from "./layouts/get-user-dataset";
 import News from "./pages/news";
 import NewsDetails from "./pages/news-details";
 import Partner from "./pages/partner";
@@ -63,7 +63,7 @@ const router = createBrowserRouter(
                 </Suspense>
               }
             />
-            <Route element={<GetDataset />}>
+            <Route element={<GetUserDataset />}>
               <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
             </Route>
             <Route path="/account/:slug/dashboard" element={<OrgDashboard />} />

@@ -8,11 +8,12 @@ import FormField from "~/components/form-field";
 import SelectField from "~/components/select-field";
 import TextEditorField from "~/components/text-editor-field";
 import { useCreateDataset } from "~/mutations/dataset";
-import { useCreateTags } from "~/mutations/tags";
+import { useCreateDatasetTags } from "~/mutations/dataset";
 import UpdateFrequencyData from "~/utils/data/update-frequency.json";
 import countryData from "~/utils/data/country.json";
 import TagsField from "~/components/tags-field";
 import { useCategories } from "~/queries/category";
+import useCreateDatasetStore from "~/store/create-dataset";
 
 const validationSchema = Yup.object({
   title: Yup.string()
@@ -39,10 +40,12 @@ type NewDatasetProps = {
 export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
   const [chosenCategoryObj, setChosenCategoryObj] = useState<Category | null>(null);
 
+  const { setDataset } = useCreateDatasetStore();
+
   const { data: categories, isLoading: isLoadingCategories } = useCategories();
 
   const createDataset = useCreateDataset();
-  const createTags = useCreateTags();
+  const createDatasetTags = useCreateDatasetTags();
 
   return (
     <Formik
@@ -76,7 +79,9 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
         });
 
         if (datasetResponse) {
-          const tagsResponse = await createTags.mutateAsync({
+          setDataset({ ...values, id: datasetResponse.id || "" });
+
+          const tagsResponse = await createDatasetTags.mutateAsync({
             datasetId: datasetResponse.id,
             tags,
           });
@@ -194,8 +199,8 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
               >
                 {!isLoadingCategories &&
                   categories &&
-                  categories?.length > 0 &&
-                  categories.map((item, index) => (
+                  categories.data?.length > 0 &&
+                  categories.data.map((item, index) => (
                     <MenuItem
                       key={index + 1}
                       value={item.name}
