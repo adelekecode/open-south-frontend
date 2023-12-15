@@ -39,6 +39,7 @@ import NewsDetails from "./pages/news-details";
 import Partner from "./pages/partner";
 import { dashboardLoader } from "./utils/routes-addons/dashboard";
 import { appLoader } from "./utils/routes-addons/app";
+import Contact from "./pages/contact";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -86,6 +87,7 @@ const router = createBrowserRouter(
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/faq" element={<Faq />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/partners" element={<Partner />} />
           </Route>
         </Route>
