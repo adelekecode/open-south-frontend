@@ -22,6 +22,7 @@ export default function AutocompleteInput<T>({
 }: AutocompleteInputProps<T>) {
   return (
     <MuiAutocomplete
+      {...props}
       disablePortal={disablePortal}
       sx={{
         "& .Mui-focused": {
@@ -65,7 +66,6 @@ export default function AutocompleteInput<T>({
           className={twMerge(``, inputParams?.className)}
         />
       )}
-      {...props}
     />
   );
 }

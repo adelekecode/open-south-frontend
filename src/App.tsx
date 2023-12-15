@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -6,7 +7,6 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import Protected from "./layouts/protected";
-import { fetchAccessTokenIfRefreshTokenExists } from "./utils/api";
 import { ForgotPassword, Login, ResetPassword, Signup } from "./pages/auth";
 import NotFound from "./pages/404";
 import ErrorBoundary from "./components/error-boundary";
@@ -37,31 +37,8 @@ import GetDataset from "./layouts/get-dataset";
 import News from "./pages/news";
 import NewsDetails from "./pages/news-details";
 import Partner from "./pages/partner";
-
-async function loader() {
-  try {
-    await fetchAccessTokenIfRefreshTokenExists();
-
-    return null;
-  } catch (error) {
-    return new Response("", {
-      status: 302,
-      headers: {
-        Location: "/login",
-      },
-    });
-  }
-}
-
-async function appLoader() {
-  try {
-    await fetchAccessTokenIfRefreshTokenExists();
-
-    return null;
-  } catch (error) {
-    return null;
-  }
-}
+import { dashboardLoader } from "./utils/routes-addons/dashboard";
+import { appLoader } from "./utils/routes-addons/app";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -72,12 +49,19 @@ const router = createBrowserRouter(
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token/:uuid" element={<ResetPassword />} />
       </Route>
-      <Route loader={loader}>
+      <Route loader={dashboardLoader}>
         <Route element={<Protected />}>
           <Route element={<DashboardLayout />}>
             <Route path="/account/dashboard" element={<Dashboard />} />
             <Route path="/account/datasets" element={<AccountDataset />} />
-            <Route path="/account/datasets/new" element={<CreateDataset />} />
+            <Route
+              path="/account/datasets/new"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <CreateDataset />
+                </Suspense>
+              }
+            />
             <Route element={<GetDataset />}>
               <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
             </Route>

@@ -19,8 +19,16 @@ const signupSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
+    ),
   confirmPassword: Yup.string()
+    .min(8, "Confirm password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "Confirm password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
+    )
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Confirm password is required"),
 });
@@ -76,7 +84,6 @@ export default function Signup() {
               }
             }}
             validateOnBlur={false}
-            validateOnChange={false}
           >
             {({ handleSubmit, isSubmitting }) => (
               <form action="post" onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">

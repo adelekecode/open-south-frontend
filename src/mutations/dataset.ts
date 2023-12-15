@@ -1,11 +1,29 @@
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
+import { axiosPrivate } from "~/utils/api";
 
 function useCreateDataset() {
   return useMutation(
-    async (data: any) => {
-      const { data: response } = await axios.post(`/dataset`, data);
+    async (
+      data: Record<
+        | "title"
+        | "description"
+        | "license"
+        | "updateFrequency"
+        | "spatialCoverage"
+        | "start"
+        | "end",
+        string
+      > & { category: Category }
+    ) => {
+      const { category, spatialCoverage, updateFrequency, start, end, ...rest } = data;
+      const { data: response } = await axiosPrivate.post(`/datasets/${category.id}/`, {
+        ...rest,
+        update_frequency: updateFrequency,
+        temporal_coverage: `${start},${end}`,
+        spatial_coverage: spatialCoverage,
+      });
 
       return response;
     },
@@ -28,7 +46,7 @@ function useCreateDataset() {
 function useDeleteDataset() {
   return useMutation(
     async (id: string) => {
-      const { data: response } = await axios.delete(`/dataset/${id}`);
+      const { data: response } = await axiosPrivate.delete(`/dataset/${id}/`);
 
       return response;
     },

@@ -28,3 +28,13 @@ type Dataset = {
   slug: string;
   updatedAt: string;
 };
+
+type Category = {
+  id: string;
+  data_count: number;
+  image_url: string | null;
+  name: string;
+  slug: string;
+  created_at: string;
+  updated_at: string;
+};

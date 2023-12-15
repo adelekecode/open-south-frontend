@@ -1,11 +1,14 @@
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { notifyError } from "~/utils/toast";
+import { axiosPrivate } from "~/utils/api";
 
 function useCreateTags() {
   return useMutation(
-    async (data: any) => {
-      const { data: response } = await axios.post(`/tags`, data);
+    async ({ datasetId, tags }: { datasetId: string; tags: string[] }) => {
+      const { data: response } = await axiosPrivate.post(`/datasets/tags/${datasetId}/`, {
+        keywords: tags,
+      });
 
       return response;
     },

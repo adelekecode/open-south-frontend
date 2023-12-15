@@ -41,7 +41,7 @@ export default function PhoneNumberField({ label, className, ...props }: PhoneNu
             )}
             {...field}
             {...props}
-            defaultCountry="CA"
+            defaultCountry="US"
             onChange={(value) => form.setFieldValue(field.name, value)}
             value={field.value}
             international

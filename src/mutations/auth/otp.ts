@@ -26,7 +26,7 @@ export function useRequestOTP() {
 
 export function useVerifyOTP() {
   return useMutation(
-    async (data: Record<"otp", number>) => {
+    async (data: Record<"otp", string>) => {
       const { data: response } = await axios.post("/auth/otp/verify/", data);
 
       return response;

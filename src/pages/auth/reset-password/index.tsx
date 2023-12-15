@@ -13,9 +13,17 @@ import Success from "./success";
 
 const validationSchema = Yup.object({
   newPassword: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+    .min(8, "New password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "New password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
+    ),
   confirmPassword: Yup.string()
+    .min(8, "Confirm password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "Confirm password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
+    )
     .oneOf([Yup.ref("newPassword")], "Passwords must match")
     .required("Confirm password is required"),
 });
@@ -76,7 +84,7 @@ export default function ResetPassword() {
             {({ handleSubmit, isSubmitting }) => (
               <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
                 <FormField
-                  label="Password"
+                  label="New Password"
                   required
                   placeholder="****************"
                   name="newPassword"

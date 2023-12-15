@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import axios from "axios";
-import DashboardLoader from "~/components/loader/dashboard-loader";
 import { useCurrentUser } from "~/queries/user";
 import { axiosPrivate } from "~/utils/api";
+import AppLoader from "~/components/loader/app-loader";
 
 export default function GetCurrentUser() {
   const { isLoading } = useCurrentUser(["/auth/users/me/"], {
@@ -24,7 +24,7 @@ export default function GetCurrentUser() {
   });
 
   if (isLoading) {
-    return <DashboardLoader />;
+    return <AppLoader />;
   }
 
   return <Outlet />;
