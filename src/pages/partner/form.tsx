@@ -32,7 +32,7 @@ export default function Form() {
           >
             <div className="flex flex-col gap-2">
               <h3 className="text-xl font-semibold">Become a partner</h3>
-              <p className="text-sm">Please fill the form below</p>
+              <p className="text-sm">Please fill the form below.</p>
             </div>
             <FormField
               label="Organization Name"
