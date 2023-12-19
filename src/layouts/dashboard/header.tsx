@@ -29,6 +29,7 @@ export default function Header() {
                   <button
                     className="hover:bg-info-100"
                     onClick={() => {
+                      setAnchorEl(null);
                       navigate("/account/datasets/new");
                     }}
                   >
@@ -37,6 +38,7 @@ export default function Header() {
                   <button
                     className="hover:bg-info-100"
                     onClick={() => {
+                      setAnchorEl(null);
                       navigate("/account/organizations/new");
                     }}
                   >
