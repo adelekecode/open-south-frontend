@@ -8,9 +8,11 @@ import { GoDatabase } from "react-icons/go";
 type OrgDropdownProps = {
   name: string;
   slug: string;
+  image: string;
+  description: string;
 };
 
-export default function OrgDropdown({ name, slug }: OrgDropdownProps) {
+export default function OrgDropdown({ name, slug, image }: OrgDropdownProps) {
   const [clicked, setClicked] = useState(false);
 
   function navLinkClassNameHandler({
@@ -27,17 +29,23 @@ export default function OrgDropdown({ name, slug }: OrgDropdownProps) {
   return (
     <div className="w-full">
       <button
-        className={`w-full flex items-center transition-all p-4 justify-between gap-4 ${
+        className={`w-full grid grid-cols-[1fr,10px] items-center transition-all p-4 py-2 justify-between gap-2 ${
           clicked && "bg-info-200"
         }`}
         onClick={() => {
           setClicked((prev) => !prev);
         }}
       >
-        <p>{name.length > 12 ? name.slice(0, 12) + "..." : name}</p>
-        <FaAngleDown className={`transition-all ${clicked && "rotate-180"}`} />
+        <div className="grid grid-cols-[30px,1fr,12px] items-center gap-1">
+          <figure className="w-full aspect-square p-[1px] border bg-white">
+            <img src={image} alt="company logo" className="w-full h-full object-contain" />
+          </figure>
+          <p className="text-sm overflow-x-hidden whitespace-nowrap">{name}</p>
+          <span className="w-full pr-1">...</span>
+        </div>
+        <FaAngleDown className={`transition-all text-xs ${clicked && "rotate-180"}`} />
       </button>
-      <Collapse className="pl-4" in={clicked} timeout="auto" unmountOnExit>
+      <Collapse className="pl-2" in={clicked} timeout="auto" unmountOnExit>
         <NavLink to={`/account/${slug}/dashboard`} className={navLinkClassNameHandler}>
           <IoGridOutline />
           <p className="text-sm">Dashboard</p>

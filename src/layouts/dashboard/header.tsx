@@ -22,10 +22,10 @@ export default function Header() {
           <IconButton onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)}>
             <IoMdAdd />
           </IconButton>
-          <Popper transition open={dropdownDisplay} anchorEl={anchorEl}>
+          <Popper transition open={dropdownDisplay} anchorEl={anchorEl} className="z-[100] !mt-2">
             {({ TransitionProps }) => (
               <Fade {...TransitionProps} timeout={200}>
-                <Paper className="flex flex-col [&>button]:p-4 overflow-hidden">
+                <Paper className="flex flex-col [&>button]:p-4 overflow-hidden relative divide-y">
                   <button
                     className="hover:bg-info-100"
                     onClick={() => {
@@ -34,7 +34,14 @@ export default function Header() {
                   >
                     Add a dataset
                   </button>
-                  <button className="hover:bg-info-100">Add an organization</button>
+                  <button
+                    className="hover:bg-info-100"
+                    onClick={() => {
+                      navigate("/account/organizations/new");
+                    }}
+                  >
+                    Add an organization
+                  </button>
                 </Paper>
               </Fade>
             )}
