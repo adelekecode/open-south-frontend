@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { IoLogOutOutline } from "react-icons/io5";
+import { Collapse } from "@mui/material";
 import { IoGridOutline } from "react-icons/io5";
+import { FaAngleDown } from "react-icons/fa6";
 import { GoDatabase } from "react-icons/go";
 import Logo from "~/components/logo";
-import Button from "~/components/button";
-import useAppStore from "~/store/app";
+import OrganizationData from "~/utils/data/organization.json";
 import OrgDropdown from "./org-dropdown";
 
 export default function SideBar() {
-  const { setDisplayLogoutModal } = useAppStore();
+  const [orgDropDownclicked, setOrgDropDownClicked] = useState(false);
 
   function navLinkClassNameHandler({
     isActive,
@@ -38,29 +39,25 @@ export default function SideBar() {
               <p className="text-sm">Datasets</p>
             </NavLink>
             <div className="py-4">
-              <p className="flex items-center px-8 py-2 text-sm font-medium">Organizations</p>
-              <div className="flex flex-col">
-                {[
-                  {
-                    name: "Netflix",
-                    slug: "netflix",
-                  },
-                ].map((item, index) => (
-                  <OrgDropdown key={index + 1} {...item} />
-                ))}
-              </div>
+              <button
+                className={`w-full grid grid-cols-[1fr,10px] items-center transition-all p-1 px-3 justify-between gap-2`}
+                onClick={() => {
+                  setOrgDropDownClicked((prev) => !prev);
+                }}
+              >
+                <p className="flex items-center py-2 text-sm font-medium">Organizations</p>
+                <FaAngleDown
+                  className={`transition-all text-xs ${orgDropDownclicked && "rotate-180"}`}
+                />
+              </button>
+              <Collapse in={orgDropDownclicked} timeout="auto" unmountOnExit>
+                <div className="flex flex-col divide-y">
+                  {OrganizationData.map((item, index) => (
+                    <OrgDropdown key={index + 1} {...item} />
+                  ))}
+                </div>
+              </Collapse>
             </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <Button
-              className="!w-fit"
-              startIcon={<IoLogOutOutline />}
-              onClick={() => {
-                setDisplayLogoutModal(true);
-              }}
-            >
-              Log out
-            </Button>
           </div>
         </div>
       </aside>

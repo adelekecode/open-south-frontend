@@ -25,7 +25,7 @@ export default function Success() {
         </Button>
         <Button
           onClick={() => {
-            navigate("/datasets/");
+            navigate("/account/datasets/");
           }}
           className="w-fit !py-2"
         >

@@ -90,7 +90,7 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
                         <figure className="w-full aspect-square p-1 border bg-white rounded-sm">
                           <img
                             src={item.image}
-                            alt="company logo"
+                            alt="organization logo"
                             className="w-full h-full object-contain"
                           />
                         </figure>

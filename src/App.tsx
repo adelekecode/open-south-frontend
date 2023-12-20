@@ -32,6 +32,7 @@ import {
   OrgDashboard,
   OrgDataset,
   CreateDataset,
+  CreateOrg,
 } from "./pages/account";
 import GetUserDataset from "./layouts/get-user-dataset";
 import News from "./pages/news";
@@ -93,6 +94,14 @@ const router = createBrowserRouter(
               element={
                 <Suspense fallback={<DashboardLoader />}>
                   <OrgDataset />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/account/organizations/new"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <CreateOrg />
                 </Suspense>
               }
             />

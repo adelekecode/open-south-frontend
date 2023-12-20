@@ -55,6 +55,9 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
     multiple: true,
     accept: {
       "text/csv": [".csv"],
+      "application/json": [".json"],
+      "application/vnd.ms-excel": [".xls", ".xlsx"],
+      "application/zip": [".zip"],
     },
     onDrop,
   });

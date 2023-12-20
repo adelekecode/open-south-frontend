@@ -1,10 +1,6 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ClickAwayListener, Fade, Paper, Popper } from "@mui/material";
 import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
-import { FaAngleDown } from "react-icons/fa6";
 import moment from "moment";
-import Button from "~/components/button";
 import DataGrid from "~/components/data-grid";
 import data from "~/utils/data/dataset.json";
 import DatesetIllustration from "~/assets/illustrations/dashboard-cards/dataset.png";
@@ -53,43 +49,11 @@ export default function Dashboard() {
     },
   ];
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
-  const dropdownDisplay = Boolean(anchorEl);
-
   return (
     <>
       <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4">
         <header className="flex items-center gap-8 justify-between">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-            <div>
-              <Button
-                className="!rounded !py-0 !px-0"
-                onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)}
-              >
-                <p className="text-white border-r p-6 py-2">Add</p>
-                <FaAngleDown className="mx-2" />
-              </Button>
-              <Popper transition open={dropdownDisplay} anchorEl={anchorEl}>
-                {({ TransitionProps }) => (
-                  <Fade {...TransitionProps} timeout={200}>
-                    <Paper className="flex flex-col [&>button]:p-4 overflow-hidden">
-                      <button
-                        className="hover:bg-info-100"
-                        onClick={() => {
-                          navigate("/account/datasets/new");
-                        }}
-                      >
-                        Add a dataset
-                      </button>
-                      <button className="hover:bg-info-100">Add an organization</button>
-                    </Paper>
-                  </Fade>
-                )}
-              </Popper>
-            </div>
-          </ClickAwayListener>
         </header>
         <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4 py-8   [&>div]:shadow [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:aspect-video [&>div]:max-h-[16rem] [&>div]:flex-col [&>div]:relative [&>div]:overflow-hidden  [&>div>p]:text-white [&>div>p]:font-medium  [&>div>h1]:text-4xl [&>div>h1]:font-semibold [&>div>h1]:text-white [&>div>h1]:flex-grow [&>div>h1]:flex [&>div>h1]:items-center [&>div>h1]:break-all  [&>div>img]:w-[55%] [&>div>img]:absolute [&>div>img]:right-[6px] [&>div>img]:top-[7px] [&>div>img]:opacity-50">
           <div className="bg-red-500/95">

@@ -28,12 +28,12 @@ const routes = [
     name: "News",
   },
   {
-    to: "/contact",
-    name: "Contact Us",
-  },
-  {
     to: "/partners",
     name: "Partners",
+  },
+  {
+    to: "/contact",
+    name: "Contact Us",
   },
 ];
 
