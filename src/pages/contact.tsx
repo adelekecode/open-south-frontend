@@ -50,7 +50,7 @@ export default function Contact() {
         >
           {({ handleSubmit, isSubmitting }) => (
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-2xl mx-auto">
-              <FormField label="Full Name" required placeholder="John Doe" name="fullName" />
+              <FormField label="Name" required placeholder="John Doe" name="fullName" />
               <FormField
                 label="Email"
                 required

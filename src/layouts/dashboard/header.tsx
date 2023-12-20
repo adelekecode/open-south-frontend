@@ -53,7 +53,7 @@ export default function Header() {
 
       <button className="flex items-center gap-3">
         <CurrentUserAvatar />
-        <p className="flex items-center gap-1 capitalize text-sm font-medium">
+        <p className="flex items-center gap-1 capitalize text-sm font-medium largeMobile:hidden">
           <span>
             {currentUser?.first_name || currentUser?.profile_data?.first_name || "-------"}
           </span>{" "}
