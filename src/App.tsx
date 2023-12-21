@@ -41,6 +41,7 @@ import Partner from "./pages/partner";
 import { dashboardLoader } from "./utils/routes-addons/dashboard";
 import { appLoader } from "./utils/routes-addons/app";
 import Contact from "./pages/contact";
+import { organizationDetailsLoader } from "./utils/routes-addons/organization-details";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -117,7 +118,11 @@ const router = createBrowserRouter(
             <Route path="/datasets/:slug/resources/:id" element={<div>File Preview</div>} />
             <Route path="/categories" element={<Category />} />
             <Route path="/organizations" element={<Organization />} />
-            <Route path="/organizations/:slug" element={<OrganizationDetails />} />
+            <Route
+              path="/organizations/:slug"
+              element={<OrganizationDetails />}
+              loader={organizationDetailsLoader}
+            />
             <Route path="/about" element={<About />} />
             <Route path="/news" element={<News />} />
             <Route path="/news/:slug" element={<NewsDetails />} />
@@ -129,7 +134,14 @@ const router = createBrowserRouter(
           </Route>
         </Route>
       </Route>
-      <Route path="*" element={<NotFound />} />
+      <Route
+        path="*"
+        element={
+          <div className="min-h-screen flex">
+            <NotFound />
+          </div>
+        }
+      />
     </Route>
   )
 );
