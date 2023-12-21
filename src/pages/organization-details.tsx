@@ -1,21 +1,34 @@
-import { useEffect } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { FaAngleRight } from "react-icons/fa6";
 import Seo from "~/components/seo";
-import organization from "~/utils/data/organization.json";
 import dataset from "~/utils/data/dataset.json";
 import NotFound from "./404";
+// import { usePublicOrganizationDetails } from "~/queries/organizations";
 
 export default function OrganizationDetails() {
-  const { state } = useLocation();
   const navigate = useNavigate();
   const { slug } = useParams();
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  // const { data } = usePublicOrganizationDetails(slug || "");
+
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData<any>([`/public/organisations/${slug}/?key=public`]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  const data = organization.find((item) => item.slug === slug || item.id === state?.id);
+  useEffect(() => {
+    if (!descriptionRef.current) return;
+    if (data?.description) {
+      descriptionRef.current.innerHTML = data.description;
+    } else {
+      descriptionRef.current.innerHTML = "";
+    }
+  }, [data?.description]);
 
   if (!data) {
     return <NotFound />;
@@ -27,9 +40,9 @@ export default function OrganizationDetails() {
       <main className="w-full pb-16 flex flex-col gap-4">
         <div className="bg-primary-50 pt-16 pb-8">
           <header className="flex flex-col gap-6 max-w-maxAppWidth mx-auto px-10 tablet:px-6 largeMobile:!px-4">
-            <figure className="w-[7rem] aspect-square border p-2 bg-white">
+            <figure className="w-[7rem] h-[7rem] border p-2 bg-white">
               <img
-                src={data.image}
+                src={data.logo}
                 alt="organization logo"
                 className="w-full h-full object-contain"
               />
@@ -40,7 +53,7 @@ export default function OrganizationDetails() {
         <main className="max-w-maxAppWidth mx-auto flex flex-col gap-12 p-6 px-10 tablet:px-6 largeMobile:!px-4">
           <div className="flex flex-col gap-3">
             <h2 className="font-semibold text-base">Description</h2>
-            <p className="text-sm">{data.description}</p>
+            <p className="text-sm" ref={descriptionRef}></p>
           </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between gap-4">

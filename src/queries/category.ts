@@ -4,6 +4,6 @@ export function useCategories() {
   return useQuery<{ count: number; data: Category[] }>([`/categories/`]);
 }
 
-export function useCategoryDetails(id: string) {
-  return useQuery<Category>([`/categories/${id}/`]);
+export function usePublicCategories() {
+  return useQuery<Category[]>([`/public/category?key=public`]);
 }

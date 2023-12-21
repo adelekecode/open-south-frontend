@@ -7,7 +7,7 @@ export default function NotFound() {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center gap-2 p-8">
+    <div className="w-full flex flex-col flex-grow items-center justify-center gap-2 p-8">
       <figure className="w-[28%] tablet:w-[55%] largeMobile:!w-[70%]">
         <img src={NotFoundIllustration} alt="Not found Illustration" />
       </figure>
