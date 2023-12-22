@@ -25,7 +25,7 @@ export default function Header() {
           <Popper transition open={dropdownDisplay} anchorEl={anchorEl} className="z-[100] !mt-2">
             {({ TransitionProps }) => (
               <Fade {...TransitionProps} timeout={200}>
-                <Paper className="flex flex-col [&>button]:p-4 overflow-hidden relative divide-y">
+                <Paper className="flex flex-col [&>button]:p-4 [&>button]:text-sm [&>button]:py-3 overflow-hidden relative divide-y !shadow">
                   <button
                     className="hover:bg-info-100"
                     onClick={() => {

@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import Button from "~/components/button";
-import OrgData from "~/utils/data/organization.json";
 import CurrentUserAvatar from "~/components/current-user-avatar";
-import { useOrganizations } from "~/queries/organizations";
+import { useUserOrganizations } from "~/queries/organizations";
+import useCreateDatasetStore from "~/store/create-dataset";
 
 type PublishAsProps = {
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -13,12 +12,12 @@ type PublishAsProps = {
 export default function PublishAs({ setActiveIndex }: PublishAsProps) {
   const navigate = useNavigate();
 
-  const [selectedOrg, setSelectedOrg] = useState<string | null>(null);
+  const { organization, setOrganization } = useCreateDatasetStore();
+
+  const { data: organizations, isLoading: isLoadingOrganizations } = useUserOrganizations();
 
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
-
-  const { data: organizations, isLoading: isLoadingOrganizations } = useOrganizations();
 
   return (
     <div className="pt-4 flex flex-col gap-10">
@@ -32,21 +31,21 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
             <div className="grid grid-cols-3 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1 gap-4">
               <button
                 className={`border p-2 h-[7rem] rounded-sm flex items-start ${
-                  !selectedOrg && "border-primary-600 bg-secondary-50"
+                  !organization && "border-primary-600 bg-secondary-50"
                 }`}
                 onClick={() => {
-                  setSelectedOrg(null);
+                  setOrganization(null);
                 }}
               >
                 <div className="grid grid-cols-[50px,1fr] gap-4">
-                  {/* <figure className="w-full aspect-square p-1 border bg-white rounded-sm">
-                    <img
-                      src={currentUser?.image || ""}
-                      alt="company logo"
-                      className="w-full h-full object-contain"
-                    />
-                  </figure> */}
-                  <CurrentUserAvatar />
+                  <CurrentUserAvatar
+                    className="!w-full !h-[50px] !bg-white !border"
+                    iconContainer={{
+                      icon: {
+                        className: "!text-info-700 !text-xl",
+                      },
+                    }}
+                  />
                   <p className="text-start flex items-start gap-1 capitalize text-xs font-medium pt-2 flex-wrap">
                     <span>
                       {currentUser?.first_name ||
@@ -73,8 +72,8 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
                 Publish from an organization
               </p>
               <div className="grid grid-cols-3 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1 gap-4">
-                {OrgData.map((item, index) => {
-                  const isActive = selectedOrg === item.id;
+                {organizations.map((item, index) => {
+                  const isActive = organization?.id === item.id;
 
                   return (
                     <button
@@ -83,13 +82,13 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
                       }`}
                       key={index + 1}
                       onClick={() => {
-                        setSelectedOrg(item.id);
+                        setOrganization(item);
                       }}
                     >
                       <div className="grid grid-cols-[50px,1fr] gap-4">
                         <figure className="w-full aspect-square p-1 border bg-white rounded-sm">
                           <img
-                            src={item.image}
+                            src={item.logo}
                             alt="organization logo"
                             className="w-full h-full object-contain"
                           />

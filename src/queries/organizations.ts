@@ -1,17 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 
-export function useOrganizations() {
-  return useQuery<any[]>([`/organisations/`]);
+export function useUserOrganizations() {
+  return useQuery<Organization[]>([`/user/organisations/`]);
 }
 
 export function usePublicOrganizations() {
-  return useQuery<any[]>([`/public/organisations/?key=public`]);
+  return useQuery<Organization[]>([`/public/organisations/?key=public`]);
 }
 
 export function useOrganizationDetails(id: string) {
-  return useQuery<any>([`/organisations/${id}/`]);
+  return useQuery<Organization>([`/organisations/${id}/`]);
 }
 
 export function usePublicOrganizationDetails(slug: string) {
-  return useQuery<any>([`/public/organisations/${slug}/?key=public`]);
+  return useQuery<Organization>([`/public/organisations/${slug}/?key=public`]);
 }

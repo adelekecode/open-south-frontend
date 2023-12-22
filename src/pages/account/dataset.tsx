@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { OutlinedInput } from "@mui/material";
 import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
@@ -76,6 +77,10 @@ export default function Dataset() {
       sortable: false,
     },
   ];
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

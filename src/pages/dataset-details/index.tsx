@@ -1,36 +1,53 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { Pagination } from "@mui/material";
+import moment from "moment";
+import { stripHtml } from "string-strip-html";
 import Seo from "~/components/seo";
 import File from "./file";
 
 export default function DatasetDetails() {
-  const data: Dataset = {
-    title: "Public Transportation Efficiency in Kenya",
-    organization: {
-      name: "Kenya Transit Authority",
-      slug: "kenya-transit-authority",
-      image: "https://static.data.gouv.fr/avatars/09/1ba932cbfa48dc8c158981de6c700a-100.jpeg",
-    },
-    user: null,
-    description:
-      "Dataset focusing on the efficiency of public transportation in Kenya. The data includes information on transit times, ridership patterns, and initiatives to improve public transportation services.",
-    slug: "public-transportation-efficiency-kenya",
-    updatedAt: "2023-11-22T16:45:00+0100",
-  };
+  const { slug } = useParams();
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData<Dataset>([`/public/datasets/${slug}/?key=public`]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
+  useEffect(() => {
+    if (!descriptionRef.current) return;
+    if (data?.description) {
+      descriptionRef.current.innerHTML = data.description;
+    } else {
+      descriptionRef.current.innerHTML = "";
+    }
+  }, [data?.description]);
+
+  const stripedDescription =
+    data?.description &&
+    stripHtml(`${data.description}`, {
+      stripTogetherWithTheirContents: ["style", "pre"],
+    }).result;
+
+  const arr = data?.temporal_coverage?.split(",");
+
+  const temporalCoverage = {
+    from: arr?.[0],
+    to: arr?.[1],
+  };
+
   return (
     <>
-      <Seo title={data.title || ""} description={data.description || ""} />
+      <Seo title={data?.title || ""} description={stripedDescription || ""} />
       <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 pb-12 tablet:px-6 largeMobile:!px-4">
-        <h1 className="text-2xl font-semibold">{data.title}</h1>
+        <h1 className="text-2xl font-semibold">{data?.title}</h1>
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">Description</h3>
-          <p>{data.description}</p>
+          <p ref={descriptionRef}></p>
         </div>
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">
@@ -51,25 +68,22 @@ export default function DatasetDetails() {
             <figure className="border border-zinc-300 w-[3.5rem] aspect-square bg-white p-1">
               <img
                 className="w-full h-full object-contain"
-                src={data.organization ? data.organization.image : data.user ? data.user.image : ""}
+                src={data?.publisher_data?.image_url || ""}
                 alt="organization or profile photo"
               />
             </figure>
-            {data.organization ? (
-              <Link
-                className="w-fit text-start text-primary-600 capitalize hover:underline relative z-10"
-                to={`/organizations/${data.organization.slug}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                {data.organization.name}
-              </Link>
-            ) : data.user ? (
-              <span className="capitalize w-fit">{`${data.user.firstName} ${data.user.lastName}`}</span>
-            ) : (
-              "-------"
-            )}
+            <Link
+              className="w-fit text-start text-primary-600 capitalize hover:underline relative z-10"
+              // to={`/organizations/${data?.publisher_data.slug}`}
+              to={""}
+              // onClick={(e) => {
+              //   e.stopPropagation();
+              // }}
+            >
+              {`${data?.publisher_data?.first_name || "--"} ${
+                data?.publisher_data?.last_name || "--"
+              }`}
+            </Link>
           </div>
         </div>
         <div className="flex flex-col gap-3">
@@ -94,33 +108,38 @@ export default function DatasetDetails() {
         <div className="flex gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>License</h3>
-            <p>{"Licence Ouverte / Open Licence version 2.0"}</p>
+            <p>{data?.license || "------"}</p>
           </div>
           <div>
             <h3>ID</h3>
-            <p>{"5b7ffc618b4c4169d30727e0"}</p>
+            <p>{data?.id || "------"}</p>
           </div>
         </div>
         <div className="flex gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Creation</h3>
-            <p>{"August 24, 2018"}</p>
+            <p>{data?.created_at ? moment(data.created_at).format("MMMM DD, YYYY") : "------"}</p>
           </div>
           <div>
             <h3>Update Frequency</h3>
-            <p>{"Monthly"}</p>
+            <p>{data?.update_frequency || "------"}</p>
           </div>
           <div>
             <h3>Latest update</h3>
-            <p>{"December 1, 2023"}</p>
+            <p>{data?.updated_at ? moment(data.updated_at).format("MMMM DD, YYYY") : "------"}</p>
           </div>
         </div>
         <div className="flex flex-col gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Temporal coverage</h3>
             <p className="[&>span]:font-medium [&>span]:capitalize">
-              From <span>{"August 24, 2018"}</span> to <span>{"June 10, 2021"}</span>
+              From <span>{temporalCoverage.from || "------"}</span> to{" "}
+              <span>{temporalCoverage.to || "------"}</span>
             </p>
+          </div>
+          <div>
+            <h3>Spatial coverage</h3>
+            <p className="capitalize">{data?.spatial_coverage || "------"}</p>
           </div>
         </div>
       </main>

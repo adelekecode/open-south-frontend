@@ -5,17 +5,21 @@ import SearchInput from "~/components/search-input";
 import Seo from "~/components/seo";
 import SelectInput from "~/components/select-input";
 import Card from "./card";
-import data from "~/utils/data/dataset.json";
+// import data from "~/utils/data/dataset.json";
 import AutocompleteInput from "~/components/auto-complete-input";
 import organizationData from "~/utils/data/organization.json";
 import tagData from "~/utils/data/tag.json";
 import formatData from "~/utils/data/format.json";
 import spatialCoverageData from "~/utils/data/spatial-coverage.json";
+import { usePublicDatasets } from "~/queries/dataset";
+import NoData from "~/assets/illustrations/no-data.png";
 
 type SortByValue = "relevance" | "creation-date" | "last-update";
 
 export default function Dataset() {
   const [sortBy, setSortBy] = useState<SortByValue>("relevance");
+
+  const { isLoading, data } = usePublicDatasets();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -28,9 +32,7 @@ export default function Dataset() {
         <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold mb-2">
           Datasets
         </h1>
-        <p className="largeMobile:text-sm">
-          Search among the <span>40,042</span> datasets on Open South
-        </p>
+        <p className="largeMobile:text-sm">Search among all datasets on Open South</p>
         <div className="flex flex-col gap-2 pt-4">
           <SearchInput
             placeholder="Search"
@@ -66,6 +68,10 @@ export default function Dataset() {
                 <AutocompleteInput id="tag" options={tagData} />
               </div>
               <div>
+                <label htmlFor="category">Category</label>
+                <AutocompleteInput id="category" options={tagData} />
+              </div>
+              <div>
                 <label htmlFor="format">Formats</label>
                 <AutocompleteInput id="format" options={formatData} />
               </div>
@@ -82,7 +88,7 @@ export default function Dataset() {
           <div className="flex flex-col gap-8">
             <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4">
               <p>
-                <span>1400</span> results
+                <span>{data ? data.length : "---"}</span> results
               </p>
               <div className="flex items-center gap-2">
                 <p className="whitespace-nowrap text-sm">Sort by:</p>
@@ -101,14 +107,46 @@ export default function Dataset() {
                 </SelectInput>
               </div>
             </header>
-            <main className="w-full flex flex-col gap-8">
-              {data.map((item, index) => (
-                <Card key={index + 1} {...item} />
-              ))}
-            </main>
-            <footer className="flex items-center justify-center">
-              <Pagination count={10} variant="outlined" shape="rounded" />
-            </footer>
+            {isLoading ? (
+              <div className="mb-8 w-full flex flex-col gap-8">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <div
+                    className="grid grid-cols-[5rem,1fr] gap-6 border-[1.5px] border-info-200 p-6"
+                    key={index + 1}
+                  >
+                    <div className="w-full aspect-square animate-pulse bg-info-200"></div>
+                    <div className="grid grid-rows-[1rem,0.5rem,1fr,0.5rem] gap-2">
+                      <span className="w-full h-full animate-pulse bg-info-200"></span>
+                      <span className="w-full h-full animate-pulse bg-info-200"></span>
+                      <span className="w-full h-full animate-pulse bg-info-200"></span>
+                      <span className="w-32 mt-2 h-full animate-pulse bg-info-200 ml-auto"></span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : data && data.length > 0 ? (
+              <>
+                <main className="w-full flex flex-col gap-8">
+                  {data.map((item, index) => (
+                    <Card key={index + 1} {...item} />
+                  ))}
+                </main>
+                <footer className="flex items-center justify-center">
+                  <Pagination count={10} variant="outlined" shape="rounded" />
+                </footer>
+              </>
+            ) : (
+              <div className="flex items-center justify-center w-full flex-col">
+                <figure className="w-[250px] aspect-square">
+                  <img
+                    src={NoData}
+                    className="w-full h-full object-covers"
+                    alt="No category data illustration"
+                  />
+                </figure>
+                <p className="text-base font-semibold">No dataset found</p>
+              </div>
+            )}
           </div>
         </div>
       </main>

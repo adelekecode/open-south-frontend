@@ -15,15 +15,19 @@ function useCreateDataset() {
         | "start"
         | "end",
         string
-      > & { category: Category }
+      > & { category: Category; organization: Organization | null }
     ) => {
-      const { category, spatialCoverage, updateFrequency, start, end, ...rest } = data;
-      const { data: response } = await axiosPrivate.post(`/datasets/${category.id}/`, {
-        ...rest,
-        update_frequency: updateFrequency,
-        temporal_coverage: `${start},${end}`,
-        spatial_coverage: spatialCoverage,
-      });
+      const { category, organization, spatialCoverage, updateFrequency, start, end, ...rest } =
+        data;
+      const { data: response } = await axiosPrivate.post(
+        `/datasets/${category.id}/${organization ? `?organisation_id=${organization.id}` : ""}`,
+        {
+          ...rest,
+          update_frequency: updateFrequency,
+          temporal_coverage: `${start},${end}`,
+          spatial_coverage: spatialCoverage,
+        }
+      );
 
       return response;
     },

@@ -126,12 +126,17 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
             try {
               await Promise.all(
                 files.map(async (item) => {
-                  uploadDatasetFile.mutateAsync({
-                    datasetId: dataset?.id || "",
-                    file: item.file,
-                    format: item.fileType,
-                    size: item.fileSize,
-                  });
+                  try {
+                    await uploadDatasetFile.mutateAsync({
+                      datasetId: dataset?.id || "",
+                      file: item.file,
+                      format: item.fileType,
+                      size: item.fileSize,
+                    });
+                  } catch (error) {
+                    console.error(error);
+                    notifyError(`${item.fileName} already exist`);
+                  }
                 })
               );
             } catch (error) {
