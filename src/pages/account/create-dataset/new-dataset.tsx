@@ -40,7 +40,7 @@ type NewDatasetProps = {
 export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
   const [chosenCategoryObj, setChosenCategoryObj] = useState<Category | null>(null);
 
-  const { setDataset } = useCreateDatasetStore();
+  const { setDataset, organization } = useCreateDatasetStore();
 
   const { data: categories, isLoading: isLoadingCategories } = useCategories();
 
@@ -76,6 +76,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
         const datasetResponse = await createDataset.mutateAsync({
           ...rest,
           category: chosenCategoryObj,
+          organization,
         });
 
         if (datasetResponse) {
@@ -178,6 +179,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                     name="start"
                     format="DD-MM-YYYY"
                     required
+                    disableFuture
                   />
                   <span>To</span>
                   <DatePickerField
@@ -185,6 +187,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                     name="end"
                     format="DD-MM-YYYY"
                     required
+                    disableFuture
                   />
                 </div>
               </div>

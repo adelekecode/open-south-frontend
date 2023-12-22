@@ -119,7 +119,7 @@ export default function Organization() {
                 alt="No category data illustration"
               />
             </figure>
-            <p className="text-base font-semibold">No category found</p>
+            <p className="text-base font-semibold">No organization found</p>
           </div>
         )}
       </main>

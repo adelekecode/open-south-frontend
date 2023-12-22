@@ -4,9 +4,21 @@ import { IoPerson } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 // import useAppStore from "~/store/app";
 
-type CurrentUserAvatarProps = AvatarProps;
+type CurrentUserAvatarProps = AvatarProps & {
+  iconContainer?: {
+    className?: string;
+    icon?: {
+      className?: string;
+    };
+  };
+};
 
-export default function CurrentUserAvatar({ className, sx, ...props }: CurrentUserAvatarProps) {
+export default function CurrentUserAvatar({
+  className,
+  sx,
+  iconContainer,
+  ...props
+}: CurrentUserAvatarProps) {
   const currentUser = {
     image: null,
   };
@@ -20,11 +32,20 @@ export default function CurrentUserAvatar({ className, sx, ...props }: CurrentUs
       );
     } else {
       return setElement(
-        <span className="text-base flex items-center justify-center">
-          <IoPerson className="text-base" />
+        <span
+          className={twMerge(
+            `text-base flex items-center justify-center`,
+            iconContainer?.className
+          )}
+        >
+          <IoPerson
+            {...iconContainer?.icon}
+            className={twMerge(`text-base`, iconContainer?.icon?.className)}
+          />
         </span>
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser?.image]);
 
   return (

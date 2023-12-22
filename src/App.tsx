@@ -42,6 +42,8 @@ import { dashboardLoader } from "./utils/routes-addons/dashboard";
 import { appLoader } from "./utils/routes-addons/app";
 import Contact from "./pages/contact";
 import { organizationDetailsLoader } from "./utils/routes-addons/organization-details";
+import { datasetDetailsLoader } from "./utils/routes-addons/dataset-details";
+import AppLoader from "./components/loader/app-loader";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -114,7 +116,11 @@ const router = createBrowserRouter(
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/datasets" element={<Dataset />} />
-            <Route path="/datasets/:slug" element={<DatasetDetails />} />
+            <Route
+              path="/datasets/:slug"
+              element={<DatasetDetails />}
+              loader={datasetDetailsLoader}
+            />
             <Route path="/datasets/:slug/resources/:id" element={<div>File Preview</div>} />
             <Route path="/categories" element={<Category />} />
             <Route path="/organizations" element={<Organization />} />
@@ -147,7 +153,7 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  return <RouterProvider router={router} fallbackElement={<DashboardLoader />} />;
+  return <RouterProvider router={router} fallbackElement={<AppLoader />} />;
 }
 
 export default App;

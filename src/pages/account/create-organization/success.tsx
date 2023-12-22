@@ -13,7 +13,7 @@ export default function Success() {
 
   return (
     <div className="p-4 py-4 flex flex-col items-center gap-2 w-full max-w-lg mx-auto">
-      <div className="p-8 pt-4 w-full flex flex-col items-center gap-4">
+      <div className="p-6 pt-4 w-full flex flex-col items-center gap-4">
         <figure className="max-w-[9rem]">
           <img src={SuccessIllustration} alt="Success illustrion" />
         </figure>
