@@ -6,3 +6,7 @@ export function useCurrentUser(
 ) {
   return useQuery<CurrentUser>(queryKey, options);
 }
+
+export function useGetAllUsers() {
+  return useQuery<CurrentUser[]>([`/auth/users/`]);
+}

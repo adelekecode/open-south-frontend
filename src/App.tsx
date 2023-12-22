@@ -11,7 +11,6 @@ import { ForgotPassword, Login, ResetPassword, Signup } from "./pages/auth";
 import NotFound from "./pages/404";
 import ErrorBoundary from "./components/error-boundary";
 import DashboardLoader from "./components/loader/dashboard-loader";
-import DashboardLayout from "./layouts/dashboard";
 import Auth from "./layouts/auth";
 import AppLayout from "./layouts/app";
 import Home from "./pages/home";
@@ -44,6 +43,9 @@ import Contact from "./pages/contact";
 import { organizationDetailsLoader } from "./utils/routes-addons/organization-details";
 import { datasetDetailsLoader } from "./utils/routes-addons/dataset-details";
 import AppLoader from "./components/loader/app-loader";
+import UserRestricted from "./layouts/user-restricted";
+import AdminRestricted from "./layouts/admin-restricted";
+import { User, Category as AdminCategory, CreateCategory } from "./pages/admin";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -56,7 +58,7 @@ const router = createBrowserRouter(
       </Route>
       <Route loader={dashboardLoader}>
         <Route element={<Protected />}>
-          <Route element={<DashboardLayout />}>
+          <Route element={<UserRestricted />}>
             <Route
               path="/account/dashboard"
               element={
@@ -105,6 +107,40 @@ const router = createBrowserRouter(
               element={
                 <Suspense fallback={<DashboardLoader />}>
                   <CreateOrg />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route element={<AdminRestricted />}>
+            <Route
+              path="/admin/dashboard"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <Dashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/categories"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AdminCategory />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/categories/new"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <CreateCategory />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <User />
                 </Suspense>
               }
             />

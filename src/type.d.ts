@@ -9,7 +9,8 @@ type CurrentUser = {
     last_name: string;
     email: string;
   } | null;
-  image: string | null;
+  image_url: string | null;
+  date_joined: string;
 };
 
 type Dataset = {
