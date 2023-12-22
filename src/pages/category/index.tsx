@@ -26,10 +26,21 @@ export default function Category() {
         {isLoading ? (
           <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:550px)]:!grid-cols-1 gap-6 tablet:gap-4">
             {Array.from({ length: 6 }).map((_, index) => (
-              <span
+              <div
                 key={index + 1}
-                className="w-full aspect-square animate-pulse rounded-md bg-gray-200"
-              />
+                className="border-[1.5px] border-info-200 w-full h-[350px] grid grid-rows-[200px,1fr] p-2 gap-4"
+              >
+                <span className="w-full aspect-square animate-pulse bg-gray-200 h-full"></span>
+                <div className="grid grid-rows-[30px,1fr] gap-2">
+                  <span className="w-[35%] aspect-square animate-pulse bg-gray-200 h-full"></span>
+                  <div className="grid grid-rows-[15px,15px,15px,15px] w-full gap-1">
+                    <span className="w-full aspect-square animate-pulse bg-gray-200 h-full"></span>
+                    <span className="w-full aspect-square animate-pulse bg-gray-200 h-full"></span>
+                    <span className="w-full aspect-square animate-pulse bg-gray-200 h-full"></span>
+                    <span className="w-full aspect-square animate-pulse bg-gray-200 h-full"></span>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         ) : data ? (
