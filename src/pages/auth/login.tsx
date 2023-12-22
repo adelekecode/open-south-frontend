@@ -97,7 +97,13 @@ export default function Login() {
             });
 
             if (data) {
-              navigate(state?.from ? state.from : "/account/dashboard");
+              navigate(
+                state?.from
+                  ? state.from
+                  : data.role === "admin"
+                  ? "/admin/dashboard"
+                  : "/account/dashboard"
+              );
             }
           }}
           validateOnBlur={false}

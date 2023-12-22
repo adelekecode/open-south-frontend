@@ -45,7 +45,7 @@ import { datasetDetailsLoader } from "./utils/routes-addons/dataset-details";
 import AppLoader from "./components/loader/app-loader";
 import UserRestricted from "./layouts/user-restricted";
 import AdminRestricted from "./layouts/admin-restricted";
-import { User } from "./pages/admin";
+import { User, Category as AdminCategory, CreateCategory } from "./pages/admin";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -121,18 +121,18 @@ const router = createBrowserRouter(
               }
             />
             <Route
-              path="/admin/category"
+              path="/admin/categories"
               element={
                 <Suspense fallback={<DashboardLoader />}>
-                  <Dashboard />
+                  <AdminCategory />
                 </Suspense>
               }
             />
             <Route
-              path="/admin/category/new"
+              path="/admin/categories/new"
               element={
                 <Suspense fallback={<DashboardLoader />}>
-                  <Dashboard />
+                  <CreateCategory />
                 </Suspense>
               }
             />
