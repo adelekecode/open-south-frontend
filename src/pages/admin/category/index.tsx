@@ -10,6 +10,7 @@ import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import CreateModal from "./modals/create";
 import ViewModal from "./modals/view";
+import DeleteConfirmation from "./modals/delete-confimation";
 
 export default function Category() {
   const [modal, setModal] = useState<CategoyModal>({
@@ -77,7 +78,15 @@ export default function Category() {
             <IconButton size="medium">
               <FiEdit className="text-sm" />
             </IconButton>
-            <IconButton size="medium">
+            <IconButton
+              size="medium"
+              onClick={() => {
+                setModal({
+                  state: "delete",
+                  data: params.row,
+                });
+              }}
+            >
               <MdOutlineDelete className="text-lg" />
             </IconButton>
           </div>
@@ -124,6 +133,7 @@ export default function Category() {
       </main>
       <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
       <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      <DeleteConfirmation modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
     </>
   );
 }

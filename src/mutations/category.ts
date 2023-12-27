@@ -32,4 +32,30 @@ function useCreateCategory() {
   );
 }
 
-export { useCreateCategory };
+function useDeleteCategory() {
+  return useMutation(
+    async (id: string) => {
+      const { data: response } = await axiosPrivate.delete(`/categories/${id}/`);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        notifySuccess("Category successfully deleted");
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 404) {
+            notifyError("Category not found");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export { useCreateCategory, useDeleteCategory };

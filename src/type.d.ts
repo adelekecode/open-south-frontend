@@ -71,6 +71,6 @@ type Organization = {
 };
 
 type CategoyModal = {
-  state: "create" | "edit" | "view" | null;
+  state: "create" | "edit" | "view" | "delete" | null;
   data: Category | null;
 };

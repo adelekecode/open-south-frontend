@@ -118,7 +118,7 @@ function useDeleteDataset() {
     },
     {
       onSuccess() {
-        notifySuccess("Dataset deleted");
+        notifySuccess("Dataset successfully deleted");
       },
       onError(error) {
         if (isAxiosError(error)) {
