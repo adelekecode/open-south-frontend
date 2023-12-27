@@ -74,21 +74,21 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
                     <CurrentUserAvatar />
                     <p className="capitalize text-sm font-medium">
                       <span>
-                        {currentUser?.first_name ||
-                          currentUser?.profile_data?.first_name ||
+                        {currentUser.first_name ||
+                          currentUser.profile_data?.first_name ||
                           "-------"}
                       </span>{" "}
                       <span>
-                        {currentUser?.last_name ||
-                          currentUser?.profile_data?.last_name ||
-                          "-------"}
+                        {currentUser.last_name || currentUser.profile_data?.last_name || "-------"}
                       </span>
                     </p>
                   </div>
                   <button
                     className="hover:bg-zinc-100"
                     onClick={() => {
-                      navigate("/account/dashboard");
+                      navigate(
+                        currentUser.role === "admin" ? "/admin/dashboard" : "/account/dashboard"
+                      );
                     }}
                   >
                     <IoSettingsOutline className="text-primary-700" />

@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { IconButton, OutlinedInput } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { IoEyeOutline } from "react-icons/io5";
@@ -9,14 +8,26 @@ import moment from "moment";
 import { useCategories } from "~/queries/category";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
+import CreateModal from "./modals/create";
+import ViewModal from "./modals/view";
+import DeleteConfirmation from "./modals/delete-confimation";
 
 export default function Category() {
-  const navigate = useNavigate();
+  const [modal, setModal] = useState<CategoyModal>({
+    state: null,
+    data: null,
+  });
+
   const columns: GridColDef[] = [
     {
-      field: "sn",
+      field: "id",
       headerName: "S/N",
       minWidth: 10,
+      renderCell: ({ api, row }) => {
+        const { getAllRowIds } = api;
+
+        return getAllRowIds().indexOf(row.id) + 1;
+      },
     },
     {
       field: "name",
@@ -49,18 +60,34 @@ export default function Category() {
     {
       field: "_",
       headerName: "Action",
-      minWidth: 120,
-      renderCell: () => {
+      minWidth: 160,
+      renderCell: (params) => {
         return (
-          <div className="flex gap-1">
-            <IconButton size="small">
-              <IoEyeOutline />
+          <div className="w-full">
+            <IconButton
+              size="medium"
+              onClick={() => {
+                setModal({
+                  state: "view",
+                  data: params.row,
+                });
+              }}
+            >
+              <IoEyeOutline className="text-lg" />
             </IconButton>
-            <IconButton size="small">
-              <FiEdit />
+            <IconButton size="medium">
+              <FiEdit className="text-sm" />
             </IconButton>
-            <IconButton size="small">
-              <MdOutlineDelete />
+            <IconButton
+              size="medium"
+              onClick={() => {
+                setModal({
+                  state: "delete",
+                  data: params.row,
+                });
+              }}
+            >
+              <MdOutlineDelete className="text-lg" />
             </IconButton>
           </div>
         );
@@ -79,7 +106,7 @@ export default function Category() {
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-8 w-full">
         <header className="flex items-center gap-8 justify-between w-full">
-          <h1 className="text-2xl largeMobile:text-xl font-semibold">Users</h1>
+          <h1 className="text-2xl largeMobile:text-xl font-semibold">Category</h1>
         </header>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4 ml-auto">
@@ -89,7 +116,10 @@ export default function Category() {
             />
             <Button
               onClick={() => {
-                navigate("./new");
+                setModal({
+                  state: "create",
+                  data: null,
+                });
               }}
               className="!py-2 !h-full"
             >
@@ -97,14 +127,13 @@ export default function Category() {
             </Button>
           </div>
           <div className="min-h-[500px]">
-            <DataGrid
-              loading={isLoading}
-              rows={data ? data.data.map((item, index) => ({ ...item, sn: index + 1 })) : []}
-              columns={columns}
-            />
+            <DataGrid loading={isLoading} rows={data?.data ? data.data : []} columns={columns} />
           </div>
         </div>
       </main>
+      <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      <DeleteConfirmation modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
     </>
   );
 }
