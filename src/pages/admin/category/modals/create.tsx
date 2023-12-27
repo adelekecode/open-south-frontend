@@ -38,6 +38,7 @@ export default function Create({ modal, setModal }: CreateProps) {
       muiModal={{
         open: modal.state === "create",
         onClose: () => {
+          setFormCompleted(false);
           setModal({
             state: null,
             data: null,
