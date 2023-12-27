@@ -69,3 +69,8 @@ type Organization = {
   created_at: string;
   updated_at: string;
 };
+
+type CategoyModal = {
+  state: "create" | "edit" | "view" | null;
+  data: Category | null;
+};

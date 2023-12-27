@@ -34,7 +34,7 @@ export default function Modal({
     >
       <div
         className={twMerge(
-          `w-[500px] largeLaptop:w-[600px] bg-white flex flex-col gap-10 items-center p-8 relative !outline-0 pt-12 [@media(max-width:600px)]:w-[450px] [@media(max-width:500px)]:px-4 [@media(max-width:500px)]:!w-full overflow-y-auto`,
+          `w-[500px] largeLaptop:w-[600px] bg-white flex flex-col gap-10 items-center p-8 relative !outline-0 pt-12 [@media(max-width:600px)]:w-[450px] [@media(max-width:500px)]:px-4 [@media(max-width:500px)]:!w-full overflow-y-auto max-h-[90%]`,
           innerContainer?.className
         )}
       >

@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { IconButton, OutlinedInput } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { IoEyeOutline } from "react-icons/io5";
@@ -9,9 +8,9 @@ import moment from "moment";
 import { useCategories } from "~/queries/category";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
+import CreateModal from "./modals/create";
 
 export default function Category() {
-  const navigate = useNavigate();
   const columns: GridColDef[] = [
     {
       field: "sn",
@@ -49,18 +48,18 @@ export default function Category() {
     {
       field: "_",
       headerName: "Action",
-      minWidth: 120,
+      minWidth: 160,
       renderCell: () => {
         return (
-          <div className="flex gap-1">
-            <IconButton size="small">
-              <IoEyeOutline />
+          <div className="w-full">
+            <IconButton size="medium">
+              <IoEyeOutline className="text-lg" />
             </IconButton>
-            <IconButton size="small">
-              <FiEdit />
+            <IconButton size="medium">
+              <FiEdit className="text-sm" />
             </IconButton>
-            <IconButton size="small">
-              <MdOutlineDelete />
+            <IconButton size="medium">
+              <MdOutlineDelete className="text-lg" />
             </IconButton>
           </div>
         );
@@ -68,6 +67,11 @@ export default function Category() {
       sortable: false,
     },
   ];
+
+  const [modal, setModal] = useState<CategoyModal>({
+    state: null,
+    data: null,
+  });
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -79,7 +83,7 @@ export default function Category() {
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-8 w-full">
         <header className="flex items-center gap-8 justify-between w-full">
-          <h1 className="text-2xl largeMobile:text-xl font-semibold">Users</h1>
+          <h1 className="text-2xl largeMobile:text-xl font-semibold">Category</h1>
         </header>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4 ml-auto">
@@ -89,7 +93,10 @@ export default function Category() {
             />
             <Button
               onClick={() => {
-                navigate("./new");
+                setModal({
+                  state: "create",
+                  data: null,
+                });
               }}
               className="!py-2 !h-full"
             >
@@ -105,6 +112,7 @@ export default function Category() {
           </div>
         </div>
       </main>
+      <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
     </>
   );
 }
