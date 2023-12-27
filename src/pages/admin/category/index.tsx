@@ -9,13 +9,24 @@ import { useCategories } from "~/queries/category";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import CreateModal from "./modals/create";
+import ViewModal from "./modals/view";
 
 export default function Category() {
+  const [modal, setModal] = useState<CategoyModal>({
+    state: null,
+    data: null,
+  });
+
   const columns: GridColDef[] = [
     {
-      field: "sn",
+      field: "id",
       headerName: "S/N",
       minWidth: 10,
+      renderCell: ({ api, row }) => {
+        const { getAllRowIds } = api;
+
+        return getAllRowIds().indexOf(row.id) + 1;
+      },
     },
     {
       field: "name",
@@ -49,10 +60,18 @@ export default function Category() {
       field: "_",
       headerName: "Action",
       minWidth: 160,
-      renderCell: () => {
+      renderCell: (params) => {
         return (
           <div className="w-full">
-            <IconButton size="medium">
+            <IconButton
+              size="medium"
+              onClick={() => {
+                setModal({
+                  state: "view",
+                  data: params.row,
+                });
+              }}
+            >
               <IoEyeOutline className="text-lg" />
             </IconButton>
             <IconButton size="medium">
@@ -67,11 +86,6 @@ export default function Category() {
       sortable: false,
     },
   ];
-
-  const [modal, setModal] = useState<CategoyModal>({
-    state: null,
-    data: null,
-  });
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -104,15 +118,12 @@ export default function Category() {
             </Button>
           </div>
           <div className="min-h-[500px]">
-            <DataGrid
-              loading={isLoading}
-              rows={data ? data.data.map((item, index) => ({ ...item, sn: index + 1 })) : []}
-              columns={columns}
-            />
+            <DataGrid loading={isLoading} rows={data?.data ? data.data : []} columns={columns} />
           </div>
         </div>
       </main>
       <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
     </>
   );
 }

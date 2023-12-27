@@ -25,6 +25,11 @@ export default function User() {
       field: "id",
       headerName: "S/N",
       minWidth: 10,
+      renderCell: ({ api, row }) => {
+        const { getAllRowIds } = api;
+
+        return getAllRowIds().indexOf(row.id) + 1;
+      },
     },
     {
       field: "image_url",
