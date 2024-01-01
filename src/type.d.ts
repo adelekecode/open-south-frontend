@@ -37,7 +37,7 @@ type Dataset = {
     last_name: string;
     role: "user";
     image_url: string;
-    type: "individual";
+    type: "individual" | "organization";
   };
 };
 
