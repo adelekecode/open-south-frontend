@@ -1,25 +1,54 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { OutlinedInput } from "@mui/material";
+import {
+  ClickAwayListener,
+  Fade,
+  IconButton,
+  MenuItem,
+  OutlinedInput,
+  Paper,
+  Popper,
+  Select,
+} from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
+import { GoKebabHorizontal } from "react-icons/go";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useAdminDatasets } from "~/queries/dataset";
+import { useChangeDatasetStatus } from "~/mutations/dataset";
+import { notifySuccess } from "~/utils/toast";
 
 export default function Dataset() {
   const navigate = useNavigate();
 
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [statusMap, setStatusMap] = useState<{ [key: string]: Dataset["status"] }>({});
+
+  const dropdownDisplay = Boolean(anchorEl);
+
   const { data, isLoading } = useAdminDatasets();
+  const changeDatasetStatus = useChangeDatasetStatus();
 
   const columns: GridColDef[] = [
     {
+      field: "id",
+      headerName: "NO.",
+      minWidth: 10,
+      renderCell: ({ api, row }) => {
+        const { getAllRowIds } = api;
+
+        return getAllRowIds().indexOf(row.id) + 1;
+      },
+    },
+    {
       field: "title",
-      headerName: "Title",
+      headerName: "TITLE",
       minWidth: 300,
+      headerClassName: "font-bold",
     },
     {
       field: "publisher_data",
-      headerName: "Created by",
+      headerName: "CREATED BY",
       width: 300,
       sortComparator: (v1, v2) => {
         const name1 = v1.first_name + " " + v1.last_name;
@@ -39,14 +68,22 @@ export default function Dataset() {
             <span>{value.first_name}</span> <span>{value.last_name}</span>
           </Link>
         ) : (
-          <span>{"dkd"}</span>
+          <Link
+            className="hover:text-primary-600 [&>span]:capitalize hover:underline relative z-10"
+            to={`/organizations/${value.slug}`}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <span>{value.name}</span>
+          </Link>
         );
       },
       type: "string",
     },
     {
       field: "views",
-      headerName: "Views",
+      headerName: "VIEWS",
       width: 100,
       valueFormatter: ({ value }) => {
         return value.count;
@@ -57,35 +94,64 @@ export default function Dataset() {
     },
     {
       field: "files_count",
-      headerName: "Files",
+      headerName: "FILES",
       width: 100,
       valueFormatter: ({ value }) => {
-        return value.count;
+        return value;
       },
       sortComparator: (v1, v2) => {
-        return v1 - v2.count;
+        return v1 - v2;
       },
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "STATUS",
       width: 150,
-      renderCell: ({ value }) => {
-        if (value === "pending") {
-          return <p className="text-orange-500 font-medium">Pending</p>;
-        } else if (value === "published") {
-          return <p className="text-green-500 font-medium">Published</p>;
-        } else if (value === "rejected") {
-          return <p className="text-red-500 font-medium">Rejected</p>;
-        } else if (value === "further_review") {
-          return <p className="text-info-500 font-medium">Further Review</p>;
-        }
+      renderCell: ({ value, row }) => {
+        return (
+          <Select
+            className="!text-xs !py-0"
+            value={statusMap[row.id] || value}
+            sx={{
+              "& .MuiOutlinedInput-input": {
+                padding: "0.5rem 1rem",
+              },
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            onChange={async (e) => {
+              const chosenValue = e.target.value;
+
+              if (chosenValue && chosenValue !== statusMap[row.id]) {
+                setStatusMap((prevStatusMap) => ({
+                  ...prevStatusMap,
+                  [row.id]: chosenValue as Dataset["status"],
+                }));
+
+                const response = await changeDatasetStatus.mutateAsync({
+                  id: row.id,
+                  action: chosenValue as Dataset["status"],
+                });
+
+                if (response) {
+                  notifySuccess("Dataset status has been changed");
+                }
+              }
+            }}
+          >
+            <MenuItem value="pending">Pending</MenuItem>
+            <MenuItem value="published">Published</MenuItem>
+            <MenuItem value="rejected">Rejected</MenuItem>
+            <MenuItem value="further_review">Further Review</MenuItem>
+          </Select>
+        );
       },
       sortable: false,
     },
     {
       field: "created_at",
-      headerName: "Created at",
+      headerName: "CREATED AT",
       width: 150,
       valueFormatter: ({ value }) => {
         return moment(value).format("Do MMM, YYYY");
@@ -97,7 +163,7 @@ export default function Dataset() {
     },
     {
       field: "updated_at",
-      headerName: "Updated at",
+      headerName: "UPDATED AT",
       width: 150,
       valueFormatter: ({ value }) => {
         return moment(value).fromNow();
@@ -106,6 +172,44 @@ export default function Dataset() {
         return new Date(v1).getTime() - new Date(v2).getTime();
       },
       type: "string",
+    },
+    {
+      field: "_",
+      headerName: "ACTION",
+      width: 150,
+      renderCell: () => {
+        return (
+          <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+            <div>
+              <IconButton
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAnchorEl(anchorEl ? null : e.currentTarget);
+                }}
+              >
+                <GoKebabHorizontal className="rotate-90" />
+              </IconButton>
+              <Popper transition open={dropdownDisplay} anchorEl={anchorEl} className="!mt-2">
+                {({ TransitionProps }) => (
+                  <Fade {...TransitionProps} timeout={200}>
+                    <Paper className="flex flex-col [&>button]:p-4 [&>button]:text-sm [&>button]:py-3 overflow-hidden relative divide-y !shadow">
+                      <button
+                        className="hover:bg-info-100"
+                        onClick={() => {
+                          setAnchorEl(null);
+                        }}
+                      >
+                        block
+                      </button>
+                    </Paper>
+                  </Fade>
+                )}
+              </Popper>
+            </div>
+          </ClickAwayListener>
+        );
+      },
     },
   ];
 
