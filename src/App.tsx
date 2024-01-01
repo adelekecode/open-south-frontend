@@ -45,7 +45,12 @@ import { datasetDetailsLoader } from "./utils/routes-addons/dataset-details";
 import AppLoader from "./components/loader/app-loader";
 import UserRestricted from "./layouts/user-restricted";
 import AdminRestricted from "./layouts/admin-restricted";
-import { User, Category as AdminCategory, Dashboard as AdminDashboard } from "./pages/admin";
+import {
+  User,
+  Category as AdminCategory,
+  Dashboard as AdminDashboard,
+  Dataset as AdminDataset,
+} from "./pages/admin";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -117,6 +122,14 @@ const router = createBrowserRouter(
               element={
                 <Suspense fallback={<DashboardLoader />}>
                   <AdminDashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/datasets"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AdminDataset />
                 </Suspense>
               }
             />
