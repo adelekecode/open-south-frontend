@@ -23,7 +23,7 @@ export default function DataGrid({
           outline: "none !important",
         },
         "& .MuiDataGrid-columnHeaders": {
-          backgroundColor: "#FAFAFB",
+          backgroundColor: "#efeff0",
           "& .MuiDataGrid-columnHeaderTitle": {
             fontWeight: 600,
             fontSize: "0.8rem",
