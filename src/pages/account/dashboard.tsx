@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
 import { SiAwsorganizations } from "react-icons/si";
 import { IoGridOutline } from "react-icons/io5";
+import { AiOutlineEye } from "react-icons/ai";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import data from "~/utils/data/dataset.json";
+import Button from "~/components/button";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -13,13 +15,14 @@ export default function Dashboard() {
     {
       field: "title",
       headerName: "Title",
-      minWidth: 300,
+      flex: 1,
+      minWidth: 400,
     },
-    { field: "createdAt", headerName: "Created at", width: 150 },
+    { field: "createdAt", headerName: "Created at", flex: 1, minWidth: 130 },
     {
       field: "updatedAt",
       headerName: "Updated at",
-      width: 150,
+      flex: 1,
       valueFormatter: (params) => {
         return moment(params.value).fromNow();
       },
@@ -27,16 +30,18 @@ export default function Dashboard() {
         return new Date(v1).getTime() - new Date(v2).getTime();
       },
       type: "string",
+      minWidth: 130,
     },
     {
       field: "views",
       headerName: "Views",
-      width: 100,
+      flex: 1,
+      minWidth: 50,
     },
     {
       field: "status",
       headerName: "Status",
-      width: 150,
+      flex: 1,
       renderCell: (params: GridRenderCellParams<any, typeof data>) => {
         return (params.id as number) % 2 === 0 ? (
           <p className="text-orange-500 font-medium">Pending</p>
@@ -45,6 +50,7 @@ export default function Dashboard() {
         );
       },
       sortable: false,
+      minWidth: 130,
     },
   ];
 
@@ -54,7 +60,7 @@ export default function Dashboard() {
         <header className="flex items-center gap-8 justify-between">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
         </header>
-        <div className="w-full border border-info-100 bg-white p-3 rounded-md">
+        <div className="w-full border border-info-100 bg-white p-4 rounded-md">
           <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4   [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:justify-between [&>div]:min-h-[9rem]   [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:mt-2 [&>div>div]:gap-3   [&>div>div>p]:font-semibold [&>div>div>p]:text-sm [&>div>div>h1]:text-4xl [&>div>div>h1]:font-semibold">
             <div className="bg-red-50">
               <div>
@@ -80,13 +86,26 @@ export default function Dashboard() {
                 <h1 className="text-neutral-800">{"92,345"}</h1>
               </div>
               <span className="p-2 border border-purple-500 h-fit rounded text-purple-500 text-base">
-                <SiAwsorganizations />
+                <AiOutlineEye />
               </span>
             </div>
           </div>
         </div>
-        <div className="pt-4">
-          <h1 className="text-xl font-semibold p-4">Latest dataset created</h1>
+        <div className="w-full border border-info-100 bg-white p-4 rounded-md mt-6 flex flex-col gap-4 py-5">
+          <div className="flex items-center justify-between">
+            <h1 className="text-base font-semibold text-info-950">Latest dataset created</h1>
+            <div>
+              <Button
+                className="!py-2 !px-3 !text-xs"
+                variant="outlined"
+                onClick={() => {
+                  navigate("/account/datasets");
+                }}
+              >
+                View All
+              </Button>
+            </div>
+          </div>
           <DataGrid
             rows={data.slice(0, 10).map((item, index) => {
               const { title, updatedAt } = item;

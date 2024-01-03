@@ -23,7 +23,7 @@ export default function DataGrid({
           outline: "none !important",
         },
         "& .MuiDataGrid-columnHeaders": {
-          backgroundColor: "#efeff0",
+          backgroundColor: "#ededed96",
           "& .MuiDataGrid-columnHeaderTitle": {
             fontWeight: 600,
             fontSize: "0.8rem",
@@ -32,7 +32,7 @@ export default function DataGrid({
         },
         ...sx,
       }}
-      className={twMerge(``, className)}
+      className={twMerge(`!shadow-none`, className)}
       slots={{
         noRowsOverlay: () => {
           return (
