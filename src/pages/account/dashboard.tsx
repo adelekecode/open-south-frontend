@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
+import { SiAwsorganizations } from "react-icons/si";
+import { IoGridOutline } from "react-icons/io5";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import data from "~/utils/data/dataset.json";
-import DatesetIllustration from "~/assets/illustrations/dashboard-cards/dataset.png";
-import OrganizationIllustration from "~/assets/illustrations/dashboard-cards/organization.png";
-import ViewsIllustration from "~/assets/illustrations/dashboard-cards/views.png";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -51,29 +50,39 @@ export default function Dashboard() {
 
   return (
     <>
-      <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4">
+      <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4 gap-4 flex flex-col">
         <header className="flex items-center gap-8 justify-between">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
         </header>
-        <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4 py-8   [&>div]:shadow [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:aspect-video [&>div]:max-h-[16rem] [&>div]:flex-col [&>div]:relative [&>div]:overflow-hidden  [&>div>p]:text-white [&>div>p]:font-medium  [&>div>h1]:text-4xl [&>div>h1]:font-semibold [&>div>h1]:text-white [&>div>h1]:flex-grow [&>div>h1]:flex [&>div>h1]:items-center [&>div>h1]:break-all  [&>div>img]:w-[55%] [&>div>img]:absolute [&>div>img]:right-[6px] [&>div>img]:top-[7px] [&>div>img]:opacity-50">
-          <div className="bg-red-500/95">
-            <p>Datasets</p>
-            <h1>{"0"}</h1>
-            <img src={DatesetIllustration} alt="dataset illustration" />
-          </div>
-          <div className="bg-yellow-500/95">
-            <p>Organizations</p>
-            <h1>{"0"}</h1>
-            <img
-              src={OrganizationIllustration}
-              alt="organizations illustration"
-              className="!w-[40%] !right-[15px] !top-[33px]"
-            />
-          </div>
-          <div className="bg-purple-500/80">
-            <p>Views</p>
-            <h1>{"0"}</h1>
-            <img src={ViewsIllustration} alt="views illustration" />
+        <div className="w-full border border-info-100 bg-white p-3 rounded-md">
+          <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4   [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:justify-between [&>div]:min-h-[9rem]   [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:mt-2 [&>div>div]:gap-3   [&>div>div>p]:font-semibold [&>div>div>p]:text-sm [&>div>div>h1]:text-4xl [&>div>div>h1]:font-semibold">
+            <div className="bg-red-50">
+              <div>
+                <p className="text-info-950">Datasets</p>
+                <h1 className="text-neutral-800">{"92,345"}</h1>
+              </div>
+              <span className="p-2 border border-red-500 h-fit rounded text-red-500 text-base">
+                <IoGridOutline />
+              </span>
+            </div>
+            <div className="bg-blue-50">
+              <div>
+                <p className="text-info-950">Organizations</p>
+                <h1 className="text-neutral-800">{"92,345"}</h1>
+              </div>
+              <span className="p-2 border border-blue-500 h-fit rounded text-blue-500 text-base">
+                <SiAwsorganizations />
+              </span>
+            </div>
+            <div className="bg-purple-50">
+              <div>
+                <p className="text-info-950">Views</p>
+                <h1 className="text-neutral-800">{"92,345"}</h1>
+              </div>
+              <span className="p-2 border border-purple-500 h-fit rounded text-purple-500 text-base">
+                <SiAwsorganizations />
+              </span>
+            </div>
           </div>
         </div>
         <div className="pt-4">
