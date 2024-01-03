@@ -7,3 +7,11 @@ export function usePublicDatasets() {
 export function useDatasetDetails(id: string) {
   return useQuery<any>([`/datasets/${id}/`]);
 }
+
+export function useAdminDatasetDetails(id: string) {
+  return useQuery<any>([`/datasets/${id}/`]);
+}
+
+export function useAdminDatasets() {
+  return useQuery<Dataset[]>([`/admin/datasets/`]);
+}

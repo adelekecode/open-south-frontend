@@ -135,4 +135,57 @@ function useDeleteDataset() {
   );
 }
 
-export { useDeleteDataset, useCreateDataset, useCreateDatasetTags, useUploadDatasetFile };
+function useDatasetView() {
+  return useMutation(
+    async (id: string) => {
+      const { data: response } = await axiosPrivate.post(`/datasets/views/${id}/`);
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured while counting views");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+function useChangeDatasetStatus() {
+  return useMutation(
+    async ({ id, action }: { id: string; action: Dataset["status"] }) => {
+      const response = await axiosPrivate.post(`/admin/datasets/pk/${id}/actions/${action}/`);
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured while changing status");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export {
+  useDeleteDataset,
+  useCreateDataset,
+  useCreateDatasetTags,
+  useUploadDatasetFile,
+  useDatasetView,
+  useChangeDatasetStatus,
+};
