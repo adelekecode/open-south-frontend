@@ -16,7 +16,7 @@ export default function Header() {
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
 
   return (
-    <nav className="bg-info-50 flex items-center justify-end gap-8 tabletAndBelow:bg-white border-l-0 border-b border-info-300 tabletAndBelow:!border-b p-5 py-3 px-[3.5rem] tabletAndBelow:p-5 tabletAndBelow:py-4 sticky top-0 z-[99]">
+    <nav className="bg-white flex items-center justify-end gap-8 tabletAndBelow:bg-white shadow-sm tabletAndBelow:!border-b p-5 py-3 px-[3.5rem] tabletAndBelow:p-5 tabletAndBelow:py-4 sticky top-0 z-[99]">
       {currentUser?.role === "user" && (
         <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
           <div>
