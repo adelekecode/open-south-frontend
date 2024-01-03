@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
+import { SiAwsorganizations } from "react-icons/si";
+import { IoGridOutline } from "react-icons/io5";
+import { AiOutlineEye } from "react-icons/ai";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import data from "~/utils/data/dataset.json";
-import DatesetIllustration from "~/assets/illustrations/dashboard-cards/dataset.png";
-import OrganizationIllustration from "~/assets/illustrations/dashboard-cards/organization.png";
-import ViewsIllustration from "~/assets/illustrations/dashboard-cards/views.png";
+import Button from "~/components/button";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -14,13 +15,14 @@ export default function Dashboard() {
     {
       field: "title",
       headerName: "Title",
-      minWidth: 300,
+      flex: 1,
+      minWidth: 400,
     },
-    { field: "createdAt", headerName: "Created at", width: 150 },
+    { field: "createdAt", headerName: "Created at", flex: 1, minWidth: 130 },
     {
       field: "updatedAt",
       headerName: "Updated at",
-      width: 150,
+      flex: 1,
       valueFormatter: (params) => {
         return moment(params.value).fromNow();
       },
@@ -28,16 +30,18 @@ export default function Dashboard() {
         return new Date(v1).getTime() - new Date(v2).getTime();
       },
       type: "string",
+      minWidth: 130,
     },
     {
       field: "views",
       headerName: "Views",
-      width: 100,
+      flex: 1,
+      minWidth: 50,
     },
     {
       field: "status",
       headerName: "Status",
-      width: 150,
+      flex: 1,
       renderCell: (params: GridRenderCellParams<any, typeof data>) => {
         return (params.id as number) % 2 === 0 ? (
           <p className="text-orange-500 font-medium">Pending</p>
@@ -46,38 +50,62 @@ export default function Dashboard() {
         );
       },
       sortable: false,
+      minWidth: 130,
     },
   ];
 
   return (
     <>
-      <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4">
+      <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4 gap-4 flex flex-col">
         <header className="flex items-center gap-8 justify-between">
           <h1 className="text-2xl font-semibold">Dashboard</h1>
         </header>
-        <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4 py-8   [&>div]:shadow [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:aspect-video [&>div]:max-h-[16rem] [&>div]:flex-col [&>div]:relative [&>div]:overflow-hidden  [&>div>p]:text-white [&>div>p]:font-medium  [&>div>h1]:text-4xl [&>div>h1]:font-semibold [&>div>h1]:text-white [&>div>h1]:flex-grow [&>div>h1]:flex [&>div>h1]:items-center [&>div>h1]:break-all  [&>div>img]:w-[55%] [&>div>img]:absolute [&>div>img]:right-[6px] [&>div>img]:top-[7px] [&>div>img]:opacity-50">
-          <div className="bg-red-500/95">
-            <p>Datasets</p>
-            <h1>{"0"}</h1>
-            <img src={DatesetIllustration} alt="dataset illustration" />
-          </div>
-          <div className="bg-yellow-500/95">
-            <p>Organizations</p>
-            <h1>{"0"}</h1>
-            <img
-              src={OrganizationIllustration}
-              alt="organizations illustration"
-              className="!w-[40%] !right-[15px] !top-[33px]"
-            />
-          </div>
-          <div className="bg-purple-500/80">
-            <p>Views</p>
-            <h1>{"0"}</h1>
-            <img src={ViewsIllustration} alt="views illustration" />
+        <div className="w-full border border-info-100 bg-white p-4 rounded-md">
+          <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4   [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:justify-between [&>div]:min-h-[9rem]   [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:mt-2 [&>div>div]:gap-3   [&>div>div>p]:font-semibold [&>div>div>p]:text-sm [&>div>div>h1]:text-4xl [&>div>div>h1]:font-semibold">
+            <div className="bg-red-50">
+              <div>
+                <p className="text-info-950">Datasets</p>
+                <h1 className="text-neutral-800">{"92,345"}</h1>
+              </div>
+              <span className="p-2 border border-red-500 h-fit rounded text-red-500 text-base">
+                <IoGridOutline />
+              </span>
+            </div>
+            <div className="bg-blue-50">
+              <div>
+                <p className="text-info-950">Organizations</p>
+                <h1 className="text-neutral-800">{"92,345"}</h1>
+              </div>
+              <span className="p-2 border border-blue-500 h-fit rounded text-blue-500 text-base">
+                <SiAwsorganizations />
+              </span>
+            </div>
+            <div className="bg-purple-50">
+              <div>
+                <p className="text-info-950">Views</p>
+                <h1 className="text-neutral-800">{"92,345"}</h1>
+              </div>
+              <span className="p-2 border border-purple-500 h-fit rounded text-purple-500 text-base">
+                <AiOutlineEye />
+              </span>
+            </div>
           </div>
         </div>
-        <div className="pt-4">
-          <h1 className="text-xl font-semibold p-4">Latest dataset created</h1>
+        <div className="w-full border border-info-100 bg-white p-4 rounded-md mt-6 flex flex-col gap-4 py-5">
+          <div className="flex items-center justify-between">
+            <h1 className="text-base font-semibold text-info-950">Latest dataset created</h1>
+            <div>
+              <Button
+                className="!py-2 !px-3 !text-xs"
+                variant="outlined"
+                onClick={() => {
+                  navigate("/account/datasets");
+                }}
+              >
+                View All
+              </Button>
+            </div>
+          </div>
           <DataGrid
             rows={data.slice(0, 10).map((item, index) => {
               const { title, updatedAt } = item;
