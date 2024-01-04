@@ -11,12 +11,12 @@ export default function Banner() {
         <div className="flex gap-3">
           <span className="w-1 bg-white rounded-full"></span>
           <div className="flex flex-col gap-6 py-4">
-            <h1 className="text-3xl font-semibold text-white mediumMobile:text-2xl">Participate</h1>
+            <h1 className="text-3xl font-semibold text-white mediumMobile:text-2xl">Contribute</h1>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <IoChevronBack className="text-white rotate-180 text-sm" />
                 <p className="text-white font-medium text-base mediumMobile:text-sm">
-                  Create or find your dataset
+                  Create or find a dataset
                 </p>
               </div>
             </div>
@@ -28,7 +28,7 @@ export default function Banner() {
             color="inherit"
             className="!rounded-full !gap-3 mediumMobile:!p-2 mediumMobile:!px-5 !text-white"
             onClick={() => {
-              navigate("/datasets/new");
+              navigate("/account/datasets/new");
             }}
           >
             <p className="text-white">Publish a dataset</p>

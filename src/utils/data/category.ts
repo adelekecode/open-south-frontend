@@ -16,99 +16,99 @@ import LocalLanguagesLinguisticDiversity from "~/assets/illustrations/categories
 
 const data = [
   {
-    name: "Environment",
+    label: "Environment",
     slug: "environment",
     illustration: Environment,
     description:
       "Data on environmental indicators, climate change, biodiversity, natural resource management, pollution levels, and conservation efforts.",
   },
   {
-    name: "Health",
+    label: "Health",
     slug: "health",
     illustration: Health,
     description:
       "Data on health indicators, disease prevalence, life expectancy, healthcare infrastructure, healthcare services, and public health initiatives.",
   },
   {
-    name: "Education",
+    label: "Education",
     slug: "education",
     illustration: Education,
     description:
       "Data on education systems, enrolment rates, literacy rates, educational attainment, and educational infrastructure.",
   },
   {
-    name: "Economy",
+    label: "Economy",
     slug: "economy",
     illustration: Economy,
     description:
       "Data on economic indicators, currency valuation, GDP, industries, trade, and economic development initiatives.",
   },
   {
-    name: "Transportation",
+    label: "Transportation",
     slug: "transportation",
     illustration: Transportation,
     description: "Data on road infrastructure, public transit systems, and traffic patterns.",
   },
   {
-    name: "Geography",
+    label: "Geography",
     slug: "geography",
     illustration: Geography,
     description: "Data about landforms, climate, and natural resources.",
   },
   {
-    name: "Energy",
+    label: "Energy",
     slug: "energy",
     illustration: Energy,
     description: "Data on energy production, consumption, and renewable energy initiatives.",
   },
   {
-    name: "Finance and Budget",
+    label: "Finance and Budget",
     slug: "finance-and-budget",
     illustration: FinanceAndBudget,
     description: "Data on Government budget, revenue sources, and fiscal policies.",
   },
   {
-    name: "Culture and History",
+    label: "Culture and History",
     slug: "culture-and-history",
     illustration: CultureAndHistory,
     description: "Data about local traditions, customs, and historical events.",
   },
   {
-    name: "Employment and Labor",
+    label: "Employment and Labor",
     slug: "housing-and-labor",
     illustration: EmploymentAndLabor,
     description: "Data on employment rates, labor market trends, and workforce demographics.",
   },
   {
-    name: "Infrastructure",
+    label: "Infrastructure",
     slug: "infrastructure",
     illustration: Infrastructure,
     description:
       "Data on transportation systems, energy infrastructure, telecommunications, water and sanitation facilities, urban development, and public infrastructure projects.",
   },
   {
-    name: "Agriculture",
+    label: "Agriculture",
     slug: "agriculture",
     illustration: Agriculture,
     description:
       "Data on agricultural production, land use, food security, crop yields, agricultural policies, and sustainable farming practices.",
   },
   {
-    name: "Social Services",
+    label: "Social Services",
     slug: "social-services",
     illustration: SocialServices,
     description:
       "Data on social welfare programs, poverty rates, income inequality, social inclusion, gender equality, and social development initiatives.",
   },
   {
-    name: "Urbanization and Housing",
+    label: "Urbanization and Housing",
     slug: "urbanization-and-housing",
     illustration: UrbanizationAndHousing,
     description:
       "Data on urbanization trends, housing affordability, slum populations, urban infrastructure, and urban planning.",
   },
   {
-    name: "Local Languages",
+    label: "Local Languages",
     slug: "local-languages",
     illustration: LocalLanguagesLinguisticDiversity,
     description:

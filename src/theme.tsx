@@ -30,7 +30,7 @@ const theme = createTheme({
     },
 
     info: {
-      main: "#d4d4d8",
+      main: "#94919a",
       50: "#f6f6f7",
       100: "#efeff0",
       200: "#e1e1e4",
@@ -97,7 +97,24 @@ const theme = createTheme({
     MuiPopper: {
       defaultProps: {
         placement: "bottom-end",
-        transition: true,
+        className: "!mt-2",
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-root": {
+            padding: "0px !important",
+            paddingRight: "39px !important",
+          },
+          "& .MuiInputBase-root": {
+            "& input": {
+              padding: "11px 13.5px !important",
+            },
+            height: "-webkit-fill-available",
+            fontFamily: '"Work Sans", sans-serif',
+          },
+        },
       },
     },
   },

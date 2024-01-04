@@ -45,3 +45,24 @@ ol.order-list li::marker {
 .mapboxgl-ctrl-bottom-right {
   display: none;
 }
+
+.appLoader,
+.dashboardLoader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #efeff0;
+  border-bottom-color: #0e82bb;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

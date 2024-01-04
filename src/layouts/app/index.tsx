@@ -28,6 +28,10 @@ const routes = [
     name: "News",
   },
   {
+    to: "/partners",
+    name: "Partners",
+  },
+  {
     to: "/contact",
     name: "Contact Us",
   },

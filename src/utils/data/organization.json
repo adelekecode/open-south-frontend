@@ -1,20 +1,37 @@
 [
   {
+    "id": "85e58193-8874-40bd-ba2a-1a7135058919",
     "name": "National Institute of Statistics and Economic Studies (INSEE)",
     "slug": "national-institute-of-statistics-and-economic-studies-insee",
     "description": "The National Institute of Statistics and Economic Studies (Insee) collects, produces, analyzes and disseminates information on the French economy and society. This information is of interest to public authorities, administrations, businesses, researchers, the media, teachers, students and individuals. They allow them to enrich their knowledge, carry out studies, make forecasts and make decisions. To satisfy its users, INSEE listens to their needs and directs its work accordingly while pursuing one main objective: to shed light on the economic and social debate.",
     "image": "https://static.data.gouv.fr/avatars/db/fbfd745ae543f6856ed59e3d44eb71-100.jpg"
   },
   {
-    "name": "National Institute of Statistics and Economic Studies (INSEE)",
-    "slug": "national-institute-of-statistics-and-economic-studies-insee",
-    "description": "The National Institute of Statistics and Economic Studies (Insee) collects, produces, analyzes and disseminates information on the French economy and society. This information is of interest to public authorities, administrations, businesses, researchers, the media, teachers, students and individuals. They allow them to enrich their knowledge, carry out studies, make forecasts and make decisions. To satisfy its users, INSEE listens to their needs and directs its work accordingly while pursuing one main objective: to shed light on the economic and social debate.",
-    "image": "https://static.data.gouv.fr/avatars/db/fbfd745ae543f6856ed59e3d44eb71-100.jpg"
+    "id": "2aa7e666-7e27-4c62-88bb-2cf1e3afed34",
+    "name": "French Economic Research Institute",
+    "slug": "french-economic-research-institute",
+    "description": "A partner institution to INSEE, the French Economic Research Institute specializes in in-depth economic analysis. Collaborating closely with INSEE, they contribute valuable research to further enhance the understanding of the French economy and its dynamics.",
+    "image": "https://res.cloudinary.com/dqqkokon9/image/upload/v1702042547/Personal/hrzaptwivywcogay6xvw.jpg"
   },
   {
-    "name": "National Institute of Statistics and Economic Studies (INSEE)",
-    "slug": "national-institute-of-statistics-and-economic-studies-insee",
-    "description": "The National Institute of Statistics and Economic Studies (Insee) collects, produces, analyzes and disseminates information on the French economy and society. This information is of interest to public authorities, administrations, businesses, researchers, the media, teachers, students and individuals. They allow them to enrich their knowledge, carry out studies, make forecasts and make decisions. To satisfy its users, INSEE listens to their needs and directs its work accordingly while pursuing one main objective: to shed light on the economic and social debate.",
-    "image": "https://static.data.gouv.fr/avatars/db/fbfd745ae543f6856ed59e3d44eb71-100.jpg"
+    "id": "961a1e09-9f2f-400a-a7ee-4bfd09e7e6a5",
+    "name": "Statistical Data Solutions Company",
+    "slug": "statistical-data-solutions-company",
+    "description": "This company works in collaboration with INSEE to develop innovative solutions for handling and presenting statistical data. Their expertise lies in creating user-friendly interfaces and tools that make statistical information more accessible to a wider audience.",
+    "image": "https://res.cloudinary.com/dqqkokon9/image/upload/v1702042481/Personal/syeff6dimmtpwysmz9gf.jpg"
+  },
+  {
+    "id": "56bedc74-7051-4b70-9f5a-99123144a4e4",
+    "name": "Social Sciences Research Foundation",
+    "slug": "social-sciences-research-foundation",
+    "description": "Dedicated to advancing social sciences research, this foundation partners with INSEE to conduct interdisciplinary studies. Their joint efforts aim to provide a comprehensive understanding of the societal impact of economic trends and policies.",
+    "image": "https://res.cloudinary.com/dqqkokon9/image/upload/v1702042427/Personal/vw2f71nt1kqbwoi6jx0w.jpg"
+  },
+  {
+    "id": "ab671264-bf37-41df-94f1-fee91405f0eb",
+    "name": "Educational Outreach Initiative",
+    "slug": "educational-outreach-initiative",
+    "description": "As an extension of INSEE's commitment to education, this initiative focuses on providing educational resources related to economic and statistical topics. It collaborates with schools, colleges, and universities to promote data literacy and research skills.",
+    "image": "https://res.cloudinary.com/dqqkokon9/image/upload/v1702042610/Personal/yuqxrgo2myaxgtcva7sy.jpg"
   }
 ]

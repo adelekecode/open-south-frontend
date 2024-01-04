@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuItem } from "@mui/material";
+import { stripHtml } from "string-strip-html";
 import { FiSearch } from "react-icons/fi";
 import SearchInput from "~/components/search-input";
 import SelectInput from "~/components/select-input";
 import Seo from "~/components/seo";
-import Data from "~/utils/data/organization.json";
+import { usePublicOrganizations } from "~/queries/organizations";
+import NoData from "~/assets/illustrations/no-data.png";
 
 type SortByValue = "relevance" | "most-datasets" | "most-recent";
 
@@ -13,6 +15,8 @@ export default function Organization() {
   const navigate = useNavigate();
 
   const [sortBy, setSortBy] = useState<SortByValue>("relevance");
+
+  const { isLoading, data } = usePublicOrganizations();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -25,9 +29,7 @@ export default function Organization() {
         <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold mb-2">
           Organization
         </h1>
-        <p className="tablet:text-sm">
-          Search among the <span>5,000</span> organizations on Open South
-        </p>
+        <p className="tablet:text-sm">Search among organizations on Open South.</p>
         <div className="flex flex-col gap-2 pt-4">
           <SearchInput
             placeholder="Search..."
@@ -61,41 +63,65 @@ export default function Organization() {
             </SelectInput>
           </div>
         </header>
-        <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
-          {Data.map((item, index) => {
-            const { name, slug, image, description } = item;
+        {isLoading ? (
+          <div className="grid grid-cols-3 gap-4 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index + 1} className="animate-pulse rounded-lg bg-gray-200 h-28" />
+            ))}
+          </div>
+        ) : data && data.length > 0 ? (
+          <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
+            {data.map((item, index) => {
+              const { name, slug, logo, description } = item;
 
-            return (
-              <button
-                key={index + 1}
-                onClick={() => {
-                  navigate(`./${slug}`, {
-                    state: {
-                      name,
-                    },
-                  });
-                }}
-                className="flex flex-col gap-6 border-[1.5px] border-info-200 border-b-2 border-b-primary-700 p-4 hover:bg-info-50"
-              >
-                <div className="w-full grid grid-cols-[70px,1fr] gap-4">
-                  <figure className="border border-zinc-300 aspect-square bg-white">
-                    <img
-                      className="w-full h-full object-contain"
-                      src={image || ""}
-                      alt="organization photo"
-                    />
-                  </figure>
-                  <h3 className="text-sm text-start font-semibold">{name}</h3>
-                </div>
-                <p className="text-start text-sm">
-                  {description.length > 300
-                    ? description.substring(0, 300).split(" ").slice(0, -1).join(" ") + "..."
-                    : description}
-                </p>
-              </button>
-            );
-          })}
-        </main>
+              const stripedDescription = stripHtml(`${description}`, {
+                stripTogetherWithTheirContents: ["style", "pre"],
+              }).result;
+
+              return (
+                <button
+                  key={index + 1}
+                  onClick={() => {
+                    navigate(`./${slug}`, {
+                      state: {
+                        name,
+                      },
+                    });
+                  }}
+                  className="flex flex-col gap-6 border-[1.5px] border-info-200 border-b-2 border-b-primary-700 p-4 hover:bg-info-50"
+                >
+                  <div className="w-full grid grid-cols-[70px,1fr] gap-4 items-center">
+                    <figure className="border w-full aspect-square border-zinc-300 bg-white">
+                      <img
+                        className="w-full h-full object-contain"
+                        src={logo || ""}
+                        alt="organization photo"
+                      />
+                    </figure>
+                    <h3 className="text-sm text-start font-semibold">{name}</h3>
+                  </div>
+                  <p className="text-start text-sm">
+                    {stripedDescription.length > 300
+                      ? stripedDescription.substring(0, 300).split(" ").slice(0, -1).join(" ") +
+                        "..."
+                      : stripedDescription}
+                  </p>
+                </button>
+              );
+            })}
+          </main>
+        ) : (
+          <div className="flex items-center justify-center w-full flex-col">
+            <figure className="w-[250px] aspect-square">
+              <img
+                src={NoData}
+                className="w-full h-full object-covers"
+                alt="No category data illustration"
+              />
+            </figure>
+            <p className="text-base font-semibold">No organization found</p>
+          </div>
+        )}
       </main>
     </>
   );

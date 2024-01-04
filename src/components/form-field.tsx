@@ -1,10 +1,13 @@
-import { InputLabel, OutlinedInputProps, OutlinedInput } from "@mui/material";
+import { InputLabel, InputLabelProps, OutlinedInputProps, OutlinedInput } from "@mui/material";
 import { ErrorMessage, Field, FieldConfig, FieldProps } from "formik";
 import { twMerge } from "tailwind-merge";
 
-type FormFieldProps = OutlinedInputProps & FieldConfig;
+type FormFieldProps = OutlinedInputProps &
+  FieldConfig & {
+    labelProps?: InputLabelProps;
+  };
 
-export default function FormField({ label, className, ...props }: FormFieldProps) {
+export default function FormField({ label, className, labelProps, ...props }: FormFieldProps) {
   return (
     <Field {...props}>
       {({ field }: FieldProps) => (
@@ -12,8 +15,9 @@ export default function FormField({ label, className, ...props }: FormFieldProps
           {label && (
             <div className="w-full flex justify-between items-center">
               <InputLabel
+                {...labelProps}
                 htmlFor={props.name}
-                className="!text-sm !text-texts-primary mb-[0.35rem] !font-Work-Sans"
+                className={twMerge(`!text-sm mb-[0.35rem] !font-Work-Sans`, labelProps?.className)}
               >
                 {label}
                 {props.required && <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>}
@@ -22,7 +26,7 @@ export default function FormField({ label, className, ...props }: FormFieldProps
           )}
           <OutlinedInput
             className={twMerge(
-              "w-full placeholder:!text-texts-placeholder !rounded-md !border-[0px] placeholder:!text-base",
+              "w-full !rounded-md !border-[0px] placeholder:!text-base",
               className
             )}
             {...field}

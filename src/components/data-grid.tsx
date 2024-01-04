@@ -1,4 +1,5 @@
 import { DataGrid as MuiDataGrid, DataGridProps as MuiDataGridProps } from "@mui/x-data-grid";
+import { twMerge } from "tailwind-merge";
 import NoData from "~/assets/illustrations/no-data.png";
 
 type DataGridProps = MuiDataGridProps;
@@ -10,6 +11,7 @@ export default function DataGrid({
   disableColumnMenu = true,
   disableRowSelectionOnClick = true,
   slots,
+  className,
   ...props
 }: DataGridProps) {
   return (
@@ -20,8 +22,17 @@ export default function DataGrid({
         "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
           outline: "none !important",
         },
+        "& .MuiDataGrid-columnHeaders": {
+          backgroundColor: "#ededed96",
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontWeight: 600,
+            fontSize: "0.8rem",
+            textTransform: "uppercase",
+          },
+        },
         ...sx,
       }}
+      className={twMerge(`!shadow-none`, className)}
       slots={{
         noRowsOverlay: () => {
           return (

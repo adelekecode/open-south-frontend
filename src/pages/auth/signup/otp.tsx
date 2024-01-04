@@ -77,7 +77,7 @@ export default function Otp({ email }: OtpProps) {
           disabled={!isComplete}
           onClick={async () => {
             const response = await verifyOtp.mutateAsync({
-              otp: Number(otp),
+              otp,
             });
 
             if (response) {

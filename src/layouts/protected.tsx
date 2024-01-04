@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import DashboardLoader from "~/components/loader/dashboard-loader";
+import AppLoader from "~/components/loader/app-loader";
 import { useCurrentUser } from "~/queries/user";
 
 export default function Protected() {
@@ -8,7 +8,7 @@ export default function Protected() {
   const { pathname } = useLocation();
 
   if (isLoading) {
-    return <DashboardLoader />;
+    return <AppLoader />;
   }
 
   if (!data) {

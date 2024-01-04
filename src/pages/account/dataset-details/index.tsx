@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Breadcrumbs } from "@mui/material";
 import Button from "~/components/button";
@@ -30,6 +30,10 @@ export default function DatasetDetails() {
     </Link>,
     <p key="2">{data.title}</p>,
   ];
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

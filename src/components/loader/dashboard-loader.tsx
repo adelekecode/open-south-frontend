@@ -7,5 +7,8 @@ export default function DashboardLoader() {
         <div className="animate-pulse rounded-lg h-full bg-gray-200" />
       </div>
     </div>
+    // <div className="flex items-center justify-center w-full h-screen">
+    //   <span className="dashboardLoader"></span>
+    // </div>
   );
 }

@@ -1,14 +1,17 @@
-import { Outlet } from "react-router-dom";
 import Header from "./header";
 import SideBar from "./side-bar";
 
-export default function DashboardLayout() {
+type DashboardLayoutProps = {
+  children: React.ReactNode;
+};
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex min-h-screen w-full bg-[#FAFAFBFF]">
       <SideBar />
       <main className="min-h-screen flex flex-col w-[calc(100%-230px)] tabletAndBelow:w-full">
         <Header />
-        <Outlet />
+        {children}
       </main>
     </div>
   );

@@ -1,38 +1,66 @@
-import { Autocomplete, AutocompleteProps, OutlinedInput, OutlinedInputProps } from "@mui/material";
+import {
+  Autocomplete as MuiAutocomplete,
+  AutocompleteProps as MuiAutocompleteProps,
+  TextFieldProps,
+  TextField,
+} from "@mui/material";
 import { twMerge } from "tailwind-merge";
 
-// type AutocompleteInputProps<
-//   T,
-//   Multiple = boolean,
-//   DisableClearable = boolean,
-//   FreeSolo = boolean,
-//   ChipComponent = React.ElementType,
-// > = AutocompleteProps<T, Multiple, DisableClearable, FreeSolo, ChipComponent> & {
-//   inputParams?: OutlinedInputProps;
-// };
-
-type AutocompleteInputProps<
-  T,
-  Multiple extends boolean | undefined = undefined,
-  DisableClearable extends boolean | undefined = undefined,
-  FreeSolo extends boolean | undefined = undefined,
-  ChipComponent extends React.ElementType = React.ElementType,
-> = AutocompleteProps<T, Multiple, DisableClearable, FreeSolo, ChipComponent> & {
-  inputParams?: OutlinedInputProps;
+type AutocompleteInputProps<T> = Omit<
+  MuiAutocompleteProps<T, false, false, false, any>,
+  "renderInput"
+> & {
+  inputParams?: TextFieldProps;
+  renderInput?: MuiAutocompleteProps<T, false, false, false, any>["renderInput"];
 };
 
-export default function AutocompleteInput({
+export default function AutocompleteInput<T>({
   inputParams,
   sx,
+  disablePortal = true,
   ...props
-}: AutocompleteInputProps<any, false, false, false, React.ElementType>) {
+}: AutocompleteInputProps<T>) {
   return (
-    <Autocomplete
-      disablePortal
-      sx={{ width: 300, ...sx }}
+    <MuiAutocomplete
       {...props}
+      disablePortal={disablePortal}
+      sx={{
+        "& .Mui-focused": {
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderWidth: "0px !important",
+          },
+        },
+        "& .MuiOutlinedInput-notchedOutline": {
+          borderWidth: "0px",
+        },
+        "& .MuiOutlinedInput-root": {
+          paddingTop: "4px",
+          paddingBottom: "4px",
+          borderTop: "0px",
+          borderRight: "0px",
+          borderLeft: "0px",
+          borderWidth: "2px",
+          borderColor: "#0e82bb !important",
+          borderRadius: "4px 4px 0 0",
+          "& .MuiAutocomplete-input": {
+            padding: "7.5px 4px 8px",
+          },
+        },
+        "& .MuiInputBase-root": {
+          "& input": {
+            padding: "8px 12px",
+          },
+          height: "-webkit-fill-available",
+          fontFamily: '"Work Sans", sans-serif',
+          backgroundColor: "rgb(228 228 231)",
+          "&::placeholder": {
+            fontStyle: "italic",
+          },
+        },
+        ...sx,
+      }}
       renderInput={(params) => (
-        <OutlinedInput
+        <TextField
           {...params}
           {...(inputParams && { ...inputParams })}
           className={twMerge(``, inputParams?.className)}

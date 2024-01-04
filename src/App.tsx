@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -6,12 +7,10 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import Protected from "./layouts/protected";
-import { fetchAccessTokenIfRefreshTokenExists } from "./utils/api";
 import { ForgotPassword, Login, ResetPassword, Signup } from "./pages/auth";
 import NotFound from "./pages/404";
 import ErrorBoundary from "./components/error-boundary";
 import DashboardLoader from "./components/loader/dashboard-loader";
-import DashboardLayout from "./layouts/dashboard";
 import Auth from "./layouts/auth";
 import AppLayout from "./layouts/app";
 import Home from "./pages/home";
@@ -31,35 +30,27 @@ import {
   DatasetDetails as AccountDatasetDetails,
   OrgDashboard,
   OrgDataset,
+  CreateDataset,
+  CreateOrg,
 } from "./pages/account";
-import GetDataset from "./layouts/get-dataset";
+import GetUserDataset from "./layouts/get-user-dataset";
 import News from "./pages/news";
 import NewsDetails from "./pages/news-details";
-
-async function loader() {
-  try {
-    await fetchAccessTokenIfRefreshTokenExists();
-
-    return null;
-  } catch (error) {
-    return new Response("", {
-      status: 302,
-      headers: {
-        Location: "/login",
-      },
-    });
-  }
-}
-
-async function appLoader() {
-  try {
-    await fetchAccessTokenIfRefreshTokenExists();
-
-    return null;
-  } catch (error) {
-    return null;
-  }
-}
+import Partner from "./pages/partner";
+import { dashboardLoader } from "./utils/routes-addons/dashboard";
+import { appLoader } from "./utils/routes-addons/app";
+import Contact from "./pages/contact";
+import { organizationDetailsLoader } from "./utils/routes-addons/organization-details";
+import { datasetDetailsLoader } from "./utils/routes-addons/dataset-details";
+import AppLoader from "./components/loader/app-loader";
+import UserRestricted from "./layouts/user-restricted";
+import AdminRestricted from "./layouts/admin-restricted";
+import {
+  User,
+  Category as AdminCategory,
+  Dashboard as AdminDashboard,
+  Dataset as AdminDataset,
+} from "./pages/admin";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -70,17 +61,94 @@ const router = createBrowserRouter(
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token/:uuid" element={<ResetPassword />} />
       </Route>
-      <Route loader={loader}>
+      <Route loader={dashboardLoader}>
         <Route element={<Protected />}>
-          <Route element={<DashboardLayout />}>
-            <Route path="/account/dashboard" element={<Dashboard />} />
-            <Route path="/account/datasets" element={<AccountDataset />} />
-            <Route element={<GetDataset />}>
+          <Route element={<UserRestricted />}>
+            <Route
+              path="/account/dashboard"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <Dashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/account/datasets"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AccountDataset />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/account/datasets/new"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <CreateDataset />
+                </Suspense>
+              }
+            />
+            <Route element={<GetUserDataset />}>
               <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
             </Route>
-            <Route path="/account/:slug/dashboard" element={<OrgDashboard />} />
-            <Route path="/account/:slug/datasets" element={<OrgDataset />} />
-            <Route path="/account/datasets/new" element={<div>Create new dataset</div>} />
+            <Route
+              path="/account/:slug/dashboard"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <OrgDashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/account/:slug/datasets"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <OrgDataset />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/account/organizations/new"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <CreateOrg />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route element={<AdminRestricted />}>
+            <Route
+              path="/admin/dashboard"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AdminDashboard />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/datasets"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AdminDataset />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/categories"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AdminCategory />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <User />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
       </Route>
@@ -89,27 +157,44 @@ const router = createBrowserRouter(
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/datasets" element={<Dataset />} />
-            <Route path="/datasets/:slug" element={<DatasetDetails />} />
+            <Route
+              path="/datasets/:slug"
+              element={<DatasetDetails />}
+              loader={datasetDetailsLoader}
+            />
             <Route path="/datasets/:slug/resources/:id" element={<div>File Preview</div>} />
             <Route path="/categories" element={<Category />} />
             <Route path="/organizations" element={<Organization />} />
-            <Route path="/organizations/:slug" element={<OrganizationDetails />} />
+            <Route
+              path="/organizations/:slug"
+              element={<OrganizationDetails />}
+              loader={organizationDetailsLoader}
+            />
             <Route path="/about" element={<About />} />
             <Route path="/news" element={<News />} />
             <Route path="/news/:slug" element={<NewsDetails />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/faq" element={<Faq />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/partners" element={<Partner />} />
           </Route>
         </Route>
       </Route>
-      <Route path="*" element={<NotFound />} />
+      <Route
+        path="*"
+        element={
+          <div className="min-h-screen flex">
+            <NotFound />
+          </div>
+        }
+      />
     </Route>
   )
 );
 
 function App() {
-  return <RouterProvider router={router} fallbackElement={<DashboardLoader />} />;
+  return <RouterProvider router={router} fallbackElement={<AppLoader />} />;
 }
 
 export default App;

@@ -1,4 +1,8 @@
+import { useGetPanelData } from "~/queries/home";
+
 export default function Panel() {
+  const { data } = useGetPanelData();
+
   return (
     <div className="w-full max-w-maxAppWidth p-6 tablet:px-5 largeMobile:!px-4 mx-auto">
       <div className="shadow-md rounded-lg w-full p-6 gap-5 flex flex-col">
@@ -7,35 +11,35 @@ export default function Panel() {
           <div>
             <span></span>
             <div>
-              <h1>46,897</h1>
+              <h1>{data?.datasets || "0"}</h1>
               <p>Datasets</p>
             </div>
           </div>
           <div>
             <span></span>
             <div>
-              <h1>201,475</h1>
+              <h1>{data?.files || "0"}</h1>
               <p>Files</p>
             </div>
           </div>
           <div>
             <span></span>
             <div>
-              <h1>26,897</h1>
+              <h1>{data?.categories || "0"}</h1>
               <p>Categories</p>
             </div>
           </div>
           <div>
             <span></span>
             <div>
-              <h1>123,567</h1>
+              <h1>{data?.users || "0"}</h1>
               <p>Users</p>
             </div>
           </div>
           <div>
             <span></span>
             <div>
-              <h1>4,666</h1>
+              <h1>{data?.organisations || "0"}</h1>
               <p>Organizations</p>
             </div>
           </div>
