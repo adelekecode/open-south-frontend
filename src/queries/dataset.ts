@@ -15,3 +15,15 @@ export function useAdminDatasetDetails(id: string) {
 export function useAdminDatasets() {
   return useQuery<Dataset[]>([`/admin/datasets/`]);
 }
+
+export function useUserDatasets() {
+  return useQuery<
+    // {
+    //   count: number;
+    //   next: boolean | null;
+    //   previous: boolean | null;
+    //   results: Dataset[];
+    // }
+    Dataset[]
+  >([`/user/datasets/`]);
+}
