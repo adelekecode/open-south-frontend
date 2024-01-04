@@ -39,6 +39,10 @@ type Dataset = {
     image_url: string;
     type: "individual" | "organization";
   };
+  geojson: {
+    country: string;
+    coordinates: string;
+  };
 };
 
 type Category = {

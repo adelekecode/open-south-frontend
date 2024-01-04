@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { IconButton } from "@mui/material";
 import { IoClose } from "react-icons/io5";
 import { useDropzone } from "react-dropzone";
+import { v4 as uuidv4 } from "uuid";
 import Button from "~/components/button";
 import FileUpload from "~/assets/illustrations/file-upload.png";
 import { formatFileSize } from "~/utils/helper";
@@ -16,6 +17,7 @@ type ResourceProps = {
 export default function Resource({ setActiveIndex }: ResourceProps) {
   const [files, setFiles] = useState<
     {
+      id: string;
       fileName: string;
       fileSize: string;
       fileType: string;
@@ -23,8 +25,9 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
     }[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [filesSuccessfullyUploaded, setFilesSuccessfullyUploaded] = useState<string[]>([]);
 
-  const { dataset } = useCreateDatasetStore();
+  const { dataset, setOrganization } = useCreateDatasetStore();
 
   const uploadDatasetFile = useUploadDatasetFile();
 
@@ -37,6 +40,7 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
       reader.onload = () => {
         setFiles((prev) => {
           const newAttachment = {
+            id: uuidv4(),
             fileName: file.name,
             fileSize: formatFileSize(file.size),
             fileType: file.type,
@@ -63,7 +67,7 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
   });
 
   return (
-    <div className="pt-4 flex flex-col gap-4">
+    <div className="pt-4 flex flex-col">
       <div className="p-4">
         <div
           className="border border-info-300 rounded-md flex flex-col items-center justify-center w-full p-8 cursor-pointer outline-0 gap-4"
@@ -78,7 +82,7 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
             />
           </figure>
           <p className="text-xs text-center">
-            Drag and drop file here to upload, upload 15 files at a time
+            Drag and drop files here to upload. Allowed file types: .csv, .json, .xls, .xlsx, .zip.
           </p>
         </div>
       </div>
@@ -89,12 +93,21 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
               key={index + 1}
               className="flex justify-between items-center border p-2 rounded-md border-info-300"
             >
-              <div className="flex flex-col gap-2">
-                <h4 className="text-sm font-semibold">{item.fileName.replace(/\.[^/.]+$/, "")}</h4>
-                <div className="[&>p]:text-xs [&>p]:font-medium">
-                  <p>File size: {item.fileSize}</p>
-                  <p>File Type: {item.fileType}</p>
+              <div className="flex gap-8 items-center">
+                <div className="flex flex-col gap-2">
+                  <h4 className="text-sm font-semibold">
+                    {item.fileName.replace(/\.[^/.]+$/, "")}
+                  </h4>
+                  <div className="[&>p]:text-xs [&>p]:font-medium">
+                    <p>File size: {item.fileSize}</p>
+                    <p>File Type: {item.fileType}</p>
+                  </div>
                 </div>
+                {filesSuccessfullyUploaded.includes(item.id) && (
+                  <p className="text-xs px-3 py-1 border border-green-500 text-green-500 rounded-full">
+                    uploaded
+                  </p>
+                )}
               </div>
               <IconButton
                 onClick={() => {
@@ -125,24 +138,29 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
             setIsLoading(true);
             try {
               await Promise.all(
-                files.map(async (item) => {
-                  try {
-                    await uploadDatasetFile.mutateAsync({
-                      datasetId: dataset?.id || "",
-                      file: item.file,
-                      format: item.fileType,
-                      size: item.fileSize,
-                    });
-                  } catch (error) {
-                    console.error(error);
-                    notifyError(`${item.fileName} already exist`);
-                  }
-                })
+                files
+                  .filter((item) => !filesSuccessfullyUploaded.includes(item.id))
+                  .map(async (item) => {
+                    try {
+                      await uploadDatasetFile.mutateAsync({
+                        datasetId: dataset?.id || "",
+                        file: item.file,
+                        format: item.fileType,
+                        size: item.fileSize,
+                      });
+
+                      setFilesSuccessfullyUploaded((prev) => [...prev, item.id]);
+                    } catch (error) {
+                      notifyError(`File "${item.fileName}" already exist`);
+                      throw error;
+                    }
+                  })
               );
             } catch (error) {
               console.error(error);
-              notifyError("An error occured while uploading files, please try again");
+              throw error;
             } finally {
+              setOrganization(null);
               setIsLoading(false);
             }
 
