@@ -1,12 +1,59 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import data from "~/utils/data/map.json";
+import { usePublicDatasets } from "~/queries/dataset";
+import AppLoader from "~/components/loader/app-loader";
 
 export default function Map() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
+  const { data, isLoading } = usePublicDatasets();
+
   useEffect(() => {
+    if (!data) return;
+
+    const mapData: {
+      type: string;
+      features: {
+        type: string;
+        geometry: {
+          type: string;
+          coordinates: number[];
+        };
+        properties: {
+          country: string;
+        };
+      }[];
+    } = {
+      type: "FeatureCollection",
+      features: [],
+    };
+
+    if (data && data.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        if (!data[i].geojson) {
+          continue;
+        }
+
+        const coordinateStr = data[i].geojson.coordinates;
+        const arr = coordinateStr.split(",");
+        const coordinates = [Number(arr[0]), Number(arr[1])];
+
+        const obj: (typeof mapData.features)[0] = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates,
+          },
+          properties: {
+            country: data[i].geojson.country,
+          },
+        };
+
+        mapData.features.push(obj);
+      }
+    }
+
     mapboxgl.accessToken = import.meta.env.VITE_MAPBOXGL_ACCESS_TOKEN;
 
     const map = new mapboxgl.Map({
@@ -22,8 +69,7 @@ export default function Map() {
     map.on("load", () => {
       map.addSource("earthquakes", {
         type: "geojson",
-        // data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
-        data: data as any,
+        data: mapData as any,
         cluster: true,
         clusterMaxZoom: 14,
         clusterRadius: 50,
@@ -61,101 +107,20 @@ export default function Map() {
       });
     });
 
-    //   // map.addLayer({
-    //   //   id: "unclustered-point",
-    //   //   type: "circle",
-    //   //   source: "earthquakes",
-    //   //   filter: ["!", ["has", "point_count"]],
-    //   //   paint: {
-    //   //     "circle-color": "#11b4da",
-    //   //     "circle-radius": 4,
-    //   //     "circle-stroke-width": 1,
-    //   //     "circle-stroke-color": "#fff",
-    //   //   },
-    //   // });
-    // });
-
-    // const mapData: {
-    //   type: string;
-    //   features: {
-    //     type: string;
-    //     geometry: {
-    //       type: string;
-    //       coordinates: number[];
-    //     };
-    //     properties: {
-    //       country: string;
-    //     };
-    //   }[];
-    // } = {
-    //   type: "FeatureCollection",
-    //   features: [],
-    // };
-
-    // for (let i = 0; i < [0, 0, 0, 4].length; i++) {
-    //   const response = await fetch(
-    //     "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-    //       encodeURIComponent("Nigeria") +
-    //       ".json?access_token=" +
-    //       "pk.eyJ1IjoiaGVuenlkIiwiYSI6ImNscGFoMjhhbzA4YjIya3FyZ2k1dHVvY3cifQ.BXdS3AGFaYxLJGU928a_5g"
-    //   );
-    //   const data = await response.json();
-
-    //   if (data.features.length > 0) {
-    //     const coordinates = data.features[0].center;
-
-    //     const _mapData = {
-    //       type: "Feature",
-    //       geometry: {
-    //         type: "Point",
-    //         coordinates,
-    //       },
-    //       properties: {
-    //         country: "Nigeria",
-    //       },
-    //     };
-
-    //     mapData.features.push(_mapData);
-    //   }
-    // }
-
     return () => {
       map.remove();
     };
-  }, []);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch(
-  //       "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-  //         encodeURIComponent("Brazil") +
-  //         ".json?access_token=" +
-  //         "pk.eyJ1IjoiaGVuenlkIiwiYSI6ImNscGFoMjhhbzA4YjIya3FyZ2k1dHVvY3cifQ.BXdS3AGFaYxLJGU928a_5g"
-  //     );
-  //     const data = await response.json();
-
-  //     if (data.features.length > 0) {
-  //       const coordinates = data.features[0].center;
-
-  //       const _mapData = {
-  //         type: "Feature",
-  //         geometry: {
-  //           type: "Point",
-  //           coordinates,
-  //         },
-  //         properties: {
-  //           country: "Nigeria",
-  //         },
-  //       };
-
-  //       console.log(_mapData);
-  //     }
-  //   })();
-  // }, []);
+  }, [data]);
 
   return (
     <div className="w-full">
-      <div ref={mapContainerRef} id="map" className="w-full h-[100vh]" />
+      {isLoading ? (
+        <div className="h-screen">
+          <AppLoader />
+        </div>
+      ) : (
+        data && <div ref={mapContainerRef} id="map" className="w-full h-[100vh]" />
+      )}
     </div>
   );
 }

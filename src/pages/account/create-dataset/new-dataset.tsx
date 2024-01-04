@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Autocomplete, InputLabel, MenuItem, TextField } from "@mui/material";
+import axios from "axios";
 import { ErrorMessage, Formik } from "formik";
 import * as Yup from "yup";
 import Button from "~/components/button";
@@ -14,6 +15,7 @@ import countryData from "~/utils/data/country.json";
 import TagsField from "~/components/tags-field";
 import { useCategories } from "~/queries/category";
 import useCreateDatasetStore from "~/store/create-dataset";
+import { notifyError } from "~/utils/toast";
 
 const validationSchema = Yup.object({
   title: Yup.string()
@@ -47,6 +49,26 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
   const createDataset = useCreateDataset();
   const createDatasetTags = useCreateDatasetTags();
 
+  async function getCountryCoordinates(country: string) {
+    try {
+      const { data } = (await axios.get(
+        "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+          encodeURIComponent(country.toLowerCase()) +
+          ".json?access_token=" +
+          import.meta.env.VITE_MAPBOXGL_ACCESS_TOKEN
+      )) as any;
+
+      if (data.features.length > 0) {
+        const coordinates = data.features[0].center;
+
+        return coordinates;
+      }
+    } catch (error) {
+      notifyError("Error occured while creating dataset, please try again");
+      throw error;
+    }
+  }
+
   return (
     <Formik
       initialValues={{
@@ -54,7 +76,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
         description: "",
         license: "Licence Ouverte / Open Licence version 2.0",
         tags: [],
-        updateFrequency: "",
+        updateFrequency: "Unknown",
         start: "",
         end: "",
         category: "",
@@ -71,10 +93,14 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
 
         delete newValues.category;
 
-        const { tags, ...rest } = newValues;
+        const { tags, spatialCoverage, ...rest } = newValues;
+
+        const coordinates = await getCountryCoordinates(spatialCoverage);
 
         const datasetResponse = await createDataset.mutateAsync({
           ...rest,
+          spatialCoverage,
+          coordinates,
           category: chosenCategoryObj,
           organization,
         });
@@ -147,7 +173,8 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                 label="Update Frequency"
                 required
                 name="updateFrequency"
-                defaultValue={"Unknown"}
+                // defaultValue={"Unknown"}
+                value={values.updateFrequency}
                 labelProps={{
                   className: "!font-medium",
                 }}

@@ -63,7 +63,12 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
           {isLoadingOrganizations ? (
             <div className="grid grid-cols-3 gap-4 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1">
               {Array.from({ length: 6 }).map((_, index) => (
-                <div key={index + 1} className="animate-pulse rounded-lg bg-gray-200 h-28" />
+                <div key={index + 1} className="border p-2 h-[7rem] rounded-sm flex items-start">
+                  <div className="grid grid-cols-[50px,1fr] gap-4 w-full">
+                    <div className="animate-pulse rounded-sm bg-gray-200 w-full aspect-square"></div>
+                    <div className="animate-pulse bg-gray-200 w-[80%] h-4 mt-2"></div>
+                  </div>
+                </div>
               ))}
             </div>
           ) : organizations && organizations.length > 0 ? (

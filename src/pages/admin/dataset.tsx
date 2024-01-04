@@ -84,7 +84,8 @@ export default function Dataset() {
     {
       field: "views",
       headerName: "VIEWS",
-      width: 100,
+      flex: 1,
+      minWidth: 50,
       valueFormatter: ({ value }) => {
         return value.count;
       },
@@ -95,7 +96,7 @@ export default function Dataset() {
     {
       field: "files_count",
       headerName: "FILES",
-      width: 100,
+      minWidth: 50,
       valueFormatter: ({ value }) => {
         return value;
       },
