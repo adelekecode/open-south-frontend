@@ -51,6 +51,7 @@ import {
   Dashboard as AdminDashboard,
   Dataset as AdminDataset,
 } from "./pages/admin";
+import Profile from "./pages/account/profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -115,6 +116,14 @@ const router = createBrowserRouter(
                 </Suspense>
               }
             />
+            <Route
+              path="/account/profile"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <Profile />
+                </Suspense>
+              }
+            />
           </Route>
           <Route element={<AdminRestricted />}>
             <Route
@@ -146,6 +155,14 @@ const router = createBrowserRouter(
               element={
                 <Suspense fallback={<DashboardLoader />}>
                   <User />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/profile"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <Profile />
                 </Suspense>
               }
             />

@@ -32,131 +32,152 @@ export default function CreateOrganization() {
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <h1 className="text-2xl font-semibold largeMobile:text-xl">New Organization</h1>
-        {formCompleted ? (
-          <Success />
-        ) : (
-          <div>
-            <Formik
-              initialValues={{
-                name: "",
-                description: "",
-              }}
-              validateOnBlur={false}
-              validationSchema={validationSchema}
-              onSubmit={async (values) => {
-                if (!logo) return notifyError("Logo field is required");
+        <div className="bg-white w-full border border-info-100 p-6 rounded-md">
+          {!formCompleted ? (
+            <Success />
+          ) : (
+            <div>
+              <Formik
+                initialValues={{
+                  name: "",
+                  description: "",
+                }}
+                validateOnBlur={false}
+                validationSchema={validationSchema}
+                onSubmit={async (values) => {
+                  if (!logo) return notifyError("Logo field is required");
 
-                const response = await createOrganization.mutateAsync({
-                  ...values,
-                  logo,
-                });
+                  const response = await createOrganization.mutateAsync({
+                    ...values,
+                    logo,
+                  });
 
-                if (response) {
-                  setFormCompleted(true);
-                }
-              }}
-            >
-              {({ handleSubmit, isSubmitting }) => (
-                <form className="pt-4 flex flex-col gap-10" onSubmit={handleSubmit}>
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col">
-                      <InputLabel
-                        htmlFor={"logo"}
-                        className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}
-                      >
-                        Logo
-                        <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
-                      </InputLabel>
-                      <div className="flex gap-8 items-center largeMobile:flex-col largeMobile:items-start largeMobile:gap-4 largeMobile:mb-2">
-                        <figure
-                          id="logo"
-                          className="w-36 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden p-1"
+                  if (response) {
+                    setFormCompleted(true);
+                  }
+                }}
+              >
+                {({ handleSubmit, isSubmitting }) => (
+                  <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col">
+                        <InputLabel
+                          htmlFor={"logo"}
+                          className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}
                         >
-                          {logo ? (
-                            <img
-                              src={URL.createObjectURL(logo)}
-                              alt="organization logo"
-                              className="w-full h-full object-contain"
-                            />
-                          ) : (
-                            <IoCameraSharp className="w-[40%] h-44 text-info-500" />
-                          )}
-                        </figure>
-                        <input
-                          ref={inputRef}
-                          type="file"
-                          className="hidden"
-                          onChange={(e) => {
-                            const file = e.target.files![0];
+                          Logo
+                          <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
+                        </InputLabel>
+                        <div className="flex gap-8 items-center largeMobile:flex-col largeMobile:items-start largeMobile:gap-4 largeMobile:mb-2">
+                          <figure
+                            id="logo"
+                            className="w-36 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden p-1"
+                          >
+                            {logo ? (
+                              <img
+                                src={URL.createObjectURL(logo)}
+                                alt="organization logo"
+                                className="w-full h-full object-contain"
+                              />
+                            ) : (
+                              <IoCameraSharp className="w-[40%] h-44 text-info-500" />
+                            )}
+                          </figure>
+                          <input
+                            ref={inputRef}
+                            type="file"
+                            className="hidden"
+                            accept=".png, .jpg, .jpeg"
+                            onChange={(e) => {
+                              const file = e.target.files![0];
 
-                            setLogo(file);
-                          }}
-                        />
-                        <Button
-                          variant="outlined"
-                          color="info"
-                          className="!py-2"
-                          onClick={() => {
-                            inputRef.current?.click();
-                          }}
-                        >
-                          <span>Upload Logo</span>
-                        </Button>
+                              setLogo(file);
+                            }}
+                          />
+                          <div className="flex flex-col gap-2">
+                            <h4 className="text-sm">Upload a logo</h4>
+                            <p className="text-xs text-info-800">
+                              The logo should be in PNG, JPG or JPEG format
+                            </p>
+                            <div className="flex items-center mt-1">
+                              <Button
+                                variant="outlined"
+                                color="info"
+                                className="!py-2 !px-3 !text-xs"
+                                onClick={() => {
+                                  inputRef.current?.click();
+                                }}
+                              >
+                                <span>Choose image</span>
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                color="info"
+                                className="!py-2 !border-transparent !px-3 !text-xs"
+                                onClick={() => {
+                                  setLogo(null);
+                                }}
+                              >
+                                <span>Remove</span>
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <FormField
-                      label="Name"
-                      required
-                      name="name"
-                      className="[&_input]:!text-[0.9rem]"
-                      labelProps={{
-                        className: "!font-medium",
-                      }}
-                    />
-                    <TextEditorField
-                      label="Description"
-                      required
-                      name="description"
-                      labelProps={{
-                        className: "!font-medium",
-                      }}
-                      modules={{
-                        toolbar: [
-                          [{ header: [1, 2, false] }],
-                          ["bold", "italic", "underline", "strike", "blockquote"],
-                          [
-                            { list: "ordered" },
-                            { list: "bullet" },
-                            { indent: "-1" },
-                            { indent: "+1" },
+                      <FormField
+                        label="Name"
+                        required
+                        name="name"
+                        className="[&_input]:!text-[0.9rem]"
+                        labelProps={{
+                          className: "!font-medium",
+                        }}
+                      />
+                      <TextEditorField
+                        label="Description"
+                        required
+                        name="description"
+                        labelProps={{
+                          className: "!font-medium",
+                        }}
+                        modules={{
+                          toolbar: [
+                            [{ header: [1, 2, false] }],
+                            ["bold", "italic", "underline", "strike", "blockquote"],
+                            [
+                              { list: "ordered" },
+                              { list: "bullet" },
+                              { indent: "-1" },
+                              { indent: "+1" },
+                            ],
+                            ["clean"],
                           ],
-                          ["clean"],
-                        ],
-                      }}
-                      formats={[
-                        "header",
-                        "bold",
-                        "italic",
-                        "underline",
-                        "strike",
-                        "blockquote",
-                        "list",
-                        "bullet",
-                        "indent",
-                      ]}
-                    />
-                  </div>
-                  <footer className="p-4 py-2 flex items-center justify-between">
-                    <div></div>
-                    <Button type="submit" className="!py-2" loading={isSubmitting}>
-                      Next
-                    </Button>
-                  </footer>
-                </form>
-              )}
-            </Formik>
-          </div>
-        )}
+                        }}
+                        formats={[
+                          "header",
+                          "bold",
+                          "italic",
+                          "underline",
+                          "strike",
+                          "blockquote",
+                          "list",
+                          "bullet",
+                          "indent",
+                        ]}
+                      />
+                    </div>
+                    <footer className="p-4 py-2 flex items-center justify-between">
+                      <div></div>
+                      <Button type="submit" className="!py-2" loading={isSubmitting}>
+                        Create
+                      </Button>
+                    </footer>
+                  </form>
+                )}
+              </Formik>
+            </div>
+          )}
+        </div>
       </main>
     </>
   );
