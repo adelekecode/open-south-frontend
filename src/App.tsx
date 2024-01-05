@@ -31,7 +31,6 @@ import {
   OrgDashboard,
   OrgDataset,
   CreateDataset,
-  CreateOrg,
 } from "./pages/account";
 import GetUserDataset from "./layouts/get-user-dataset";
 import News from "./pages/news";
@@ -52,6 +51,7 @@ import {
   Dataset as AdminDataset,
 } from "./pages/admin";
 import Profile from "./pages/account/profile";
+import CreateEditOrganization from "./pages/account/create-edit-organization";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -108,14 +108,8 @@ const router = createBrowserRouter(
                 </Suspense>
               }
             />
-            <Route
-              path="/account/organizations/new"
-              element={
-                <Suspense fallback={<DashboardLoader />}>
-                  <CreateOrg />
-                </Suspense>
-              }
-            />
+            <Route path="/account/:slug/edit" element={<CreateEditOrganization />} />
+            <Route path="/account/organizations/new" element={<CreateEditOrganization />} />
             <Route
               path="/account/profile"
               element={

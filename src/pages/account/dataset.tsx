@@ -1,86 +1,141 @@
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { OutlinedInput } from "@mui/material";
-import { GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
+import { twMerge } from "tailwind-merge";
+import { GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
-import data from "~/utils/data/dataset.json";
 import DataGrid from "~/components/data-grid";
+import { useUserDatasets } from "~/queries/dataset";
 
 export default function Dataset() {
   const navigate = useNavigate();
 
+  const [page] = useState(1);
+  const [pageSize] = useState(10);
+
   const columns: GridColDef[] = [
     {
-      field: "title",
-      headerName: "Title",
-      minWidth: 300,
+      field: "id",
+      headerName: "NO.",
+      minWidth: 10,
+      renderCell: ({ api, row }) => {
+        const { getAllRowIds } = api;
+
+        return getAllRowIds().indexOf(row.id) + 1;
+      },
     },
-    { field: "createdAt", headerName: "Created at", width: 150 },
     {
-      field: "updatedAt",
-      headerName: "Updated at",
-      width: 150,
-      valueFormatter: (params) => {
-        return moment(params.value).fromNow();
+      field: "title",
+      headerName: "TITLE",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "created_at",
+      headerName: "CREATED AT",
+      flex: 1,
+      minWidth: 150,
+      valueFormatter: ({ value }) => {
+        return moment(value).format("Do MMM, YYYY");
       },
       sortComparator: (v1, v2) => {
         return new Date(v1).getTime() - new Date(v2).getTime();
       },
-      type: "string",
+      align: "center",
+      headerAlign: "center",
     },
     {
-      field: "createdBy",
-      headerName: "Created by",
-      width: 300,
-      valueGetter: (params) => {
-        const { organization, user } = params.row;
-
-        return organization ? organization.name : `${user.firstName} ${user.lastName}`;
+      field: "updated_at",
+      headerName: "UPDATED AT",
+      minWidth: 150,
+      flex: 1,
+      valueFormatter: ({ value }) => {
+        return moment(value).fromNow();
       },
-      renderCell: (params: GridRenderCellParams<any, typeof data>) => {
-        const { organization, user } = params.row;
-
-        return organization ? (
-          <Link
-            className="text-primary-600 capitalize hover:underline relative z-10"
-            to={`/organizations/${organization.slug}`}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          >
-            {organization.name}
-          </Link>
-        ) : user ? (
-          <span className="capitalize">{`${user.firstName} ${user.lastName}`}</span>
-        ) : (
-          "-------"
-        );
+      sortComparator: (v1, v2) => {
+        return new Date(v1).getTime() - new Date(v2).getTime();
       },
-      type: "string",
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "views",
-      headerName: "Views",
-      width: 100,
+      headerName: "VIEWS",
+      flex: 1,
+      minWidth: 70,
+      valueFormatter: ({ value }) => {
+        return value.count;
+      },
+      sortComparator: (v1, v2) => {
+        return v1 - v2.count;
+      },
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "files_count",
+      headerName: "FILES",
+      minWidth: 70,
+      valueFormatter: ({ value }) => {
+        return value;
+      },
+      sortComparator: (v1, v2) => {
+        return v1 - v2;
+      },
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "status",
       headerName: "Status",
-      width: 150,
-      renderCell: (params: GridRenderCellParams<any, typeof data>) => {
-        return (params.id as number) % 2 === 0 ? (
-          <p className="text-orange-500 font-medium">Pending</p>
-        ) : (
-          <p className="text-green-500 font-medium">Published</p>
-        );
+      flex: 1,
+      renderCell: ({ value }) => {
+        const obj: {
+          element: any;
+          styles: string;
+        } = {
+          element: "-------",
+          styles: "py-1 px-2 rounded-full text-xs",
+        };
+
+        if (value === "pending") {
+          obj.element = (
+            <p className={twMerge(obj.styles, `text-orange-500 border border-orange-500`)}>
+              Pending
+            </p>
+          );
+        } else if (value === "published") {
+          obj.element = (
+            <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>
+              Published
+            </p>
+          );
+        } else if (value === "rejected") {
+          obj.element = (
+            <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>Rejected</p>
+          );
+        } else if (value === "further_review") {
+          obj.element = (
+            <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
+              Further Review
+            </p>
+          );
+        }
+
+        return obj.element;
       },
       sortable: false,
+      minWidth: 130,
+      align: "center",
+      headerAlign: "center",
     },
   ];
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
+
+  const { data, isLoading } = useUserDatasets(pageSize, page);
 
   return (
     <>
@@ -95,20 +150,9 @@ export default function Dataset() {
           />
           <div className="min-h-[500px]">
             <DataGrid
-              rows={data.map((item, index) => {
-                const { title, organization, user, updatedAt } = item;
-
-                return {
-                  id: index + 1,
-                  title,
-                  createdAt: moment(Date.now()).format("Do MMM, YYYY"),
-                  updatedAt,
-                  organization,
-                  user,
-                  views: Math.floor(Math.random() * 1000) + 1,
-                };
-              })}
-              onRowClick={(params: GridRowParams<(typeof data)[0]>) => {
+              rows={data ? data.results : []}
+              loading={isLoading}
+              onRowClick={(params) => {
                 navigate(`./${params.id}`);
               }}
               getRowClassName={() => `cursor-pointer`}

@@ -9,6 +9,7 @@ import Button from "~/components/button";
 import FormField from "~/components/form-field";
 import TextEditorField from "~/components/text-editor-field";
 import { useEditProfile, useImageUpload } from "~/mutations/auth/profile";
+import { notifyError } from "~/utils/toast";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().trim().required("First name is required"),
@@ -58,17 +59,19 @@ export default function Profile() {
           validateOnBlur={false}
           validationSchema={validationSchema}
           onSubmit={async (values) => {
+            if (!currentUser?.image_url && !photo) {
+              return notifyError("Profile photo is required");
+            }
+
             const obj: Record<"first_name" | "last_name" | "email", string> = {
               first_name: values.firstName,
               last_name: values.lastName,
               email: values.email,
             };
 
-            if (photo) {
-              await imageUpload.mutateAsync({
-                image: photo,
-              });
-            }
+            await imageUpload.mutateAsync({
+              image: photo as File,
+            });
 
             await editProfile.mutateAsync(obj);
           }}
@@ -82,6 +85,7 @@ export default function Profile() {
                     className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}
                   >
                     Profile Photo
+                    <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
                   </InputLabel>
                   <div className="flex gap-8 items-center largeMobile:flex-col largeMobile:items-start largeMobile:gap-4 largeMobile:mb-2">
                     <figure
