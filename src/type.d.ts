@@ -70,6 +70,8 @@ type Organization = {
   name: string;
   slug: string;
   description: string;
+  downloads_count: number;
+  views_count: number;
   created_at: string;
   updated_at: string;
 };

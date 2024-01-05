@@ -1,18 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosPrivate } from "~/utils/api";
+import { notifySuccess } from "~/utils/toast";
 
 export function useEditProfile() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (data: Record<string, any>) => {
-      const { data: response } = await axiosPrivate.patch("/auth/users/me/", data);
+    async (data: Record<"first_name" | "last_name" | "email", string>) => {
+      const response = await axiosPrivate.patch("/auth/users/me/", data);
 
-      return response.data;
+      return response;
     },
     {
       onSuccess() {
         queryClient.invalidateQueries(["/auth/users/me/"]);
+        notifySuccess("Profile updated successfully");
       },
     }
   );
@@ -22,12 +24,8 @@ export function useImageUpload() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (data: Record<string, any>) => {
-      if (data.image_file) {
-        data.image = await fileToBase64(data.image_file);
-      }
-
-      const { data: response } = await axiosPrivate.post("/auth/image-upload", data);
+    async (data: { image: File }) => {
+      const { data: response } = await axiosPrivate.postForm("/auth/profile-image-upload/", data);
 
       return response.data;
     },
@@ -39,17 +37,17 @@ export function useImageUpload() {
   );
 }
 
-function fileToBase64(file: File) {
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
+// function fileToBase64(file: File) {
+//   return new Promise<string>((resolve, reject) => {
+//     const reader = new FileReader();
 
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      resolve(reader.result as string);
-    };
+//     reader.readAsDataURL(file);
+//     reader.onload = function () {
+//       resolve(reader.result as string);
+//     };
 
-    reader.onerror = function (error) {
-      reject(error);
-    };
-  });
-}
+//     reader.onerror = function (error) {
+//       reject(error);
+//     };
+//   });
+// }

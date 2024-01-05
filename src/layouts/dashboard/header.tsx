@@ -59,7 +59,12 @@ export default function Header() {
         </span>
       )}
 
-      <button className="flex items-center gap-3">
+      <button
+        className="flex items-center gap-3"
+        onClick={() => {
+          navigate(currentUser?.role === "admin" ? "/admin/profile" : "/account/profile");
+        }}
+      >
         <CurrentUserAvatar />
         <p className="flex items-center gap-1 capitalize text-sm font-medium largeMobile:hidden">
           <span>
