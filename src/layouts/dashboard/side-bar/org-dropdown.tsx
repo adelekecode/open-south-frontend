@@ -2,8 +2,9 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Collapse } from "@mui/material";
 import { FaAngleDown } from "react-icons/fa6";
-import { IoGridOutline, IoPersonOutline } from "react-icons/io5";
+import { IoGridOutline } from "react-icons/io5";
 import { GoDatabase } from "react-icons/go";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
 
 type OrgDropdownProps = Organization & {
@@ -17,14 +18,14 @@ const links = [
     icon: IoGridOutline,
   },
   {
-    name: "Dataset",
+    name: "Datasets",
     to: "/datasets",
     icon: GoDatabase,
   },
   {
-    name: "User",
+    name: "Users",
     to: "/users",
-    icon: IoPersonOutline,
+    icon: HiOutlineUserGroup,
   },
 ];
 
