@@ -7,7 +7,12 @@ function useCreateOrganization() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (data: Record<"name" | "description", string> & { logo: File }) => {
+    async (
+      data: Record<
+        "name" | "description" | "email" | "type" | "linkedIn" | "twitter" | "website",
+        string
+      > & { logo: File }
+    ) => {
       const { data: response } = await axiosPrivate.postForm(`/organisations/`, data);
 
       return response;
@@ -36,7 +41,12 @@ function useEditOrganization() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (data: Record<"name" | "description", string> & { logo?: File; slug: string }) => {
+    async (
+      data: Record<
+        "name" | "description" | "email" | "type" | "linkedIn" | "twitter" | "website",
+        string
+      > & { logo?: File; slug: string }
+    ) => {
       const { slug, ...rest } = data;
       const { data: response } = await axiosPrivate.patchForm(`/organisations/${slug}/`, rest);
 
@@ -62,4 +72,45 @@ function useEditOrganization() {
   );
 }
 
-export { useCreateOrganization, useEditOrganization };
+function useVerifyCode() {
+  return useMutation(
+    async (data: Record<"pin", string>) => {
+      const { data: response } = await axiosPrivate.post(`/organisations/verify-pin/`, data);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        notifySuccess("Organization has been verified");
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Code has expired");
+          }
+        }
+      },
+    }
+  );
+}
+
+function useResendCode() {
+  return useMutation(
+    async (id: string) => {
+      const { data: response } = await axiosPrivate.post(`/organisations/resend-pin/${id}/`);
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 404) {
+            notifyError("Organization does not exist");
+          }
+        }
+      },
+    }
+  );
+}
+
+export { useCreateOrganization, useEditOrganization, useVerifyCode, useResendCode };

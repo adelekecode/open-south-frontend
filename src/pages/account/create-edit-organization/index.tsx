@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { InputLabel } from "@mui/material";
+import { useQueryClient } from "@tanstack/react-query";
+import { InputLabel, MenuItem } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { IoCameraSharp } from "react-icons/io5";
@@ -10,13 +11,19 @@ import Button from "~/components/button";
 import { useCreateOrganization, useEditOrganization } from "~/mutations/organization";
 import Success from "./success";
 import { notifyError } from "~/utils/toast";
-import { usePublicOrganizationDetails } from "~/queries/organizations";
+import SelectField from "~/components/select-field";
+import VerificationModal from "./verification-modal";
 
 const validationSchema = Yup.object({
   name: Yup.string()
     .trim()
     .required("Name field is required")
     .min(3, "Name must be atleast 3 characters"),
+  type: Yup.string().trim().required("Type of organization field is required"),
+  email: Yup.string().email().required("Email field is required"),
+  linkedIn: Yup.string().trim().url("LinkedIn url not valid"),
+  twitter: Yup.string().trim().url("Twitter url not valid"),
+  website: Yup.string().trim().url("Website url not valid"),
   description: Yup.string()
     .trim()
     .required("Description field is required")
@@ -27,56 +34,61 @@ export default function CreateEditOrganization() {
   const { slug } = useParams();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+
   const [formCompleted, setFormCompleted] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
+  const [displayVerificationModal, setDisplayVerificationModal] = useState(false);
 
-  const { isLoading, data } = usePublicOrganizationDetails(slug || "", {
-    enabled: !!slug,
-  });
-
-  //? Come back to this above
+  const queryClient = useQueryClient();
+  const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
 
   const createOrganization = useCreateOrganization();
   const editOrganization = useEditOrganization();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <h1 className="text-2xl font-semibold largeMobile:text-xl">
-          {isLoading ? (
-            <div className="h-8 w-[12rem] animate-pulse rounded bg-gray-200"></div>
-          ) : data ? (
-            "Edit Organization"
-          ) : (
-            "New Organization"
-          )}
+          {organization ? "Edit Organization" : "New Organization"}
         </h1>
         <div className="bg-white w-full border border-info-100 p-6 rounded-md">
           {formCompleted ? (
             <Success
-              data={createOrganization.data || editOrganization.data || data}
-              type={data ? "edit" : "create"}
+              data={createOrganization.data || editOrganization.data || organization}
+              type={organization ? "edit" : "create"}
             />
           ) : (
             <div>
               <Formik
                 initialValues={{
-                  name: data?.name || "",
-                  description: data?.description || "",
+                  name: organization?.name || "",
+                  type: organization?.type || "",
+                  email: organization?.email || "",
+                  linkedIn: organization?.linkedin || "",
+                  twitter: organization?.twitter || "",
+                  website: organization?.website || "",
+                  description: organization?.description || "",
                 }}
-                enableReinitialize={!isLoading}
                 validateOnBlur={false}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => {
-                  if (data) {
+                  const type = values.type.toLowerCase().replace(" ", "_");
+
+                  if (organization) {
                     const obj: typeof values & { slug: string; logo?: File } = {
                       ...values,
-                      slug: data.slug,
+                      type,
+                      slug: organization.slug,
                     };
 
                     if (logo) {
                       obj.logo = logo;
                     }
+
                     const response = await editOrganization.mutateAsync(obj);
 
                     if (response) {
@@ -87,16 +99,17 @@ export default function CreateEditOrganization() {
 
                     const response = await createOrganization.mutateAsync({
                       ...values,
+                      type,
                       logo,
                     });
 
                     if (response) {
-                      setFormCompleted(true);
+                      setDisplayVerificationModal(true);
                     }
                   }
                 }}
               >
-                {({ handleSubmit, isSubmitting }) => (
+                {({ handleSubmit, isSubmitting, values }) => (
                   <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-4">
                       <div className="flex flex-col">
@@ -112,9 +125,9 @@ export default function CreateEditOrganization() {
                             id="logo"
                             className="w-36 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden p-1"
                           >
-                            {logo || data?.logo ? (
+                            {logo || organization?.logo ? (
                               <img
-                                src={logo ? URL.createObjectURL(logo) : data?.logo}
+                                src={logo ? URL.createObjectURL(logo) : organization?.logo}
                                 alt="organization logo"
                                 className="w-full h-full object-contain"
                               />
@@ -172,6 +185,51 @@ export default function CreateEditOrganization() {
                           className: "!font-medium",
                         }}
                       />
+                      <SelectField
+                        label="Type of organization"
+                        required
+                        name="type"
+                        labelProps={{
+                          className: "!font-medium",
+                        }}
+                        value={values.type || ""}
+                      >
+                        <MenuItem value={"Cooperate Organisation"}>Cooperate Organisation</MenuItem>
+                        <MenuItem value={"Cooperate Society"}>Cooperate Society</MenuItem>
+                      </SelectField>
+                      <FormField
+                        label="Email"
+                        required
+                        name="email"
+                        className="[&_input]:!text-[0.9rem]"
+                        labelProps={{
+                          className: "!font-medium",
+                        }}
+                      />
+                      <FormField
+                        label="LinkedIn"
+                        name="linkedIn"
+                        className="[&_input]:!text-[0.9rem]"
+                        labelProps={{
+                          className: "!font-medium",
+                        }}
+                      />
+                      <FormField
+                        label="Twitter"
+                        name="twitter"
+                        className="[&_input]:!text-[0.9rem]"
+                        labelProps={{
+                          className: "!font-medium",
+                        }}
+                      />
+                      <FormField
+                        label="Website"
+                        name="website"
+                        className="[&_input]:!text-[0.9rem]"
+                        labelProps={{
+                          className: "!font-medium",
+                        }}
+                      />
                       <TextEditorField
                         label="Description"
                         required
@@ -207,8 +265,8 @@ export default function CreateEditOrganization() {
                     </div>
                     <footer className="p-4 py-2 flex items-center justify-between">
                       <div></div>
-                      <Button type="submit" className="!py-2" loading={isLoading || isSubmitting}>
-                        {data ? "Save" : "Create"}
+                      <Button type="submit" className="!py-2" loading={isSubmitting}>
+                        {organization ? "Save" : "Create"}
                       </Button>
                     </footer>
                   </form>
@@ -218,6 +276,14 @@ export default function CreateEditOrganization() {
           )}
         </div>
       </main>
+      <VerificationModal
+        open={displayVerificationModal}
+        onClose={() => {
+          setDisplayVerificationModal(false);
+          setFormCompleted(true);
+        }}
+        orgData={createOrganization.data}
+      />
     </>
   );
 }

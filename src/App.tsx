@@ -52,6 +52,8 @@ import {
 } from "./pages/admin";
 import Profile from "./pages/account/profile";
 import CreateEditOrganization from "./pages/account/create-edit-organization";
+import UserOrganization from "./layouts/user-organization";
+import OrganizationVerificationModal from "./components/organization-verification-modal";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -64,7 +66,14 @@ const router = createBrowserRouter(
       </Route>
       <Route loader={dashboardLoader}>
         <Route element={<Protected />}>
-          <Route element={<UserRestricted />}>
+          <Route
+            element={
+              <>
+                <UserRestricted />
+                <OrganizationVerificationModal />
+              </>
+            }
+          >
             <Route
               path="/account/dashboard"
               element={
@@ -92,23 +101,25 @@ const router = createBrowserRouter(
             <Route element={<GetUserDataset />}>
               <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
             </Route>
-            <Route
-              path="/account/:slug/dashboard"
-              element={
-                <Suspense fallback={<DashboardLoader />}>
-                  <OrgDashboard />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/account/:slug/datasets"
-              element={
-                <Suspense fallback={<DashboardLoader />}>
-                  <OrgDataset />
-                </Suspense>
-              }
-            />
-            <Route path="/account/:slug/edit" element={<CreateEditOrganization />} />
+            <Route element={<UserOrganization />}>
+              <Route
+                path="/account/:slug/dashboard"
+                element={
+                  <Suspense fallback={<DashboardLoader />}>
+                    <OrgDashboard />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/account/:slug/datasets"
+                element={
+                  <Suspense fallback={<DashboardLoader />}>
+                    <OrgDataset />
+                  </Suspense>
+                }
+              />
+              <Route path="/account/:slug/edit" element={<CreateEditOrganization />} />
+            </Route>
             <Route path="/account/organizations/new" element={<CreateEditOrganization />} />
             <Route
               path="/account/profile"

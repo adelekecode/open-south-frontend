@@ -31,6 +31,7 @@ export function useUserDatasets(pageSize: number = 10, page: number = 1) {
 }
 
 export function useOrganizationDatasets(
+  id: string,
   pageSize: number = 10,
   page: number = 1,
   options?: UseQueryOptions<
@@ -43,5 +44,8 @@ export function useOrganizationDatasets(
     Pagination & {
       results: Dataset[];
     }
-  >([`/user/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`], options);
+  >(
+    [`/user/organisations/${id}/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    options
+  );
 }

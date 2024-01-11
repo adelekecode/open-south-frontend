@@ -31,7 +31,7 @@ export default function CurrentUserAvatar({
         <img
           src={currentUser.image_url}
           alt="profile picture"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       );
     } else {

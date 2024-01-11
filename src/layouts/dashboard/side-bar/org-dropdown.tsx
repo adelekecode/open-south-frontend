@@ -2,9 +2,11 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Collapse } from "@mui/material";
 import { FaAngleDown } from "react-icons/fa6";
-import { IoGridOutline, IoPersonOutline } from "react-icons/io5";
+import { IoGridOutline } from "react-icons/io5";
 import { GoDatabase } from "react-icons/go";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
+import useOrganizationStore from "~/store/organization";
 
 type OrgDropdownProps = Organization & {
   navLinkClassNameHandler: (obj: { isActive: boolean; isPending: boolean }) => string;
@@ -17,24 +19,23 @@ const links = [
     icon: IoGridOutline,
   },
   {
-    name: "Dataset",
+    name: "Datasets",
     to: "/datasets",
     icon: GoDatabase,
   },
   {
-    name: "User",
+    name: "Users",
     to: "/users",
-    icon: IoPersonOutline,
+    icon: HiOutlineUserGroup,
   },
 ];
 
-export default function OrgDropdown({
-  name,
-  slug,
-  logo,
-  navLinkClassNameHandler,
-}: OrgDropdownProps) {
+export default function OrgDropdown({ navLinkClassNameHandler, ...data }: OrgDropdownProps) {
+  const { is_verified, name, slug, logo } = data;
+
   const [clicked, setClicked] = useState(false);
+
+  const { setOrganizationVerificationModal } = useOrganizationStore();
 
   return (
     <div className="w-full">
@@ -43,7 +44,14 @@ export default function OrgDropdown({
           clicked && "bg-info-200"
         }`}
         onClick={() => {
-          setClicked((prev) => !prev);
+          if (is_verified) {
+            setClicked((prev) => !prev);
+          } else {
+            setOrganizationVerificationModal({
+              open: true,
+              data,
+            });
+          }
         }}
       >
         <div className="grid grid-cols-[30px,1fr,12px] items-center gap-1">

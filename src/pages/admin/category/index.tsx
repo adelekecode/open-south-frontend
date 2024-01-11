@@ -106,7 +106,7 @@ export default function Category() {
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-8 w-full">
         <header className="flex items-center gap-8 justify-between w-full">
-          <h1 className="text-2xl largeMobile:text-xl font-semibold">Category</h1>
+          <h1 className="text-2xl largeMobile:text-xl font-semibold">Categories</h1>
         </header>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4 ml-auto">

@@ -7,7 +7,7 @@ export function useEditProfile() {
 
   return useMutation(
     async (data: Record<"first_name" | "last_name" | "email", string>) => {
-      const response = await axiosPrivate.patch("/auth/users/me/", data);
+      const { data: response } = await axiosPrivate.patch("/auth/users/me/", data);
 
       return response;
     },
@@ -21,20 +21,11 @@ export function useEditProfile() {
 }
 
 export function useImageUpload() {
-  const queryClient = useQueryClient();
+  return useMutation(async (data: { image: File }) => {
+    const { data: response } = await axiosPrivate.postForm("/auth/profile-image-upload/", data);
 
-  return useMutation(
-    async (data: { image: File }) => {
-      const { data: response } = await axiosPrivate.postForm("/auth/profile-image-upload/", data);
-
-      return response.data;
-    },
-    {
-      onSuccess() {
-        queryClient.invalidateQueries(["/auth/users/me/"]);
-      },
-    }
-  );
+    return response.data;
+  });
 }
 
 // function fileToBase64(file: File) {

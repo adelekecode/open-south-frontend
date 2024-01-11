@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { IoGridOutline, IoPersonOutline } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa6";
 import { GoDatabase } from "react-icons/go";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { MdOutlineCategory } from "react-icons/md";
 import Logo from "~/components/logo";
 import OrgDropdown from "./org-dropdown";
@@ -18,7 +19,7 @@ const sideBarData = [
     allowedUserType: ["user"],
   },
   {
-    name: "Dataset",
+    name: "Datasets",
     to: "/account/datasets",
     icon: GoDatabase,
     allowedUserType: ["user"],
@@ -32,19 +33,31 @@ const sideBarData = [
   {
     name: "Users",
     to: "/admin/users",
-    icon: IoPersonOutline,
+    icon: HiOutlineUserGroup,
     allowedUserType: ["admin"],
   },
   {
-    name: "Dataset",
+    name: "Datasets",
     to: "/admin/datasets",
     icon: GoDatabase,
     allowedUserType: ["admin"],
   },
   {
-    name: "Category",
+    name: "Categories",
     to: "/admin/categories",
     icon: MdOutlineCategory,
+    allowedUserType: ["admin"],
+  },
+  {
+    name: "Profile",
+    to: "/account/profile",
+    icon: IoPersonOutline,
+    allowedUserType: ["user"],
+  },
+  {
+    name: "Profile",
+    to: "/admin/profile",
+    icon: IoPersonOutline,
     allowedUserType: ["admin"],
   },
 ];

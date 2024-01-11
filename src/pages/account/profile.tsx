@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { InputLabel } from "@mui/material";
@@ -14,15 +14,14 @@ import { notifyError } from "~/utils/toast";
 const validationSchema = Yup.object({
   firstName: Yup.string().trim().required("First name is required"),
   lastName: Yup.string().trim().required("Last name is required"),
-  adoutMe: Yup.string().optional().trim(),
-  // .required("About me field is required")
-  // .min(3, "About me must be atleast 3 characters"),
+  adoutMe: Yup.string().optional().trim().min(3, "About me must be atleast 3 characters"),
 });
 
 export default function Profile() {
   const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+
   const [photo, setPhoto] = useState<File | null>(null);
 
   const queryClient = useQueryClient();
@@ -30,6 +29,10 @@ export default function Profile() {
 
   const editProfile = useEditProfile();
   const imageUpload = useImageUpload();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">

@@ -5,5 +5,5 @@ export function useCategories() {
 }
 
 export function usePublicCategories() {
-  return useQuery<Category[]>([`/public/category?key=public`]);
+  return useQuery<Category[]>([`/public/category/?key=public`]);
 }

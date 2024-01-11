@@ -69,11 +69,18 @@ type Organization = {
   logo: string;
   name: string;
   slug: string;
+  email: string;
+  linkedin: string;
+  twitter: string;
+  website: string;
   description: string;
+  status: "pending" | "approved" | "rejected";
+  type: "cooperate_organisation" | "cooperate_society";
   downloads_count: number;
   views_count: number;
   created_at: string;
   updated_at: string;
+  is_verified: boolean;
 };
 
 type CategoyModal = {

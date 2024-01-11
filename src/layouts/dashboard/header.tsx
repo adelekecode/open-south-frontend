@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { ClickAwayListener, Fade, IconButton, Paper, Popper } from "@mui/material";
 import { IoMdAdd } from "react-icons/io";
 import CurrentUserAvatar from "~/components/current-user-avatar";
+import { useCurrentUser } from "~/queries/user";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -12,8 +12,9 @@ export default function Header() {
 
   const dropdownDisplay = Boolean(anchorEl);
 
-  const queryClient = useQueryClient();
-  const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
+  const { data: currentUser } = useCurrentUser(undefined, {
+    enabled: false,
+  });
 
   return (
     <nav className="bg-white flex items-center justify-end gap-8 tabletAndBelow:bg-white shadow-sm tabletAndBelow:!border-b p-5 py-3 px-[3.5rem] tabletAndBelow:p-5 tabletAndBelow:py-4 sticky top-0 z-[99]">

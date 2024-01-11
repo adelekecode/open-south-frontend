@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { GridColDef } from "@mui/x-data-grid";
 import { twMerge } from "tailwind-merge";
 import moment from "moment";
@@ -8,150 +9,132 @@ import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import { useOrganizationDatasets } from "~/queries/dataset";
 import TopViewers from "./top-viewers";
-import { useOrganizationDetails } from "~/queries/organizations";
-import NotFound from "~/pages/404";
-import DashboardLoader from "~/components/loader/dashboard-loader";
+
+const columns: GridColDef[] = [
+  {
+    field: "id",
+    headerName: "NO.",
+    minWidth: 10,
+    renderCell: ({ api, row }) => {
+      const { getAllRowIds } = api;
+
+      return getAllRowIds().indexOf(row.id) + 1;
+    },
+  },
+  {
+    field: "title",
+    headerName: "TITLE",
+    flex: 1,
+    minWidth: 200,
+  },
+  {
+    field: "created_at",
+    headerName: "CREATED AT",
+    flex: 1,
+    minWidth: 150,
+    valueFormatter: ({ value }) => {
+      return moment(value).format("Do MMM, YYYY");
+    },
+    sortComparator: (v1, v2) => {
+      return new Date(v1).getTime() - new Date(v2).getTime();
+    },
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "updated_at",
+    headerName: "UPDATED AT",
+    minWidth: 150,
+    flex: 1,
+    valueFormatter: ({ value }) => {
+      return moment(value).fromNow();
+    },
+    sortComparator: (v1, v2) => {
+      return new Date(v1).getTime() - new Date(v2).getTime();
+    },
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "views",
+    headerName: "VIEWS",
+    flex: 1,
+    minWidth: 70,
+    valueFormatter: ({ value }) => {
+      return value.count;
+    },
+    sortComparator: (v1, v2) => {
+      return v1 - v2.count;
+    },
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "files_count",
+    headerName: "FILES",
+    minWidth: 70,
+    valueFormatter: ({ value }) => {
+      return value;
+    },
+    sortComparator: (v1, v2) => {
+      return v1 - v2;
+    },
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    flex: 1,
+    renderCell: ({ value }) => {
+      const obj: {
+        element: any;
+        styles: string;
+      } = {
+        element: "-------",
+        styles: "py-1 px-2 rounded-full text-xs",
+      };
+
+      if (value === "pending") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-orange-500 border border-orange-500`)}>Pending</p>
+        );
+      } else if (value === "published") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>Published</p>
+        );
+      } else if (value === "rejected") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>Rejected</p>
+        );
+      } else if (value === "further_review") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
+            Further Review
+          </p>
+        );
+      }
+
+      return obj.element;
+    },
+    sortable: false,
+    minWidth: 130,
+    align: "center",
+    headerAlign: "center",
+  },
+];
 
 export default function Dashboard() {
   const { slug } = useParams();
 
   const navigate = useNavigate();
 
-  const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "NO.",
-      minWidth: 10,
-      renderCell: ({ api, row }) => {
-        const { getAllRowIds } = api;
-
-        return getAllRowIds().indexOf(row.id) + 1;
-      },
-    },
-    {
-      field: "title",
-      headerName: "TITLE",
-      flex: 1,
-      minWidth: 200,
-    },
-    {
-      field: "created_at",
-      headerName: "CREATED AT",
-      flex: 1,
-      minWidth: 150,
-      valueFormatter: ({ value }) => {
-        return moment(value).format("Do MMM, YYYY");
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "updated_at",
-      headerName: "UPDATED AT",
-      minWidth: 150,
-      flex: 1,
-      valueFormatter: ({ value }) => {
-        return moment(value).fromNow();
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "views",
-      headerName: "VIEWS",
-      flex: 1,
-      minWidth: 70,
-      valueFormatter: ({ value }) => {
-        return value.count;
-      },
-      sortComparator: (v1, v2) => {
-        return v1 - v2.count;
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "files_count",
-      headerName: "FILES",
-      minWidth: 70,
-      valueFormatter: ({ value }) => {
-        return value;
-      },
-      sortComparator: (v1, v2) => {
-        return v1 - v2;
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      renderCell: ({ value }) => {
-        const obj: {
-          element: any;
-          styles: string;
-        } = {
-          element: "-------",
-          styles: "py-1 px-2 rounded-full text-xs",
-        };
-
-        if (value === "pending") {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-orange-500 border border-orange-500`)}>
-              Pending
-            </p>
-          );
-        } else if (value === "published") {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>
-              Published
-            </p>
-          );
-        } else if (value === "rejected") {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>Rejected</p>
-          );
-        } else if (value === "further_review") {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
-              Further Review
-            </p>
-          );
-        }
-
-        return obj.element;
-      },
-      sortable: false,
-      minWidth: 130,
-      align: "center",
-      headerAlign: "center",
-    },
-  ];
-
-  const { data, isLoading } = useOrganizationDetails(slug || "");
+  const queryClient = useQueryClient();
+  const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
 
   const { data: datasets, isLoading: isDatasetsLoading } = useOrganizationDatasets(
-    undefined,
-    undefined,
-    {
-      enabled: !!data,
-    }
+    organization?.id || ""
   );
-
-  if (isLoading) {
-    return <DashboardLoader />;
-  }
-
-  if (!isLoading && !data) {
-    return <NotFound />;
-  }
 
   return (
     <>
@@ -159,7 +142,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between gap-4">
           <h1 className="text-xl font-medium flex items-center gap-2">
             Dashboard <span className="text-sm">{">"}</span>{" "}
-            <span className="text-info-800">{data.name}</span>
+            <span className="text-info-800">{organization?.name || "-----"}</span>
           </h1>
           <Button
             className="!py-2 !px-3 !text-xs"
@@ -176,7 +159,7 @@ export default function Dashboard() {
             <div className="bg-red-50">
               <div>
                 <p className="text-info-950">Datasets</p>
-                <h1 className="text-neutral-800">{`${data.data_count}`}</h1>
+                <h1 className="text-neutral-800">{`${organization?.data_count ?? "--"}`}</h1>
               </div>
               <span className="p-2 border border-red-500 h-fit rounded text-red-500 text-base">
                 <IoGridOutline />
@@ -185,7 +168,7 @@ export default function Dashboard() {
             <div className="bg-purple-50">
               <div>
                 <p className="text-info-950">Views</p>
-                <h1 className="text-neutral-800">{data.views_count}</h1>
+                <h1 className="text-neutral-800">{organization?.views_count ?? "--"}</h1>
               </div>
               <span className="p-2 border border-purple-500 h-fit rounded text-purple-500 text-base">
                 <AiOutlineEye />
@@ -194,7 +177,7 @@ export default function Dashboard() {
             <div className="bg-lime-50">
               <div>
                 <p className="text-info-950">Downloads</p>
-                <h1 className="text-neutral-800">{`${data.downloads_count}`}</h1>
+                <h1 className="text-neutral-800">{`${organization?.downloads_count ?? "--"}`}</h1>
               </div>
               <span className="p-2 border border-lime-500 h-fit rounded text-lime-500 text-base">
                 <IoCloudDownloadOutline />
@@ -213,7 +196,7 @@ export default function Dashboard() {
                 className="!py-2 !px-3 !text-xs"
                 variant="outlined"
                 onClick={() => {
-                  navigate("/account/datasets");
+                  navigate(`/account/${organization?.slug}/datasets`);
                 }}
               >
                 View All
@@ -225,7 +208,7 @@ export default function Dashboard() {
               rows={datasets ? datasets.results : []}
               loading={isDatasetsLoading}
               onRowClick={(params) => {
-                navigate(`/account/datasets/${params.id}`);
+                navigate(`/account/${organization?.slug}/datasets/${params.id}`);
               }}
               getRowClassName={() => `cursor-pointer`}
               columns={columns}
