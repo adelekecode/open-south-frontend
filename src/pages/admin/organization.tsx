@@ -16,10 +16,14 @@ export default function Organization() {
   const navigate = useNavigate();
 
   const [statusObj, setStatusObj] = useState<{ [key: string]: Organization["status"] }>({});
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const { setOrganizationDeleteConfirmationModal } = useOrganizationStore();
 
   const changeOrganizationStatus = useChangeOrganizationStatus();
+
+  const { data, isLoading } = useAdminOrganizations(pageSize, page);
 
   const columns: GridColDef[] = [
     {
@@ -247,8 +251,6 @@ export default function Organization() {
     },
   ];
 
-  const { data, isLoading } = useAdminOrganizations();
-
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
@@ -280,7 +282,24 @@ export default function Organization() {
           />
         </div>
         <div className="min-h-[410px]">
-          <DataGrid rows={data ? data.results : []} loading={isLoading} columns={columns} />
+          <DataGrid
+            rows={data ? data.results : []}
+            loading={isLoading}
+            columns={columns}
+            rowCount={data?.count}
+            onPaginationModelChange={({ page, pageSize }) => {
+              setPage(page);
+              setPageSize(pageSize);
+            }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  page,
+                  pageSize,
+                },
+              },
+            }}
+          />
         </div>
       </div>
     </main>
