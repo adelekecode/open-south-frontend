@@ -7,6 +7,13 @@ export function useCurrentUser(
   return useQuery<CurrentUser>(queryKey, options);
 }
 
-export function useGetAllUsers() {
-  return useQuery<CurrentUser[]>([`/auth/users/`]);
+export function useGetAllUsers(
+  pageSize: number = 10,
+  page: number = 1,
+  options?: UseQueryOptions<PaginationData<CurrentUser[]>>
+) {
+  return useQuery<PaginationData<CurrentUser[]>>(
+    [`/auth/users/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    options
+  );
 }

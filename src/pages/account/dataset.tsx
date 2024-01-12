@@ -10,8 +10,8 @@ import { useUserDatasets } from "~/queries/dataset";
 export default function Dataset() {
   const navigate = useNavigate();
 
-  const [page] = useState(1);
-  const [pageSize] = useState(10);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const columns: GridColDef[] = [
     {
@@ -157,6 +157,19 @@ export default function Dataset() {
               }}
               getRowClassName={() => `cursor-pointer`}
               columns={columns}
+              rowCount={data?.count}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPage(page);
+                setPageSize(pageSize);
+              }}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    page,
+                    pageSize,
+                  },
+                },
+              }}
             />
           </div>
         </div>
