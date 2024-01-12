@@ -4,6 +4,17 @@ export function useUserOrganizations() {
   return useQuery<Organization[]>([`/user/organisations/`]);
 }
 
+export function useAdminOrganizations(
+  pageSize: number = 10,
+  page: number = 1,
+  options?: UseQueryOptions<PaginationData<Organization[]>>
+) {
+  return useQuery<PaginationData<Organization[]>>(
+    [`/admin/organisations/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    options
+  );
+}
+
 export function usePublicOrganizations() {
   return useQuery<Organization[]>([`/public/organisations/?key=public`]);
 }

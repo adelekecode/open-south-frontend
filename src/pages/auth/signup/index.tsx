@@ -6,7 +6,7 @@ import { IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
 import useSignUp from "~/mutations/auth/signup";

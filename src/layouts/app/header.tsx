@@ -6,7 +6,7 @@ import { BiLock } from "react-icons/bi";
 import { IoPersonCircleOutline, IoLogOutOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
 import Logo from "~/components/logo";
-import SearchInput from "~/components/search-input";
+import SearchInput from "~/components/inputs/search-input";
 import CurrentUserAvatar from "~/components/current-user-avatar";
 import useAppStore from "~/store/app";
 

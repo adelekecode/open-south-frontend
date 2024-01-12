@@ -22,7 +22,7 @@ export default function Dataset() {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [statusMap, setStatusMap] = useState<{ [key: string]: Dataset["status"] }>({});
+  const [statusObj, setStatusObj] = useState<{ [key: string]: Dataset["status"] }>({});
 
   const dropdownDisplay = Boolean(anchorEl);
 
@@ -111,22 +111,17 @@ export default function Dataset() {
       renderCell: ({ value, row }) => {
         return (
           <Select
-            className="!text-xs !py-0"
-            value={statusMap[row.id] || value}
-            sx={{
-              "& .MuiOutlinedInput-input": {
-                padding: "0.5rem 1rem",
-              },
-            }}
+            className="w-full !text-[0.85rem] !py-0 !px-0"
+            value={statusObj[row.id] || value}
             onClick={(e) => {
               e.stopPropagation();
             }}
             onChange={async (e) => {
               const chosenValue = e.target.value;
 
-              if (chosenValue && chosenValue !== statusMap[row.id]) {
-                setStatusMap((prevStatusMap) => ({
-                  ...prevStatusMap,
+              if (chosenValue && chosenValue !== statusObj[row.id]) {
+                setStatusObj((prevStatusObj) => ({
+                  ...prevStatusObj,
                   [row.id]: chosenValue as Dataset["status"],
                 }));
 

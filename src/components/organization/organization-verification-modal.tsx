@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import OtpInput from "~/components/otp-input";
+import OtpInput from "~/components/inputs/otp-input";
 import { useResendCode, useVerifyCode } from "~/mutations/organization";
 import useOrganizationStore from "~/store/organization";
 import { notifySuccess } from "~/utils/toast";
@@ -110,6 +110,7 @@ export default function OrganizationVerificationModal() {
                 setShowVerificationForm(true);
               }
             }}
+            loading={resendCode.isLoading}
           >
             Verify Organization
           </Button>

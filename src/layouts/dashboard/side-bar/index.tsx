@@ -7,6 +7,7 @@ import { FaAngleDown } from "react-icons/fa6";
 import { GoDatabase } from "react-icons/go";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { MdOutlineCategory } from "react-icons/md";
+import { SiAwsorganizations } from "react-icons/si";
 import Logo from "~/components/logo";
 import OrgDropdown from "./org-dropdown";
 import { useUserOrganizations } from "~/queries/organizations";
@@ -40,6 +41,12 @@ const sideBarData = [
     name: "Datasets",
     to: "/admin/datasets",
     icon: GoDatabase,
+    allowedUserType: ["admin"],
+  },
+  {
+    name: "Organizations",
+    to: "/admin/organizations",
+    icon: SiAwsorganizations,
     allowedUserType: ["admin"],
   },
   {

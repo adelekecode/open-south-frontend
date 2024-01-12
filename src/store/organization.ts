@@ -5,10 +5,17 @@ type State = {
     open: boolean;
     data: Organization | null;
   };
+  organizationDeleteConfirmationModal: {
+    open: boolean;
+    data: Organization | null;
+  };
 };
 
 type Action = {
   setOrganizationVerificationModal: (obj: State["organizationVerificationModal"]) => void;
+  setOrganizationDeleteConfirmationModal: (
+    obj: State["organizationDeleteConfirmationModal"]
+  ) => void;
 };
 
 const useOrganizationStore = create<State & Action>()((set) => ({
@@ -19,6 +26,14 @@ const useOrganizationStore = create<State & Action>()((set) => ({
   setOrganizationVerificationModal: (obj) =>
     set({
       organizationVerificationModal: obj,
+    }),
+  organizationDeleteConfirmationModal: {
+    open: false,
+    data: null,
+  },
+  setOrganizationDeleteConfirmationModal: (obj) =>
+    set({
+      organizationDeleteConfirmationModal: obj,
     }),
 }));
 

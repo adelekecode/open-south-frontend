@@ -8,7 +8,7 @@ import { useCreateCategory } from "~/mutations/category";
 import { notifyError } from "~/utils/toast";
 import Button from "~/components/button";
 import SuccessIllustration from "~/assets/illustrations/success.png";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 
 type CreateProps = {
   modal: CategoyModal;

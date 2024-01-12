@@ -1,11 +1,5 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-type Pagination = {
-  count: number;
-  next: boolean | null;
-  previous: boolean | null;
-};
-
 export function usePublicDatasets() {
   return useQuery<Dataset[]>([`/public/datasets/?key=public`]);
 }
@@ -23,28 +17,18 @@ export function useAdminDatasets() {
 }
 
 export function useUserDatasets(pageSize: number = 10, page: number = 1) {
-  return useQuery<
-    Pagination & {
-      results: Dataset[];
-    }
-  >([`/user/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`]);
+  return useQuery<PaginationData<Dataset[]>>([
+    `/user/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+  ]);
 }
 
 export function useOrganizationDatasets(
   id: string,
   pageSize: number = 10,
   page: number = 1,
-  options?: UseQueryOptions<
-    Pagination & {
-      results: Dataset[];
-    }
-  >
+  options?: UseQueryOptions<PaginationData<Dataset[]>>
 ) {
-  return useQuery<
-    Pagination & {
-      results: Dataset[];
-    }
-  >(
+  return useQuery<PaginationData<Dataset[]>>(
     [`/user/organisations/${id}/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
     options
   );

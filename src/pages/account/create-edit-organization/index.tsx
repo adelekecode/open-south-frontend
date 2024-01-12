@@ -5,13 +5,13 @@ import { InputLabel, MenuItem } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { IoCameraSharp } from "react-icons/io5";
-import FormField from "~/components/form-field";
-import TextEditorField from "~/components/text-editor-field";
+import FormField from "~/components/fields/form-field";
+import TextEditorField from "~/components/fields/text-editor-field";
 import Button from "~/components/button";
 import { useCreateOrganization, useEditOrganization } from "~/mutations/organization";
 import Success from "./success";
 import { notifyError } from "~/utils/toast";
-import SelectField from "~/components/select-field";
+import SelectField from "~/components/fields/select-field";
 import VerificationModal from "./verification-modal";
 
 const validationSchema = Yup.object({

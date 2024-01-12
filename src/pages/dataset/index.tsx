@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { MenuItem, Pagination } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import SearchInput from "~/components/search-input";
+import SearchInput from "~/components/inputs/search-input";
 import Seo from "~/components/seo";
-import SelectInput from "~/components/select-input";
+import SelectInput from "~/components/inputs/select-input";
 import Card from "./card";
 // import data from "~/utils/data/dataset.json";
-import AutocompleteInput from "~/components/auto-complete-input";
+import AutocompleteInput from "~/components/inputs/auto-complete-input";
 import organizationData from "~/utils/data/organization.json";
 import tagData from "~/utils/data/tag.json";
 import formatData from "~/utils/data/format.json";
