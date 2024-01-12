@@ -87,3 +87,10 @@ type CategoyModal = {
   state: "create" | "edit" | "view" | "delete" | null;
   data: Category | null;
 };
+
+type PaginationData<T> = {
+  count: number;
+  next: boolean | null;
+  previous: boolean | null;
+  results: T;
+};

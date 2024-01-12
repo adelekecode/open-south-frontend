@@ -72,10 +72,35 @@ function useEditOrganization() {
   );
 }
 
+function useDeleteOrganization() {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    async (id: string) => {
+      const { data: response } = await axiosPrivate.patchForm(`/organisations/${id}/`);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries([`/organisations/`]);
+        notifySuccess("Organization successfully deleted");
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 404) {
+            notifyError("Organization not found");
+          }
+        }
+      },
+    }
+  );
+}
+
 function useVerifyCode() {
   return useMutation(
     async (data: Record<"pin", string>) => {
-      const { data: response } = await axiosPrivate.post(`/organisations/verify-pin/`, data);
+      const { data: response } = await axiosPrivate.post(`/organisations/verification/`, data);
 
       return response;
     },
@@ -113,4 +138,39 @@ function useResendCode() {
   );
 }
 
-export { useCreateOrganization, useEditOrganization, useVerifyCode, useResendCode };
+function useChangeOrganizationStatus() {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    async ({ id, action }: { id: string; action: Dataset["status"] }) => {
+      const response = await axiosPrivate.post(`/admin/organisations/pk/${id}/actions/${action}/`);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        return queryClient.invalidateQueries([`/organisations/`]);
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured while changing status");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export {
+  useCreateOrganization,
+  useEditOrganization,
+  useVerifyCode,
+  useResendCode,
+  useChangeOrganizationStatus,
+  useDeleteOrganization,
+};

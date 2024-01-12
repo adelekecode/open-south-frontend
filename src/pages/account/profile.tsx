@@ -36,10 +36,7 @@ export default function Profile() {
 
   return (
     <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
-      <div
-        className="flex justify-between ic
-      "
-      >
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold largeMobile:text-xl">Edit Profile</h1>
         <Button
           className="!py-2 !px-3 !text-xs"

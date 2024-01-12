@@ -110,6 +110,7 @@ export default function OrganizationVerificationModal() {
                 setShowVerificationForm(true);
               }
             }}
+            loading={resendCode.isLoading}
           >
             Verify Organization
           </Button>

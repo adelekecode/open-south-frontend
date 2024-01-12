@@ -4,6 +4,7 @@ import {
   RouterProvider,
   createRoutesFromElements,
   Route,
+  Outlet,
 } from "react-router-dom";
 import "./App.css";
 import Protected from "./layouts/protected";
@@ -49,11 +50,14 @@ import {
   Category as AdminCategory,
   Dashboard as AdminDashboard,
   Dataset as AdminDataset,
+  Organization as AdminOrganization,
+  OrganizationDetails as AdminOrganizationDetails,
 } from "./pages/admin";
 import Profile from "./pages/account/profile";
 import CreateEditOrganization from "./pages/account/create-edit-organization";
 import UserOrganization from "./layouts/user-organization";
 import OrganizationVerificationModal from "./components/organization/organization-verification-modal";
+import OrganizationDeleteConfirmationModal from "./components/organization/delete-confirmation-modal";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -171,6 +175,31 @@ const router = createBrowserRouter(
                 </Suspense>
               }
             />
+            <Route
+              element={
+                <>
+                  <Outlet />
+                  <OrganizationDeleteConfirmationModal />
+                </>
+              }
+            >
+              <Route
+                path="/admin/organizations"
+                element={
+                  <Suspense fallback={<DashboardLoader />}>
+                    <AdminOrganization />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/admin/organizations/:id"
+                element={
+                  <Suspense fallback={<DashboardLoader />}>
+                    <AdminOrganizationDetails />
+                  </Suspense>
+                }
+              />
+            </Route>
           </Route>
         </Route>
       </Route>
