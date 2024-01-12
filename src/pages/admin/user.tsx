@@ -17,6 +17,8 @@ import { useGetAllUsers } from "~/queries/user";
 
 export default function User() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const dropdownDisplay = Boolean(anchorEl);
 
@@ -133,7 +135,7 @@ export default function User() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  const { isLoading, data } = useGetAllUsers();
+  const { isLoading, data } = useGetAllUsers(pageSize, page);
 
   return (
     <>
@@ -149,24 +151,21 @@ export default function User() {
           <div className="min-h-[500px]">
             <DataGrid
               loading={isLoading}
-              rows={
-                data
-                  ? data.map((item, index) => {
-                      //! Refactor
-                      const { image_url, email, first_name, last_name, date_joined } = item;
-
-                      return {
-                        id: index + 1,
-                        image_url,
-                        first_name,
-                        last_name,
-                        email,
-                        date_joined,
-                      };
-                    })
-                  : []
-              }
+              rows={data ? data.results : []}
               columns={columns}
+              rowCount={data?.count}
+              onPaginationModelChange={({ page, pageSize }) => {
+                setPage(page);
+                setPageSize(pageSize);
+              }}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    page,
+                    pageSize,
+                  },
+                },
+              }}
             />
           </div>
         </div>
