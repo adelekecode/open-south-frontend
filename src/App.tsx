@@ -53,7 +53,7 @@ import {
 import Profile from "./pages/account/profile";
 import CreateEditOrganization from "./pages/account/create-edit-organization";
 import UserOrganization from "./layouts/user-organization";
-import OrganizationVerificationModal from "./components/organization-verification-modal";
+import OrganizationVerificationModal from "./components/organization/organization-verification-modal";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

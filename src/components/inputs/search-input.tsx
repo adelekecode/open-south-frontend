@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { OutlinedInput, OutlinedInputProps } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
-import Button from "./button";
+import Button from "../button";
 
 type SearchInputProps = OutlinedInputProps & {
   wrapperClassName?: string;

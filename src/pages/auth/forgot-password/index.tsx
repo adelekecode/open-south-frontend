@@ -5,7 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 import { useForgotPassword } from "~/mutations/auth/password";
 import Success from "./success";
 

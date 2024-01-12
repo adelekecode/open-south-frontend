@@ -6,8 +6,8 @@ import { Formik } from "formik";
 import { IoCameraSharp } from "react-icons/io5";
 import * as Yup from "yup";
 import Button from "~/components/button";
-import FormField from "~/components/form-field";
-import TextEditorField from "~/components/text-editor-field";
+import FormField from "~/components/fields/form-field";
+import TextEditorField from "~/components/fields/text-editor-field";
 import { useEditProfile, useImageUpload } from "~/mutations/auth/profile";
 import { notifyError } from "~/utils/toast";
 

@@ -5,7 +5,7 @@ import { BsEyeSlash } from "react-icons/bs";
 import { AiOutlineEye } from "react-icons/ai";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 import { useResetPassword } from "~/mutations/auth/password";
 import Button from "~/components/button";
 import NotFound from "../../404";

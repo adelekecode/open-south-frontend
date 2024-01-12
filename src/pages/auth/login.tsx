@@ -7,7 +7,7 @@ import { BsEyeSlash } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 import useLogin from "~/mutations/auth/login";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
