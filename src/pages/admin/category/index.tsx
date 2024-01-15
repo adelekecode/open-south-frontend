@@ -33,17 +33,20 @@ export default function Category() {
       field: "name",
       headerName: "Title",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "data_count",
       headerName: "No. of dataset",
       minWidth: 150,
+      flex: 1,
     },
     {
       field: "created_at",
       headerName: "Created At",
       minWidth: 150,
       type: "string",
+      flex: 1,
       renderCell: (params) => {
         return <p>{moment(params.value).format("MMMM D, YYYY")}</p>;
       },
@@ -53,6 +56,7 @@ export default function Category() {
       headerName: "Updated At",
       minWidth: 150,
       type: "string",
+      flex: 1,
       renderCell: (params) => {
         return <p>{moment(params.value).format("MMMM D, YYYY")}</p>;
       },
@@ -61,6 +65,7 @@ export default function Category() {
       field: "_",
       headerName: "Action",
       minWidth: 160,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className="w-full">
