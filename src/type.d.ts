@@ -20,7 +20,12 @@ type Dataset = {
   description: string;
   updated_at: string;
   created_at: string;
-  files: File[];
+  files: {
+    format: string;
+    sha256: string;
+    size: string;
+    file_url: string;
+  }[];
   file_count: number;
   license: string;
   tags_data: {

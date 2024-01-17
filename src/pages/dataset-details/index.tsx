@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { Pagination } from "@mui/material";
@@ -7,12 +7,21 @@ import { stripHtml } from "string-strip-html";
 import Seo from "~/components/seo";
 import { useDatasetView } from "~/mutations/dataset";
 import File from "./file";
+import FilePreview from "./file-preview";
 
 export default function DatasetDetails() {
   const { slug } = useParams();
 
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const effectHasRun = useRef(false);
+
+  const [previewFile, setPreviewFile] = useState<{
+    open: boolean;
+    data: Dataset["files"][0] | null;
+  }>({
+    open: false,
+    data: null,
+  });
 
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData<Dataset>([`/public/datasets/${slug}/?key=public`]);
@@ -68,11 +77,18 @@ export default function DatasetDetails() {
         </div>
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">
-            <span>50</span> Files
+            <span>{data?.files?.length || "--"}</span>{" "}
+            {data?.files?.length === 1 ? "File" : "Files"}
           </h3>
           <div className="flex flex-col gap-4">
-            {[1, 2, 3].map((_, index) => (
-              <File key={index + 1} />
+            {data?.files?.map((item, index) => (
+              <File
+                key={index + 1}
+                {...item}
+                setPreviewFile={(obj: { open: boolean; data: Dataset["files"][0] | null }) =>
+                  setPreviewFile(obj)
+                }
+              />
             ))}
           </div>
           <div className="flex items-center justify-center mt-4">
@@ -162,6 +178,11 @@ export default function DatasetDetails() {
           </div>
         </div>
       </main>
+      <FilePreview
+        open={previewFile.open}
+        setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
+        data={previewFile.data}
+      />
     </>
   );
 }

@@ -213,7 +213,6 @@ const router = createBrowserRouter(
               element={<DatasetDetails />}
               loader={datasetDetailsLoader}
             />
-            <Route path="/datasets/:slug/resources/:id" element={<div>File Preview</div>} />
             <Route path="/categories" element={<Category />} />
             <Route path="/organizations" element={<Organization />} />
             <Route
