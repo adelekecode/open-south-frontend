@@ -4,10 +4,9 @@ import { Collapse } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { IoGridOutline, IoPersonOutline } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa6";
-import { GoDatabase } from "react-icons/go";
+import { GoDatabase, GoOrganization } from "react-icons/go";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { MdOutlineCategory } from "react-icons/md";
-import { SiAwsorganizations } from "react-icons/si";
 import Logo from "~/components/logo";
 import OrgDropdown from "./org-dropdown";
 import { useUserOrganizations } from "~/queries/organizations";
@@ -46,7 +45,7 @@ const sideBarData = [
   {
     name: "Organizations",
     to: "/admin/organizations",
-    icon: SiAwsorganizations,
+    icon: GoOrganization,
     allowedUserType: ["admin"],
   },
   {

@@ -5,6 +5,7 @@ import { FaAngleRight } from "react-icons/fa6";
 import Seo from "~/components/seo";
 import dataset from "~/utils/data/dataset.json";
 import NotFound from "./404";
+import Button from "~/components/button";
 // import { usePublicOrganizationDetails } from "~/queries/organizations";
 
 export default function OrganizationDetails() {
@@ -154,6 +155,10 @@ export default function OrganizationDetails() {
                 <p>534fff94a3a7292c64a77fc1</p>
               </div>
             </div>
+          </div>
+          <div className="flex items-center gap-2 my-4 mt-8 justify-center">
+            <span className="text-sm">If you are interested in this organization</span>{" "}
+            <Button className="!text-xs !py-3">Request to join</Button>
           </div>
         </main>
       </main>

@@ -175,6 +175,9 @@ function useChangeDatasetStatus() {
       return response;
     },
     {
+      onSuccess: () => {
+        notifySuccess("Successfully changed dataset status");
+      },
       onError(error) {
         if (isAxiosError(error)) {
           if (error.response?.status === 400) {

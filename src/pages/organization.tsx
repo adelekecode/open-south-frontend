@@ -44,7 +44,7 @@ export default function Organization() {
         </div>
         <header className="flex items-center flex-wrap largeMobile:flex-col gap-6 justify-between py-6">
           <p className="self-start">
-            <span>5,000</span> results
+            <span>{data?.count || 0}</span> results
           </p>
           <div className="flex items-center gap-2 largeMobile:w-full largeMobile:flex-col largeMobile:items-start">
             <p className="whitespace-nowrap text-sm">Sort by:</p>
@@ -66,12 +66,21 @@ export default function Organization() {
         {isLoading ? (
           <div className="grid grid-cols-3 gap-4 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1">
             {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index + 1} className="animate-pulse rounded-lg bg-gray-200 h-28" />
+              <div key={index + 1} className="border rounded-md flex flex-col p-4 gap-7">
+                <div className="flex items-center gap-5">
+                  <div className="w-20 rounded aspect-square animate-pulse bg-gray-200"></div>
+                  <div className="w-28 rounded-sm h-6 animate-pulse bg-gray-200"></div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="w-full rounded-sm h-4 animate-pulse bg-gray-200"></div>
+                  <div className="w-full rounded-sm h-4 animate-pulse bg-gray-200"></div>
+                </div>
+              </div>
             ))}
           </div>
-        ) : data && data.length > 0 ? (
+        ) : data && data.results.length > 0 ? (
           <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
-            {data.map((item, index) => {
+            {data.results.map((item, index) => {
               const { name, slug, logo, description } = item;
 
               const stripedDescription = stripHtml(`${description}`, {
