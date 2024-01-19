@@ -15,6 +15,22 @@ export function useAdminOrganizations(
   );
 }
 
+export function useOrganizationUsers(
+  id: string,
+  pageSize: number = 10,
+  page: number = 1,
+  options?: UseQueryOptions<PaginationData<CurrentUser[]>>
+) {
+  return useQuery<PaginationData<CurrentUser[]>>(
+    [`/admin/organisations/${id}/users/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    options
+  );
+}
+
+export function useOrganizationRequests(id: string) {
+  return useQuery<Organization>([`/admin/organisations/${id}/requests`]);
+}
+
 export function usePublicOrganizations(
   pageSize: number = 10,
   page: number = 1,

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { GridColDef } from "@mui/x-data-grid";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { SiAwsorganizations } from "react-icons/si";
 import { IoCloudDownloadOutline, IoGridOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
+import { GoOrganization } from "react-icons/go";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 // import data from "~/utils/data/dataset.json";
@@ -158,7 +158,7 @@ export default function Dashboard() {
                 <h1 className="text-neutral-800">{"92,345"}</h1>
               </div>
               <span className="p-2 border border-blue-500 h-fit rounded text-blue-500 text-base">
-                <SiAwsorganizations />
+                <GoOrganization />
               </span>
             </div>
             <div className="bg-purple-50">
