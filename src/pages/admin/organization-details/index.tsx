@@ -30,7 +30,7 @@ export default function OrganizationDetails() {
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-medium flex items-center gap-2">
-            Dashboard <span className="text-sm">{">"}</span>{" "}
+            Organization <span className="text-sm">{">"}</span>{" "}
             <span className="text-info-800">{data?.name || "-----"}</span>
           </h1>
           <Button
