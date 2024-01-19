@@ -18,6 +18,7 @@ function useCreateOrganization() {
       return response;
     },
     {
+      mutationKey: ["create-org"],
       onSuccess() {
         queryClient.invalidateQueries([`/user/organisations/`]);
         notifySuccess("Organization successfully created");

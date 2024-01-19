@@ -32,6 +32,7 @@ import {
   OrgDashboard,
   OrgDataset,
   CreateDataset,
+  CreateOrganization,
 } from "./pages/account";
 import GetUserDataset from "./layouts/get-user-dataset";
 import News from "./pages/news";
@@ -124,7 +125,7 @@ const router = createBrowserRouter(
               />
               <Route path="/account/:slug/edit" element={<CreateEditOrganization />} />
             </Route>
-            <Route path="/account/organizations/new" element={<CreateEditOrganization />} />
+            <Route path="/account/organizations/new" element={<CreateOrganization />} />
             <Route
               path="/account/profile"
               element={
