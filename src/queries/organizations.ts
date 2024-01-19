@@ -15,8 +15,15 @@ export function useAdminOrganizations(
   );
 }
 
-export function usePublicOrganizations() {
-  return useQuery<Organization[]>([`/public/organisations/?key=public`]);
+export function usePublicOrganizations(
+  pageSize: number = 10,
+  page: number = 1,
+  options?: UseQueryOptions<PaginationData<Organization[]>>
+) {
+  return useQuery<PaginationData<Organization[]>>(
+    [`/public/organisations/?key=public&limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    options
+  );
 }
 
 export function useOrganizationDetails(slug: string, options?: UseQueryOptions<Organization>) {
