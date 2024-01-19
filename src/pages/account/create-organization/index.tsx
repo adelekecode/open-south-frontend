@@ -16,7 +16,7 @@ const data = [
   },
   {
     title: "Success",
-    description: "Your dataset has been created",
+    description: "Your organization has been created",
     component: Success,
   },
 ];
@@ -31,7 +31,7 @@ export default function CreateOrganization() {
   return (
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
-        <h1 className="text-2xl font-semibold mb-2 largeMobile:text-xl">New Dataset</h1>
+        <h1 className="text-2xl font-semibold mb-2 largeMobile:text-xl">New Organization</h1>
         <div className="w-full grid grid-cols-3 [@media(max-width:560px)]:flex justify-between overflow-x-auto border p-2 rounded-md bg-white">
           {data.map((item, index) => {
             const newIndex = index + 1;
