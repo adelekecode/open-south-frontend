@@ -7,7 +7,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { MdOutlineDelete } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
 import DataGrid from "~/components/data-grid";
-import { useAdminOrganizations } from "~/queries/organizations";
+import { useAdminOrganizations, useAdminOrganizationsIndicators } from "~/queries/organizations";
 import { notifySuccess } from "~/utils/toast";
 import { useChangeOrganizationStatus } from "~/mutations/organization";
 import useOrganizationStore from "~/store/organization";
@@ -18,12 +18,20 @@ export default function Organization() {
   const [statusObj, setStatusObj] = useState<{ [key: string]: Organization["status"] }>({});
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [filterBy, setFilterBy] = useState<{
+    status: Organization["status"] | null;
+    isVerified: "true" | "false" | null;
+  }>({
+    status: null,
+    isVerified: null,
+  });
 
   const { setOrganizationDeleteConfirmationModal } = useOrganizationStore();
 
   const changeOrganizationStatus = useChangeOrganizationStatus();
 
   const { data, isLoading } = useAdminOrganizations(pageSize, page);
+  const { data: indicatorData } = useAdminOrganizationsIndicators();
 
   const columns: GridColDef[] = [
     {
@@ -124,6 +132,10 @@ export default function Organization() {
             onChange={async (e) => {
               const chosenValue = e.target.value;
 
+              if (chosenValue === "pending") {
+                return;
+              }
+
               if (chosenValue && chosenValue !== statusObj[row.id]) {
                 setStatusObj((prevStatusObj) => ({
                   ...prevStatusObj,
@@ -189,7 +201,7 @@ export default function Organization() {
     },
     {
       field: "is_verified",
-      headerName: "IS VERIFIED",
+      headerName: "VERIFIED",
       minWidth: 10,
       renderCell: ({ value }) => {
         const obj: {
@@ -260,29 +272,73 @@ export default function Organization() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold largeMobile:text-xl">Organization</h1>
       </div>
-      <div className="bg-white w-full border border-info-100 p-6 rounded-md flex flex-col gap-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3 text-sm border rounded p-2 px-3 border-orange-500 [&>*]:text-orange-500">
+      <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-4 flex-wrap p-4 [&>div]:flex [&>div]:items-center [&>div]:gap-3 [&>div]:text-sm [&>div]:border [&>div]:rounded [&>div]:p-2 [&>div]:px-3 [&>div>*]:text-xs">
+            <div className="border-orange-500 [&>*]:text-orange-500">
               <p>Pending</p>
-              <span>{10}</span>
+              <span>{indicatorData?.pending || 0}</span>
             </div>
-            <div className="flex items-center gap-3 text-sm border rounded p-2 px-3 border-green-500 [&>*]:text-green-500">
+            <div className="border-green-500 [&>*]:text-green-500">
               <p>Approved</p>
-              <span>{0}</span>
+              <span>{indicatorData?.approved || 0}</span>
             </div>
-            <div className="flex items-center gap-3 text-sm border rounded p-2 px-3 border-red-500 [&>*]:text-red-500">
+            <div className="border-red-500 [&>*]:text-red-500">
               <p>Rejected</p>
-              <span>{0}</span>
+              <span>{indicatorData?.rejected || 0}</span>
             </div>
           </div>
-          <OutlinedInput
-            placeholder="Search..."
-            className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full self-end"
-          />
+          <div className="flex items-center border-y p-4 py-4 border-info-100">
+            <div className="flex items-center gap-4 h-10">
+              <OutlinedInput
+                placeholder="Search for name..."
+                className="w-[300px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
+              />
+              <Select
+                className="w-[200px] !text-sm !py-0 !px-0 !h-full"
+                value={filterBy.status || ""}
+                onChange={async (e) => {
+                  const chosenValue = e.target.value;
+
+                  setFilterBy((prev) => ({
+                    ...prev,
+                    status: chosenValue as typeof filterBy.status,
+                  }));
+                }}
+                displayEmpty
+              >
+                <MenuItem value="" className="placeholder">
+                  <span className="text-info-600">Select status</span>
+                </MenuItem>
+                <MenuItem value="pending">Pending</MenuItem>
+                <MenuItem value="reject">Rejected</MenuItem>
+                <MenuItem value="approve">Approved</MenuItem>
+              </Select>
+              <Select
+                className="w-[200px] !text-sm !py-0 !px-0 !h-full"
+                value={filterBy.isVerified || ""}
+                onChange={async (e) => {
+                  const chosenValue = e.target.value;
+
+                  setFilterBy((prev) => ({
+                    ...prev,
+                    isVerified: chosenValue as typeof filterBy.isVerified,
+                  }));
+                }}
+                displayEmpty
+              >
+                <MenuItem value="" className="placeholder">
+                  <span className="text-info-600">Select verified</span>
+                </MenuItem>
+                <MenuItem value="true">True</MenuItem>
+                <MenuItem value="false">False</MenuItem>
+              </Select>
+            </div>
+          </div>
         </div>
-        <div className="min-h-[410px]">
+        <div className="min-h-[410px] p-4">
           <DataGrid
+            className="!border-info-150"
             rows={data ? data.results : []}
             loading={isLoading}
             columns={columns}

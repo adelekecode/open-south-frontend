@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Marhey:wght@400&display=swap");
 
 * {
-  font-family: "Work Sans", sans-serif;
+  font-family: "Work Sans", sans-serif !important;
 }
 
 html {
