@@ -60,12 +60,20 @@ export default function Dataset() {
                     slug: item.slug,
                     id: item.id,
                   }))}
-                  placeholder="All Organization"
+                  inputParams={{
+                    placeholder: "All Organizations",
+                  }}
                 />
               </div>
               <div>
                 <label htmlFor="tag">Tags</label>
-                <AutocompleteInput id="tag" options={tagData} />
+                <AutocompleteInput
+                  id="tag"
+                  options={tagData}
+                  inputParams={{
+                    placeholder: "All Tags",
+                  }}
+                />
               </div>
               <div>
                 <label htmlFor="category">Category</label>

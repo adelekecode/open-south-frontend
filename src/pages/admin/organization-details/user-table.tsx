@@ -14,7 +14,7 @@ import moment from "moment";
 import { GoKebabHorizontal } from "react-icons/go";
 import { IoPerson } from "react-icons/io5";
 import DataGrid from "~/components/data-grid";
-import { useOrganizationUsers } from "~/queries/organizations";
+import { useAdminOrganizationUsers } from "~/queries/organizations";
 
 export default function UserTable() {
   const { id } = useParams();
@@ -163,7 +163,7 @@ export default function UserTable() {
     },
   ];
 
-  const { data, isLoading } = useOrganizationUsers(id || "");
+  const { data, isLoading } = useAdminOrganizationUsers(id || "");
 
   return (
     <>
