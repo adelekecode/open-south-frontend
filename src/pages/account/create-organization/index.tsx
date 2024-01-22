@@ -1,40 +1,38 @@
-import { useState } from "react";
-import NewDataset from "./new-dataset";
-import PublishAs from "./publish-as";
-import Resource from "./resource";
+import { useEffect, useState } from "react";
+import NewOrganization from "./new-organization";
+import Verification from "./verification";
 import Success from "./success";
 
 const data = [
   {
-    title: "Publish as",
-    description: "Choose who is publishing",
-    component: PublishAs,
+    title: "Create organization",
+    description: "Add in the details of your organization",
+    component: NewOrganization,
   },
   {
-    title: "New dataset",
-    description: "Describe your dataset",
-    component: NewDataset,
-  },
-  {
-    title: "Resources",
-    description: "Add your first resources",
-    component: Resource,
+    title: "Verify Organization",
+    description: "Enter in the verification code",
+    component: Verification,
   },
   {
     title: "Success",
-    description: "Your dataset has been created",
+    description: "Your organization has been created",
     component: Success,
   },
 ];
 
-export default function CreateDataset() {
+export default function CreateOrganization() {
   const [activeIndex, setActiveIndex] = useState(1);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
-        <h1 className="text-2xl font-semibold mb-2 largeMobile:text-xl">New Dataset</h1>
-        <div className="w-full grid grid-cols-4 [@media(max-width:560px)]:flex justify-between overflow-x-auto border p-2 rounded-md bg-white">
+        <h1 className="text-2xl font-semibold mb-2 largeMobile:text-xl">New Organization</h1>
+        <div className="w-full grid grid-cols-3 [@media(max-width:560px)]:flex justify-between overflow-x-auto border p-2 rounded-md bg-white">
           {data.map((item, index) => {
             const newIndex = index + 1;
             const isActive = newIndex === activeIndex;

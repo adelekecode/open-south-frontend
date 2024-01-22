@@ -101,8 +101,8 @@ export default function Login() {
                 state?.from
                   ? state.from
                   : data.role === "admin"
-                  ? "/admin/dashboard"
-                  : "/account/dashboard"
+                    ? "/admin/dashboard"
+                    : "/account/dashboard"
               );
             }
           }}

@@ -45,11 +45,12 @@ export default function Dataset() {
       headerName: "TITLE",
       minWidth: 300,
       headerClassName: "font-bold",
+      flex: 1,
     },
     {
       field: "publisher_data",
       headerName: "CREATED BY",
-      width: 300,
+      minWidth: 250,
       sortComparator: (v1, v2) => {
         const name1 = v1.first_name + " " + v1.last_name;
         const name2 = v2.first_name + " " + v2.last_name;
@@ -79,13 +80,16 @@ export default function Dataset() {
           </Link>
         );
       },
+      flex: 1,
       type: "string",
     },
     {
       field: "views",
       headerName: "VIEWS",
       flex: 1,
-      minWidth: 50,
+      minWidth: 100,
+      headerAlign: "center",
+      align: "center",
       valueFormatter: ({ value }) => {
         return value.count;
       },
@@ -96,13 +100,16 @@ export default function Dataset() {
     {
       field: "files_count",
       headerName: "FILES",
-      minWidth: 50,
+      minWidth: 100,
+      headerAlign: "center",
+      align: "center",
       valueFormatter: ({ value }) => {
         return value;
       },
       sortComparator: (v1, v2) => {
         return v1 - v2;
       },
+      flex: 1,
     },
     {
       field: "status",
@@ -148,19 +155,25 @@ export default function Dataset() {
     {
       field: "created_at",
       headerName: "CREATED AT",
-      width: 150,
+      minWidth: 150,
+      headerAlign: "center",
+      align: "center",
       valueFormatter: ({ value }) => {
         return moment(value).format("Do MMM, YYYY");
       },
       sortComparator: (v1, v2) => {
         return new Date(v1).getTime() - new Date(v2).getTime();
       },
+      flex: 1,
       type: "string",
     },
     {
       field: "updated_at",
       headerName: "UPDATED AT",
-      width: 150,
+      minWidth: 150,
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
       valueFormatter: ({ value }) => {
         return moment(value).fromNow();
       },
@@ -172,7 +185,10 @@ export default function Dataset() {
     {
       field: "_",
       headerName: "ACTION",
-      width: 150,
+      minWidth: 100,
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
       renderCell: () => {
         return (
           <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
