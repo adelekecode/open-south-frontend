@@ -10,6 +10,7 @@ type AutocompleteInputProps<T> = Omit<
   MuiAutocompleteProps<T, false, false, false, any>,
   "renderInput"
 > & {
+  placeholder?: string;
   inputParams?: TextFieldProps;
   renderInput?: MuiAutocompleteProps<T, false, false, false, any>["renderInput"];
 };
