@@ -83,9 +83,27 @@ type Organization = {
   is_verified: boolean;
 };
 
+type News = {
+  id: string;
+  image_url: string | null;
+  title: string;
+  slug: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
+  is_published: string;
+  is_deleted: string;
+  published_at: string;
+};
+
 type CategoyModal = {
   state: "create" | "edit" | "view" | "delete" | null;
   data: Category | null;
+};
+
+type NewsModal = {
+  state: "create" | "edit" | "view" | "delete" | null;
+  data: News | null;
 };
 
 type PaginationData<T> = {

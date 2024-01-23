@@ -68,12 +68,12 @@ export default function Organization() {
             {Array.from({ length: 6 }).map((_, index) => (
               <div key={index + 1} className="border rounded-md flex flex-col p-4 gap-7">
                 <div className="flex items-center gap-5">
-                  <div className="w-20 rounded aspect-square animate-pulse bg-gray-200"></div>
-                  <div className="w-28 rounded-sm h-6 animate-pulse bg-gray-200"></div>
+                  <div className="w-20 rounded aspect-square animate-pulse bg-gray-200" />
+                  <div className="w-28 rounded-sm h-6 animate-pulse bg-gray-200" />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <div className="w-full rounded-sm h-4 animate-pulse bg-gray-200"></div>
-                  <div className="w-full rounded-sm h-4 animate-pulse bg-gray-200"></div>
+                  <div className="w-full rounded-sm h-4 animate-pulse bg-gray-200" />
+                  <div className="w-full rounded-sm h-4 animate-pulse bg-gray-200" />
                 </div>
               </div>
             ))}
@@ -125,7 +125,7 @@ export default function Organization() {
               <img
                 src={NoData}
                 className="w-full h-full object-covers"
-                alt="No category data illustration"
+                alt="No organization data illustration"
               />
             </figure>
             <p className="text-base font-semibold">No organization found</p>

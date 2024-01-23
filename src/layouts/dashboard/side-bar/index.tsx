@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Collapse } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import { IoGridOutline, IoPersonOutline } from "react-icons/io5";
+import { IoGridOutline, IoPersonOutline, IoNewspaperOutline } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa6";
 import { GoDatabase, GoOrganization } from "react-icons/go";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -59,6 +59,12 @@ const sideBarData = [
     to: "/account/profile",
     icon: IoPersonOutline,
     allowedUserType: ["user"],
+  },
+  {
+    name: "News",
+    to: "/admin/news",
+    icon: IoNewspaperOutline,
+    allowedUserType: ["admin"],
   },
   {
     name: "Profile",
