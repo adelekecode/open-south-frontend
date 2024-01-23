@@ -52,6 +52,7 @@ import {
   Dataset as AdminDataset,
   Organization as AdminOrganization,
   OrganizationDetails as AdminOrganizationDetails,
+  News as AdminNews,
 } from "./pages/admin";
 import Profile from "./pages/account/profile";
 import CreateEditOrganization from "./pages/account/create-edit-organization";
@@ -170,6 +171,14 @@ const router = createBrowserRouter(
               element={
                 <Suspense fallback={<DashboardLoader />}>
                   <Profile />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/admin/news"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AdminNews />
                 </Suspense>
               }
             />

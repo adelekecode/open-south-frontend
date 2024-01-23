@@ -20,7 +20,7 @@ function useCreateCategory() {
       onError(error) {
         if (isAxiosError(error)) {
           if (error.response?.status === 400) {
-            notifyError("Error occured while creating dataset");
+            notifyError("Error occured while creating category");
           } else {
             if (typeof error === "string") {
               notifyError(error);
