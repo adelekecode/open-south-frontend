@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { Pagination } from "@mui/material";
 import moment from "moment";
 import { stripHtml } from "string-strip-html";
@@ -8,6 +7,7 @@ import Seo from "~/components/seo";
 import { useDatasetView } from "~/mutations/dataset";
 import File from "./file";
 import FilePreview from "./file-preview";
+import { usePublicDatasetDetails } from "~/queries/dataset";
 
 export default function DatasetDetails() {
   const { slug } = useParams();
@@ -23,9 +23,9 @@ export default function DatasetDetails() {
     data: null,
   });
 
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData<Dataset>([`/public/datasets/${slug}/?key=public`]);
-
+  const { data, isLoading } = usePublicDatasetDetails(slug || "", {
+    enabled: !!slug,
+  });
   const datasetView = useDatasetView();
 
   useEffect(() => {
@@ -52,6 +52,34 @@ export default function DatasetDetails() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (isLoading) {
+    return (
+      <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 pb-12 tablet:px-6 largeMobile:!px-4">
+        <div className="animate-pulse bg-gray-200 h-6 w-[30%] rounded-sm" />
+        <div className="flex flex-col gap-1">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index + 1} className="animate-pulse bg-gray-200 h-4 rounded-sm" />
+          ))}
+          <div className="animate-pulse bg-gray-200 h-4 rounded-sm w-[45%]" />
+        </div>
+        <div className="flex flex-col gap-4 w-full">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index + 1}
+              className={`rounded-sm flex gap-4 items-center ${index < 2 && "border-b"} pb-4`}
+            >
+              <div className="animate-pulse bg-gray-200 rounded-sm w-[35px] aspect-square" />
+              <div className="flex flex-col gap-2 w-full">
+                <div className="animate-pulse bg-gray-200 rounded-sm h-8 w-[55%]" />
+                <div className="animate-pulse bg-gray-200 rounded-sm h-4 w-[20%]" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+    );
+  }
 
   const stripedDescription =
     data?.description &&
@@ -164,7 +192,7 @@ export default function DatasetDetails() {
             <p>{data?.updated_at ? moment(data.updated_at).format("MMMM DD, YYYY") : "------"}</p>
           </div>
         </div>
-        <div className="flex flex-col gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
+        <div className="flex flex-col gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Temporal coverage</h3>
             <p className="[&>span]:font-medium [&>span]:capitalize">
@@ -181,7 +209,7 @@ export default function DatasetDetails() {
       <FilePreview
         open={previewFile.open}
         setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
-        data={previewFile.data}
+        file={previewFile.data}
       />
     </>
   );
