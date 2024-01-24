@@ -11,6 +11,7 @@ import TextEditorField from "~/components/fields/text-editor-field";
 import { useCreateDataset } from "~/mutations/dataset";
 import { useCreateDatasetTags } from "~/mutations/dataset";
 import UpdateFrequencyData from "~/utils/data/update-frequency.json";
+import LicenseData from "~/utils/data/license.json";
 import countryData from "~/utils/data/country.json";
 import TagsField from "~/components/fields/tags-field";
 import { useCategories } from "~/queries/category";
@@ -74,7 +75,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
       initialValues={{
         title: "",
         description: "",
-        license: "Licence Ouverte / Open Licence version 2.0",
+        license: "",
         tags: [],
         updateFrequency: "Unknown",
         start: "",
@@ -162,18 +163,25 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                   "indent",
                 ]}
               />
-              <FormField
+              <SelectField
                 label="License"
-                className="[&_input]:!text-[0.9rem]"
                 required
                 name="license"
-                readOnly
-              />
+                value={values.license}
+                labelProps={{
+                  className: "!font-medium",
+                }}
+              >
+                {LicenseData.map((item, index) => (
+                  <MenuItem key={index + 1} value={item.name}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </SelectField>
               <SelectField
                 label="Update Frequency"
                 required
                 name="updateFrequency"
-                // defaultValue={"Unknown"}
                 value={values.updateFrequency}
                 labelProps={{
                   className: "!font-medium",
