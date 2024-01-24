@@ -25,6 +25,10 @@ type Dataset = {
     sha256: string;
     size: string;
     file_url: string;
+    id: string;
+    created_at: string;
+    updated_at: string;
+    file_name: string;
   }[];
   file_count: number;
   license: string;

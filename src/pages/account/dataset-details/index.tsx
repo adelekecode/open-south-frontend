@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@mui/material";
 import Button from "~/components/button";
 import Resources from "./resources";
 import DeleteConfirmation from "./delete-confirmation";
-import { useDatasetDetails } from "~/queries/dataset";
+import { useUserDatasetDetails } from "~/queries/dataset";
 import DashboardLoader from "~/components/loader/dashboard-loader";
 import NotFound from "~/pages/404";
 
@@ -14,7 +14,7 @@ export default function DatasetDetails() {
 
   const [displayDeleteConfirmationModal, setDisplayDeleteConfirmationModal] = useState(false);
 
-  const { data, isLoading } = useDatasetDetails(id || "");
+  const { data, isLoading } = useUserDatasetDetails(id || "");
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });

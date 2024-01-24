@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useState } from "react";
 import { FaAngleDown } from "react-icons/fa6";
 import { FiFileText } from "react-icons/fi";
@@ -18,9 +19,7 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
         <div className="flex items-center gap-4">
           <FiFileText className="text-xl" />
           <div className="flex flex-col gap-1">
-            <h4 className="text-sm font-semibold">
-              {"Sirene: StockEstablishmentHistorical file from November 1, 2023"}
-            </h4>
+            <h4 className="text-sm font-semibold">{"StockEstablishmentHistorical"}</h4>
             <p className="text-xs text-info-800 font-medium">{data.format || "------"}</p>
           </div>
         </div>
@@ -40,11 +39,13 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
       </div>
 
       {displayDetails && (
-        <div className={`flex items-start gap-8 p-6 pt-4 ${displayDetails && "border-b"}`}>
+        <div
+          className={`flex items-start gap-8 p-6 pt-4 justify-between ${displayDetails && "border-b"}`}
+        >
           <div className="flex flex-wrap gap-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-1 [&>div>h5]:text-sm [&>div>h5]:font-medium [&>div>p]:text-sm [&>div>p]:text-info-800">
             <div>
               <h5>Created on</h5>
-              <p>{"------"}</p>
+              <p>{data.created_at ? moment(data.created_at).format("Do MMM, YYYY") : "------"}</p>
             </div>
             <div>
               <h5>Size</h5>
@@ -52,7 +53,7 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
             </div>
             <div>
               <h5>ID</h5>
-              <p>{"------"}</p>
+              <p>{data.id || "------"}</p>
             </div>
             <div>
               <h5>sha256</h5>
@@ -65,10 +66,12 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
               color="info"
               className="!rounded-full !border-[1.5px] !px-4 !py-2 !border-info-800 gap-2"
               onClick={() => {
-                setPreviewFile({
-                  open: true,
-                  data,
-                });
+                if (data) {
+                  setPreviewFile({
+                    open: true,
+                    data,
+                  });
+                }
               }}
             >
               <p className="text-xs whitespace-nowrap">View File</p>

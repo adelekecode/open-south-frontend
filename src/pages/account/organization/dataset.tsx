@@ -6,7 +6,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
 import { twMerge } from "tailwind-merge";
 import DataGrid from "~/components/data-grid";
-import { useOrganizationDatasets } from "~/queries/dataset";
+import { useUserOrganizationDatasets } from "~/queries/dataset";
 
 const columns: GridColDef[] = [
   {
@@ -134,7 +134,7 @@ export default function Dataset() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  const { data, isLoading } = useOrganizationDatasets(organization?.id || "");
+  const { data, isLoading } = useUserOrganizationDatasets(organization?.id || "");
 
   return (
     <>

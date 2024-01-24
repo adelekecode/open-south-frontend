@@ -1,11 +1,26 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export function usePublicDatasets() {
   return useQuery<Dataset[]>([`/public/datasets/?key=public`]);
 }
 
-export function useDatasetDetails(id: string) {
-  return useQuery<any>([`/datasets/${id}/`]);
+export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<Dataset>) {
+  return useQuery<Dataset>([`/public/datasets/${slug}/?key=public`], options);
+}
+
+export function usePublicFilePreview(
+  url: string,
+  options?: UseQueryOptions<any, unknown, unknown, [string]>
+) {
+  return useQuery([`${url}`], {
+    queryFn: async () => {
+      const response = await axios.get(url);
+
+      return response;
+    },
+    ...options,
+  });
 }
 
 export function useAdminDatasetDetails(id: string) {
@@ -22,7 +37,11 @@ export function useUserDatasets(pageSize: number = 10, page: number = 1) {
   ]);
 }
 
-export function useOrganizationDatasets(
+export function useUserDatasetDetails(id: string) {
+  return useQuery<any>([`/user/datasets/${id}/`]);
+}
+
+export function useUserOrganizationDatasets(
   id: string,
   pageSize: number = 10,
   page: number = 1,

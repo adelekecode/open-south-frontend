@@ -41,7 +41,6 @@ import { dashboardLoader } from "./utils/routes-addons/dashboard";
 import { appLoader } from "./utils/routes-addons/app";
 import Contact from "./pages/contact";
 import { organizationDetailsLoader } from "./utils/routes-addons/organization-details";
-import { datasetDetailsLoader } from "./utils/routes-addons/dataset-details";
 import AppLoader from "./components/loader/app-loader";
 import UserRestricted from "./layouts/user-restricted";
 import AdminRestricted from "./layouts/admin-restricted";
@@ -215,11 +214,7 @@ const router = createBrowserRouter(
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/datasets" element={<Dataset />} />
-            <Route
-              path="/datasets/:slug"
-              element={<DatasetDetails />}
-              loader={datasetDetailsLoader}
-            />
+            <Route path="/datasets/:slug" element={<DatasetDetails />} />
             <Route path="/categories" element={<Category />} />
             <Route path="/organizations" element={<Organization />} />
             <Route
