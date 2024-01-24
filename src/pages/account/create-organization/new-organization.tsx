@@ -60,13 +60,19 @@ export default function NewOrganization({ setActiveIndex }: NewOrganizationProps
             validateOnBlur={false}
             validationSchema={validationSchema}
             onSubmit={async (values) => {
-              const type = values.type.toLowerCase().replace(" ", "_");
-
               if (!logo) return notifyError("Logo field is required");
+
+              if (values.type === "organisation") {
+                if (values.email.includes("@gmail.com")) {
+                  return notifyError(
+                    'Gmail is not allowed for organizations with type of "Organization"'
+                  );
+                }
+              }
 
               const response = await createOrganization.mutateAsync({
                 ...values,
-                type,
+                type: `cooperate_${values.type}`,
                 logo,
               });
 
@@ -153,6 +159,7 @@ export default function NewOrganization({ setActiveIndex }: NewOrganizationProps
                     }}
                   />
                   <SelectField
+                    className="capitalize"
                     label="Type of organization"
                     required
                     name="type"
@@ -161,8 +168,8 @@ export default function NewOrganization({ setActiveIndex }: NewOrganizationProps
                     }}
                     value={values.type || ""}
                   >
-                    <MenuItem value={"Cooperate Organisation"}>Cooperate Organisation</MenuItem>
-                    <MenuItem value={"Cooperate Society"}>Cooperate Society</MenuItem>
+                    <MenuItem value={"organisation"}>Organisation</MenuItem>
+                    <MenuItem value={"society"}>Society</MenuItem>
                   </SelectField>
                   <FormField
                     label="Email"

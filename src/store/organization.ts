@@ -1,39 +1,59 @@
 import { create } from "zustand";
 
 type State = {
-  organizationVerificationModal: {
+  verificationModal: {
     open: boolean;
     data: Organization | null;
   };
-  organizationDeleteConfirmationModal: {
+  deleteConfirmationModal: {
     open: boolean;
     data: Organization | null;
+  };
+  pendingModal: {
+    open: boolean;
+  };
+  rejectedModal: {
+    open: boolean;
   };
 };
 
 type Action = {
-  setOrganizationVerificationModal: (obj: State["organizationVerificationModal"]) => void;
-  setOrganizationDeleteConfirmationModal: (
-    obj: State["organizationDeleteConfirmationModal"]
-  ) => void;
+  setVerificationModal: (obj: State["verificationModal"]) => void;
+  setDeleteConfirmationModal: (obj: State["deleteConfirmationModal"]) => void;
+  setPendingModal: (obj: State["pendingModal"]) => void;
+  setRejectedModal: (obj: State["rejectedModal"]) => void;
 };
 
 const useOrganizationStore = create<State & Action>()((set) => ({
-  organizationVerificationModal: {
+  verificationModal: {
     open: false,
     data: null,
   },
-  setOrganizationVerificationModal: (obj) =>
+  setVerificationModal: (obj) =>
     set({
-      organizationVerificationModal: obj,
+      verificationModal: obj,
     }),
-  organizationDeleteConfirmationModal: {
+  deleteConfirmationModal: {
     open: false,
     data: null,
   },
-  setOrganizationDeleteConfirmationModal: (obj) =>
+  setDeleteConfirmationModal: (obj) =>
     set({
-      organizationDeleteConfirmationModal: obj,
+      deleteConfirmationModal: obj,
+    }),
+  pendingModal: {
+    open: false,
+  },
+  setPendingModal: (obj) =>
+    set({
+      pendingModal: obj,
+    }),
+  rejectedModal: {
+    open: false,
+  },
+  setRejectedModal: (obj) =>
+    set({
+      rejectedModal: obj,
     }),
 }));
 

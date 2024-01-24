@@ -10,15 +10,14 @@ export default function DeleteConfirmationModal() {
 
   const { id } = useParams();
 
-  const { organizationDeleteConfirmationModal, setOrganizationDeleteConfirmationModal } =
-    useOrganizationStore();
+  const { deleteConfirmationModal, setDeleteConfirmationModal } = useOrganizationStore();
 
-  const { open, data: orgData } = organizationDeleteConfirmationModal;
+  const { open, data: orgData } = deleteConfirmationModal;
 
   const deleteOrganization = useDeleteOrganization();
 
   function onClose() {
-    setOrganizationDeleteConfirmationModal({
+    setDeleteConfirmationModal({
       open: false,
       data: null,
     });

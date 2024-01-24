@@ -41,7 +41,6 @@ import { dashboardLoader } from "./utils/routes-addons/dashboard";
 import { appLoader } from "./utils/routes-addons/app";
 import Contact from "./pages/contact";
 import { organizationDetailsLoader } from "./utils/routes-addons/organization-details";
-import { datasetDetailsLoader } from "./utils/routes-addons/dataset-details";
 import AppLoader from "./components/loader/app-loader";
 import UserRestricted from "./layouts/user-restricted";
 import AdminRestricted from "./layouts/admin-restricted";
@@ -55,9 +54,8 @@ import {
   News as AdminNews,
 } from "./pages/admin";
 import Profile from "./pages/account/profile";
-import CreateEditOrganization from "./pages/account/create-edit-organization";
+import EditOrganization from "./pages/account/edit-organization";
 import UserOrganization from "./layouts/user-organization";
-import OrganizationVerificationModal from "./components/organization/organization-verification-modal";
 import OrganizationDeleteConfirmationModal from "./components/organization/delete-confirmation-modal";
 
 const router = createBrowserRouter(
@@ -75,7 +73,6 @@ const router = createBrowserRouter(
             element={
               <>
                 <UserRestricted />
-                <OrganizationVerificationModal />
               </>
             }
           >
@@ -121,7 +118,7 @@ const router = createBrowserRouter(
                   </Suspense>
                 }
               />
-              <Route path="/account/:slug/edit" element={<CreateEditOrganization />} />
+              <Route path="/account/:slug/edit" element={<EditOrganization />} />
             </Route>
             <Route path="/account/organizations/new" element={<CreateOrganization />} />
             <Route
@@ -215,12 +212,7 @@ const router = createBrowserRouter(
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/datasets" element={<Dataset />} />
-            <Route
-              path="/datasets/:slug"
-              element={<DatasetDetails />}
-              loader={datasetDetailsLoader}
-            />
-            <Route path="/datasets/:slug/resources/:id" element={<div>File Preview</div>} />
+            <Route path="/datasets/:slug" element={<DatasetDetails />} />
             <Route path="/categories" element={<Category />} />
             <Route path="/organizations" element={<Organization />} />
             <Route

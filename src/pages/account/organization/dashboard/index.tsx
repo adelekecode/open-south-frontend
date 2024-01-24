@@ -7,7 +7,7 @@ import { IoCloudDownloadOutline, IoGridOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
-import { useOrganizationDatasets } from "~/queries/dataset";
+import { useUserOrganizationDatasets } from "~/queries/dataset";
 import TopViewers from "./top-viewers";
 
 const columns: GridColDef[] = [
@@ -132,7 +132,7 @@ export default function Dashboard() {
   const queryClient = useQueryClient();
   const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
 
-  const { data: datasets, isLoading: isDatasetsLoading } = useOrganizationDatasets(
+  const { data: datasets, isLoading: isDatasetsLoading } = useUserOrganizationDatasets(
     organization?.id || ""
   );
 

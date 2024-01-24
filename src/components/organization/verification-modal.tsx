@@ -6,15 +6,14 @@ import { useResendCode, useVerifyCode } from "~/mutations/organization";
 import useOrganizationStore from "~/store/organization";
 import { notifySuccess } from "~/utils/toast";
 
-export default function OrganizationVerificationModal() {
+export default function VerificationModal() {
   const [showVerificationForm, setShowVerificationForm] = useState(false);
   const [code, setCode] = useState("");
   const [isComplete, setIsComplete] = useState(false);
 
-  const { organizationVerificationModal, setOrganizationVerificationModal } =
-    useOrganizationStore();
+  const { verificationModal, setVerificationModal } = useOrganizationStore();
 
-  const { open, data: orgData } = organizationVerificationModal;
+  const { open, data: orgData } = verificationModal;
 
   const verifyCode = useVerifyCode();
   const resendCode = useResendCode();
@@ -27,7 +26,7 @@ export default function OrganizationVerificationModal() {
           setShowVerificationForm(false);
           setCode("");
           setIsComplete(false);
-          setOrganizationVerificationModal({
+          setVerificationModal({
             open: false,
             data: null,
           });
@@ -66,7 +65,7 @@ export default function OrganizationVerificationModal() {
                 });
 
                 if (response) {
-                  setOrganizationVerificationModal({
+                  setVerificationModal({
                     open: false,
                     data: null,
                   });

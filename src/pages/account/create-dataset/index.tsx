@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewDataset from "./new-dataset";
 import PublishAs from "./publish-as";
 import Resource from "./resource";
@@ -29,6 +29,10 @@ const data = [
 
 export default function CreateDataset() {
   const [activeIndex, setActiveIndex] = useState(1);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

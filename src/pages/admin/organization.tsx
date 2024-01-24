@@ -26,7 +26,7 @@ export default function Organization() {
     isVerified: null,
   });
 
-  const { setOrganizationDeleteConfirmationModal } = useOrganizationStore();
+  const { setDeleteConfirmationModal } = useOrganizationStore();
 
   const changeOrganizationStatus = useChangeOrganizationStatus();
 
@@ -246,7 +246,7 @@ export default function Organization() {
             <IconButton
               size="medium"
               onClick={() => {
-                setOrganizationDeleteConfirmationModal({
+                setDeleteConfirmationModal({
                   open: true,
                   data: row,
                 });
@@ -279,7 +279,7 @@ export default function Organization() {
               <p>Pending</p>
               <span>{indicatorData?.pending || 0}</span>
             </div>
-            <div className="border-green-500 [&>*]:text-green-500">
+            <div className="border-blue-500 [&>*]:text-blue-500">
               <p>Approved</p>
               <span>{indicatorData?.approved || 0}</span>
             </div>
