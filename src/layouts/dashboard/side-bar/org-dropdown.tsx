@@ -31,11 +31,11 @@ const links = [
 ];
 
 export default function OrgDropdown({ navLinkClassNameHandler, ...data }: OrgDropdownProps) {
-  const { is_verified, name, slug, logo } = data;
+  const { is_verified, name, slug, logo, status } = data;
 
   const [clicked, setClicked] = useState(false);
 
-  const { setOrganizationVerificationModal } = useOrganizationStore();
+  const { setVerificationModal, setPendingModal, setRejectedModal } = useOrganizationStore();
 
   return (
     <div className="w-full">
@@ -45,9 +45,19 @@ export default function OrgDropdown({ navLinkClassNameHandler, ...data }: OrgDro
         }`}
         onClick={() => {
           if (is_verified) {
-            setClicked((prev) => !prev);
+            if (status === "pending") {
+              setPendingModal({
+                open: true,
+              });
+            } else if (status === "approved") {
+              setClicked((prev) => !prev);
+            } else if (status === "rejected") {
+              setRejectedModal({
+                open: true,
+              });
+            }
           } else {
-            setOrganizationVerificationModal({
+            return setVerificationModal({
               open: true,
               data,
             });

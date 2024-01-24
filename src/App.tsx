@@ -56,7 +56,6 @@ import {
 import Profile from "./pages/account/profile";
 import CreateEditOrganization from "./pages/account/create-edit-organization";
 import UserOrganization from "./layouts/user-organization";
-import OrganizationVerificationModal from "./components/organization/organization-verification-modal";
 import OrganizationDeleteConfirmationModal from "./components/organization/delete-confirmation-modal";
 
 const router = createBrowserRouter(
@@ -74,7 +73,6 @@ const router = createBrowserRouter(
             element={
               <>
                 <UserRestricted />
-                <OrganizationVerificationModal />
               </>
             }
           >

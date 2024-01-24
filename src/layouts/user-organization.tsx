@@ -20,5 +20,9 @@ export default function UserOrganization() {
     return <NotFound />;
   }
 
+  if (data.status === "pending" || data.status === "rejected") {
+    return <NotFound />;
+  }
+
   return <Outlet />;
 }
