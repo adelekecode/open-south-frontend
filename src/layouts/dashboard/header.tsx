@@ -31,8 +31,9 @@ export default function Header() {
                     <button
                       className="hover:bg-info-100"
                       onClick={() => {
-                        setAnchorEl(null);
                         navigate("/account/datasets/new");
+
+                        return setAnchorEl(null);
                       }}
                     >
                       Add a dataset
@@ -40,8 +41,9 @@ export default function Header() {
                     <button
                       className="hover:bg-info-100"
                       onClick={() => {
-                        setAnchorEl(null);
                         navigate("/account/organizations/new");
+
+                        return setAnchorEl(null);
                       }}
                     >
                       Add an organization

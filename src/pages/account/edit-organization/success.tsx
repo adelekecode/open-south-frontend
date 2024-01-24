@@ -3,11 +3,10 @@ import SuccessIllustration from "~/assets/illustrations/success.png";
 import Button from "~/components/button";
 
 type SuccessProps = {
-  type: "create" | "edit";
   data: Organization;
 };
 
-export default function Success({ type, data }: SuccessProps) {
+export default function Success({ data }: SuccessProps) {
   const navigate = useNavigate();
 
   return (
@@ -16,10 +15,7 @@ export default function Success({ type, data }: SuccessProps) {
         <figure className="max-w-[9rem]">
           <img src={SuccessIllustration} alt="Success illustrion" />
         </figure>
-        <p className="text-sm">
-          You have successfully{" "}
-          {`${type === "create" ? "created an organization" : `updated ${data.name}`}`}
-        </p>
+        <p className="text-sm">You have successfully updated {`${data.name}`}</p>
       </div>
       <Button
         onClick={() => {

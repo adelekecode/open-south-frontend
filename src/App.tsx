@@ -54,7 +54,7 @@ import {
   News as AdminNews,
 } from "./pages/admin";
 import Profile from "./pages/account/profile";
-import CreateEditOrganization from "./pages/account/create-edit-organization";
+import EditOrganization from "./pages/account/edit-organization";
 import UserOrganization from "./layouts/user-organization";
 import OrganizationDeleteConfirmationModal from "./components/organization/delete-confirmation-modal";
 
@@ -118,7 +118,7 @@ const router = createBrowserRouter(
                   </Suspense>
                 }
               />
-              <Route path="/account/:slug/edit" element={<CreateEditOrganization />} />
+              <Route path="/account/:slug/edit" element={<EditOrganization />} />
             </Route>
             <Route path="/account/organizations/new" element={<CreateOrganization />} />
             <Route
