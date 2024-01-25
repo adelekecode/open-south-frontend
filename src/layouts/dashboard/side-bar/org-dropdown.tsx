@@ -4,9 +4,8 @@ import { Collapse } from "@mui/material";
 import { FaAngleDown } from "react-icons/fa6";
 import { IoGridOutline } from "react-icons/io5";
 import { GoDatabase } from "react-icons/go";
-import { HiOutlineUserGroup } from "react-icons/hi";
 import { twMerge } from "tailwind-merge";
-import useOrganizationStore from "~/store/organization";
+import useUserOrganizationStore from "~/store/user-organization";
 
 type OrgDropdownProps = Organization & {
   navLinkClassNameHandler: (obj: { isActive: boolean; isPending: boolean }) => string;
@@ -23,11 +22,6 @@ const links = [
     to: "/datasets",
     icon: GoDatabase,
   },
-  {
-    name: "Users",
-    to: "/users",
-    icon: HiOutlineUserGroup,
-  },
 ];
 
 export default function OrgDropdown({ navLinkClassNameHandler, ...data }: OrgDropdownProps) {
@@ -35,7 +29,7 @@ export default function OrgDropdown({ navLinkClassNameHandler, ...data }: OrgDro
 
   const [clicked, setClicked] = useState(false);
 
-  const { setVerificationModal, setPendingModal, setRejectedModal } = useOrganizationStore();
+  const { setVerificationModal, setPendingModal, setRejectedModal } = useUserOrganizationStore();
 
   return (
     <div className="w-full">

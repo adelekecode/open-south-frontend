@@ -26,13 +26,16 @@ export function useAdminOrganizationUsers(
   options?: UseQueryOptions<PaginationData<CurrentUser[]>>
 ) {
   return useQuery<PaginationData<CurrentUser[]>>(
-    [`/admin/organisations/${id}/users/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    [`/organisations/users/${id}/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
     options
   );
 }
 
-export function useAdminOrganizationRequests(id: string) {
-  return useQuery<Organization[]>([`/admin/organisations/${id}/requests`]);
+export function useAdminOrganizationRequests(
+  id: string,
+  options?: UseQueryOptions<Organization[]>
+) {
+  return useQuery<Organization[]>([`/admin/organisation_requests/?pk=${id}`], options);
 }
 
 export function useAdminOrganizationsIndicators() {

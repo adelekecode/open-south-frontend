@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import useAdminOrganizationStore from "~/store/admin-organization";
 import { axiosPrivate } from "~/utils/api";
 import { notifyError, notifySuccess } from "~/utils/toast";
 
-function useCreateOrganization() {
+export function useCreateOrganization() {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -38,7 +39,7 @@ function useCreateOrganization() {
   );
 }
 
-function useEditOrganization() {
+export function useEditOrganization() {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -73,32 +74,7 @@ function useEditOrganization() {
   );
 }
 
-function useDeleteOrganization() {
-  const queryClient = useQueryClient();
-
-  return useMutation(
-    async (id: string) => {
-      const { data: response } = await axiosPrivate.patchForm(`/organisations/${id}/`);
-
-      return response;
-    },
-    {
-      onSuccess() {
-        queryClient.invalidateQueries([`/organisations/`]);
-        notifySuccess("Organization successfully deleted");
-      },
-      onError(error) {
-        if (isAxiosError(error)) {
-          if (error.response?.status === 404) {
-            notifyError("Organization not found");
-          }
-        }
-      },
-    }
-  );
-}
-
-function useVerifyCode() {
+export function useVerifyCode() {
   return useMutation(
     async (data: Record<"pin", string>) => {
       const { data: response } = await axiosPrivate.post(`/organisations/verification/`, data);
@@ -120,7 +96,7 @@ function useVerifyCode() {
   );
 }
 
-function useResendCode() {
+export function useResendCode() {
   return useMutation(
     async (id: string) => {
       const { data: response } = await axiosPrivate.post(`/organisations/resend-pin/${id}/`);
@@ -139,18 +115,29 @@ function useResendCode() {
   );
 }
 
-function useChangeOrganizationStatus() {
+export function useChangeOrganizationStatus() {
   const queryClient = useQueryClient();
+  const { pagination } = useAdminOrganizationStore();
+
+  const { page, pageSize } = pagination;
 
   return useMutation(
-    async ({ id, action }: { id: string; action: Dataset["status"] }) => {
+    async ({
+      id,
+      action,
+    }: {
+      id: string;
+      action: "approve" | "reject" | "delete" | "block" | "unblock";
+    }) => {
       const response = await axiosPrivate.post(`/admin/organisations/pk/${id}/actions/${action}/`);
 
       return response;
     },
     {
       onSuccess() {
-        return queryClient.invalidateQueries([`/organisations/`]);
+        return queryClient.invalidateQueries([
+          `/admin/organisations/?limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+        ]);
       },
       onError(error) {
         if (isAxiosError(error)) {
@@ -166,12 +153,3 @@ function useChangeOrganizationStatus() {
     }
   );
 }
-
-export {
-  useCreateOrganization,
-  useEditOrganization,
-  useVerifyCode,
-  useResendCode,
-  useChangeOrganizationStatus,
-  useDeleteOrganization,
-};

@@ -1,9 +1,9 @@
 import { TiCancel } from "react-icons/ti";
-import useOrganizationStore from "~/store/organization";
+import useUserOrganizationStore from "~/store/user-organization";
 import Modal from "../modal";
 
 export default function RejectedModal() {
-  const { rejectedModal, setRejectedModal } = useOrganizationStore();
+  const { rejectedModal, setRejectedModal } = useUserOrganizationStore();
 
   const { open } = rejectedModal;
 

@@ -42,7 +42,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
               </div>
             ))}
           </div>
-        ) : data ? (
+        ) : data && data.length > 0 ? (
           <div className="flex flex-col gap-4">
             {data.map((_, index) => (
               <div key={index + 1} className="w-full flex items-center gap-4 justify-between">
