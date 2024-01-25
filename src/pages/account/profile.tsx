@@ -69,9 +69,15 @@ export default function Profile() {
               email: values.email,
             };
 
-            await imageUpload.mutateAsync({
-              image: photo as File,
-            });
+            if (photo) {
+              const res = await imageUpload.mutateAsync({
+                image: photo,
+              });
+
+              if (res) {
+                setPhoto(null);
+              }
+            }
 
             await editProfile.mutateAsync(obj);
           }}
