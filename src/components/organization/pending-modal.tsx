@@ -1,9 +1,9 @@
 import { MdPendingActions } from "react-icons/md";
-import useOrganizationStore from "~/store/organization";
+import useUserOrganizationStore from "~/store/user-organization";
 import Modal from "../modal";
 
 export default function PendingModal() {
-  const { pendingModal, setPendingModal } = useOrganizationStore();
+  const { pendingModal, setPendingModal } = useUserOrganizationStore();
 
   const { open } = pendingModal;
 

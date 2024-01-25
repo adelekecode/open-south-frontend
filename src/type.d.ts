@@ -90,6 +90,7 @@ type Organization = {
   created_at: string;
   updated_at: string;
   is_verified: boolean;
+  is_active: boolean;
 };
 
 type News = {

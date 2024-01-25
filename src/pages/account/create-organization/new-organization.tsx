@@ -62,10 +62,11 @@ export default function NewOrganization({ setActiveIndex }: NewOrganizationProps
             onSubmit={async (values) => {
               if (!logo) return notifyError("Logo field is required");
 
-              if (values.type === "organisation") {
+              if (values.type === "organization") {
+                values.type = "organisation";
                 if (values.email.includes("@gmail.com")) {
                   return notifyError(
-                    'Gmail is not allowed for organizations with type of "Organization"'
+                    'Gmail is not allowed for organizations with a type of "Organization"'
                   );
                 }
               }
@@ -168,8 +169,22 @@ export default function NewOrganization({ setActiveIndex }: NewOrganizationProps
                     }}
                     value={values.type || ""}
                   >
-                    <MenuItem value={"organisation"}>Organisation</MenuItem>
-                    <MenuItem value={"society"}>Society</MenuItem>
+                    <MenuItem value={"organization"}>
+                      <div className="flex flex-col">
+                        <h3 className="font-medium">Organization</h3>
+                        <span className="pl-2 text-xs">
+                          Please note: Gmail is not allowed for this type.
+                        </span>
+                      </div>
+                    </MenuItem>
+                    <MenuItem value={"society"}>
+                      <div>
+                        <h3 className="font-medium">Society</h3>
+                        <span className="pl-2 text-xs">
+                          Please note: Any type of email is allowed for this type.
+                        </span>
+                      </div>
+                    </MenuItem>
                   </SelectField>
                   <FormField
                     label="Email"

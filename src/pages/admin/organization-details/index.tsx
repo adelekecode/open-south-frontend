@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UserTable from "./user-table";
 import Button from "~/components/button";
 import RequestModal from "./request-modal";
@@ -7,6 +7,8 @@ import RequestModal from "./request-modal";
 export default function OrganizationDetails() {
   const { id } = useParams();
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  const navigate = useNavigate();
 
   const [displayRequestModal, setDisplayRequestModal] = useState(false);
 
@@ -29,8 +31,14 @@ export default function OrganizationDetails() {
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-medium flex items-center gap-2">
-            Organization <span className="text-sm">{">"}</span>{" "}
+          <h1 className="font-medium flex items-center gap-2 text-base">
+            <button
+              onClick={() => navigate("/admin/organizations")}
+              className="text-2xl font-semibold largeMobile:text-xl"
+            >
+              Organization
+            </button>{" "}
+            <span className="text-sm">{">"}</span>{" "}
             <span className="text-info-800">{data?.name || "-----"}</span>
           </h1>
           <Button

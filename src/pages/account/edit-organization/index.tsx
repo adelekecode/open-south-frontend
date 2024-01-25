@@ -173,8 +173,22 @@ export default function CreateEditOrganization() {
                         readOnly
                         value={values.type || ""}
                       >
-                        <MenuItem value={"organisation"}>Organisation</MenuItem>
-                        <MenuItem value={"society"}>Society</MenuItem>
+                        <MenuItem value={"organization"}>
+                          <div className="flex flex-col">
+                            <h3 className="font-medium">Organization</h3>
+                            <span className="pl-2 text-xs">
+                              Please note: Gmail is not allowed for this type.
+                            </span>
+                          </div>
+                        </MenuItem>
+                        <MenuItem value={"society"}>
+                          <div>
+                            <h3 className="font-medium">Society</h3>
+                            <span className="pl-2 text-xs">
+                              Please note: Any type of email is allowed for this type.
+                            </span>
+                          </div>
+                        </MenuItem>
                       </SelectField>
                       <FormField
                         label="Email"

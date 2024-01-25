@@ -3,7 +3,7 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import OtpInput from "~/components/inputs/otp-input";
 import { useResendCode, useVerifyCode } from "~/mutations/organization";
-import useOrganizationStore from "~/store/organization";
+import useUserOrganizationStore from "~/store/user-organization";
 import { notifySuccess } from "~/utils/toast";
 
 export default function VerificationModal() {
@@ -11,7 +11,7 @@ export default function VerificationModal() {
   const [code, setCode] = useState("");
   const [isComplete, setIsComplete] = useState(false);
 
-  const { verificationModal, setVerificationModal } = useOrganizationStore();
+  const { verificationModal, setVerificationModal } = useUserOrganizationStore();
 
   const { open, data: orgData } = verificationModal;
 

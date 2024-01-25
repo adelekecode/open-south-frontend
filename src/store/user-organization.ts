@@ -5,10 +5,6 @@ type State = {
     open: boolean;
     data: Organization | null;
   };
-  deleteConfirmationModal: {
-    open: boolean;
-    data: Organization | null;
-  };
   pendingModal: {
     open: boolean;
   };
@@ -19,12 +15,11 @@ type State = {
 
 type Action = {
   setVerificationModal: (obj: State["verificationModal"]) => void;
-  setDeleteConfirmationModal: (obj: State["deleteConfirmationModal"]) => void;
   setPendingModal: (obj: State["pendingModal"]) => void;
   setRejectedModal: (obj: State["rejectedModal"]) => void;
 };
 
-const useOrganizationStore = create<State & Action>()((set) => ({
+const useUserOrganizationStore = create<State & Action>()((set) => ({
   verificationModal: {
     open: false,
     data: null,
@@ -32,14 +27,6 @@ const useOrganizationStore = create<State & Action>()((set) => ({
   setVerificationModal: (obj) =>
     set({
       verificationModal: obj,
-    }),
-  deleteConfirmationModal: {
-    open: false,
-    data: null,
-  },
-  setDeleteConfirmationModal: (obj) =>
-    set({
-      deleteConfirmationModal: obj,
     }),
   pendingModal: {
     open: false,
@@ -57,4 +44,4 @@ const useOrganizationStore = create<State & Action>()((set) => ({
     }),
 }));
 
-export default useOrganizationStore;
+export default useUserOrganizationStore;

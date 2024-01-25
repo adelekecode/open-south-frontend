@@ -4,7 +4,6 @@ import {
   RouterProvider,
   createRoutesFromElements,
   Route,
-  Outlet,
 } from "react-router-dom";
 import "./App.css";
 import Protected from "./layouts/protected";
@@ -56,7 +55,6 @@ import {
 import Profile from "./pages/account/profile";
 import EditOrganization from "./pages/account/edit-organization";
 import UserOrganization from "./layouts/user-organization";
-import OrganizationDeleteConfirmationModal from "./components/organization/delete-confirmation-modal";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -180,30 +178,21 @@ const router = createBrowserRouter(
               }
             />
             <Route
+              path="/admin/organizations"
               element={
-                <>
-                  <Outlet />
-                  <OrganizationDeleteConfirmationModal />
-                </>
+                <Suspense fallback={<DashboardLoader />}>
+                  <AdminOrganization />
+                </Suspense>
               }
-            >
-              <Route
-                path="/admin/organizations"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminOrganization />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/organizations/:id"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminOrganizationDetails />
-                  </Suspense>
-                }
-              />
-            </Route>
+            />
+            <Route
+              path="/admin/organizations/:id"
+              element={
+                <Suspense fallback={<DashboardLoader />}>
+                  <AdminOrganizationDetails />
+                </Suspense>
+              }
+            />
           </Route>
         </Route>
       </Route>
