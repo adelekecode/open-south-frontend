@@ -67,6 +67,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
                         actions: "approve",
                       });
                     }}
+                    loading={organizationRequestAction.isLoading}
                   >
                     Grant
                   </Button>
@@ -74,6 +75,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
                     className="!text-xs !py-2 !px-3"
                     color="error"
                     variant="outlined"
+                    loading={organizationRequestAction.isLoading}
                     onClick={async () => {
                       await organizationRequestAction.mutateAsync({
                         actions: "reject",

@@ -198,7 +198,7 @@ export function useOrganizationRequestAction(id: string) {
   return useMutation(
     async ({ actions }: { actions: "reject" | "approve" }) => {
       const { data: response } = await axiosPrivate.post(
-        `/admin/organisation_requests/${id}/actions/${actions}`
+        `/admin/organisation_requests/pk/${id}/actions/${actions}/`
       );
 
       return response;
