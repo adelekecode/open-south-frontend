@@ -40,7 +40,7 @@ export default function Organization() {
   // const [page, setPage] = useState(1);
   // const [pageSize, setPageSize] = useState(10);
   const [filterBy, setFilterBy] = useState<{
-    status: Organization["status"] | null;
+    status: "reject" | "approve" | "block" | "unblock" | "delete" | null;
     isVerified: "true" | "false" | null;
     isActive: "true" | "false" | null;
   }>({
@@ -75,7 +75,10 @@ export default function Organization() {
   }
 
   const { data: indicatorData } = useAdminOrganizationsIndicators();
-  const { data, isLoading } = useAdminOrganizations(pageSize, page);
+  const { data, isLoading } = useAdminOrganizations(filterBy, {
+    page,
+    pageSize,
+  });
 
   const columns: GridColDef[] = [
     {
@@ -526,7 +529,7 @@ export default function Organization() {
               initialState={{
                 pagination: {
                   paginationModel: {
-                    page,
+                    page: !data?.count || data.count <= 0 ? 0 : page,
                     pageSize,
                   },
                 },

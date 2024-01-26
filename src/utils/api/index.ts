@@ -68,7 +68,7 @@ axiosPrivate.interceptors.response.use(
       notifyError("Server down, Please try again later");
 
       return Promise.reject(message);
-    } else return Promise.reject(message);
+    } else return Promise.reject(error);
   }
 );
 

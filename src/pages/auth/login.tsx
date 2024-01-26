@@ -1,4 +1,4 @@
-import { useState, ReactNode, Fragment } from "react";
+import { useState, ReactNode, Fragment, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
@@ -36,6 +36,10 @@ export default function Login() {
   const { setSignupState } = useAppStore();
 
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   function handleActivationError(email: string): ReactNode {
     if (!login.error) return <Fragment />;

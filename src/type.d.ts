@@ -11,6 +11,7 @@ type CurrentUser = {
   } | null;
   image_url: string | null;
   date_joined: string;
+  organisations: string[];
 };
 
 type Dataset = {

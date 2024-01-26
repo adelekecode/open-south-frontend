@@ -6,6 +6,7 @@ import Seo from "~/components/seo";
 import dataset from "~/utils/data/dataset.json";
 import NotFound from "./404";
 import Button from "~/components/button";
+import { useRequestToJoinOrganization } from "~/mutations/organization";
 // import { usePublicOrganizationDetails } from "~/queries/organizations";
 
 export default function OrganizationDetails() {
@@ -16,7 +17,12 @@ export default function OrganizationDetails() {
   // const { data } = usePublicOrganizationDetails(slug || "");
 
   const queryClient = useQueryClient();
-  const data = queryClient.getQueryData<any>([`/public/organisations/${slug}/?key=public`]);
+  const currentUser = queryClient.getQueryData<CurrentUser>([`/auth/users/me/`]);
+  const data = queryClient.getQueryData<Organization>([
+    `/public/organisations/${slug}/?key=public`,
+  ]);
+
+  const requestToJoinOrganization = useRequestToJoinOrganization();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -156,10 +162,24 @@ export default function OrganizationDetails() {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 my-4 mt-8 justify-center">
-            <span className="text-sm">If you are interested in this organization</span>{" "}
-            <Button className="!text-xs !py-3">Request to join</Button>
-          </div>
+          {!currentUser?.organisations?.includes(data.id) && (
+            <div className="flex items-center gap-2 my-4 mt-8 justify-center">
+              <span className="text-sm">If you are interested in this organization</span>{" "}
+              <Button
+                loading={requestToJoinOrganization.isLoading}
+                className="!text-xs !py-3"
+                onClick={async () => {
+                  if (!currentUser) {
+                    return navigate("/login");
+                  }
+
+                  await requestToJoinOrganization.mutateAsync(data.id);
+                }}
+              >
+                Request to join
+              </Button>
+            </div>
+          )}
         </main>
       </main>
     </>

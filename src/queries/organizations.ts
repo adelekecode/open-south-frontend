@@ -9,12 +9,32 @@ export function useUserOrganizationDetails(slug: string, options?: UseQueryOptio
 }
 
 export function useAdminOrganizations(
-  pageSize: number = 10,
-  page: number = 1,
+  filter: {
+    status: "reject" | "approve" | "block" | "unblock" | "delete" | null;
+    isVerified: "true" | "false" | null;
+    isActive: "true" | "false" | null;
+  } = {
+    status: null,
+    isVerified: null,
+    isActive: null,
+  },
+  pagination: {
+    pageSize: number;
+    page: number;
+  } = {
+    pageSize: 10,
+    page: 1,
+  },
   options?: UseQueryOptions<PaginationData<Organization[]>>
 ) {
+  const { status, isVerified, isActive } = filter;
+  const { page, pageSize } = pagination;
+  const newStatus = status === "approve" ? "approved" : status === "reject" ? "rejected" : status;
+
   return useQuery<PaginationData<Organization[]>>(
-    [`/admin/organisations/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    [
+      `/admin/organisations/?status=${newStatus || ""}&verified=${isVerified || ""}&active=${isActive || ""}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    ],
     options
   );
 }
