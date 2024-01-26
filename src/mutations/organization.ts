@@ -192,11 +192,11 @@ export function useRequestToJoinOrganization() {
   );
 }
 
-export function useOrganizationRequestAction(id: string) {
+export function useOrganizationRequestAction() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async ({ actions }: { actions: "reject" | "approve" }) => {
+    async ({ id, actions }: { id: string; actions: "reject" | "approve" }) => {
       const { data: response } = await axiosPrivate.post(
         `/admin/organisation_requests/pk/${id}/actions/${actions}/`
       );
@@ -209,9 +209,7 @@ export function useOrganizationRequestAction(id: string) {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
 
-        return queryClient.invalidateQueries([
-          `/organisations/users/${id}/?limit=${10}&offset=${(1 - 1) * 10}`,
-        ]);
+        return queryClient.invalidateQueries([`/organisations/users/`]);
       },
       onError(error) {
         if (isAxiosError(error)) {

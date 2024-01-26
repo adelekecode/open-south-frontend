@@ -19,7 +19,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
     enabled: !!id,
   });
 
-  const organizationRequestAction = useOrganizationRequestAction(id || "");
+  const organizationRequestAction = useOrganizationRequestAction();
 
   return (
     <Modal
@@ -47,7 +47,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
           </div>
         ) : data && data.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {data.map((_, index) => (
+            {data.map((item, index) => (
               <div key={index + 1} className="w-full flex items-center gap-4 justify-between">
                 <div className="flex items-center gap-2">
                   <Avatar sx={{ width: 30, height: 30 }}>
@@ -64,6 +64,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
                     variant="outlined"
                     onClick={async () => {
                       await organizationRequestAction.mutateAsync({
+                        id: item.id,
                         actions: "approve",
                       });
                     }}
@@ -78,6 +79,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
                     loading={organizationRequestAction.isLoading}
                     onClick={async () => {
                       await organizationRequestAction.mutateAsync({
+                        id: item.id,
                         actions: "reject",
                       });
                     }}
