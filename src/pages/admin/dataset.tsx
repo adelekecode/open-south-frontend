@@ -126,6 +126,10 @@ export default function Dataset() {
             onChange={async (e) => {
               const chosenValue = e.target.value;
 
+              if (chosenValue === "pending") {
+                return;
+              }
+
               if (chosenValue && chosenValue !== statusObj[row.id]) {
                 setStatusObj((prevStatusObj) => ({
                   ...prevStatusObj,
@@ -143,8 +147,15 @@ export default function Dataset() {
               }
             }}
           >
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="published">Published</MenuItem>
+            <MenuItem value="pending" className="!hidden">
+              Pending
+            </MenuItem>
+            <MenuItem value="unpublished" className={`${value === "unpublished" && "!hidden"}`}>
+              Unpublished
+            </MenuItem>
+            <MenuItem value="published" className={`${value === "published" && "!hidden"}`}>
+              Published
+            </MenuItem>
             <MenuItem value="rejected">Rejected</MenuItem>
             <MenuItem value="further_review">Further Review</MenuItem>
           </Select>

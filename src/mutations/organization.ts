@@ -191,3 +191,39 @@ export function useRequestToJoinOrganization() {
     }
   );
 }
+
+export function useOrganizationRequestAction(id: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    async ({ actions }: { actions: "reject" | "approve" }) => {
+      const { data: response } = await axiosPrivate.post(
+        `/admin/organisation_requests/${id}/actions/${actions}`
+      );
+
+      return response;
+    },
+    {
+      onSuccess(data) {
+        if (typeof data.message === "string") {
+          notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
+        }
+
+        return queryClient.invalidateQueries([
+          `/organisations/users/${id}/?limit=${10}&offset=${(1 - 1) * 10}`,
+        ]);
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}

@@ -5,6 +5,7 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import { useAdminOrganizationRequests } from "~/queries/organizations";
 import NoData from "~/assets/illustrations/no-data.png";
+import { useOrganizationRequestAction } from "~/mutations/organization";
 
 type RequestModalProps = {
   open: boolean;
@@ -18,11 +19,13 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
     enabled: !!id,
   });
 
+  const organizationRequestAction = useOrganizationRequestAction(id || "");
+
   return (
     <Modal
       muiModal={{
         open,
-        onClick: () => setOpen(false),
+        onClose: () => setOpen(false),
       }}
       innerContainer={{
         className: "pt-[2rem]",
@@ -55,10 +58,28 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Button className="!text-xs !py-2 !px-3" color="success" variant="outlined">
+                  <Button
+                    className="!text-xs !py-2 !px-3"
+                    color="success"
+                    variant="outlined"
+                    onClick={async () => {
+                      await organizationRequestAction.mutateAsync({
+                        actions: "approve",
+                      });
+                    }}
+                  >
                     Grant
                   </Button>
-                  <Button className="!text-xs !py-2 !px-3" color="error" variant="outlined">
+                  <Button
+                    className="!text-xs !py-2 !px-3"
+                    color="error"
+                    variant="outlined"
+                    onClick={async () => {
+                      await organizationRequestAction.mutateAsync({
+                        actions: "reject",
+                      });
+                    }}
+                  >
                     Deny
                   </Button>
                 </div>
