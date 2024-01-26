@@ -16,7 +16,6 @@ import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useAdminDatasets } from "~/queries/dataset";
 import { useChangeDatasetStatus } from "~/mutations/dataset";
-import { notifySuccess } from "~/utils/toast";
 
 export default function Dataset() {
   const navigate = useNavigate();
@@ -136,14 +135,10 @@ export default function Dataset() {
                   [row.id]: chosenValue as Dataset["status"],
                 }));
 
-                const response = await changeDatasetStatus.mutateAsync({
+                await changeDatasetStatus.mutateAsync({
                   id: row.id,
                   action: chosenValue as Dataset["status"],
                 });
-
-                if (response) {
-                  notifySuccess("Dataset status has been changed");
-                }
               }
             }}
           >
