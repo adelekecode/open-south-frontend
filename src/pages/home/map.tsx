@@ -1,10 +1,14 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
+import slugify from "slugify";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { usePublicDatasets } from "~/queries/dataset";
 import AppLoader from "~/components/loader/app-loader";
 
 export default function Map() {
+  const navigate = useNavigate();
+
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { data, isLoading } = usePublicDatasets();
@@ -20,9 +24,7 @@ export default function Map() {
           type: string;
           coordinates: number[];
         };
-        properties: {
-          country: string;
-        };
+        properties: Dataset;
       }[];
     } = {
       type: "FeatureCollection",
@@ -45,9 +47,7 @@ export default function Map() {
             type: "Point",
             coordinates,
           },
-          properties: {
-            country: data[i].geojson.country,
-          },
+          properties: data[i],
         };
 
         mapData.features.push(obj);
@@ -67,7 +67,7 @@ export default function Map() {
     map.addControl(new mapboxgl.NavigationControl());
 
     map.on("load", () => {
-      map.addSource("earthquakes", {
+      map.addSource("datasets", {
         type: "geojson",
         data: mapData as any,
         cluster: true,
@@ -78,26 +78,29 @@ export default function Map() {
       map.addLayer({
         id: "clusters",
         type: "circle",
-        source: "earthquakes",
+        source: "datasets",
         filter: ["has", "point_count"],
         paint: {
-          "circle-color": [
-            "step",
-            ["get", "point_count"],
-            "#51bbd6",
-            100,
-            "#f1f075",
-            750,
-            "#f28cb1",
-          ],
+          "circle-color": "#51bbd6",
           "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
+        },
+      });
+
+      map.addLayer({
+        id: "unclustered",
+        type: "circle",
+        source: "datasets",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": "#11b4da",
+          "circle-radius": 15,
         },
       });
 
       map.addLayer({
         id: "cluster-count",
         type: "symbol",
-        source: "earthquakes",
+        source: "datasets",
         filter: ["has", "point_count"],
         layout: {
           "text-field": ["get", "point_count_abbreviated"],
@@ -105,11 +108,54 @@ export default function Map() {
           "text-size": 12,
         },
       });
+
+      map.addLayer({
+        id: "unclustered-point",
+        type: "symbol",
+        source: "datasets",
+        filter: ["!", ["has", "point_count"]],
+        layout: {
+          "text-field": "1",
+          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+          "text-size": 10,
+        },
+      });
+
+      map.on("click", ["clusters", "unclustered"], (e) => {
+        const features = map.queryRenderedFeatures(e.point, {
+          layers: ["clusters", "unclustered"],
+        });
+
+        if (features.length > 0) {
+          for (let i = 0; i < data.length; i++) {
+            if (features[i]) {
+              const { properties } = features[i];
+              const datasets = JSON.parse(JSON.stringify(properties)) as Dataset;
+
+              navigate(
+                `/datasets?spatial-coverage=${slugify(datasets.spatial_coverage, {
+                  lower: true,
+                  strict: true,
+                  trim: true,
+                })}`
+              );
+            }
+          }
+        }
+      });
+
+      map.on("mouseenter", ["clusters", "unclustered"], () => {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", ["clusters", "unclustered"], () => {
+        map.getCanvas().style.cursor = "";
+      });
     });
 
     return () => {
       map.remove();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
