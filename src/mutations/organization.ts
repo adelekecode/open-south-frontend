@@ -129,12 +129,18 @@ export function useChangeOrganizationStatus() {
       id: string;
       action: "approve" | "reject" | "delete" | "block" | "unblock";
     }) => {
-      const response = await axiosPrivate.post(`/admin/organisations/pk/${id}/actions/${action}/`);
+      const { data: response } = await axiosPrivate.post(
+        `/admin/organisations/pk/${id}/actions/${action}/`
+      );
 
       return response;
     },
     {
-      onSuccess() {
+      onSuccess(data) {
+        if (typeof data.message === "string") {
+          notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
+        }
+
         return queryClient.invalidateQueries([
           `/admin/organisations/?limit=${pageSize}&offset=${(page - 1) * pageSize}`,
         ]);
@@ -146,6 +152,38 @@ export function useChangeOrganizationStatus() {
           } else {
             if (typeof error === "string") {
               notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export function useRequestToJoinOrganization() {
+  return useMutation(
+    async (id: string) => {
+      const response = await axiosPrivate.post(`/user/request-to-join-organisation/${id}/`);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        notifySuccess("Your request has been sent");
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            if (error.response?.data) {
+              const data = error.response.data;
+
+              if (typeof data.error === "string") {
+                notifyError(data.error.charAt(0).toUpperCase() + data.error.slice(1));
+              }
+            }
+          } else {
+            if (typeof error === "string") {
+              notifyError((error as string).charAt(0).toUpperCase() + (error as string).slice(1));
             }
           }
         }
