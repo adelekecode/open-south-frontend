@@ -28,8 +28,8 @@ export default function UserTable() {
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "S/N",
-      minWidth: 10,
+      headerName: "NO.",
+      minWidth: 100,
       renderCell: ({ api, row }) => {
         const { getAllRowIds } = api;
 
@@ -39,7 +39,7 @@ export default function UserTable() {
     {
       field: "image_url",
       headerName: "",
-      minWidth: 40,
+      minWidth: 110,
       flex: 1,
       renderCell: (params) => {
         return (
@@ -63,16 +63,20 @@ export default function UserTable() {
     {
       field: "first_name",
       headerName: "First Name",
-      minWidth: 150,
+      minWidth: 200,
       type: "string",
       flex: 1,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "last_name",
       headerName: "Last Name",
-      minWidth: 150,
+      minWidth: 200,
       type: "string",
       flex: 1,
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "email",
@@ -80,6 +84,7 @@ export default function UserTable() {
       minWidth: 300,
       type: "string",
       headerAlign: "center",
+      align: "center",
       flex: 1,
       renderCell: (params) => {
         return (
@@ -95,18 +100,22 @@ export default function UserTable() {
     {
       field: "date_joined",
       headerName: "Date Joined",
-      minWidth: 150,
+      minWidth: 200,
       type: "string",
       flex: 1,
       renderCell: (params) => {
         return <p>{moment(params.value).format("MMMM D, YYYY")}</p>;
       },
+      align: "center",
+      headerAlign: "center",
     },
     {
       field: "_",
       headerName: "Action",
-      minWidth: 10,
+      minWidth: 150,
       flex: 1,
+      align: "center",
+      headerAlign: "center",
       renderCell: ({ row }) => {
         return (
           <>
@@ -168,7 +177,7 @@ export default function UserTable() {
   return (
     <>
       <div className="border p-4 rounded-md flex flex-col gap-4">
-        <h3 className="text-xl font-medium">Users</h3>
+        <h3 className="text-lg font-medium">Users</h3>
         <div className="flex flex-col gap-4">
           <OutlinedInput
             placeholder="Search..."

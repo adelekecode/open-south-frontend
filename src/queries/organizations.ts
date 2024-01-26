@@ -39,6 +39,10 @@ export function useAdminOrganizations(
   );
 }
 
+export function useAdminOrganizationDetails(id: string, options?: UseQueryOptions<Organization>) {
+  return useQuery<Organization>([`/admin/organisations/${id}/`], options);
+}
+
 export function useAdminOrganizationUsers(
   id: string,
   pageSize: number = 10,
