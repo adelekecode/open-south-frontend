@@ -192,7 +192,7 @@ export function useRequestToJoinOrganization() {
   );
 }
 
-export function useOrganizationRequestAction() {
+export function useOrganizationRequestAction(orgId: string) {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -209,7 +209,7 @@ export function useOrganizationRequestAction() {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
 
-        return queryClient.invalidateQueries([`/organisations/users/`]);
+        return queryClient.invalidateQueries([`/admin/organisation_requests/?pk=${orgId}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {

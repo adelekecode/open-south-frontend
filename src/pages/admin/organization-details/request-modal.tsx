@@ -19,7 +19,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
     enabled: !!id,
   });
 
-  const organizationRequestAction = useOrganizationRequestAction();
+  const organizationRequestAction = useOrganizationRequestAction(id || "");
 
   return (
     <Modal
