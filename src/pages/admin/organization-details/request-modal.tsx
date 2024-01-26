@@ -5,6 +5,7 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import { useAdminOrganizationRequests } from "~/queries/organizations";
 import NoData from "~/assets/illustrations/no-data.png";
+import { useOrganizationRequestAction } from "~/mutations/organization";
 
 type RequestModalProps = {
   open: boolean;
@@ -18,11 +19,13 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
     enabled: !!id,
   });
 
+  const organizationRequestAction = useOrganizationRequestAction(id || "");
+
   return (
     <Modal
       muiModal={{
         open,
-        onClick: () => setOpen(false),
+        onClose: () => setOpen(false),
       }}
       innerContainer={{
         className: "pt-[2rem]",
@@ -44,7 +47,7 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
           </div>
         ) : data && data.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {data.map((_, index) => (
+            {data.map((item, index) => (
               <div key={index + 1} className="w-full flex items-center gap-4 justify-between">
                 <div className="flex items-center gap-2">
                   <Avatar sx={{ width: 30, height: 30 }}>
@@ -55,10 +58,32 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Button className="!text-xs !py-2 !px-3" color="success" variant="outlined">
+                  <Button
+                    className="!text-xs !py-2 !px-3"
+                    color="success"
+                    variant="outlined"
+                    onClick={async () => {
+                      await organizationRequestAction.mutateAsync({
+                        id: item.id,
+                        actions: "approve",
+                      });
+                    }}
+                    loading={organizationRequestAction.isLoading}
+                  >
                     Grant
                   </Button>
-                  <Button className="!text-xs !py-2 !px-3" color="error" variant="outlined">
+                  <Button
+                    className="!text-xs !py-2 !px-3"
+                    color="error"
+                    variant="outlined"
+                    loading={organizationRequestAction.isLoading}
+                    onClick={async () => {
+                      await organizationRequestAction.mutateAsync({
+                        id: item.id,
+                        actions: "reject",
+                      });
+                    }}
+                  >
                     Deny
                   </Button>
                 </div>

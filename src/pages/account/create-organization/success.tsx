@@ -1,13 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import SuccessIllustration from "~/assets/illustrations/success.png";
 import Button from "~/components/button";
 
 export default function Success() {
   const navigate = useNavigate();
-
-  const queryClient = useQueryClient();
-  const orgData = queryClient.getQueryData<Organization>(["create-org"]);
 
   return (
     <div className="p-4 py-8 flex flex-col items-center gap-4">
@@ -21,11 +17,11 @@ export default function Success() {
         <Button
           variant="outlined"
           onClick={() => {
-            navigate(`/account/${orgData?.slug}/dashboard`);
+            navigate(`/account/dashboard`);
           }}
           className="w-fit !py-2 !text-xs"
         >
-          Go to organization dashboard
+          Go to dashboard
         </Button>
       </div>
     </div>

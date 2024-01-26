@@ -162,7 +162,9 @@ export default function OrganizationDetails() {
               </div>
             </div>
           </div>
-          {!currentUser?.organisations?.includes(data.id) && (
+          {!currentUser?.organisations?.some(
+            (obj) => obj.id === data.id && obj.slug === data.slug && obj.name === data.name
+          ) && (
             <div className="flex items-center gap-2 my-4 mt-8 justify-center">
               <span className="text-sm">If you are interested in this organization</span>{" "}
               <Button

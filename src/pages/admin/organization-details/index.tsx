@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import moment from "moment";
 import UserTable from "./user-table";
 import Button from "~/components/button";
 import RequestModal from "./request-modal";
+import { useAdminOrganizationDetails } from "~/queries/organizations";
+import DashboardLoader from "~/components/loader/dashboard-loader";
+import NotFound from "~/pages/404";
 
 export default function OrganizationDetails() {
   const { id } = useParams();
@@ -12,7 +16,7 @@ export default function OrganizationDetails() {
 
   const [displayRequestModal, setDisplayRequestModal] = useState(false);
 
-  const data = { id, name: "Netflix", description: "A very long description..." } as Organization;
+  const { data, isLoading } = useAdminOrganizationDetails(id || "");
 
   useEffect(() => {
     if (!descriptionRef.current) return;
@@ -26,6 +30,14 @@ export default function OrganizationDetails() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
+
+  if (isLoading) {
+    return <DashboardLoader />;
+  }
+
+  if (!isLoading && !data) {
+    return <NotFound />;
+  }
 
   return (
     <>
@@ -74,15 +86,15 @@ export default function OrganizationDetails() {
               <div className="flex items-start gap-16 [&>div]:flex [&>div]:flex-col [&>div>p]:text-sm [&>div>p]:font-medium [&>div>h3]:text-xl [&>div>h3]:font-bold">
                 <div>
                   <p>Datasets</p>
-                  <h3>317</h3>
+                  <h3>{data.data_count ?? "------"}</h3>
                 </div>
                 <div>
                   <p>Views</p>
-                  <h3>4.3M</h3>
+                  <h3>{data.views_count ?? "------"}</h3>
                 </div>
                 <div>
                   <p>Downloads</p>
-                  <h3>1.2M</h3>
+                  <h3>{data.downloads_count ?? "------"}</h3>
                 </div>
               </div>
             </div>
@@ -91,15 +103,19 @@ export default function OrganizationDetails() {
               <div className="grid gap-8 grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 [&>div]:flex [&>div]:flex-col [&>div>h3]:font-semibold [&>div>h3]:text-sm">
                 <div>
                   <h3>Latest dataset update</h3>
-                  <p>November 29, 2023</p>
+                  <p>
+                    {data.updated_at ? moment(data.updated_at).format("Do MMM, YYYY") : "---------"}
+                  </p>
                 </div>
                 <div>
                   <h3>Organization creation date</h3>
-                  <p>April 17, 2014</p>
+                  <p>
+                    {data.created_at ? moment(data.created_at).format("Do MMM, YYYY") : "---------"}
+                  </p>
                 </div>
                 <div>
                   <h3>ID</h3>
-                  <p>534fff94a3a7292c64a77fc1</p>
+                  <p>{data.id || "---------"}</p>
                 </div>
               </div>
             </div>

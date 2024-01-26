@@ -16,7 +16,6 @@ import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useAdminDatasets } from "~/queries/dataset";
 import { useChangeDatasetStatus } from "~/mutations/dataset";
-import { notifySuccess } from "~/utils/toast";
 
 export default function Dataset() {
   const navigate = useNavigate();
@@ -126,25 +125,32 @@ export default function Dataset() {
             onChange={async (e) => {
               const chosenValue = e.target.value;
 
+              if (chosenValue === "pending") {
+                return;
+              }
+
               if (chosenValue && chosenValue !== statusObj[row.id]) {
                 setStatusObj((prevStatusObj) => ({
                   ...prevStatusObj,
                   [row.id]: chosenValue as Dataset["status"],
                 }));
 
-                const response = await changeDatasetStatus.mutateAsync({
+                await changeDatasetStatus.mutateAsync({
                   id: row.id,
                   action: chosenValue as Dataset["status"],
                 });
-
-                if (response) {
-                  notifySuccess("Dataset status has been changed");
-                }
               }
             }}
           >
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="published">Published</MenuItem>
+            <MenuItem value="pending" className="!hidden">
+              Pending
+            </MenuItem>
+            <MenuItem value="unpublished" className={`${value === "unpublished" && "!hidden"}`}>
+              Unpublished
+            </MenuItem>
+            <MenuItem value="published" className={`${value === "published" && "!hidden"}`}>
+              Published
+            </MenuItem>
             <MenuItem value="rejected">Rejected</MenuItem>
             <MenuItem value="further_review">Further Review</MenuItem>
           </Select>

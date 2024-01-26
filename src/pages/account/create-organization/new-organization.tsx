@@ -44,7 +44,7 @@ export default function NewOrganization({ setActiveIndex }: NewOrganizationProps
     <div className="pt-4 flex flex-col gap-10">
       <div className="flex flex-col gap-6">
         <h2 className="w-full text-center text-base font-semibold largeMobile:text-sm">
-          A verification code has been sent to the organization email
+          Fill the fields below to create an organization
         </h2>
         <div>
           <Formik
