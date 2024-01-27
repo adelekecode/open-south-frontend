@@ -4,9 +4,11 @@ import {
   ClickAwayListener,
   Fade,
   IconButton,
+  MenuItem,
   OutlinedInput,
   Paper,
   Popper,
+  Select,
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { IoPerson } from "react-icons/io5";
@@ -28,6 +30,11 @@ export default function User() {
   const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [filterBy, setFilterBy] = useState<{
+    isActive: "true" | "false" | null;
+  }>({
+    isActive: null,
+  });
   const [blockModal, setBlockModal] = useState<Modal>({
     open: false,
     data: null,
@@ -252,16 +259,41 @@ export default function User() {
 
   return (
     <>
-      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-8 w-full">
-        <header className="flex items-center gap-8 justify-between w-full">
-          <h1 className="text-2xl largeMobile:text-xl font-semibold">Users</h1>
-        </header>
-        <div className="flex flex-col gap-4">
-          <OutlinedInput
-            placeholder="Search..."
-            className="w-[500px] tablet:w-[80%] [@media(max-width:500px)]:!w-full self-end"
-          />
-          <div className="min-h-[500px]">
+      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-semibold largeMobile:text-xl">Users</h1>
+        </div>
+        <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
+          <div className="flex flex-col">
+            <div className="flex items-center border-y p-4 py-4 border-info-100">
+              <div className="flex items-center gap-4 h-10 w-full">
+                <OutlinedInput
+                  placeholder="Search for name..."
+                  className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
+                />
+                <Select
+                  className="w-[200px] !text-sm !py-0 !px-0 !h-full"
+                  value={filterBy.isActive || ""}
+                  onChange={async (e) => {
+                    const chosenValue = e.target.value;
+
+                    setFilterBy((prev) => ({
+                      ...prev,
+                      isActive: chosenValue as typeof filterBy.isActive,
+                    }));
+                  }}
+                  displayEmpty
+                >
+                  <MenuItem value="" className="placeholder">
+                    <span className="text-info-600">Filter by active</span>
+                  </MenuItem>
+                  <MenuItem value="true">True</MenuItem>
+                  <MenuItem value="false">False</MenuItem>
+                </Select>
+              </div>
+            </div>
+          </div>
+          <div className="min-h-[410px] p-4">
             <DataGrid
               loading={isLoading}
               rows={data ? data.results : []}
