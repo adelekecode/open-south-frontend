@@ -13,7 +13,7 @@ export function useGetAllUsers(
   options?: UseQueryOptions<PaginationData<CurrentUser[]>>
 ) {
   return useQuery<PaginationData<CurrentUser[]>>(
-    [`/auth/users/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    [`/admin/users/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
     options
   );
 }
