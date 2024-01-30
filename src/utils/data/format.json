@@ -1,82 +1,14 @@
 [
   {
-    "id": "ab671264-bf37-41df-94f1-fee91405f0eb",
     "label": "csv"
   },
   {
-    "id": "f8aad270-4e6a-4ca6-bc58-4f70c46a77d4",
-    "label": "pdf"
-  },
-  {
-    "id": "9f6bf1e0-66d2-49b4-af97-873511d48603",
-    "label": "png"
-  },
-  {
-    "id": "c7ec0e67-8d72-4e2e-a1c9-1bca87dc2f3b",
-    "label": "txt"
-  },
-  {
-    "id": "5c01a76e-7f48-48d7-9075-b548c4096477",
-    "label": "docx"
-  },
-  {
-    "id": "2e882c0d-2085-45f2-ae15-df31d18b321d",
-    "label": "jpg"
-  },
-  {
-    "id": "8a07422f-6ab7-4324-8d71-12be24bc7bae",
     "label": "xlsx"
   },
   {
-    "id": "4cf4c60d-8fe4-4c20-bf58-45ff15a2c5f5",
     "label": "json"
   },
   {
-    "id": "a04a8f40-53e4-42c7-9ba9-87ef5c4f844f",
-    "label": "mp3"
-  },
-  {
-    "id": "d56db40c-0348-4a8d-93f8-03bf6d7b2f26",
-    "label": "pptx"
-  },
-  {
-    "id": "1a4972b4-8587-487b-b63f-46da9f9f9992",
-    "label": "xml"
-  },
-  {
-    "id": "7a62d1f2-9305-4c6a-8e41-94fb2588bfc8",
-    "label": "gif"
-  },
-  {
-    "id": "4f33591f-92e6-4428-8a9b-8c719dcd3204",
-    "label": "html"
-  },
-  {
-    "id": "b69d1c39-5c0a-4a37-9abf-229d98c6782d",
-    "label": "avi"
-  },
-  {
-    "id": "de8a4e8c-76b6-4e6a-8aa6-62df998bd32a",
-    "label": "yaml"
-  },
-  {
-    "id": "a3a7dd83-345b-4b9e-9eb2-2e545d85bb29",
-    "label": "bmp"
-  },
-  {
-    "id": "1e34593b-3c82-4f41-90e4-b0e36c38d51d",
-    "label": "mp4"
-  },
-  {
-    "id": "c3b82c0a-7f38-46dc-8399-af69ebdb678d",
-    "label": "sql"
-  },
-  {
-    "id": "b10f83b2-c6c8-4b4e-a1fc-15597bde9cda",
-    "label": "ppt"
-  },
-  {
-    "id": "9e1631b2-d07d-4cd3-8e8e-9897ac1a9321",
-    "label": "yaml"
+    "label": "zip"
   }
 ]
