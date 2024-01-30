@@ -231,30 +231,6 @@ export default function CreateEditOrganization() {
                         labelProps={{
                           className: "!font-medium",
                         }}
-                        modules={{
-                          toolbar: [
-                            [{ header: [1, 2, false] }],
-                            ["bold", "italic", "underline", "strike", "blockquote"],
-                            [
-                              { list: "ordered" },
-                              { list: "bullet" },
-                              { indent: "-1" },
-                              { indent: "+1" },
-                            ],
-                            ["clean"],
-                          ],
-                        }}
-                        formats={[
-                          "header",
-                          "bold",
-                          "italic",
-                          "underline",
-                          "strike",
-                          "blockquote",
-                          "list",
-                          "bullet",
-                          "indent",
-                        ]}
                       />
                     </div>
                     <footer className="p-4 py-2 flex items-center justify-between">

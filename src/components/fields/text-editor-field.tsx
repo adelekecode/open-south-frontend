@@ -15,6 +15,8 @@ export default function TextEditorField({
   label,
   className,
   labelProps,
+  formats,
+  modules,
   ...props
 }: TextEditorFieldProps) {
   return (
@@ -46,6 +48,27 @@ export default function TextEditorField({
               display: "flex",
               flexDirection: "column",
             }}
+            modules={{
+              toolbar: [
+                [{ header: [1, 2, false] }],
+                ["bold", "italic", "underline", "strike", "blockquote"],
+                [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+                ["clean"],
+              ],
+              ...modules,
+            }}
+            formats={[
+              "header",
+              "bold",
+              "italic",
+              "underline",
+              "strike",
+              "blockquote",
+              "list",
+              "bullet",
+              "indent",
+              ...(formats || []),
+            ]}
           />
           <ErrorMessage
             name={props.name}
