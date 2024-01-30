@@ -9,18 +9,38 @@ import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import CreateModal from "./modals/create";
 import ViewModal from "./modals/view";
-import DeleteConfirmation from "./modals/delete-confimation";
+import DeleteConfirmationModal from "./confirmation-modals/delete";
+import PublishConfirmationModal from "./confirmation-modals/publish";
+import UnpublishConfirmationModal from "./confirmation-modals/unpublish";
 import { useAdminNews } from "~/queries/news";
+
+type Modal = {
+  open: boolean;
+  data: News | null;
+};
 
 export default function Category() {
   const [modal, setModal] = useState<NewsModal>({
     state: null,
     data: null,
   });
+  const [statusObj, setStatusObj] = useState<{ [key: string]: string }>({});
   const [filterBy, setFilterBy] = useState<{
     status: "pending" | "published" | "unpublished" | null;
   }>({
     status: null,
+  });
+  const [publishModal, setPublishModal] = useState<Modal>({
+    open: false,
+    data: null,
+  });
+  const [unpublishModal, setUnpublishModal] = useState<Modal>({
+    open: false,
+    data: null,
+  });
+  const [deleteModal, setDeleteModal] = useState<Modal>({
+    open: false,
+    data: null,
   });
 
   const { isLoading, data } = useAdminNews();
@@ -82,6 +102,64 @@ export default function Category() {
       },
       align: "center",
       headerAlign: "center",
+    },
+    {
+      field: "status",
+      headerName: "STATUS",
+      minWidth: 180,
+      flex: 1,
+      renderCell: ({ row }) => {
+        // const value = value === "approved" ? "approve" : value === "rejected" ? "reject" : value;
+        const newValue = statusObj[row.id];
+
+        return (
+          <Select
+            className="w-[180px] !text-[0.85rem] !py-0 !px-0"
+            value={newValue}
+            disabled={!row.is_verified}
+            onChange={async (e) => {
+              const chosenValue = e.target.value;
+
+              if (chosenValue === "draft") {
+                return;
+              }
+
+              if (chosenValue && chosenValue !== statusObj[row.id]) {
+                setStatusObj((prevStatusObj) => ({
+                  ...prevStatusObj,
+                  [row.id]: chosenValue,
+                }));
+              }
+            }}
+          >
+            <MenuItem value="draft" className="!hidden">
+              draft
+            </MenuItem>
+            <MenuItem
+              value="publish"
+              onClick={() => {
+                setPublishModal({
+                  open: true,
+                  data: row,
+                });
+              }}
+            >
+              Published
+            </MenuItem>
+            <MenuItem
+              value="unpublish"
+              onClick={() => {
+                setUnpublishModal({
+                  open: true,
+                  data: row,
+                });
+              }}
+            >
+              Unpublished
+            </MenuItem>
+          </Select>
+        );
+      },
     },
     {
       field: "_",
@@ -193,7 +271,36 @@ export default function Category() {
       </main>
       <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
       <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
-      <DeleteConfirmation modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      <DeleteConfirmationModal
+        open={deleteModal.open}
+        onClose={() => {
+          setDeleteModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={deleteModal.data as News}
+      />
+      <PublishConfirmationModal
+        open={publishModal.open}
+        onClose={() => {
+          setPublishModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={publishModal.data as News}
+      />
+      <UnpublishConfirmationModal
+        open={unpublishModal.open}
+        onClose={() => {
+          setUnpublishModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={unpublishModal.data as News}
+      />
     </>
   );
 }

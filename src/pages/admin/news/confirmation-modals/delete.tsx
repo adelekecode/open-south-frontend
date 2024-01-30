@@ -1,29 +1,21 @@
 import { MdDeleteOutline } from "react-icons/md";
-import Button from "~/components/button";
 import Modal from "~/components/modal";
+import Button from "~/components/button";
 import { useDeleteNews } from "~/mutations/news";
 
-type DeleteConfirmationProps = {
-  modal: NewsModal;
-  setModal: (obj: NewsModal) => void;
+type DeleteModalProps = {
+  open: boolean;
+  onClose: () => void;
+  data: News;
 };
 
-export default function DeleteConfirmation({ modal, setModal }: DeleteConfirmationProps) {
-  const { data, state } = modal;
-
-  function onClose() {
-    setModal({
-      state: null,
-      data: null,
-    });
-  }
-
+export default function DeleteModal({ open, onClose, data }: DeleteModalProps) {
   const deleteNews = useDeleteNews();
 
   return (
     <Modal
       muiModal={{
-        open: state === "delete",
+        open,
         onClose,
       }}
       innerContainer={{
