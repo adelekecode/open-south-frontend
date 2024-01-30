@@ -251,7 +251,7 @@ export default function Dataset() {
           <div className="flex flex-col gap-8">
             <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4">
               <p>
-                <span>{data ? data.length : "---"}</span> results
+                <span>{data ? data.length : "0"}</span> results
               </p>
               <div className="flex items-center gap-2">
                 <p className="whitespace-nowrap text-sm">Sort by:</p>

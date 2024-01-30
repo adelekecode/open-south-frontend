@@ -8,6 +8,7 @@ import { useDatasetView } from "~/mutations/dataset";
 import File from "./file";
 import FilePreview from "./file-preview";
 import { usePublicDatasetDetails } from "~/queries/dataset";
+import NotFound from "../404";
 
 export default function DatasetDetails() {
   const { slug } = useParams();
@@ -81,13 +82,17 @@ export default function DatasetDetails() {
     );
   }
 
+  if (!isLoading && !data) {
+    return <NotFound />;
+  }
+
   const stripedDescription =
-    data?.description &&
+    data.description &&
     stripHtml(`${data.description}`, {
       stripTogetherWithTheirContents: ["style", "pre"],
     }).result;
 
-  const arr = data?.temporal_coverage?.split(",");
+  const arr = data.temporal_coverage?.split(",");
 
   const temporalCoverage = {
     from: arr?.[0],
@@ -103,33 +108,34 @@ export default function DatasetDetails() {
           <h3 className="text-sm font-medium">Description</h3>
           <p ref={descriptionRef}></p>
         </div>
-        <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium">
-            <span>{data?.files?.length || "--"}</span>{" "}
-            {data?.files?.length === 1 ? "File" : "Files"}
-          </h3>
-          <div className="flex flex-col gap-4">
-            {data?.files?.map((item, index) => (
-              <File
-                key={index + 1}
-                {...item}
-                setPreviewFile={(obj: { open: boolean; data: Dataset["files"][0] | null }) =>
-                  setPreviewFile(obj)
-                }
-              />
-            ))}
+        {data.files && data.files.length > 0 && (
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-medium">
+              <span>{data.files.length || "--"}</span> {data.files.length === 1 ? "File" : "Files"}
+            </h3>
+            <div className="flex flex-col gap-4">
+              {data.files.map((item, index) => (
+                <File
+                  key={index + 1}
+                  {...item}
+                  setPreviewFile={(obj: { open: boolean; data: Dataset["files"][0] | null }) =>
+                    setPreviewFile(obj)
+                  }
+                />
+              ))}
+            </div>
+            <div className="flex items-center justify-center mt-4">
+              <Pagination count={10} variant="outlined" shape="rounded" />
+            </div>
           </div>
-          <div className="flex items-center justify-center mt-4">
-            <Pagination count={10} variant="outlined" shape="rounded" />
-          </div>
-        </div>
+        )}
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">Produced By</h3>
           <div className="flex items-center gap-3">
             <figure className="border border-zinc-300 w-[3.5rem] aspect-square bg-white p-1">
               <img
                 className="w-full h-full object-contain"
-                src={data?.publisher_data?.image_url || ""}
+                src={data.publisher_data?.image_url || ""}
                 alt="organization or profile photo"
               />
             </figure>
@@ -141,13 +147,13 @@ export default function DatasetDetails() {
               //   e.stopPropagation();
               // }}
             >
-              {`${data?.publisher_data?.first_name || "--"} ${
-                data?.publisher_data?.last_name || "--"
+              {`${data.publisher_data?.first_name || "--"} ${
+                data.publisher_data?.last_name || "--"
               }`}
             </Link>
           </div>
         </div>
-        {data?.tags_data && data.tags_data.length > 0 && (
+        {data.tags_data && data.tags_data.length > 0 && (
           <div className="flex flex-col gap-3">
             <h3 className="text-sm font-medium">Tags</h3>
             <div className="flex items-center flex-wrap gap-4">
@@ -171,11 +177,11 @@ export default function DatasetDetails() {
         <div className="flex gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>License</h3>
-            <p>{data?.license || "------"}</p>
+            <p>{data.license || "------"}</p>
           </div>
           <div>
             <h3>ID</h3>
-            <p>{data?.id || "------"}</p>
+            <p>{data.id || "------"}</p>
           </div>
         </div>
         <div className="flex gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
