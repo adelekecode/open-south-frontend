@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-// import useAppStore from "~/store/app";
+import useAppStore from "~/store/app";
 import { useImageUpload } from "~/mutations/auth/profile";
 import { useCurrentUser } from "~/queries/user";
 import Modal from "./modal";
@@ -26,7 +26,7 @@ function getRandomAvatar(): string {
 }
 
 export default function SelectAvatarModal() {
-  // const { displaySelectAvatarModal: open, setDisplaySelectAvatarModal: setOpen } = useAppStore();
+  const { displaySelectAvatarModal: open, setDisplaySelectAvatarModal: setOpen } = useAppStore();
 
   const baseURL = `${window.location.protocol}//${window.location.host}`;
 
@@ -41,8 +41,7 @@ export default function SelectAvatarModal() {
 
   useEffect(() => {
     if (currentUser && !currentUser?.image_url) {
-      // setOpen(true);
-      console.error("dkkfdf");
+      setOpen(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser?.image_url]);
@@ -50,8 +49,8 @@ export default function SelectAvatarModal() {
   return (
     <Modal
       muiModal={{
-        open: true,
-        // onClose: () => setOpen(false),
+        open,
+        onClose: () => setOpen(false),
       }}
       displayExitButton={false}
       innerContainer={{
