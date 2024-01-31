@@ -35,7 +35,7 @@ export default function SearchInput({
             borderRadius: "0 0 0 0",
           },
           "& .MuiOutlinedInput-input": {
-            height: "-webkit-fill-available",
+            height: "100%",
             padding: "8px 12px",
             fontFamily: '"Work Sans", sans-serif',
             backgroundColor: "rgb(228 228 231)",

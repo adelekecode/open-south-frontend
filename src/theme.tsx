@@ -111,7 +111,7 @@ const theme = createTheme({
             "& input": {
               padding: "11px 13.5px !important",
             },
-            height: "-webkit-fill-available",
+            height: "100%",
             fontFamily: '"Work Sans", sans-serif',
           },
         },
