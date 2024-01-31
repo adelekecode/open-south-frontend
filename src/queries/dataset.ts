@@ -15,7 +15,7 @@ export function usePublicFilePreview(
 ) {
   return useQuery([`${url}`], {
     queryFn: async () => {
-      const response = await axios.get(url);
+      const { data: response } = await axios.get(url);
 
       return response;
     },
@@ -49,6 +49,16 @@ export function useUserOrganizationDatasets(
 ) {
   return useQuery<PaginationData<Dataset[]>>(
     [`/user/organisations/${id}/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    options
+  );
+}
+
+export function usePublicUserDataset(
+  id: string,
+  options?: UseQueryOptions<PaginationData<CurrentUser[]>>
+) {
+  return useQuery<PaginationData<CurrentUser[]>>(
+    [`/public/user/pk/${id}/datasets/?key=public`],
     options
   );
 }

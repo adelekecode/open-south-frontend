@@ -186,7 +186,7 @@ export default function Profile() {
                   readOnly
                 />
                 <TextEditorField
-                  label="About Me"
+                  label="Bio"
                   required
                   name="aboutMe"
                   labelProps={{

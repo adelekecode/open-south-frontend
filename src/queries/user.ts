@@ -17,3 +17,7 @@ export function useGetAllUsers(
     options
   );
 }
+
+export function usePublicProfile(id: string, options?: UseQueryOptions<CurrentUser>) {
+  return useQuery<CurrentUser>([`/public/user/pk/${id}/detail/`], options);
+}

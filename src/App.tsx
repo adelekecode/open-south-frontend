@@ -55,6 +55,7 @@ import {
 import Profile from "./pages/account/profile";
 import EditOrganization from "./pages/account/edit-organization";
 import UserOrganization from "./layouts/user-organization";
+import PublicProfile from "./pages/public-profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -203,6 +204,7 @@ const router = createBrowserRouter(
             <Route path="/datasets" element={<Dataset />} />
             <Route path="/datasets/:slug" element={<DatasetDetails />} />
             <Route path="/categories" element={<Category />} />
+            <Route path="/users/:id" element={<PublicProfile />} />
             <Route path="/organizations" element={<Organization />} />
             <Route
               path="/organizations/:slug"
