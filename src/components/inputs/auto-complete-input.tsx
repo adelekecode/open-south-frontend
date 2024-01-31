@@ -18,12 +18,14 @@ export default function AutocompleteInput<T>({
   inputParams,
   sx,
   disablePortal = true,
+  className,
   ...props
 }: AutocompleteInputProps<T>) {
   return (
     <MuiAutocomplete
       {...props}
       disablePortal={disablePortal}
+      className={twMerge("", className)}
       sx={{
         "& .Mui-focused": {
           "& .MuiOutlinedInput-notchedOutline": {

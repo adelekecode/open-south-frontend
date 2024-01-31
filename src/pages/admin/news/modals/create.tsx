@@ -9,6 +9,7 @@ import Button from "~/components/button";
 import SuccessIllustration from "~/assets/illustrations/success.png";
 import FormField from "~/components/fields/form-field";
 import { useCreateNews } from "~/mutations/news";
+import TextEditorField from "~/components/fields/text-editor-field";
 
 type CreateProps = {
   modal: NewsModal;
@@ -156,13 +157,13 @@ export default function Create({ modal, setModal }: CreateProps) {
                       className: "!font-medium",
                     }}
                   />
-                  <FormField
+                  <TextEditorField
                     label="Description"
                     required
-                    multiline
                     name="description"
-                    rows={6}
-                    className="!p-0 [&_textarea]:!text-[0.9rem]"
+                    labelProps={{
+                      className: "!font-medium",
+                    }}
                   />
                 </div>
                 <footer className="p-4 py-0 flex items-center justify-between">

@@ -61,7 +61,7 @@ export function useDeleteNews() {
 
 export function useChangeNewsStatus() {
   return useMutation(
-    async ({ id, action }: { id: string; action: string }) => {
+    async ({ id, action }: { id: string; action: "publish" | "unpublish" }) => {
       const { data: response } = await axiosPrivate.post(`/admin/news/${id}/actions/${action}`);
 
       return response;

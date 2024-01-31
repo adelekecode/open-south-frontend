@@ -12,9 +12,9 @@ import { useCreateDataset } from "~/mutations/dataset";
 import { useCreateDatasetTags } from "~/mutations/dataset";
 import UpdateFrequencyData from "~/utils/data/update-frequency.json";
 import LicenseData from "~/utils/data/license.json";
-import countryData from "~/utils/data/country.json";
+import spatialCoverageData from "~/utils/data/spatial-coverage.json";
 import TagsField from "~/components/fields/tags-field";
-import { useCategories } from "~/queries/category";
+import { usePublicCategories } from "~/queries/category";
 import useCreateDatasetStore from "~/store/create-dataset";
 import { notifyError } from "~/utils/toast";
 
@@ -45,7 +45,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
 
   const { setDataset, organization } = useCreateDatasetStore();
 
-  const { data: categories, isLoading: isLoadingCategories } = useCategories();
+  const { data: categories, isLoading: isLoadingCategories } = usePublicCategories();
 
   const createDataset = useCreateDataset();
   const createDatasetTags = useCreateDatasetTags();
@@ -143,25 +143,6 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                 labelProps={{
                   className: "!font-medium",
                 }}
-                modules={{
-                  toolbar: [
-                    [{ header: [1, 2, false] }],
-                    ["bold", "italic", "underline", "strike", "blockquote"],
-                    [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
-                    ["clean"],
-                  ],
-                }}
-                formats={[
-                  "header",
-                  "bold",
-                  "italic",
-                  "underline",
-                  "strike",
-                  "blockquote",
-                  "list",
-                  "bullet",
-                  "indent",
-                ]}
               />
               <SelectField
                 label="License"
@@ -237,8 +218,8 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
               >
                 {!isLoadingCategories &&
                   categories &&
-                  categories.data?.length > 0 &&
-                  categories.data.map((item, index) => (
+                  categories?.length > 0 &&
+                  categories.map((item, index) => (
                     <MenuItem
                       key={index + 1}
                       value={item.name}
@@ -263,7 +244,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                   <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
                 </InputLabel>
                 <Autocomplete
-                  options={countryData}
+                  options={spatialCoverageData}
                   onChange={(_, value) => setFieldValue("spatialCoverage", value?.label)}
                   renderInput={(params) => (
                     <TextField

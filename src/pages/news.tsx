@@ -33,7 +33,7 @@ export default function News() {
               </div>
             ))}
           </div>
-        ) : data && data.results.length > 0 ? (
+        ) : data?.results && data.results.length > 0 ? (
           <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:550px)]:!grid-cols-1 gap-6 tablet:gap-4">
             {data.results.map((item, index) => {
               const { title, slug, body, image_url, published_at } = item;

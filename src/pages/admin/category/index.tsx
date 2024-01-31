@@ -5,7 +5,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDelete } from "react-icons/md";
 import moment from "moment";
-import { useCategories } from "~/queries/category";
+import { useAdminCategories } from "~/queries/category";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import CreateModal from "./modals/create";
@@ -105,7 +105,7 @@ export default function Category() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  const { isLoading, data } = useCategories();
+  const { isLoading, data } = useAdminCategories();
 
   return (
     <>
@@ -132,7 +132,11 @@ export default function Category() {
             </Button>
           </div>
           <div className="min-h-[500px]">
-            <DataGrid loading={isLoading} rows={data?.data ? data.data : []} columns={columns} />
+            <DataGrid
+              loading={isLoading}
+              rows={data?.results ? data.results : []}
+              columns={columns}
+            />
           </div>
         </div>
       </main>

@@ -27,7 +27,7 @@ export default function Resources() {
     <div className="flex flex-col gap-2 mt-2">
       <h2 className="text-xl font-semibold">Resources</h2>
       <div className="min-h-[500px]">
-        <DataGrid rows={[]} columns={columns} />
+        <DataGrid getRowId={(params) => params.name} rows={[]} columns={columns} />
       </div>
     </div>
   );

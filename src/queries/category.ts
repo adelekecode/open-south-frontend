@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
-export function useCategories() {
-  return useQuery<{ count: number; data: Category[] }>([`/categories/`]);
+export function useAdminCategories() {
+  return useQuery<PaginationData<Category[]>>([`/admin/categories/`]);
 }
 
 export function usePublicCategories() {

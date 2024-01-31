@@ -1,25 +1,36 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { MenuItem, Pagination } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
+import slugify from "slugify";
 import SearchInput from "~/components/inputs/search-input";
 import Seo from "~/components/seo";
 import SelectInput from "~/components/inputs/select-input";
 import Card from "./card";
 // import data from "~/utils/data/dataset.json";
 import AutocompleteInput from "~/components/inputs/auto-complete-input";
-import organizationData from "~/utils/data/organization.json";
+// import organizationData from "~/utils/data/organization.json";
 import tagData from "~/utils/data/tag.json";
 import formatData from "~/utils/data/format.json";
+import licenseData from "~/utils/data/license.json";
 import spatialCoverageData from "~/utils/data/spatial-coverage.json";
 import { usePublicDatasets } from "~/queries/dataset";
 import NoData from "~/assets/illustrations/no-data.png";
+import { usePublicCategories } from "~/queries/category";
+import { usePublicOrganizations } from "~/queries/organizations";
+// import { usePublicTags } from "~/queries/tags";
 
 type SortByValue = "relevance" | "creation-date" | "last-update";
 
 export default function Dataset() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [sortBy, setSortBy] = useState<SortByValue>("relevance");
 
   const { isLoading, data } = usePublicDatasets();
+  const { data: categories, isLoading: isLoadingCategories } = usePublicCategories();
+  const { data: organizations, isLoading: isLoadingOrganizations } = usePublicOrganizations();
+  // const { data: tags, isLoading: isLoadingTags } = usePublicTags();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -55,13 +66,29 @@ export default function Dataset() {
                 <label htmlFor="organization">Organizations</label>
                 <AutocompleteInput
                   id="organization"
-                  options={organizationData.map((item) => ({
-                    label: item.name,
-                    slug: item.slug,
-                    id: item.id,
-                  }))}
+                  options={organizations ? organizations.results : []}
+                  getOptionLabel={(opt) => opt.name ?? opt}
                   inputParams={{
                     placeholder: "All Organizations",
+                  }}
+                  loading={isLoadingOrganizations}
+                  value={
+                    searchParams.get("organization")
+                      ? ({
+                          name: searchParams.get("organization"),
+                        } as Organization)
+                      : ({ name: "" } as Organization)
+                  }
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("organization", chosenValue.name || "");
+
+                        return params;
+                      });
+                    }
                   }}
                 />
               </div>
@@ -69,34 +96,162 @@ export default function Dataset() {
                 <label htmlFor="tag">Tags</label>
                 <AutocompleteInput
                   id="tag"
-                  options={tagData}
+                  options={tagData || ([] as Dataset["tags_data"])}
+                  getOptionLabel={(opt) => opt.name ?? opt}
                   inputParams={{
                     placeholder: "All Tags",
+                  }}
+                  // loading={isLoadingTags}
+                  value={
+                    searchParams.get("tags")
+                      ? ({
+                          name: searchParams.get("tags"),
+                        } as Dataset["tags_data"][0])
+                      : ({ name: "" } as Dataset["tags_data"][0])
+                  }
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("tags", chosenValue.name || "");
+
+                        return params;
+                      });
+                    }
                   }}
                 />
               </div>
               <div>
                 <label htmlFor="category">Category</label>
-                <AutocompleteInput id="category" options={tagData} />
+                <AutocompleteInput
+                  id="category"
+                  inputParams={{
+                    placeholder: "All Categories",
+                  }}
+                  options={categories || ([] as Category[])}
+                  getOptionLabel={(opt) => opt.name ?? opt}
+                  loading={isLoadingCategories}
+                  value={
+                    searchParams.get("category") !== null
+                      ? ({
+                          name: searchParams.get("category"),
+                        } as Category)
+                      : ({ name: "" } as Category)
+                  }
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("category", chosenValue.name || "");
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
               <div>
                 <label htmlFor="format">Formats</label>
-                <AutocompleteInput id="format" options={formatData} />
+                <AutocompleteInput
+                  id="format"
+                  inputParams={{
+                    placeholder: "All Formarts",
+                  }}
+                  options={formatData}
+                  value={
+                    searchParams.get("format")
+                      ? {
+                          label: searchParams.get("format"),
+                        }
+                      : { label: "" }
+                  }
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("format", chosenValue.label || "");
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
               <div>
                 <label htmlFor="licenses">Licenses</label>
-                <AutocompleteInput id="license" options={tagData} />
+                <AutocompleteInput
+                  id="license"
+                  inputParams={{
+                    placeholder: "All Licenses",
+                  }}
+                  getOptionLabel={(opt) => opt.name ?? opt}
+                  options={licenseData}
+                  value={
+                    searchParams.get("license")
+                      ? ({
+                          name: searchParams.get("license"),
+                        } as (typeof licenseData)[0])
+                      : ({ name: "" } as (typeof licenseData)[0])
+                  }
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("license", chosenValue.name || "");
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
               <div>
                 <label htmlFor="spatial-coverage">Spatial coverage</label>
-                <AutocompleteInput id="spatial-coverage" options={spatialCoverageData} />
+                <AutocompleteInput
+                  id="spatial-coverage"
+                  inputParams={{
+                    placeholder: "All Spatial Coverage",
+                  }}
+                  options={spatialCoverageData}
+                  value={
+                    searchParams.get("spatial-coverage")
+                      ? {
+                          label: searchParams.get("spatial-coverage"),
+                        }
+                      : { label: "" }
+                  }
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set(
+                          "spatial-coverage",
+                          chosenValue.label
+                            ? slugify(chosenValue.label, {
+                                lower: true,
+                                strict: true,
+                                trim: true,
+                              })
+                            : ""
+                        );
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
             </main>
           </div>
           <div className="flex flex-col gap-8">
             <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4">
               <p>
-                <span>{data ? data.length : "---"}</span> results
+                <span>{data ? data.length : "0"}</span> results
               </p>
               <div className="flex items-center gap-2">
                 <p className="whitespace-nowrap text-sm">Sort by:</p>

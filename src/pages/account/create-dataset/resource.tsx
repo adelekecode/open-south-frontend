@@ -43,7 +43,10 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
             id: uuidv4(),
             fileName: file.name,
             fileSize: formatFileSize(file.size),
-            fileType: file.type,
+            fileType:
+              file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ? "xlsx"
+                : file.type,
             file,
           };
 
@@ -60,7 +63,7 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
     accept: {
       "text/csv": [".csv"],
       "application/json": [".json"],
-      "application/vnd.ms-excel": [".xls", ".xlsx"],
+      "application/vnd.ms-excel": [".xlsx"],
       "application/zip": [".zip"],
     },
     onDrop,
@@ -82,7 +85,7 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
             />
           </figure>
           <p className="text-xs text-center">
-            Drag and drop files here to upload. Allowed file types: .csv, .json, .xls, .xlsx, .zip.
+            Drag and drop files here to upload. Allowed file types: .csv, .json, .xlsx, .zip.
           </p>
         </div>
       </div>
