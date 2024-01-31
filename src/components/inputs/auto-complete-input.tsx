@@ -52,7 +52,7 @@ export default function AutocompleteInput<T>({
           "& input": {
             padding: "8px 12px",
           },
-          height: "-webkit-fill-available",
+          height: "100%",
           fontFamily: '"Work Sans", sans-serif',
           backgroundColor: "rgb(228 228 231)",
           "&::placeholder": {
