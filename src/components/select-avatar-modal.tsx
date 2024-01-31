@@ -46,11 +46,15 @@ export default function SelectAvatarModal() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser?.image_url]);
 
+  function onClose() {
+    setOpen(false);
+  }
+
   return (
     <Modal
       muiModal={{
         open,
-        onClose: () => setOpen(false),
+        onClose,
       }}
       displayExitButton={false}
       innerContainer={{
@@ -92,13 +96,17 @@ export default function SelectAvatarModal() {
           onClick={async () => {
             try {
               setLoading(true);
-              const { data: response } = await axios.get(`${baseURL}${randomAvatar}`, {
+              const { data } = await axios.get(`${baseURL}${randomAvatar}`, {
                 responseType: "blob",
               });
-              const blob = new Blob([response], { type: "image/png" });
+              const blob = new Blob([data], { type: "image/png" });
               const file = new File([blob], "avatar.png", { lastModified: Date.now() });
 
-              await uploadProfileImage.mutateAsync({ image: file });
+              const response = await uploadProfileImage.mutateAsync({ image: file });
+
+              if (response) {
+                onClose();
+              }
             } catch (error) {
               notifyError("Error uploading profile image");
             } finally {
