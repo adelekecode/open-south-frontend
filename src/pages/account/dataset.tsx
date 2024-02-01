@@ -139,16 +139,20 @@ export default function Dataset() {
 
   return (
     <>
-      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-8 w-full">
-        <header className="flex items-center gap-8 justify-between w-full">
-          <h1 className="text-2xl largeMobile:text-xl font-semibold">Datasets</h1>
-        </header>
-        <div className="flex flex-col gap-4">
-          <OutlinedInput
-            placeholder="Search..."
-            className="w-[500px] tablet:w-[80%] [@media(max-width:500px)]:!w-full self-end"
-          />
-          <div className="min-h-[500px]">
+      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-semibold largeMobile:text-xl">Datasets</h1>
+        </div>
+        <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
+          <div className="flex items-center border-y p-4 py-4 border-info-100">
+            <div className="flex items-center gap-4 h-10 w-full">
+              <OutlinedInput
+                placeholder="Search for name..."
+                className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
+              />
+            </div>
+          </div>
+          <div className="min-h-[500px] p-4">
             <DataGrid
               rows={data ? data.results : []}
               loading={isLoading}
