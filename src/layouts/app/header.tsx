@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { IconButton } from "@mui/material";
 import { BiLock } from "react-icons/bi";
 import { IoPersonCircleOutline, IoLogOutOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
@@ -9,6 +8,7 @@ import Logo from "~/components/logo";
 import SearchInput from "~/components/inputs/search-input";
 import CurrentUserAvatar from "~/components/current-user-avatar";
 import useAppStore from "~/store/app";
+import { useCurrentUser } from "~/queries/user";
 
 type HeaderProps = {
   routes: { to: string; name: string }[];
@@ -48,8 +48,9 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
 
   const { setDisplayLogoutModal } = useAppStore();
 
-  const queryClient = useQueryClient();
-  const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
+  const { data: currentUser } = useCurrentUser(undefined, {
+    enabled: false,
+  });
 
   return (
     <nav className="w-full shadow-appNavBar flex flex-col items-center">

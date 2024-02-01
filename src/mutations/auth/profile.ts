@@ -24,7 +24,7 @@ export function useImageUpload() {
   return useMutation(async (data: { image: File }) => {
     const { data: response } = await axiosPrivate.postForm("/auth/profile-image-upload/", data);
 
-    return response.data;
+    return response;
   });
 }
 
