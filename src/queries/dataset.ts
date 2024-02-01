@@ -66,10 +66,14 @@ export function useUserOrganizationDatasets(
 
 export function usePublicUserDataset(
   id: string,
-  options?: UseQueryOptions<PaginationData<CurrentUser[]>>
+  options?: UseQueryOptions<PaginationData<Dataset[]>>
 ) {
-  return useQuery<PaginationData<CurrentUser[]>>(
+  return useQuery<PaginationData<Dataset[]>>(
     [`/public/user/pk/${id}/datasets/?key=public`],
     options
   );
+}
+
+export function usePopularDatasets() {
+  return useQuery<Dataset[]>([`/public/popular/dataset/?key=public`]);
 }
