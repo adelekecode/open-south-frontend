@@ -31,9 +31,20 @@ export function useAdminDatasets() {
   return useQuery<Dataset[]>([`/admin/datasets/`]);
 }
 
-export function useUserDatasets(pageSize: number = 10, page: number = 1) {
+export function useUserDatasets(
+  search = "",
+  pagination: {
+    pageSize: number;
+    page: number;
+  } = {
+    pageSize: 10,
+    page: 1,
+  }
+) {
+  const { pageSize, page } = pagination;
+
   return useQuery<PaginationData<Dataset[]>>([
-    `/user/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    `/user/datasets/?search=${search}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
   ]);
 }
 
