@@ -15,7 +15,7 @@ export default function Dataset() {
       <header className="flex items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold">Datasets</h2>
         <div className="flex items-center gap-6">
-          {data?.results && data.results.length > 0 && (
+          {data && data.length > 0 && (
             <Link
               to={"/datasets"}
               className="flex items-center gap-4 border-b-[1.5px] border-primary-600 hover:border-primary-700"
@@ -43,9 +43,9 @@ export default function Dataset() {
             </div>
           ))}
         </div>
-      ) : data?.results && data.results.length > 0 ? (
+      ) : data && data.length > 0 ? (
         <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
-          {data.results.slice(0, 9).map((item, index) => {
+          {data.slice(0, 9).map((item, index) => {
             const { slug, title, publisher_data } = item;
 
             return (
