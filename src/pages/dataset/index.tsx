@@ -7,10 +7,7 @@ import SearchInput from "~/components/inputs/search-input";
 import Seo from "~/components/seo";
 import SelectInput from "~/components/inputs/select-input";
 import Card from "./card";
-// import data from "~/utils/data/dataset.json";
 import AutocompleteInput from "~/components/inputs/auto-complete-input";
-// import organizationData from "~/utils/data/organization.json";
-import tagData from "~/utils/data/tag.json";
 import formatData from "~/utils/data/format.json";
 import licenseData from "~/utils/data/license.json";
 import spatialCoverageData from "~/utils/data/spatial-coverage.json";
@@ -18,7 +15,7 @@ import { usePublicDatasets } from "~/queries/dataset";
 import NoData from "~/assets/illustrations/no-data.png";
 import { usePublicCategories } from "~/queries/category";
 import { usePublicOrganizations } from "~/queries/organizations";
-// import { usePublicTags } from "~/queries/tags";
+import { usePublicTags } from "~/queries/tags";
 
 type SortByValue = "relevance" | "creation-date" | "last-update";
 
@@ -30,7 +27,7 @@ export default function Dataset() {
   const { isLoading, data } = usePublicDatasets();
   const { data: categories, isLoading: isLoadingCategories } = usePublicCategories();
   const { data: organizations, isLoading: isLoadingOrganizations } = usePublicOrganizations();
-  // const { data: tags, isLoading: isLoadingTags } = usePublicTags();
+  const { data: tags, isLoading: isLoadingTags } = usePublicTags(); //? Add pagination and search
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -73,18 +70,31 @@ export default function Dataset() {
                   }}
                   loading={isLoadingOrganizations}
                   value={
-                    searchParams.get("organization")
-                      ? ({
-                          name: searchParams.get("organization"),
-                        } as Organization)
-                      : ({ name: "" } as Organization)
+                    searchParams.get("organization") !== null
+                      ? organizations?.results?.find(
+                          (item) =>
+                            slugify(item.name, {
+                              lower: true,
+                              strict: true,
+                              trim: true,
+                            }) === searchParams.get("organization")
+                        ) || null
+                      : null
                   }
+                  isOptionEqualToValue={(option, value) => option.name === value.name}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("organization", chosenValue.name || "");
+                        params.set(
+                          "organization",
+                          slugify(chosenValue.name, {
+                            lower: true,
+                            strict: true,
+                            trim: true,
+                          })
+                        );
 
                         return params;
                       });
@@ -96,25 +106,38 @@ export default function Dataset() {
                 <label htmlFor="tag">Tags</label>
                 <AutocompleteInput
                   id="tag"
-                  options={tagData || ([] as Dataset["tags_data"])}
+                  options={tags || ([] as Dataset["tags_data"])}
                   getOptionLabel={(opt) => opt.name ?? opt}
                   inputParams={{
                     placeholder: "All Tags",
                   }}
-                  // loading={isLoadingTags}
+                  loading={isLoadingTags}
                   value={
-                    searchParams.get("tags")
-                      ? ({
-                          name: searchParams.get("tags"),
-                        } as Dataset["tags_data"][0])
-                      : ({ name: "" } as Dataset["tags_data"][0])
+                    searchParams.get("tag") !== null
+                      ? tags?.find(
+                          (item) =>
+                            slugify(item.name, {
+                              lower: true,
+                              strict: true,
+                              trim: true,
+                            }) === searchParams.get("tag")
+                        ) || null
+                      : null
                   }
+                  isOptionEqualToValue={(option, value) => option.name === value.name}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("tags", chosenValue.name || "");
+                        params.set(
+                          "tag",
+                          slugify(chosenValue.name, {
+                            lower: true,
+                            strict: true,
+                            trim: true,
+                          })
+                        );
 
                         return params;
                       });
@@ -134,17 +157,30 @@ export default function Dataset() {
                   loading={isLoadingCategories}
                   value={
                     searchParams.get("category") !== null
-                      ? ({
-                          name: searchParams.get("category"),
-                        } as Category)
-                      : ({ name: "" } as Category)
+                      ? categories?.find(
+                          (item) =>
+                            slugify(item.name, {
+                              lower: true,
+                              strict: true,
+                              trim: true,
+                            }) === searchParams.get("category")
+                        ) || null
+                      : null
                   }
+                  isOptionEqualToValue={(option, value) => option.name === value.name}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("category", chosenValue.name || "");
+                        params.set(
+                          "category",
+                          slugify(chosenValue.name, {
+                            lower: true,
+                            strict: true,
+                            trim: true,
+                          })
+                        );
 
                         return params;
                       });
@@ -161,18 +197,31 @@ export default function Dataset() {
                   }}
                   options={formatData}
                   value={
-                    searchParams.get("format")
-                      ? {
-                          label: searchParams.get("format"),
-                        }
-                      : { label: "" }
+                    searchParams.get("format") !== null
+                      ? formatData.find(
+                          (item) =>
+                            slugify(item.label, {
+                              lower: true,
+                              strict: true,
+                              trim: true,
+                            }) === searchParams.get("format")
+                        ) || null
+                      : null
                   }
+                  isOptionEqualToValue={(option, value) => option.label === value.label}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("format", chosenValue.label || "");
+                        params.set(
+                          "format",
+                          slugify(chosenValue.label, {
+                            lower: true,
+                            strict: true,
+                            trim: true,
+                          })
+                        );
 
                         return params;
                       });
@@ -190,18 +239,31 @@ export default function Dataset() {
                   getOptionLabel={(opt) => opt.name ?? opt}
                   options={licenseData}
                   value={
-                    searchParams.get("license")
-                      ? ({
-                          name: searchParams.get("license"),
-                        } as (typeof licenseData)[0])
-                      : ({ name: "" } as (typeof licenseData)[0])
+                    searchParams.get("license") !== null
+                      ? licenseData.find(
+                          (item) =>
+                            slugify(item.name, {
+                              lower: true,
+                              strict: true,
+                              trim: true,
+                            }) === searchParams.get("license")
+                        ) || null
+                      : null
                   }
+                  isOptionEqualToValue={(option, value) => option.name === value.name}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("license", chosenValue.name || "");
+                        params.set(
+                          "license",
+                          slugify(chosenValue.name, {
+                            lower: true,
+                            strict: true,
+                            trim: true,
+                          })
+                        );
 
                         return params;
                       });
@@ -218,12 +280,18 @@ export default function Dataset() {
                   }}
                   options={spatialCoverageData}
                   value={
-                    searchParams.get("spatial-coverage")
-                      ? {
-                          label: searchParams.get("spatial-coverage"),
-                        }
-                      : { label: "" }
+                    searchParams.get("spatial-coverage") !== null
+                      ? spatialCoverageData.find(
+                          (item) =>
+                            slugify(item.label, {
+                              lower: true,
+                              strict: true,
+                              trim: true,
+                            }) === searchParams.get("spatial-coverage")
+                        ) || null
+                      : null
                   }
+                  isOptionEqualToValue={(option, value) => option.label === value.label}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
@@ -231,13 +299,11 @@ export default function Dataset() {
                       setSearchParams((params) => {
                         params.set(
                           "spatial-coverage",
-                          chosenValue.label
-                            ? slugify(chosenValue.label, {
-                                lower: true,
-                                strict: true,
-                                trim: true,
-                              })
-                            : ""
+                          slugify(chosenValue.label, {
+                            lower: true,
+                            strict: true,
+                            trim: true,
+                          })
                         );
 
                         return params;
