@@ -75,5 +75,15 @@ export function usePublicUserDataset(
 }
 
 export function usePopularDatasets() {
-  return useQuery<Dataset[]>([`/public/popular/dataset/?key=public`]);
+  return useQuery<
+    {
+      count: number;
+      created_at: string;
+      dataset_data: {
+        title: string;
+        slug: string;
+        publisher_data: Dataset["publisher_data"];
+      };
+    }[]
+  >([`/public/popular/dataset/?key=public`]);
 }
