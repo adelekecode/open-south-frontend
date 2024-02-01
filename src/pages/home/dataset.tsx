@@ -46,7 +46,8 @@ export default function Dataset() {
       ) : data && data.length > 0 ? (
         <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
           {data.slice(0, 9).map((item, index) => {
-            const { slug, title, publisher_data } = item;
+            const { dataset_data } = item;
+            const { slug, title, publisher_data } = dataset_data;
 
             return (
               <button
@@ -80,9 +81,9 @@ export default function Dataset() {
                     <Link
                       className="text-primary-600 capitalize hover:underline relative z-10"
                       to={
-                        publisher_data.type === "organisation"
+                        publisher_data?.type === "organisation"
                           ? `/organizations/${publisher_data.slug}`
-                          : publisher_data.type === "individual"
+                          : publisher_data?.type === "individual"
                             ? `/users/${publisher_data.id}`
                             : ""
                       }
@@ -90,11 +91,11 @@ export default function Dataset() {
                         e.stopPropagation();
                       }}
                     >
-                      {publisher_data.type === "organisation" ? (
+                      {publisher_data?.type === "organisation" ? (
                         <span>{publisher_data.name}</span>
-                      ) : publisher_data.type === "individual" ? (
+                      ) : publisher_data?.type === "individual" ? (
                         <span>
-                          {`${publisher_data?.first_name || "--"} ${publisher_data?.last_name || "--"}`}
+                          {`${publisher_data?.first_name || "---"} ${publisher_data?.last_name || "---"}`}
                         </span>
                       ) : (
                         "-------"
