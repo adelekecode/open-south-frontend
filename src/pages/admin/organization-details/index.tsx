@@ -77,7 +77,7 @@ export default function OrganizationDetails() {
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
               <h2 className="font-semibold text-xs text-info-950">Description</h2>
-              <p className="text-sm" ref={descriptionRef}></p>
+              <p ref={descriptionRef}></p>
             </div>
             <UserTable />
             <div className="flex flex-col gap-3"></div>

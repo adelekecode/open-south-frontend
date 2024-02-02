@@ -1,24 +1,19 @@
 import { MdDeleteOutline } from "react-icons/md";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import { useDeleteDataset } from "~/mutations/dataset";
+import { useDeleteDatasetFile } from "~/mutations/dataset";
 
 type DeleteConfirmationProps = {
   open: boolean;
-  setOpen: (bool: boolean) => void;
+  onClose: () => void;
+  data: Dataset["files"][0];
 };
 
-export default function DeleteConfirmation({ open, setOpen }: DeleteConfirmationProps) {
+export default function DeleteConfirmation({ open, onClose, data }: DeleteConfirmationProps) {
   const navigate = useNavigate();
 
-  const { id } = useParams();
-
-  const deleteDataset = useDeleteDataset();
-
-  function onClose() {
-    setOpen(false);
-  }
+  const deleteDatasetFile = useDeleteDatasetFile();
 
   return (
     <Modal
@@ -32,16 +27,16 @@ export default function DeleteConfirmation({ open, setOpen }: DeleteConfirmation
           <MdDeleteOutline className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3rem] !font-extralight" />
         </span>
         <h1 className="text-base largeMobile:!text-sm font-medium text-center">
-          Are you sure you want to delete this dataset?
+          Are you sure you want to delete this file?
         </h1>
         <div className="mt-10 flex gap-6 justify-between">
           <Button variant="outlined" onClick={onClose}>
             Cancel
           </Button>
           <Button
-            loading={deleteDataset.isLoading}
+            loading={deleteDatasetFile.isLoading}
             onClick={async () => {
-              const response = await deleteDataset.mutateAsync(id || "");
+              const response = await deleteDatasetFile.mutateAsync(data.id || "");
 
               if (response) {
                 navigate("/account/datasets");

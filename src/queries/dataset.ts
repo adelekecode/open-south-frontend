@@ -41,23 +41,24 @@ export function useAdminDatasets() {
 
 export function useUserDatasets(
   search = "",
+  filter: {
+    status: string | null;
+  },
   pagination: {
     pageSize: number;
     page: number;
-  } = {
-    pageSize: 10,
-    page: 1,
   }
 ) {
   const { pageSize, page } = pagination;
+  const { status } = filter;
 
   return useQuery<PaginationData<Dataset[]>>([
-    `/user/datasets/?search=${search}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    `/user/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
   ]);
 }
 
-export function useUserDatasetDetails(id: string) {
-  return useQuery<any>([`/user/datasets/${id}/`]);
+export function useUserDatasetDetails(id: string, options?: UseQueryOptions<Dataset>) {
+  return useQuery<Dataset>([`/user/datasets/${id}/`], options);
 }
 
 export function useUserOrganizationDatasets(
@@ -68,6 +69,22 @@ export function useUserOrganizationDatasets(
 ) {
   return useQuery<PaginationData<Dataset[]>>(
     [`/user/organisations/${id}/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    options
+  );
+}
+
+export function useUserDatasetFiles(
+  id: string,
+  pagination: {
+    pageSize: number;
+    page: number;
+  },
+  options?: UseQueryOptions<PaginationData<Dataset["files"][]>>
+) {
+  const { pageSize, page } = pagination;
+
+  return useQuery<PaginationData<Dataset["files"][]>>(
+    [`/user/datasets/${id}/files/?limit=${pageSize}&offset=${page * pageSize}`],
     options
   );
 }
