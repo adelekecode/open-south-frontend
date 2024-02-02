@@ -43,6 +43,8 @@ export function useUserDatasets(
   search = "",
   filter: {
     status: string | null;
+  } = {
+    status: null,
   },
   pagination: {
     pageSize: number;
