@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-// import * as XLSX from "xlsx";
+import * as XLSX from "xlsx";
 import * as Papa from "papaparse";
 import DataGrid from "~/components/data-grid";
 import Modal from "~/components/modal";
 import { usePublicFilePreview } from "~/queries/dataset";
 import Button from "~/components/button";
+import { notifyError } from "~/utils/toast";
 
 type FilePreviewProps = {
   open: boolean;
@@ -13,59 +14,58 @@ type FilePreviewProps = {
 };
 
 export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
-  const [excelData] = useState<any[] | null>(null);
+  const [excelData, setExcelData] = useState<any[] | null>(null);
   const [csvData, setCsvData] = useState<any[] | null>(null);
 
-  const { data, isLoading } = usePublicFilePreview(file?.file_url || "", {
+  const { data, isLoading } = usePublicFilePreview(file?.file_url || "", file?.format || "", {
     enabled: !!file?.file_url,
   });
 
   useEffect(() => {
     if (data) {
-      // const workbook = XLSX.read(data, { type: "array" });
+      if (file?.format === "xlsx") {
+        const blob = new Blob([data as any]);
 
-      // // console.log(workbook, "workbook");
+        const reader = new FileReader();
 
-      // const sheetName = workbook.SheetNames[0];
+        reader.onload = (e) => {
+          const data = e.target?.result as string;
+          const workbook = XLSX.read(data, { type: "binary" });
 
-      // // console.log(sheetName, "sheetName");
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
 
-      // const res = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-      // // console.log(res, "excelData");
+          const csv = XLSX.utils.sheet_to_csv(sheet);
 
-      // const workbook = XLSX.read(data, { type: "array" });
+          Papa.parse(csv as any, {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+            complete: (result) => {
+              const data = (result.data as any[]).map((item, index) => ({
+                "no.": index + 1,
 
-      // console.log(workbook);
+                ...item,
+              }));
 
-      // const sheetName = workbook.SheetNames[0];
+              setExcelData(data);
+            },
+            error: (err) => {
+              console.error("Error parsing XLSX file:", err);
+              notifyError("Error parsing XLSX file, please try again");
+            },
+          });
+        };
 
-      // if (!sheetName) {
-      //   throw new Error("No sheet found in the workbook.");
-      // }
-
-      // const sheet = workbook.Sheets[sheetName];
-
-      // console.log(sheet, "sheet");
-
-      // if (!sheet) {
-      //   throw new Error(`Sheet "${sheetName}" not found in the workbook.`);
-      // }
-
-      // const res = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-      // console.log("Excel data:", res);
-
-      // setExcelData(res);
-      // if (file?.format === "xlsx") {
-      // } else
-      if (file?.format === "text/csv") {
+        reader.readAsBinaryString(blob);
+      } else if (file?.format === "text/csv") {
         Papa.parse(data as any, {
           header: true,
           dynamicTyping: true,
           skipEmptyLines: true,
           complete: (result) => {
             const data = (result.data as any[]).map((item, index) => ({
-              id: index,
+              "no.": index + 1,
 
               ...item,
             }));
@@ -73,7 +73,8 @@ export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
             setCsvData(data);
           },
           error: (err) => {
-            console.error("Error parsing CSV:", err);
+            console.error("Error parsing CSV file:", err);
+            notifyError("Error parsing CSV file, please try again");
           },
         });
       }
@@ -86,11 +87,22 @@ export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
 
   const csvColumns =
     csvData && csvData.length > 0
-      ? Object.keys(csvData[0]).map((key) => ({ field: key, headerName: key }))
+      ? Object.keys(csvData[0]).map((key) => ({
+          field: key,
+          headerName: key,
+          minWidth: key === "no." ? 100 : 200,
+          flex: key === "no." ? undefined : 1,
+        }))
       : null;
+
   const excelColumns =
     excelData && excelData.length > 0
-      ? Object.keys(excelData[0]).map((key) => ({ field: key, headerName: key }))
+      ? Object.keys(excelData[0]).map((key) => ({
+          field: key,
+          headerName: key,
+          minWidth: key === "no." ? 50 : 200,
+          flex: key === "no." ? undefined : 1,
+        }))
       : null;
 
   return (
@@ -161,7 +173,6 @@ export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
 
                     URL.revokeObjectURL(url);
                   } else if (file?.format === "text/csv") {
-                    // Assuming `data` is a valid CSV file content
                     const blob = new Blob([data as BlobPart], { type: "text/csv" });
 
                     const url = URL.createObjectURL(blob);
@@ -188,6 +199,7 @@ export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
             <DataGrid
               rows={csvData || excelData || []}
               columns={csvColumns || excelColumns || []}
+              getRowId={(params) => params["no."]}
             />
           </>
         )}
