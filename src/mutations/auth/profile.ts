@@ -21,11 +21,20 @@ export function useEditProfile() {
 }
 
 export function useImageUpload() {
-  return useMutation(async (data: { image: File }) => {
-    const { data: response } = await axiosPrivate.postForm("/auth/profile-image-upload/", data);
+  const queryClient = useQueryClient();
 
-    return response;
-  });
+  return useMutation(
+    async (data: { image: File }) => {
+      const { data: response } = await axiosPrivate.postForm("/auth/profile-image-upload/", data);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries(["/auth/users/me/"]);
+      },
+    }
+  );
 }
 
 // function fileToBase64(file: File) {

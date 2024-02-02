@@ -5,7 +5,7 @@ import { useImageUpload } from "~/mutations/auth/profile";
 import { useCurrentUser } from "~/queries/user";
 import Modal from "./modal";
 import Button from "./button";
-import { notifyError } from "~/utils/toast";
+import { notifyError, notifySuccess } from "~/utils/toast";
 
 // Avatars
 import Lion from "~/assets/images/avatars/lion.png";
@@ -40,11 +40,12 @@ export default function SelectAvatarModal() {
   });
 
   useEffect(() => {
-    if (currentUser && !currentUser?.image_url) {
-      setOpen(true);
+    if (currentUser) {
+      if (currentUser.image_url === null) {
+        setOpen(true);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser?.image_url]);
+  }, [currentUser, setOpen]);
 
   function onClose() {
     setOpen(false);
@@ -54,7 +55,6 @@ export default function SelectAvatarModal() {
     <Modal
       muiModal={{
         open,
-        onClose,
       }}
       displayExitButton={false}
       innerContainer={{
@@ -105,6 +105,7 @@ export default function SelectAvatarModal() {
               const response = await uploadProfileImage.mutateAsync({ image: file });
 
               if (response) {
+                notifySuccess("Avatar successfully created");
                 onClose();
               }
             } catch (error) {
