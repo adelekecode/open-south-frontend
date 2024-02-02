@@ -79,6 +79,11 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
               <div className="grid grid-cols-3 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1 gap-4">
                 {organizations.map((item, index) => {
                   const isActive = organization?.id === item.id;
+                  const { logo, name, status } = item;
+
+                  if (status !== "approved") {
+                    return;
+                  }
 
                   return (
                     <button
@@ -93,12 +98,12 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
                       <div className="grid grid-cols-[50px,1fr] gap-4">
                         <figure className="w-full aspect-square p-1 border bg-white rounded-sm">
                           <img
-                            src={item.logo}
+                            src={logo}
                             alt="organization logo"
                             className="w-full h-full object-contain"
                           />
                         </figure>
-                        <p className="font-medium !text-xs text-start pt-2">{item.name}</p>
+                        <p className="font-medium !text-xs text-start pt-2">{name}</p>
                       </div>
                     </button>
                   );
