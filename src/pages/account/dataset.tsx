@@ -23,7 +23,7 @@ export default function Dataset() {
   });
 
   const { data, isLoading } = useUserDatasets(
-    useDebounce(search.trim()),
+    useDebounce(search).trim(),
     {
       status: filterBy.status as string,
     },
@@ -168,7 +168,7 @@ export default function Dataset() {
           <div className="flex items-center border-y p-4 py-4 border-info-100">
             <div className="flex items-center gap-4 h-10 w-full">
               <OutlinedInput
-                placeholder="Search for name..."
+                placeholder="Search for title..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"

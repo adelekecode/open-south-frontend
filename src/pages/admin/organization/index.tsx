@@ -15,6 +15,7 @@ import {
 import { GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
 import { twMerge } from "tailwind-merge";
+import { GoKebabHorizontal } from "react-icons/go";
 import DataGrid from "~/components/data-grid";
 import { useAdminOrganizations, useAdminOrganizationsIndicators } from "~/queries/organizations";
 import ApproveConfirmationModal from "./status-confirmation-modals/approve";
@@ -22,8 +23,8 @@ import RejectConfirmationModal from "./status-confirmation-modals/reject";
 import BlockConfirmationModal from "./active-confirmation-modals/block";
 import UnblockConfirmationModal from "./active-confirmation-modals/unblock";
 import DeleteConfirmationModal from "./delete-confirmation";
-import { GoKebabHorizontal } from "react-icons/go";
-import useAdminOrganizationStore from "~/store/admin-organization";
+import useAdminTableStore from "~/store/admin-table";
+import useDebounce from "~/hooks/debounce";
 
 type Modal = {
   open: boolean;
@@ -33,21 +34,11 @@ type Modal = {
 export default function Organization() {
   const navigate = useNavigate();
 
-  const { pagination, setPagination } = useAdminOrganizationStore();
-  const { page, pageSize } = pagination;
+  const { organization: organizationTable, setOrganization: setOrganizationTable } =
+    useAdminTableStore();
+  const { pagination, filterBy, search } = organizationTable;
 
   const [statusObj, setStatusObj] = useState<{ [key: string]: Organization["status"] }>({});
-  // const [page, setPage] = useState(1);
-  // const [pageSize, setPageSize] = useState(10);
-  const [filterBy, setFilterBy] = useState<{
-    status: "reject" | "approve" | "block" | "unblock" | "delete" | null;
-    isVerified: "true" | "false" | null;
-    isActive: "true" | "false" | null;
-  }>({
-    status: null,
-    isVerified: null,
-    isActive: null,
-  });
   const [approveModal, setApproveModal] = useState<Modal>({
     open: false,
     data: null,
@@ -74,11 +65,18 @@ export default function Organization() {
     return Boolean(anchorElObj[id]);
   }
 
+  const { data, isLoading } = useAdminOrganizations(
+    useDebounce(search).trim(),
+    {
+      status: filterBy.status as string,
+      isActive: filterBy.isActive as string,
+      isVerified: filterBy.isVerified as string,
+    },
+    {
+      ...pagination,
+    }
+  );
   const { data: indicatorData } = useAdminOrganizationsIndicators();
-  const { data, isLoading } = useAdminOrganizations(filterBy, {
-    page,
-    pageSize,
-  });
 
   const columns: GridColDef[] = [
     {
@@ -86,9 +84,10 @@ export default function Organization() {
       headerName: "NO.",
       minWidth: 100,
       renderCell: ({ api, row }) => {
+        const { page, pageSize } = pagination;
         const { getAllRowIds } = api;
 
-        return getAllRowIds().indexOf(row.id) + 1;
+        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
       },
     },
     {
@@ -337,12 +336,13 @@ export default function Organization() {
               <div>
                 <IconButton
                   size="small"
-                  onClick={(e) =>
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setAnchorElObj((prev) => ({
                       ...prev,
                       [row.id]: obj ? null : e.currentTarget,
-                    }))
-                  }
+                    }));
+                  }}
                 >
                   <GoKebabHorizontal className="rotate-90" />
                 </IconButton>
@@ -446,6 +446,13 @@ export default function Organization() {
               <div className="flex items-center gap-4 h-10 w-full">
                 <OutlinedInput
                   placeholder="Search for name..."
+                  value={search}
+                  onChange={(e) => {
+                    setOrganizationTable({
+                      ...organizationTable,
+                      search: e.target.value,
+                    });
+                  }}
                   className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
                 />
               </div>
@@ -458,10 +465,13 @@ export default function Organization() {
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setFilterBy((prev) => ({
-                      ...prev,
-                      status: chosenValue as typeof filterBy.status,
-                    }));
+                    setOrganizationTable({
+                      ...organizationTable,
+                      filterBy: {
+                        ...filterBy,
+                        status: chosenValue as typeof filterBy.status,
+                      },
+                    });
                   }}
                   displayEmpty
                 >
@@ -478,10 +488,13 @@ export default function Organization() {
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setFilterBy((prev) => ({
-                      ...prev,
-                      isVerified: chosenValue as typeof filterBy.isVerified,
-                    }));
+                    setOrganizationTable({
+                      ...organizationTable,
+                      filterBy: {
+                        ...filterBy,
+                        isVerified: chosenValue as typeof filterBy.isVerified,
+                      },
+                    });
                   }}
                   displayEmpty
                 >
@@ -497,10 +510,13 @@ export default function Organization() {
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setFilterBy((prev) => ({
-                      ...prev,
-                      isActive: chosenValue as typeof filterBy.isActive,
-                    }));
+                    setOrganizationTable({
+                      ...organizationTable,
+                      filterBy: {
+                        ...filterBy,
+                        isActive: chosenValue as typeof filterBy.isActive,
+                      },
+                    });
                   }}
                   displayEmpty
                 >
@@ -513,27 +529,29 @@ export default function Organization() {
               </div>
             </div>
           </div>
-          <div className="min-h-[410px] p-4">
+          <div className="min-h-[500px] p-4">
             <DataGrid
               className="!border-info-150"
               rows={data ? data.results : []}
               loading={isLoading}
               columns={columns}
-              rowCount={data?.count}
-              onPaginationModelChange={({ page, pageSize }) => {
-                setPagination({
-                  page,
-                  pageSize,
-                });
+              onRowClick={(params) => {
+                navigate(`./${params.id}`);
               }}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    page: !data?.count || data.count <= 0 ? 0 : page,
+              rowCount={data?.count || 0}
+              paginationModel={pagination}
+              onPaginationModelChange={({ page, pageSize }, { reason }) => {
+                if (!reason) return;
+
+                setOrganizationTable({
+                  ...organizationTable,
+                  pagination: {
+                    page,
                     pageSize,
                   },
-                },
+                });
               }}
+              paginationMode="server"
             />
           </div>
         </div>

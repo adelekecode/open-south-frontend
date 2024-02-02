@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import useAdminOrganizationStore from "~/store/admin-organization";
+import useAdminTableStore from "~/store/admin-table";
 import { axiosPrivate } from "~/utils/api";
 import { notifyError, notifySuccess } from "~/utils/toast";
 
@@ -117,9 +117,13 @@ export function useResendCode() {
 
 export function useChangeOrganizationStatus() {
   const queryClient = useQueryClient();
-  const { pagination } = useAdminOrganizationStore();
+  const { organization } = useAdminTableStore();
 
+  const { pagination, filterBy, search } = organization;
+  const { status, isVerified, isActive } = filterBy;
   const { page, pageSize } = pagination;
+
+  const newStatus = status === "approve" ? "approved" : status === "reject" ? "rejected" : status;
 
   return useMutation(
     async ({
@@ -137,13 +141,13 @@ export function useChangeOrganizationStatus() {
     },
     {
       onSuccess(data) {
+        queryClient.invalidateQueries([
+          `/admin/organisations/?search=${search}&status=${newStatus || ""}&verified=${isVerified || ""}&active=${isActive || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+        ]);
+
         if (typeof data.message === "string") {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
-
-        return queryClient.invalidateQueries([
-          `/admin/organisations/?limit=${pageSize}&offset=${(page - 1) * pageSize}`,
-        ]);
       },
       onError(error) {
         if (isAxiosError(error)) {
