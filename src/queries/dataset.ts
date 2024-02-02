@@ -11,11 +11,19 @@ export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<
 
 export function usePublicFilePreview(
   url: string,
+  type: string,
   options?: UseQueryOptions<any, unknown, unknown, [string]>
 ) {
   return useQuery([`${url}`], {
     queryFn: async () => {
-      const { data: response } = await axios.get(url);
+      const { data: response } = await axios.get(
+        url,
+        type === "xlsx"
+          ? {
+              responseType: "arraybuffer",
+            }
+          : {}
+      );
 
       return response;
     },
@@ -31,14 +39,28 @@ export function useAdminDatasets() {
   return useQuery<Dataset[]>([`/admin/datasets/`]);
 }
 
-export function useUserDatasets(pageSize: number = 10, page: number = 1) {
+export function useUserDatasets(
+  search = "",
+  filter: {
+    status: string | null;
+  } = {
+    status: null,
+  },
+  pagination: {
+    pageSize: number;
+    page: number;
+  }
+) {
+  const { pageSize, page } = pagination;
+  const { status } = filter;
+
   return useQuery<PaginationData<Dataset[]>>([
-    `/user/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    `/user/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
   ]);
 }
 
-export function useUserDatasetDetails(id: string) {
-  return useQuery<any>([`/user/datasets/${id}/`]);
+export function useUserDatasetDetails(id: string, options?: UseQueryOptions<Dataset>) {
+  return useQuery<Dataset>([`/user/datasets/${id}/`], options);
 }
 
 export function useUserOrganizationDatasets(
@@ -53,12 +75,53 @@ export function useUserOrganizationDatasets(
   );
 }
 
-export function usePublicUserDataset(
+export function useUserDatasetFiles(
   id: string,
-  options?: UseQueryOptions<PaginationData<CurrentUser[]>>
+  pagination: {
+    pageSize: number;
+    page: number;
+  },
+  options?: UseQueryOptions<PaginationData<Dataset["files"][]>>
 ) {
-  return useQuery<PaginationData<CurrentUser[]>>(
-    [`/public/user/pk/${id}/datasets/?key=public`],
+  const { pageSize, page } = pagination;
+
+  return useQuery<PaginationData<Dataset["files"][]>>(
+    [`/user/datasets/${id}/files/?limit=${pageSize}&offset=${page * pageSize}`],
     options
   );
+}
+
+export function usePublicUserDataset(
+  id: string,
+  pagination: {
+    pageSize: number;
+    page: number;
+  } = {
+    pageSize: 10,
+    page: 0,
+  },
+  options?: UseQueryOptions<PaginationData<Dataset[]>>
+) {
+  const { page, pageSize } = pagination;
+
+  return useQuery<PaginationData<Dataset[]>>(
+    [
+      `/public/user/pk/${id}/datasets/?key=public&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    ],
+    options
+  );
+}
+
+export function usePopularDatasets() {
+  return useQuery<
+    {
+      count: number;
+      created_at: string;
+      dataset_data: {
+        title: string;
+        slug: string;
+        publisher_data: Dataset["publisher_data"];
+      };
+    }[]
+  >([`/public/popular/dataset/?key=public`]);
 }

@@ -60,7 +60,7 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
               <p>{data.sha256 || "------"}</p>
             </div>
           </div>
-          {(data.file_url.endsWith(".xlsx") || data.file_url.endsWith(".csv")) && (
+          {(data.format === "xlsx" || data.format === "text/csv") && (
             <Button
               variant="outlined"
               color="info"

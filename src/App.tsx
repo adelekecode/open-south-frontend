@@ -39,7 +39,6 @@ import Partner from "./pages/partner";
 import { dashboardLoader } from "./utils/routes-addons/dashboard";
 import { appLoader } from "./utils/routes-addons/app";
 import Contact from "./pages/contact";
-import { organizationDetailsLoader } from "./utils/routes-addons/organization-details";
 import AppLoader from "./components/loader/app-loader";
 import UserRestricted from "./layouts/user-restricted";
 import AdminRestricted from "./layouts/admin-restricted";
@@ -210,11 +209,7 @@ const router = createBrowserRouter(
               <Route path="/categories" element={<Category />} />
               <Route path="/users/:id" element={<PublicProfile />} />
               <Route path="/organizations" element={<Organization />} />
-              <Route
-                path="/organizations/:slug"
-                element={<OrganizationDetails />}
-                loader={organizationDetailsLoader}
-              />
+              <Route path="/organizations/:slug" element={<OrganizationDetails />} />
               <Route path="/about" element={<About />} />
               <Route path="/news" element={<News />} />
               <Route path="/news/:slug" element={<NewsDetails />} />

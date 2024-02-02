@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
 
-function useCreateDataset() {
+export function useCreateDataset() {
   return useMutation(
     async (
       data: Record<
@@ -44,7 +44,15 @@ function useCreateDataset() {
       onError(error) {
         if (isAxiosError(error)) {
           if (error.response?.status === 400) {
-            notifyError("Error occured while creating dataset");
+            const data = error.response.data;
+
+            if (data) {
+              if (typeof data.error === "string") {
+                notifyError(data.error.charAt(0).toUpperCase() + data.error.slice(1));
+              }
+            } else {
+              notifyError("Error occured while creating dataset");
+            }
           } else {
             if (typeof error === "string") {
               notifyError(error);
@@ -56,7 +64,7 @@ function useCreateDataset() {
   );
 }
 
-function useCreateDatasetTags() {
+export function useCreateDatasetTags() {
   return useMutation(
     async ({ datasetId, tags }: { datasetId: string; tags: string[] }) => {
       const { data: response } = await axiosPrivate.post(`/datasets/tags/${datasetId}/`, {
@@ -81,7 +89,7 @@ function useCreateDatasetTags() {
   );
 }
 
-function useUploadDatasetFile() {
+export function useUploadDatasetFile() {
   return useMutation(
     async ({
       datasetId,
@@ -118,7 +126,7 @@ function useUploadDatasetFile() {
   );
 }
 
-function useDeleteDataset() {
+export function useDeleteDataset() {
   return useMutation(
     async (id: string) => {
       const { data: response } = await axiosPrivate.delete(`/dataset/${id}/`);
@@ -144,7 +152,33 @@ function useDeleteDataset() {
   );
 }
 
-function useDatasetView() {
+export function useDeleteDatasetFile() {
+  return useMutation(
+    async (id: string) => {
+      const { data: response } = await axiosPrivate.delete(`/file/${id}`);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        notifySuccess("File successfully deleted");
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 404) {
+            notifyError("File not found");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export function useDatasetView() {
   return useMutation(
     async (id: string) => {
       const { data: response } = await axiosPrivate.post(`/datasets/views/${id}/`);
@@ -167,7 +201,7 @@ function useDatasetView() {
   );
 }
 
-function useChangeDatasetStatus() {
+export function useChangeDatasetStatus() {
   return useMutation(
     async ({ id, action }: { id: string; action: Dataset["status"] }) => {
       const response = await axiosPrivate.post(`/admin/datasets/pk/${id}/actions/${action}/`);
@@ -192,12 +226,3 @@ function useChangeDatasetStatus() {
     }
   );
 }
-
-export {
-  useDeleteDataset,
-  useCreateDataset,
-  useCreateDatasetTags,
-  useUploadDatasetFile,
-  useDatasetView,
-  useChangeDatasetStatus,
-};

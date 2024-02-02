@@ -29,7 +29,7 @@ export default function Success() {
           }}
           className="w-fit !py-2 !text-xs"
         >
-          View Dataset
+          View Datasets
         </Button>
       </div>
     </div>

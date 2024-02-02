@@ -49,10 +49,14 @@ type Dataset = {
   publisher_data: {
     email: string;
     first_name: string;
+    name: string;
+    logo_url;
     last_name: string;
-    role: "user";
+    role: string;
+    slug: string;
     image_url: string;
-    type: "individual" | "organization";
+    type: "individual" | "organisation";
+    id: string;
   };
   geojson: {
     country: string;

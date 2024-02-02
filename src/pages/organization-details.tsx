@@ -7,20 +7,20 @@ import dataset from "~/utils/data/dataset.json";
 import NotFound from "./404";
 import Button from "~/components/button";
 import { useRequestToJoinOrganization } from "~/mutations/organization";
-// import { usePublicOrganizationDetails } from "~/queries/organizations";
+import { usePublicOrganizationDetails } from "~/queries/organizations";
+import moment from "moment";
 
 export default function OrganizationDetails() {
   const navigate = useNavigate();
   const { slug } = useParams();
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
-  // const { data } = usePublicOrganizationDetails(slug || "");
+  const { data, isLoading } = usePublicOrganizationDetails(slug || "", {
+    enabled: !!slug,
+  });
 
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>([`/auth/users/me/`]);
-  const data = queryClient.getQueryData<Organization>([
-    `/public/organisations/${slug}/?key=public`,
-  ]);
 
   const requestToJoinOrganization = useRequestToJoinOrganization();
 
@@ -37,7 +37,35 @@ export default function OrganizationDetails() {
     }
   }, [data?.description]);
 
-  if (!data) {
+  if (isLoading) {
+    return (
+      <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 pb-12 tablet:px-6 largeMobile:!px-4">
+        <div className="animate-pulse bg-gray-200 h-6 w-[30%] rounded-sm" />
+        <div className="flex flex-col gap-1">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index + 1} className="animate-pulse bg-gray-200 h-4 rounded-sm" />
+          ))}
+          <div className="animate-pulse bg-gray-200 h-4 rounded-sm w-[45%]" />
+        </div>
+        <div className="flex flex-col gap-4 w-full">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index + 1}
+              className={`rounded-sm flex gap-4 items-center ${index < 2 && "border-b"} pb-4`}
+            >
+              <div className="animate-pulse bg-gray-200 rounded-sm w-[35px] aspect-square" />
+              <div className="flex flex-col gap-2 w-full">
+                <div className="animate-pulse bg-gray-200 rounded-sm h-8 w-[55%]" />
+                <div className="animate-pulse bg-gray-200 rounded-sm h-4 w-[20%]" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+    );
+  }
+
+  if (!isLoading && !data) {
     return <NotFound />;
   }
 
@@ -97,31 +125,13 @@ export default function OrganizationDetails() {
                     <figure className="w-full border border-zinc-300 bg-white aspect-square">
                       <img
                         className="w-full h-full object-contain"
-                        src={organization ? organization.image : user ? user.image : ""}
+                        src={organization ? organization.image : user ? user.image : ""} //? what will show here? the organization image????
                         alt="organization or profile photo"
                         loading="lazy"
                       />
                     </figure>
                     <div className="flex flex-col gap-2">
                       <h1 className="text-sm font-semibold text-start capitalize">{title}</h1>
-                      <p className="text-start text-xs">
-                        <span className="pr-1">by</span>
-                        {organization ? (
-                          <Link
-                            className="text-start text-primary-600 capitalize hover:underline relative z-10"
-                            to={`/organizations/${organization.slug}`}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                          >
-                            {organization.name}
-                          </Link>
-                        ) : user ? (
-                          <span className="capitalize">{`${user.firstName} ${user.lastName}`}</span>
-                        ) : (
-                          "-------"
-                        )}
-                      </p>
                     </div>
                   </button>
                 );
@@ -133,15 +143,15 @@ export default function OrganizationDetails() {
             <div className="flex items-start gap-16 [&>div]:flex [&>div]:flex-col [&>div>p]:text-sm [&>div>p]:font-medium [&>div>h3]:text-4xl [&>div>h3]:font-bold">
               <div>
                 <p>Datasets</p>
-                <h3>317</h3>
+                <h3>{data.data_count ?? "----"}</h3>
               </div>
               <div>
                 <p>Views</p>
-                <h3>4.3M</h3>
+                <h3>{data.views_count ?? "----"}</h3>
               </div>
               <div>
                 <p>Downloads</p>
-                <h3>1.2M</h3>
+                <h3>{data.downloads_count ?? "----"}</h3>
               </div>
             </div>
           </div>
@@ -149,16 +159,14 @@ export default function OrganizationDetails() {
             <h2 className="font-semibold text-base">Technical Details</h2>
             <div className="grid gap-8 grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 [&>div]:flex [&>div]:flex-col [&>div>h3]:font-semibold [&>div>h3]:text-sm">
               <div>
-                <h3>Latest dataset update</h3>
-                <p>November 29, 2023</p>
-              </div>
-              <div>
                 <h3>Organization creation date</h3>
-                <p>April 17, 2014</p>
+                <p>
+                  {data.created_at ? moment(data.created_at).format("MMMM D, YYYY") : "--------"}
+                </p>
               </div>
               <div>
                 <h3>ID</h3>
-                <p>534fff94a3a7292c64a77fc1</p>
+                <p>{data.id || "--------"}</p>
               </div>
             </div>
           </div>

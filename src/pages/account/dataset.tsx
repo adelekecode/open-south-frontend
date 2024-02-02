@@ -1,17 +1,41 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { OutlinedInput } from "@mui/material";
+import { MenuItem, OutlinedInput, Select } from "@mui/material";
 import { twMerge } from "tailwind-merge";
 import { GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useUserDatasets } from "~/queries/dataset";
+import useDebounce from "~/hooks/debounce";
 
 export default function Dataset() {
   const navigate = useNavigate();
 
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [search, setSearch] = useState("");
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 10,
+    page: 0,
+  });
+  const [filterBy, setFilterBy] = useState<{
+    status: "pending" | "rejected" | "published" | "further_review" | "unpublished" | null;
+  }>({
+    status: null,
+  });
+
+  const { data, isLoading } = useUserDatasets(
+    useDebounce(search.trim()),
+    {
+      status: filterBy.status as string,
+    },
+    {
+      page: paginationModel.page,
+      pageSize: paginationModel.pageSize,
+    }
+  );
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   const columns: GridColDef[] = [
     {
@@ -19,9 +43,10 @@ export default function Dataset() {
       headerName: "NO.",
       minWidth: 10,
       renderCell: ({ api, row }) => {
+        const { page, pageSize } = paginationModel;
         const { getAllRowIds } = api;
 
-        return getAllRowIds().indexOf(row.id) + 1;
+        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
       },
     },
     {
@@ -29,34 +54,6 @@ export default function Dataset() {
       headerName: "TITLE",
       flex: 1,
       minWidth: 200,
-    },
-    {
-      field: "created_at",
-      headerName: "CREATED AT",
-      flex: 1,
-      minWidth: 150,
-      valueFormatter: ({ value }) => {
-        return moment(value).format("Do MMM, YYYY");
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "updated_at",
-      headerName: "UPDATED AT",
-      minWidth: 150,
-      flex: 1,
-      valueFormatter: ({ value }) => {
-        return moment(value).fromNow();
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      align: "center",
-      headerAlign: "center",
     },
     {
       field: "views",
@@ -81,6 +78,36 @@ export default function Dataset() {
       },
       sortComparator: (v1, v2) => {
         return v1 - v2;
+      },
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "created_at",
+      headerName: "CREATED AT",
+      flex: 1,
+      minWidth: 150,
+      valueFormatter: ({ value }) => {
+        return moment(value).format("Do MMM, YYYY");
+      },
+      sortComparator: (v1, v2) => {
+        return new Date(v1).getTime() - new Date(v2).getTime();
+      },
+      align: "center",
+      headerAlign: "center",
+    },
+    {
+      field: "updated_at",
+      headerName: "UPDATED AT",
+      minWidth: 150,
+      flex: 1,
+      valueFormatter: ({ value }) => {
+        const date = moment(value).fromNow();
+
+        return date.charAt(0).toUpperCase() + date.slice(1);
+      },
+      sortComparator: (v1, v2) => {
+        return new Date(v1).getTime() - new Date(v2).getTime();
       },
       align: "center",
       headerAlign: "center",
@@ -131,24 +158,46 @@ export default function Dataset() {
     },
   ];
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, []);
-
-  const { data, isLoading } = useUserDatasets(pageSize, page);
-
   return (
     <>
-      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-8 w-full">
-        <header className="flex items-center gap-8 justify-between w-full">
-          <h1 className="text-2xl largeMobile:text-xl font-semibold">Datasets</h1>
-        </header>
-        <div className="flex flex-col gap-4">
-          <OutlinedInput
-            placeholder="Search..."
-            className="w-[500px] tablet:w-[80%] [@media(max-width:500px)]:!w-full self-end"
-          />
-          <div className="min-h-[500px]">
+      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-semibold largeMobile:text-xl">Datasets</h1>
+        </div>
+        <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
+          <div className="flex items-center border-y p-4 py-4 border-info-100">
+            <div className="flex items-center gap-4 h-10 w-full">
+              <OutlinedInput
+                placeholder="Search for name..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
+              />
+              <Select
+                className="w-[200px] !text-sm !py-0 !px-0 !h-full"
+                value={filterBy.status || ""}
+                onChange={async (e) => {
+                  const chosenValue = e.target.value;
+
+                  setFilterBy((prev) => ({
+                    ...prev,
+                    status: chosenValue as typeof filterBy.status,
+                  }));
+                }}
+                displayEmpty
+              >
+                <MenuItem value="" className="placeholder">
+                  <span className="text-info-600">Filter by status</span>
+                </MenuItem>
+                <MenuItem value="pending">Pending</MenuItem>
+                <MenuItem value="rejected">Rejected</MenuItem>
+                <MenuItem value="published">Published</MenuItem>
+                <MenuItem value="unpublished">Unpublished</MenuItem>
+                <MenuItem value="further_review">Further Review</MenuItem>
+              </Select>
+            </div>
+          </div>
+          <div className="min-h-[500px] p-4">
             <DataGrid
               rows={data ? data.results : []}
               loading={isLoading}
@@ -157,19 +206,17 @@ export default function Dataset() {
               }}
               getRowClassName={() => `cursor-pointer`}
               columns={columns}
-              rowCount={data?.count}
-              onPaginationModelChange={({ page, pageSize }) => {
-                setPage(page);
-                setPageSize(pageSize);
+              rowCount={data?.count || 0}
+              paginationModel={paginationModel}
+              onPaginationModelChange={({ page, pageSize }, { reason }) => {
+                if (!reason) return;
+
+                setPaginationModel({
+                  page,
+                  pageSize,
+                });
               }}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    page,
-                    pageSize,
-                  },
-                },
-              }}
+              paginationMode="server"
             />
           </div>
         </div>

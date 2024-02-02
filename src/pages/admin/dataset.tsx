@@ -181,7 +181,9 @@ export default function Dataset() {
       headerAlign: "center",
       align: "center",
       valueFormatter: ({ value }) => {
-        return moment(value).fromNow();
+        const date = moment(value).fromNow();
+
+        return date.charAt(0).toUpperCase() + date.slice(1);
       },
       sortComparator: (v1, v2) => {
         return new Date(v1).getTime() - new Date(v2).getTime();

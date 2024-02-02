@@ -50,7 +50,7 @@ export default function DataGrid({
         ...slots,
       }}
       initialState={{
-        pagination: { paginationModel: { pageSize: 10 } },
+        pagination: { paginationModel: { pageSize: 10, page: 0 } },
         ...initialState,
       }}
       pageSizeOptions={pageSizeOptions}

@@ -4,136 +4,140 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { IoCloudDownloadOutline, IoGridOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import { GoOrganization } from "react-icons/go";
+import { twMerge } from "tailwind-merge";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
-// import data from "~/utils/data/dataset.json";
 import Button from "~/components/button";
 import TopViewers from "./top-viewers";
 import { useUserDatasets } from "~/queries/dataset";
-import { twMerge } from "tailwind-merge";
+
+const columns: GridColDef[] = [
+  {
+    field: "id",
+    headerName: "NO.",
+    minWidth: 10,
+    renderCell: ({ api, row }) => {
+      const { getAllRowIds } = api;
+
+      return getAllRowIds().indexOf(row.id) + 1;
+    },
+  },
+  {
+    field: "title",
+    headerName: "TITLE",
+    flex: 1,
+    minWidth: 200,
+  },
+  {
+    field: "created_at",
+    headerName: "CREATED AT",
+    flex: 1,
+    minWidth: 150,
+    valueFormatter: ({ value }) => {
+      return moment(value).format("Do MMM, YYYY");
+    },
+    sortComparator: (v1, v2) => {
+      return new Date(v1).getTime() - new Date(v2).getTime();
+    },
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "updated_at",
+    headerName: "UPDATED AT",
+    minWidth: 150,
+    flex: 1,
+    valueFormatter: ({ value }) => {
+      const date = moment(value).fromNow();
+
+      return date.charAt(0).toUpperCase() + date.slice(1);
+    },
+    sortComparator: (v1, v2) => {
+      return new Date(v1).getTime() - new Date(v2).getTime();
+    },
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "views",
+    headerName: "VIEWS",
+    flex: 1,
+    minWidth: 70,
+    valueFormatter: ({ value }) => {
+      return value.count;
+    },
+    sortComparator: (v1, v2) => {
+      return v1 - v2.count;
+    },
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "files_count",
+    headerName: "FILES",
+    minWidth: 70,
+    valueFormatter: ({ value }) => {
+      return value;
+    },
+    sortComparator: (v1, v2) => {
+      return v1 - v2;
+    },
+    align: "center",
+    headerAlign: "center",
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    flex: 1,
+    renderCell: ({ value }) => {
+      const obj: {
+        element: any;
+        styles: string;
+      } = {
+        element: "-------",
+        styles: "py-1 px-2 rounded-full text-xs",
+      };
+
+      if (value === "pending") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-orange-500 border border-orange-500`)}>Pending</p>
+        );
+      } else if (value === "published") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>Published</p>
+        );
+      } else if (value === "rejected") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>Rejected</p>
+        );
+      } else if (value === "further_review") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
+            Further Review
+          </p>
+        );
+      }
+
+      return obj.element;
+    },
+    sortable: false,
+    minWidth: 130,
+    align: "center",
+    headerAlign: "center",
+  },
+];
 
 export default function Dashboard() {
   const navigate = useNavigate();
 
-  const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "NO.",
-      minWidth: 10,
-      renderCell: ({ api, row }) => {
-        const { getAllRowIds } = api;
+  const paginationModel = {
+    pageSize: 10,
+    page: 0,
+  };
 
-        return getAllRowIds().indexOf(row.id) + 1;
-      },
-    },
-    {
-      field: "title",
-      headerName: "TITLE",
-      flex: 1,
-      minWidth: 200,
-    },
-    {
-      field: "created_at",
-      headerName: "CREATED AT",
-      flex: 1,
-      minWidth: 150,
-      valueFormatter: ({ value }) => {
-        return moment(value).format("Do MMM, YYYY");
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "updated_at",
-      headerName: "UPDATED AT",
-      minWidth: 150,
-      flex: 1,
-      valueFormatter: ({ value }) => {
-        return moment(value).fromNow();
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "views",
-      headerName: "VIEWS",
-      flex: 1,
-      minWidth: 70,
-      valueFormatter: ({ value }) => {
-        return value.count;
-      },
-      sortComparator: (v1, v2) => {
-        return v1 - v2.count;
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "files_count",
-      headerName: "FILES",
-      minWidth: 70,
-      valueFormatter: ({ value }) => {
-        return value;
-      },
-      sortComparator: (v1, v2) => {
-        return v1 - v2;
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      renderCell: ({ value }) => {
-        const obj: {
-          element: any;
-          styles: string;
-        } = {
-          element: "-------",
-          styles: "py-1 px-2 rounded-full text-xs",
-        };
-
-        if (value === "pending") {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-orange-500 border border-orange-500`)}>
-              Pending
-            </p>
-          );
-        } else if (value === "published") {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>
-              Published
-            </p>
-          );
-        } else if (value === "rejected") {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>Rejected</p>
-          );
-        } else if (value === "further_review") {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
-              Further Review
-            </p>
-          );
-        }
-
-        return obj.element;
-      },
-      sortable: false,
-      minWidth: 130,
-      align: "center",
-      headerAlign: "center",
-    },
-  ];
-
-  const { data: datasets, isLoading: isDatasetsLoading } = useUserDatasets();
+  const { data: datasets, isLoading: isDatasetsLoading } = useUserDatasets(undefined, undefined, {
+    ...paginationModel,
+  });
 
   return (
     <>
