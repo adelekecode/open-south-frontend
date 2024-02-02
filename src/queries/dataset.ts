@@ -35,13 +35,26 @@ export function useAdminDatasetDetails(id: string) {
   return useQuery<any>([`/datasets/${id}/`]);
 }
 
-export function useAdminDatasets() {
-  return useQuery<Dataset[]>([`/admin/datasets/`]);
+export function useAdminDatasets(
+  search = "",
+  filterBy: {
+    status: string | null;
+  } = {
+    status: null,
+  },
+  pagination: { pageSize: number; page: number }
+) {
+  const { pageSize, page } = pagination;
+  const { status } = filterBy;
+
+  return useQuery<PaginationData<Dataset[]>>([
+    `/admin/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+  ]);
 }
 
 export function useUserDatasets(
   search = "",
-  filter: {
+  filterBy: {
     status: string | null;
   } = {
     status: null,
@@ -52,7 +65,7 @@ export function useUserDatasets(
   }
 ) {
   const { pageSize, page } = pagination;
-  const { status } = filter;
+  const { status } = filterBy;
 
   return useQuery<PaginationData<Dataset[]>>([
     `/user/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,

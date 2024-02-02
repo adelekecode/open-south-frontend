@@ -16,16 +16,50 @@ import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useAdminDatasets } from "~/queries/dataset";
 import { useChangeDatasetStatus } from "~/mutations/dataset";
+import DeleteConfirmationModal from "./delete-confirmation";
+import ApproveConfirmationModal from "./status-confirmation-modals/approve";
+import RejectConfirmationModal from "./status-confirmation-modals/reject";
+import useDebounce from "~/hooks/debounce";
+import useAdminTableStore from "~/store/admin-table";
+
+type Modal = {
+  open: boolean;
+  data: Dataset | null;
+};
 
 export default function Dataset() {
   const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const { dataset: datasetTable, setDataset: setDatasetTable } = useAdminTableStore();
+  const { pagination, filterBy, search } = datasetTable;
+  const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
   const [statusObj, setStatusObj] = useState<{ [key: string]: Dataset["status"] }>({});
+  const [approveModal, setApproveModal] = useState<Modal>({
+    open: false,
+    data: null,
+  });
+  const [rejectModal, setRejectModal] = useState<Modal>({
+    open: false,
+    data: null,
+  });
+  const [deleteModal, setDeleteModal] = useState<Modal>({
+    open: false,
+    data: null,
+  });
 
-  const dropdownDisplay = Boolean(anchorEl);
+  function dropdownDisplay(id: string) {
+    return Boolean(anchorElObj[id]);
+  }
 
-  const { data, isLoading } = useAdminDatasets();
+  const { data, isLoading } = useAdminDatasets(
+    useDebounce(search).trim(),
+    {
+      status: filterBy.status as string,
+    },
+    {
+      ...pagination,
+    }
+  );
   const changeDatasetStatus = useChangeDatasetStatus();
 
   const columns: GridColDef[] = [
@@ -34,9 +68,10 @@ export default function Dataset() {
       headerName: "NO.",
       minWidth: 10,
       renderCell: ({ api, row }) => {
+        const { page, pageSize } = pagination;
         const { getAllRowIds } = api;
 
-        return getAllRowIds().indexOf(row.id) + 1;
+        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
       },
     },
     {
@@ -113,7 +148,10 @@ export default function Dataset() {
     {
       field: "status",
       headerName: "STATUS",
-      width: 150,
+      minWidth: 180,
+      align: "center",
+      headerAlign: "center",
+      flex: 1,
       renderCell: ({ value, row }) => {
         return (
           <Select
@@ -197,30 +235,51 @@ export default function Dataset() {
       flex: 1,
       headerAlign: "center",
       align: "center",
-      renderCell: () => {
+      sortable: false,
+      renderCell: ({ row }) => {
+        const obj = anchorElObj[row.id];
+
         return (
-          <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+          <ClickAwayListener
+            onClickAway={() =>
+              setAnchorElObj((prev) => ({
+                ...prev,
+                [row.id]: null,
+              }))
+            }
+          >
             <div>
               <IconButton
                 size="small"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setAnchorEl(anchorEl ? null : e.currentTarget);
+                  setAnchorElObj((prev) => ({
+                    ...prev,
+                    [row.id]: obj ? null : e.currentTarget,
+                  }));
                 }}
               >
                 <GoKebabHorizontal className="rotate-90" />
               </IconButton>
-              <Popper transition open={dropdownDisplay} anchorEl={anchorEl} className="!mt-2">
+              <Popper transition open={dropdownDisplay(row.id)} anchorEl={obj} className="!mt-2">
                 {({ TransitionProps }) => (
                   <Fade {...TransitionProps} timeout={200}>
-                    <Paper className="flex flex-col [&>button]:p-4 [&>button]:text-sm [&>button]:py-3 overflow-hidden relative divide-y !shadow">
+                    <Paper className="flex flex-col [&>button]:p-4 [&>button]:text-xs [&>button]:py-3 overflow-hidden relative divide-y !shadow">
                       <button
                         className="hover:bg-info-100"
                         onClick={() => {
-                          setAnchorEl(null);
+                          setDeleteModal({
+                            open: true,
+                            data: row,
+                          });
+
+                          setAnchorElObj((prev) => ({
+                            ...prev,
+                            [row.id]: null,
+                          }));
                         }}
                       >
-                        block
+                        delete
                       </button>
                     </Paper>
                   </Fade>
@@ -239,28 +298,108 @@ export default function Dataset() {
 
   return (
     <>
-      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-8 w-full">
-        <header className="flex items-center gap-8 justify-between w-full">
-          <h1 className="text-2xl largeMobile:text-xl font-semibold">Datasets</h1>
-        </header>
-        <div className="flex flex-col gap-4">
-          <OutlinedInput
-            placeholder="Search..."
-            className="w-[500px] tablet:w-[80%] [@media(max-width:500px)]:!w-full self-end"
-          />
-          <div className="min-h-[500px]">
+      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-semibold largeMobile:text-xl">Datasets</h1>
+        </div>
+        <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
+          <div className="flex items-center border-y p-4 py-4 border-info-100">
+            <div className="flex items-center gap-4 h-10 w-full">
+              <OutlinedInput
+                placeholder="Search for title..."
+                value={search}
+                onChange={(e) => {
+                  setDatasetTable({
+                    ...datasetTable,
+                    search: e.target.value,
+                  });
+                }}
+                className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
+              />
+              <Select
+                className="w-[200px] !text-sm !py-0 !px-0 !h-full"
+                value={filterBy.status || ""}
+                onChange={async (e) => {
+                  const chosenValue = e.target.value;
+
+                  setDatasetTable({
+                    ...datasetTable,
+                    filterBy: {
+                      ...filterBy,
+                      status: chosenValue as typeof filterBy.status,
+                    },
+                  });
+                }}
+                displayEmpty
+              >
+                <MenuItem value="" className="placeholder">
+                  <span className="text-info-600">Filter by status</span>
+                </MenuItem>
+                <MenuItem value="pending">Pending</MenuItem>
+                <MenuItem value="rejected">Rejected</MenuItem>
+                <MenuItem value="published">Published</MenuItem>
+                <MenuItem value="unpublished">Unpublished</MenuItem>
+                <MenuItem value="further_review">Further Review</MenuItem>
+              </Select>
+            </div>
+          </div>
+          <div className="min-h-[500px] p-4">
             <DataGrid
-              rows={data ? data : []}
+              rows={data ? data.results : []}
               onRowClick={(params) => {
                 navigate(`./${params.id}`);
               }}
               loading={isLoading}
               getRowClassName={() => `cursor-pointer`}
               columns={columns}
+              rowCount={data?.count || 0}
+              paginationModel={pagination}
+              onPaginationModelChange={({ page, pageSize }, { reason }) => {
+                if (!reason) return;
+
+                setDatasetTable({
+                  ...datasetTable,
+                  pagination: {
+                    page,
+                    pageSize,
+                  },
+                });
+              }}
+              paginationMode="server"
             />
           </div>
         </div>
       </main>
+      <ApproveConfirmationModal
+        open={approveModal.open}
+        onClose={() => {
+          setApproveModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={approveModal.data as Dataset}
+      />
+      <RejectConfirmationModal
+        open={rejectModal.open}
+        onClose={() => {
+          setRejectModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={rejectModal.data as Dataset}
+      />
+      <DeleteConfirmationModal
+        open={deleteModal.open}
+        onClose={() => {
+          setDeleteModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={deleteModal.data as Dataset}
+      />
     </>
   );
 }

@@ -1,7 +1,8 @@
 import { isAxiosError } from "axios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
+import useAdminTableStore from "~/store/admin-table";
 
 export function useCreateDataset() {
   return useMutation(
@@ -202,14 +203,24 @@ export function useDatasetView() {
 }
 
 export function useChangeDatasetStatus() {
+  const queryClient = useQueryClient();
+  const { dataset } = useAdminTableStore();
+
+  const { pagination, filterBy, search } = dataset;
+  const { pageSize, page } = pagination;
+  const { status } = filterBy;
+
   return useMutation(
-    async ({ id, action }: { id: string; action: Dataset["status"] }) => {
+    async ({ id, action }: { id: string; action: Dataset["status"] | "delete" }) => {
       const response = await axiosPrivate.post(`/admin/datasets/pk/${id}/actions/${action}/`);
 
       return response;
     },
     {
       onSuccess: () => {
+        queryClient.invalidateQueries([
+          `/admin/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+        ]);
         notifySuccess("Successfully changed dataset status");
       },
       onError(error) {
