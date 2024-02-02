@@ -1,25 +1,42 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Pagination } from "@mui/material";
 import moment from "moment";
 import Seo from "~/components/seo";
 import { usePublicProfile } from "~/queries/user";
 import NotFound from "./404";
-import { usePublicDatasets } from "~/queries/dataset";
+import { usePublicUserDataset } from "~/queries/dataset";
 import NoData from "~/components/no-data";
-import { Pagination } from "@mui/material";
 
 export default function PublicProfile() {
   const { id } = useParams();
 
   const navigate = useNavigate();
 
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize: 9,
+    page: 0,
+  });
   const { data, isLoading } = usePublicProfile(id || "", {
     enabled: !!id,
   });
-  const { data: dataset, isLoading: isLoadingDataset } = usePublicDatasets(); //? change this to user dataset
+  const { data: dataset, isLoading: isLoadingDataset } = usePublicUserDataset(
+    id || "",
+    {
+      ...paginationModel,
+    },
+    {
+      enabled: !!id,
+    }
+  );
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   if (isLoading) {
     return (
-      <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 pb-12 tablet:px-6 largeMobile:!px-4">
+      <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-8 pb-12 tablet:px-6 largeMobile:!px-4">
         <div className="animate-pulse bg-gray-200 h-6 w-[30%] rounded-sm" />
         <div className="flex flex-col gap-1">
           {Array.from({ length: 4 }).map((_, index) => (
@@ -83,11 +100,23 @@ export default function PublicProfile() {
               <h2 className="font-semibold text-base">Datasets</h2>
             </div>
             {isLoadingDataset ? (
-              <div></div>
-            ) : dataset && dataset.length > 0 ? (
+              <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
+                {Array.from({ length: 9 }).map((_, index) => (
+                  <div
+                    className="grid grid-cols-[5rem,1fr] gap-6 border-[1.5px] border-info-200 p-6"
+                    key={index + 1}
+                  >
+                    <div className="w-full aspect-square animate-pulse bg-info-200"></div>
+                    <div className="grid grid-rows-[2rem] gap-2">
+                      <span className="w-full h-full animate-pulse bg-info-200"></span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : dataset?.results && dataset.results.length > 0 ? (
               <>
                 <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
-                  {dataset.slice(0, 9).map((item, index) => {
+                  {dataset.results.slice(0, 9).map((item, index) => {
                     const { slug, title, publisher_data } = item;
                     const { image_url } = publisher_data;
 
@@ -119,7 +148,19 @@ export default function PublicProfile() {
                   })}
                 </div>
                 <div className="flex items-center justify-center mt-4">
-                  <Pagination count={10} variant="outlined" shape="rounded" />
+                  <Pagination
+                    // count={9}
+
+                    variant="outlined"
+                    shape="rounded"
+                    page={paginationModel.page}
+                    onChange={(_, value) => {
+                      setPaginationModel((prev) => ({
+                        ...prev,
+                        page: value,
+                      }));
+                    }}
+                  />
                 </div>
               </>
             ) : (

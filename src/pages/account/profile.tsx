@@ -38,15 +38,17 @@ export default function Profile() {
     <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold largeMobile:text-xl">Edit Profile</h1>
-        <Button
-          className="!py-2 !px-3 !text-xs"
-          variant="outlined"
-          onClick={() => {
-            navigate(`/users/${currentUser?.id}`);
-          }}
-        >
-          View Profile
-        </Button>
+        {currentUser?.role === "user" && (
+          <Button
+            className="!py-2 !px-3 !text-xs"
+            variant="outlined"
+            onClick={() => {
+              navigate(`/users/${currentUser?.id}`);
+            }}
+          >
+            View Public Profile
+          </Button>
+        )}
       </div>
       <div className="bg-white w-full border border-info-100 p-6 rounded-md">
         <Formik
@@ -54,7 +56,7 @@ export default function Profile() {
             firstName: currentUser?.first_name || "",
             lastName: currentUser?.last_name || "",
             email: currentUser?.email || "",
-            aboutMe: "",
+            aboutMe: currentUser?.bio || "",
           }}
           validateOnBlur={false}
           validationSchema={validationSchema}
