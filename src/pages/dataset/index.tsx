@@ -106,7 +106,7 @@ export default function Dataset() {
                 <label htmlFor="tag">Tags</label>
                 <AutocompleteInput
                   id="tag"
-                  options={tags || ([] as Dataset["tags_data"])}
+                  options={tags?.results || ([] as Dataset["tags_data"])}
                   getOptionLabel={(opt) => opt.name ?? opt}
                   inputParams={{
                     placeholder: "All Tags",
@@ -114,7 +114,7 @@ export default function Dataset() {
                   loading={isLoadingTags}
                   value={
                     searchParams.get("tag") !== null
-                      ? tags?.find(
+                      ? tags?.results?.find(
                           (item) =>
                             slugify(item.name, {
                               lower: true,
