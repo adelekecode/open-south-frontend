@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Pagination } from "@mui/material";
+import { Avatar, Pagination } from "@mui/material";
+import { IoPerson } from "react-icons/io5";
 import moment from "moment";
 import { stripHtml } from "string-strip-html";
+import slugify from "slugify";
 import Seo from "~/components/seo";
 import { useDatasetView } from "~/mutations/dataset";
 import File from "./file";
@@ -132,24 +134,38 @@ export default function DatasetDetails() {
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">Produced By</h3>
           <div className="flex items-center gap-3">
-            <figure className="border border-zinc-300 w-[3.5rem] aspect-square bg-white p-1">
-              <img
-                className="w-full h-full object-contain"
-                src={data.publisher_data?.image_url || ""}
-                alt="organization or profile photo"
-              />
-            </figure>
+            {data.publisher_data?.image_url || data.publisher_data?.logo_url ? (
+              <figure className="border border-zinc-300 w-[3.5rem] aspect-square bg-white p-1">
+                <img
+                  className="w-full h-full object-contain"
+                  src={data.publisher_data.image_url || data.publisher_data.logo_url || ""}
+                  alt="organization or profile photo"
+                />
+              </figure>
+            ) : (
+              <Avatar variant="square" className="!w-[3.5rem] !h-[3.5rem]">
+                <IoPerson className={`text-3xl`} />
+              </Avatar>
+            )}
             <Link
-              className="w-fit text-start text-primary-600 capitalize hover:underline relative z-10"
-              // to={`/organizations/${data?.publisher_data.slug}`}
-              to={""}
-              // onClick={(e) => {
-              //   e.stopPropagation();
-              // }}
+              className="text-primary-600 capitalize hover:underline relative z-10"
+              to={
+                data.publisher_data.type === "organisation"
+                  ? `/organizations/${data.publisher_data.slug}`
+                  : data.publisher_data.type === "individual"
+                    ? `/users/${data.publisher_data.id}`
+                    : ""
+              }
             >
-              {`${data.publisher_data?.first_name || "--"} ${
-                data.publisher_data?.last_name || "--"
-              }`}
+              {data.publisher_data.type === "organisation" ? (
+                <span>{data.publisher_data.name}</span>
+              ) : data.publisher_data.type === "individual" ? (
+                <span>
+                  {`${data.publisher_data?.first_name || "--"} ${data.publisher_data?.last_name || "--"}`}
+                </span>
+              ) : (
+                "-------"
+              )}
             </Link>
           </div>
         </div>
@@ -164,7 +180,11 @@ export default function DatasetDetails() {
                   to={{
                     pathname: "/datasets",
                     search: `?${new URLSearchParams({
-                      tags: `${item.name}`,
+                      tags: `${slugify(item.name, {
+                        lower: true,
+                        strict: true,
+                        trim: true,
+                      })}`,
                     }).toString()}`,
                   }}
                 >

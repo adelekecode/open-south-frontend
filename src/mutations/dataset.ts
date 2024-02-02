@@ -44,7 +44,15 @@ function useCreateDataset() {
       onError(error) {
         if (isAxiosError(error)) {
           if (error.response?.status === 400) {
-            notifyError("Error occured while creating dataset");
+            const data = error.response.data;
+
+            if (data) {
+              if (typeof data.error === "string") {
+                notifyError(data.error.charAt(0).toUpperCase() + data.error.slice(1));
+              }
+            } else {
+              notifyError("Error occured while creating dataset");
+            }
           } else {
             if (typeof error === "string") {
               notifyError(error);

@@ -11,11 +11,19 @@ export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<
 
 export function usePublicFilePreview(
   url: string,
+  type: string,
   options?: UseQueryOptions<any, unknown, unknown, [string]>
 ) {
   return useQuery([`${url}`], {
     queryFn: async () => {
-      const { data: response } = await axios.get(url);
+      const { data: response } = await axios.get(
+        url,
+        type === "xlsx"
+          ? {
+              responseType: "arraybuffer",
+            }
+          : {}
+      );
 
       return response;
     },
@@ -66,10 +74,21 @@ export function useUserOrganizationDatasets(
 
 export function usePublicUserDataset(
   id: string,
+  pagination: {
+    pageSize: number;
+    page: number;
+  } = {
+    pageSize: 10,
+    page: 0,
+  },
   options?: UseQueryOptions<PaginationData<Dataset[]>>
 ) {
+  const { page, pageSize } = pagination;
+
   return useQuery<PaginationData<Dataset[]>>(
-    [`/public/user/pk/${id}/datasets/?key=public`],
+    [
+      `/public/user/pk/${id}/datasets/?key=public&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    ],
     options
   );
 }
