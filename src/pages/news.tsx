@@ -62,8 +62,8 @@ export default function News() {
                     />
                   </figure>
                   <div className="flex flex-col items-start gap-4 p-4">
-                    <h2 className="text-lg font-semibold">{title}</h2>
-                    <h5 className="text-sm font-medium">
+                    <h2 className="text-base font-semibold text-start">{title}</h2>
+                    <h5 className="text-xs font-medium">
                       Published on{" "}
                       {published_at ? moment(published_at).format("MMMM D, YYYY") : "-----"}
                     </h5>
