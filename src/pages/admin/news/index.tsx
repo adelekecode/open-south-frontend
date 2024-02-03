@@ -13,23 +13,23 @@ import DeleteConfirmationModal from "./confirmation-modals/delete";
 import PublishConfirmationModal from "./confirmation-modals/publish";
 import UnpublishConfirmationModal from "./confirmation-modals/unpublish";
 import { useAdminNews } from "~/queries/news";
+import useAdminTableStore from "~/store/admin-table";
+import useDebounce from "~/hooks/debounce";
 
 type Modal = {
   open: boolean;
   data: News | null;
 };
 
-export default function Category() {
+export default function News() {
+  const { news: newsTable, setNews: setNewsTable } = useAdminTableStore();
+  const { pagination, filterBy, search } = newsTable;
+
   const [modal, setModal] = useState<NewsModal>({
     state: null,
     data: null,
   });
   const [statusObj, setStatusObj] = useState<{ [key: string]: string }>({});
-  const [filterBy, setFilterBy] = useState<{
-    status: "pending" | "published" | "unpublished" | null;
-  }>({
-    status: null,
-  });
   const [publishModal, setPublishModal] = useState<Modal>({
     open: false,
     data: null,
@@ -43,7 +43,15 @@ export default function Category() {
     data: null,
   });
 
-  const { isLoading, data } = useAdminNews();
+  const { isLoading, data } = useAdminNews(
+    useDebounce(search).trim(),
+    {
+      status: filterBy.status as string,
+    },
+    {
+      ...pagination,
+    }
+  );
 
   const columns: GridColDef[] = [
     {
@@ -74,7 +82,7 @@ export default function Category() {
     {
       field: "created_at",
       headerName: "Created At",
-      minWidth: 150,
+      minWidth: 180,
       type: "string",
       flex: 1,
       headerAlign: "center",
@@ -86,7 +94,7 @@ export default function Category() {
     {
       field: "updated_at",
       headerName: "UPDATED AT",
-      minWidth: 150,
+      minWidth: 180,
       flex: 1,
       valueFormatter: ({ value }) => {
         const result = moment(value).fromNow();
@@ -108,15 +116,17 @@ export default function Category() {
       headerName: "STATUS",
       minWidth: 180,
       flex: 1,
-      renderCell: ({ row }) => {
-        // const value = value === "approved" ? "approve" : value === "rejected" ? "reject" : value;
-        const newValue = statusObj[row.id];
+      headerAlign: "center",
+      align: "center",
+      renderCell: ({ row, value }) => {
+        const val =
+          value === "published" ? "publish" : value === "unpublished" ? "unpublish" : value;
+        const newValue = statusObj[row.id] || val;
 
         return (
           <Select
             className="w-[180px] !text-[0.85rem] !py-0 !px-0"
             value={newValue}
-            disabled={!row.is_verified}
             onChange={async (e) => {
               const chosenValue = e.target.value;
 
@@ -133,7 +143,7 @@ export default function Category() {
             }}
           >
             <MenuItem value="draft" className="!hidden">
-              draft
+              Draft
             </MenuItem>
             <MenuItem
               value="publish"
@@ -167,7 +177,7 @@ export default function Category() {
       minWidth: 160,
       headerAlign: "center",
       align: "center",
-      renderCell: (params) => {
+      renderCell: ({ row }) => {
         return (
           <div className="w-full flex items-center justify-center gap-1">
             <IconButton
@@ -176,7 +186,7 @@ export default function Category() {
               onClick={() => {
                 setModal({
                   state: "view",
-                  data: params.row,
+                  data: row,
                 });
               }}
             >
@@ -191,9 +201,9 @@ export default function Category() {
               size="medium"
               // color="error"
               onClick={() => {
-                setModal({
-                  state: "delete",
-                  data: params.row,
+                setDeleteModal({
+                  open: true,
+                  data: row,
                 });
               }}
             >
@@ -222,6 +232,13 @@ export default function Category() {
               <div className="flex items-center gap-4">
                 <OutlinedInput
                   placeholder="Search for title..."
+                  value={search}
+                  onChange={(e) => {
+                    setNewsTable({
+                      ...newsTable,
+                      search: e.target.value,
+                    });
+                  }}
                   className="w-[300px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
                 />
                 <Select
@@ -230,17 +247,20 @@ export default function Category() {
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setFilterBy((prev) => ({
-                      ...prev,
-                      status: chosenValue as typeof filterBy.status,
-                    }));
+                    setNewsTable({
+                      ...newsTable,
+                      filterBy: {
+                        ...filterBy,
+                        status: chosenValue as typeof filterBy.status,
+                      },
+                    });
                   }}
                   displayEmpty
                 >
                   <MenuItem value="" className="placeholder">
                     <span className="text-info-600">Select status</span>
                   </MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
+                  <MenuItem value="draft">Draft</MenuItem>
                   <MenuItem value="published">Published</MenuItem>
                   <MenuItem value="unpublished">Unpublished</MenuItem>
                 </Select>

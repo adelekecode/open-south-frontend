@@ -8,7 +8,7 @@ import { notifyError } from "~/utils/toast";
 import Button from "~/components/button";
 import SuccessIllustration from "~/assets/illustrations/success.png";
 import FormField from "~/components/fields/form-field";
-import { useCreateNews } from "~/mutations/news";
+import { useChangeNewsStatus, useCreateNews } from "~/mutations/news";
 import TextEditorField from "~/components/fields/text-editor-field";
 
 type CreateProps = {
@@ -33,6 +33,7 @@ export default function Create({ modal, setModal }: CreateProps) {
   const [image, setImage] = useState<File | null>(null);
 
   const createNews = useCreateNews();
+  const changeNewsStatus = useChangeNewsStatus();
 
   function onClose() {
     setFormCompleted(false);
@@ -50,7 +51,7 @@ export default function Create({ modal, setModal }: CreateProps) {
         onClose,
       }}
       innerContainer={{
-        className: "pt-[2rem]",
+        className: "pt-[2rem] w-[600px]",
       }}
     >
       <div className="flex flex-col gap-2 w-full">
@@ -72,7 +73,22 @@ export default function Create({ modal, setModal }: CreateProps) {
                 >
                   No
                 </Button>
-                <Button className="!text-xs !p-2" variant="outlined">
+                <Button
+                  className="!text-xs !p-2"
+                  variant="outlined"
+                  onClick={async () => {
+                    if (createNews.data) {
+                      const response = await changeNewsStatus.mutateAsync({
+                        id: createNews.data?.id || "",
+                        action: "publish",
+                      });
+
+                      if (response) {
+                        onClose();
+                      }
+                    }
+                  }}
+                >
                   Yes
                 </Button>
               </div>
@@ -129,6 +145,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                       <input
                         ref={inputRef}
                         type="file"
+                        accept=".png, .jpg, .jpeg"
                         className="hidden"
                         onChange={(e) => {
                           const file = e.target.files![0];
@@ -136,16 +153,34 @@ export default function Create({ modal, setModal }: CreateProps) {
                           setImage(file);
                         }}
                       />
-                      <Button
-                        variant="outlined"
-                        color="info"
-                        className="!py-2 !text-xs !font-normal"
-                        onClick={() => {
-                          inputRef.current?.click();
-                        }}
-                      >
-                        <span>Upload an image</span>
-                      </Button>
+                      <div className="flex flex-col gap-2">
+                        <h4 className="text-sm">Upload an image</h4>
+                        <p className="text-xs text-info-800">
+                          The image should be in PNG, JPG or JPEG format
+                        </p>
+                        <div className="flex items-center mt-1">
+                          <Button
+                            variant="outlined"
+                            color="info"
+                            className="!py-2 !px-3 !text-xs"
+                            onClick={() => {
+                              inputRef.current?.click();
+                            }}
+                          >
+                            <span>Choose image</span>
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="info"
+                            className="!py-2 !border-transparent !px-3 !text-xs"
+                            onClick={() => {
+                              setImage(null);
+                            }}
+                          >
+                            <span>Remove</span>
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <FormField
