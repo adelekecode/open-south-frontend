@@ -26,6 +26,9 @@ export default function DatasetDetails() {
     data: null,
   });
 
+  const filesPerPage = 3;
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { data, isLoading } = usePublicDatasetDetails(slug || "", {
     enabled: !!slug,
   });
@@ -101,6 +104,10 @@ export default function DatasetDetails() {
     to: arr?.[1],
   };
 
+  const indexOfLastFile = currentPage * filesPerPage;
+  const indexOfFirstFile = indexOfLastFile - filesPerPage;
+  const currentFiles = data.files.slice(indexOfFirstFile, indexOfLastFile);
+
   return (
     <>
       <Seo title={data?.title || ""} description={stripedDescription || ""} />
@@ -116,7 +123,7 @@ export default function DatasetDetails() {
               <span>{data.files.length || "--"}</span> {data.files.length === 1 ? "File" : "Files"}
             </h3>
             <div className="flex flex-col gap-4">
-              {data.files.map((item, index) => (
+              {currentFiles.map((item, index) => (
                 <File
                   key={index + 1}
                   {...item}
@@ -127,7 +134,15 @@ export default function DatasetDetails() {
               ))}
             </div>
             <div className="flex items-center justify-center mt-4">
-              <Pagination count={10} variant="outlined" shape="rounded" />
+              <Pagination
+                variant="outlined"
+                shape="rounded"
+                count={Math.ceil(data.files.length / filesPerPage)}
+                page={currentPage}
+                onChange={(_, page) => {
+                  setCurrentPage(page);
+                }}
+              />
             </div>
           </div>
         )}

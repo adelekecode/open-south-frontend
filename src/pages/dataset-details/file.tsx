@@ -19,7 +19,7 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
         <div className="flex items-center gap-4">
           <FiFileText className="text-xl" />
           <div className="flex flex-col gap-1">
-            <h4 className="text-sm font-semibold">{"StockEstablishmentHistorical"}</h4>
+            <h4 className="text-sm font-semibold">{data.file_name || "------"}</h4>
             <p className="text-xs text-info-800 font-medium">{data.format || "------"}</p>
           </div>
         </div>
