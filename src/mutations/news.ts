@@ -2,6 +2,7 @@ import { isAxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
+import useAdminTableStore from "~/store/admin-table";
 
 export function useCreateNews() {
   const queryClient = useQueryClient();
@@ -60,15 +61,28 @@ export function useDeleteNews() {
 }
 
 export function useChangeNewsStatus() {
+  const queryClient = useQueryClient();
+  const { dataset } = useAdminTableStore();
+
+  const { pagination, filterBy, search } = dataset;
+  const { pageSize, page } = pagination;
+  const { status } = filterBy;
+
+  const newStatus =
+    status === "published" ? "publish" : status === "unpublished" ? "unpublish" : status;
+
   return useMutation(
     async ({ id, action }: { id: string; action: "publish" | "unpublish" }) => {
-      const { data: response } = await axiosPrivate.post(`/admin/news/${id}/actions/${action}`);
+      const { data: response } = await axiosPrivate.post(`/admin/news/${id}/actions/${action}/`);
 
       return response;
     },
     {
       onSuccess() {
         notifySuccess("Successfully changed news status");
+        queryClient.invalidateQueries([
+          `/admin/news/list/?search=${search}&status=${newStatus || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+        ]);
       },
       onError(error) {
         if (isAxiosError(error)) {

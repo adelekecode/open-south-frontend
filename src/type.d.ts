@@ -122,7 +122,7 @@ type CategoyModal = {
 };
 
 type NewsModal = {
-  state: "create" | "edit" | "view" | "delete" | null;
+  state: "create" | "edit" | "view" | null;
   data: News | null;
 };
 
