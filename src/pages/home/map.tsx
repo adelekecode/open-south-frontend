@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
 import slugify from "slugify";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { usePublicDatasets } from "~/queries/dataset";
+import { usePublicMapDatasets } from "~/queries/dataset";
 import AppLoader from "~/components/loader/app-loader";
 
 export default function Map() {
@@ -11,7 +11,7 @@ export default function Map() {
 
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { data, isLoading } = usePublicDatasets();
+  const { data, isLoading } = usePublicMapDatasets();
 
   useEffect(() => {
     if (!data) return;

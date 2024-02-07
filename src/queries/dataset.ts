@@ -5,6 +5,10 @@ export function usePublicDatasets() {
   return useQuery<Dataset[]>([`/public/datasets/?key=public`]);
 }
 
+export function usePublicMapDatasets() {
+  return useQuery<Dataset[]>([`/public/datasets/?key=public`]);
+}
+
 export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<Dataset>) {
   return useQuery<Dataset>([`/public/datasets/${slug}/?key=public`], options);
 }
