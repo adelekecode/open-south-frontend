@@ -67,14 +67,19 @@ export function useAdminOrganizationsIndicators() {
 }
 
 export function usePublicOrganizations(
-  pageSize: number = 10,
-  page: number = 1,
-  options?: UseQueryOptions<PaginationData<Organization[]>>
+  search = "",
+  // sortBy: {
+  //   relevance: boolean;
+  //   creationDate: boolean;
+  //   lastUpdate: boolean;
+  // },
+  pagination: { pageSize: number; page: number } = { pageSize: 20, page: 1 }
 ) {
-  return useQuery<PaginationData<Organization[]>>(
-    [`/public/organisations/?key=public&limit=${pageSize}&offset=${(page - 1) * pageSize}`],
-    options
-  );
+  const { pageSize, page } = pagination;
+
+  return useQuery<PaginationData<Organization[]>>([
+    `/public/organisations/?key=public&search=${search}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+  ]);
 }
 
 export function usePublicOrganizationDetails(

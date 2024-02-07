@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { MenuItem } from "@mui/material";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { MenuItem, Pagination } from "@mui/material";
 import { stripHtml } from "string-strip-html";
 import { FiSearch } from "react-icons/fi";
 import SearchInput from "~/components/inputs/search-input";
@@ -8,15 +8,31 @@ import SelectInput from "~/components/inputs/select-input";
 import Seo from "~/components/seo";
 import { usePublicOrganizations } from "~/queries/organizations";
 import NoData from "~/assets/illustrations/no-data.png";
+import useDebounce from "~/hooks/debounce";
 
 type SortByValue = "relevance" | "most-datasets" | "most-recent";
 
 export default function Organization() {
   const navigate = useNavigate();
 
-  const [sortBy, setSortBy] = useState<SortByValue>("relevance");
+  const [searchParams, setSearchParams] = useSearchParams({
+    q: "",
+  });
 
-  const { isLoading, data } = usePublicOrganizations();
+  const [sortBy, setSortBy] = useState<SortByValue>("relevance");
+  const [page, setPage] = useState(1);
+  const dataPerPage = 18;
+
+  const search = searchParams.get("q") || "";
+
+  const { isLoading, data } = usePublicOrganizations(useDebounce(search).trim(), {
+    page,
+    pageSize: dataPerPage,
+  });
+
+  const indexOfLastDataset = 1 * dataPerPage;
+  const indexOfFirstDataset = indexOfLastDataset - dataPerPage;
+  const currentDataset = data?.results?.slice(indexOfFirstDataset, indexOfLastDataset);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -40,6 +56,29 @@ export default function Organization() {
                 <p className="text-white tablet:hidden text-base">Search</p>
               </div>
             }
+            value={search}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (!value) {
+                return setSearchParams((params) => {
+                  params.delete("q");
+
+                  return params;
+                });
+              }
+
+              setSearchParams(
+                (params) => {
+                  params.set("q", value);
+
+                  return params;
+                },
+                {
+                  replace: true,
+                }
+              );
+            }}
           />
         </div>
         <header className="flex items-center flex-wrap largeMobile:flex-col gap-6 justify-between py-6">
@@ -78,46 +117,59 @@ export default function Organization() {
               </div>
             ))}
           </div>
-        ) : data && data.results.length > 0 ? (
-          <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
-            {data.results.map((item, index) => {
-              const { name, slug, logo, description } = item;
+        ) : data && data.results.length > 0 && currentDataset && currentDataset.length > 0 ? (
+          <main className="flex flex-col gap-12">
+            <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
+              {data.results.map((item, index) => {
+                const { name, slug, logo, description } = item;
 
-              const stripedDescription = stripHtml(`${description}`, {
-                stripTogetherWithTheirContents: ["style", "pre"],
-              }).result;
+                const stripedDescription = stripHtml(`${description}`, {
+                  stripTogetherWithTheirContents: ["style", "pre"],
+                }).result;
 
-              return (
-                <button
-                  key={index + 1}
-                  onClick={() => {
-                    navigate(`./${slug}`, {
-                      state: {
-                        name,
-                      },
-                    });
-                  }}
-                  className="flex flex-col gap-6 border-[1.5px] border-info-200 border-b-2 border-b-primary-700 p-4 hover:bg-info-50"
-                >
-                  <div className="w-full grid grid-cols-[70px,1fr] gap-4 items-center">
-                    <figure className="border w-full aspect-square border-zinc-300 bg-white">
-                      <img
-                        className="w-full h-full object-contain"
-                        src={logo || ""}
-                        alt="organization photo"
-                      />
-                    </figure>
-                    <h3 className="text-sm text-start font-semibold">{name}</h3>
-                  </div>
-                  <p className="text-start text-sm">
-                    {stripedDescription.length > 300
-                      ? stripedDescription.substring(0, 300).split(" ").slice(0, -1).join(" ") +
-                        "..."
-                      : stripedDescription}
-                  </p>
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={index + 1}
+                    onClick={() => {
+                      navigate(`./${slug}`, {
+                        state: {
+                          name,
+                        },
+                      });
+                    }}
+                    className="flex flex-col gap-6 border-[1.5px] border-info-200 border-b-2 border-b-primary-700 p-4 hover:bg-info-50"
+                  >
+                    <div className="w-full grid grid-cols-[70px,1fr] gap-4 items-center">
+                      <figure className="border w-full aspect-square border-zinc-300 bg-white">
+                        <img
+                          className="w-full h-full object-contain"
+                          src={logo || ""}
+                          alt="organization photo"
+                        />
+                      </figure>
+                      <h3 className="text-sm text-start font-semibold">{name}</h3>
+                    </div>
+                    <p className="text-start text-sm">
+                      {stripedDescription.length > 300
+                        ? stripedDescription.substring(0, 300).split(" ").slice(0, -1).join(" ") +
+                          "..."
+                        : stripedDescription}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+            <footer className="flex items-center justify-center">
+              <Pagination
+                count={Math.ceil(data.count / dataPerPage)}
+                page={page}
+                onChange={(_, page) => {
+                  setPage(page);
+                }}
+                variant="outlined"
+                shape="rounded"
+              />
+            </footer>
           </main>
         ) : (
           <div className="flex items-center justify-center w-full flex-col">
