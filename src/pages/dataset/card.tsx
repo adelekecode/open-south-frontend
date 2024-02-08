@@ -40,7 +40,9 @@ export default function Card({ slug, title, updated_at, description, publisher_d
         </Avatar>
       )}
       <div className="flex flex-col gap-2">
-        <h1 className="text-base font-semibold text-start">{title}</h1>
+        <h1 className="text-base font-semibold text-start">
+          {title ? title.charAt(0).toUpperCase() + title.slice(1) : "------"}
+        </h1>
         <p className="flex items-center text-xs gap-1">
           by
           <Link
@@ -69,7 +71,7 @@ export default function Card({ slug, title, updated_at, description, publisher_d
         </p>
         <p className="text-start text-sm">
           {stripedDescription.length > 200
-            ? stripedDescription.substring(0, 200).split(" ").slice(0, -1).join(" ") + "..."
+            ? `${stripedDescription.substring(0, 200).split(" ").slice(0, -1).join(" ") + "..."}`
             : stripedDescription}
         </p>
         <p className="text-xs text-end mt-4">
