@@ -1,7 +1,33 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export function usePublicDatasets() {
+export function usePublicDatasets(
+  search = "",
+  filterBy: {
+    organization: string;
+    tag: string;
+    category: string;
+    format: string;
+    license: string;
+    spatialCoverage: string;
+  },
+  // sortBy: {
+  //   relevance: boolean;
+  //   creationDate: boolean;
+  //   lastUpdate: boolean;
+  // },
+  pagination: { pageSize: number; page: number }
+) {
+  const { pageSize, page } = pagination;
+  const { organization, tag, category, format, license, spatialCoverage } = filterBy;
+  // const {} = sortBy
+
+  return useQuery<PaginationData<Dataset[]>>([
+    `/public/datasets/?key=public&search=${search}&organisation=${organization || ""}&tags=${tag || ""}&category=${category || ""}&format=${format}&license=${license}&spatial_coverage=${spatialCoverage}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+  ]);
+}
+
+export function usePublicMapDatasets() {
   return useQuery<Dataset[]>([`/public/datasets/?key=public`]);
 }
 

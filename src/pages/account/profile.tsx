@@ -189,7 +189,7 @@ export default function Profile() {
                 />
                 <TextEditorField
                   label="Bio"
-                  required
+                  required={currentUser?.role === "user"}
                   name="aboutMe"
                   labelProps={{
                     className: "!font-medium",

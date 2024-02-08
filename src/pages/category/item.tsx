@@ -13,7 +13,7 @@ export default function Item({ name, slug, image_url, description }: ItemProps) 
       }}
       className="flex flex-col border-[1.5px] border-info-200 hover:bg-info-50"
     >
-      <figure className="bg-primary-50 flex items-center justify-center p-4 w-full max-h-[200px] aspect-[1/0.1]">
+      <figure className="bg-primary-50 flex items-center justify-center p-4 w-full h-[200px] aspect-[1/0.1]">
         <img
           src={image_url || ""}
           alt={`${name} category`}
@@ -22,7 +22,7 @@ export default function Item({ name, slug, image_url, description }: ItemProps) 
       </figure>
       <div className="flex flex-col items-start gap-4 p-4">
         <h2 className="text-base font-semibold">{name}</h2>
-        <p className="text-start text-sm">{description}</p>
+        <p className="text-start text-sm largeMobile:text-xs">{description}</p>
       </div>
     </Link>
   );

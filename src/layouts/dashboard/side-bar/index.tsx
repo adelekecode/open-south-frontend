@@ -88,10 +88,12 @@ export default function SideBar() {
     }`;
   }
 
-  const { data: organizationData, isLoading } = useUserOrganizations();
-
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
+
+  const { data: organizationData, isLoading } = useUserOrganizations({
+    enabled: currentUser?.role === "user",
+  });
 
   return (
     <aside className="tabletAndBelow:!hidden z-[100] bg-white shadow min-h-screen flex flex-col w-[230px] sticky top-0 left-0 overflow-y-auto h-screen">

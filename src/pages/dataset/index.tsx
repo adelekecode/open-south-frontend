@@ -16,6 +16,7 @@ import NoData from "~/assets/illustrations/no-data.png";
 import { usePublicCategories } from "~/queries/category";
 import { usePublicOrganizations } from "~/queries/organizations";
 import { usePublicTags } from "~/queries/tags";
+import useDebounce from "~/hooks/debounce";
 
 type SortByValue = "relevance" | "creation-date" | "last-update";
 
@@ -23,8 +24,38 @@ export default function Dataset() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [sortBy, setSortBy] = useState<SortByValue>("relevance");
+  const [page, setPage] = useState(1);
+  const datasetPerPage = 10;
 
-  const { isLoading, data } = usePublicDatasets();
+  const slugOption = {
+    lower: true,
+    strict: true,
+    trim: true,
+  };
+
+  const search = searchParams.get("q") || "";
+  const filterBy = {
+    organization: searchParams.get("organization") || "",
+    category: searchParams.get("category") || "",
+    tag: slugify(searchParams.get("tag") || "", slugOption),
+    license: slugify(searchParams.get("license") || "", slugOption),
+    format: slugify(searchParams.get("format") || "", slugOption),
+    spatialCoverage: slugify(searchParams.get("spatial-coverage") || "", slugOption),
+  };
+  // const sortBy = {};
+
+  const { isLoading, data } = usePublicDatasets(
+    useDebounce(search).trim(),
+    {
+      ...filterBy,
+    },
+    // {},
+    {
+      page,
+      pageSize: datasetPerPage,
+    }
+  );
+
   const { data: categories, isLoading: isLoadingCategories } = usePublicCategories();
   const { data: organizations, isLoading: isLoadingOrganizations } = usePublicOrganizations();
   const { data: tags, isLoading: isLoadingTags } = usePublicTags(); //? Add pagination and search
@@ -44,6 +75,29 @@ export default function Dataset() {
         <div className="flex flex-col gap-2 pt-4">
           <SearchInput
             placeholder="Search"
+            value={search}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (!value) {
+                return setSearchParams((params) => {
+                  params.delete("q");
+
+                  return params;
+                });
+              }
+
+              setSearchParams(
+                (params) => {
+                  params.set("q", value);
+
+                  return params;
+                },
+                {
+                  replace: true,
+                }
+              );
+            }}
             className="w-full h-[inherit]"
             searchIcon={
               <div className="flex items-center gap-2 p-2">
@@ -70,31 +124,24 @@ export default function Dataset() {
                   }}
                   loading={isLoadingOrganizations}
                   value={
-                    searchParams.get("organization") !== null
-                      ? organizations?.results?.find(
-                          (item) =>
-                            slugify(item.name, {
-                              lower: true,
-                              strict: true,
-                              trim: true,
-                            }) === searchParams.get("organization")
-                        ) || null
-                      : null
+                    organizations?.results?.find((item) => item.slug === filterBy.organization) ||
+                    null
                   }
-                  isOptionEqualToValue={(option, value) => option.name === value.name}
+                  isOptionEqualToValue={(option, value) => option.slug === value.slug}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("organization");
+
+                        return params;
+                      });
+                    }
+
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set(
-                          "organization",
-                          slugify(chosenValue.name, {
-                            lower: true,
-                            strict: true,
-                            trim: true,
-                          })
-                        );
+                        params.set("organization", chosenValue.slug);
 
                         return params;
                       });
@@ -113,31 +160,25 @@ export default function Dataset() {
                   }}
                   loading={isLoadingTags}
                   value={
-                    searchParams.get("tag") !== null
-                      ? tags?.results?.find(
-                          (item) =>
-                            slugify(item.name, {
-                              lower: true,
-                              strict: true,
-                              trim: true,
-                            }) === searchParams.get("tag")
-                        ) || null
-                      : null
+                    tags?.results?.find(
+                      (item) => slugify(item.name, slugOption) === filterBy.tag
+                    ) || null
                   }
                   isOptionEqualToValue={(option, value) => option.name === value.name}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("tag");
+
+                        return params;
+                      });
+                    }
+
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set(
-                          "tag",
-                          slugify(chosenValue.name, {
-                            lower: true,
-                            strict: true,
-                            trim: true,
-                          })
-                        );
+                        params.set("tag", slugify(chosenValue.name, slugOption));
 
                         return params;
                       });
@@ -155,32 +196,22 @@ export default function Dataset() {
                   options={categories || ([] as Category[])}
                   getOptionLabel={(opt) => opt.name ?? opt}
                   loading={isLoadingCategories}
-                  value={
-                    searchParams.get("category") !== null
-                      ? categories?.find(
-                          (item) =>
-                            slugify(item.name, {
-                              lower: true,
-                              strict: true,
-                              trim: true,
-                            }) === searchParams.get("category")
-                        ) || null
-                      : null
-                  }
-                  isOptionEqualToValue={(option, value) => option.name === value.name}
+                  value={categories?.find((item) => item.slug === filterBy.category) || null}
+                  isOptionEqualToValue={(option, value) => option.slug === value.slug}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("category");
+
+                        return params;
+                      });
+                    }
+
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set(
-                          "category",
-                          slugify(chosenValue.name, {
-                            lower: true,
-                            strict: true,
-                            trim: true,
-                          })
-                        );
+                        params.set("category", slugify(chosenValue.slug, slugOption));
 
                         return params;
                       });
@@ -197,31 +228,25 @@ export default function Dataset() {
                   }}
                   options={formatData}
                   value={
-                    searchParams.get("format") !== null
-                      ? formatData.find(
-                          (item) =>
-                            slugify(item.label, {
-                              lower: true,
-                              strict: true,
-                              trim: true,
-                            }) === searchParams.get("format")
-                        ) || null
-                      : null
+                    formatData.find(
+                      (item) => slugify(item.label, slugOption) === filterBy.format
+                    ) || null
                   }
                   isOptionEqualToValue={(option, value) => option.label === value.label}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("format");
+
+                        return params;
+                      });
+                    }
+
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set(
-                          "format",
-                          slugify(chosenValue.label, {
-                            lower: true,
-                            strict: true,
-                            trim: true,
-                          })
-                        );
+                        params.set("format", slugify(chosenValue.label, slugOption));
 
                         return params;
                       });
@@ -239,31 +264,25 @@ export default function Dataset() {
                   getOptionLabel={(opt) => opt.name ?? opt}
                   options={licenseData}
                   value={
-                    searchParams.get("license") !== null
-                      ? licenseData.find(
-                          (item) =>
-                            slugify(item.name, {
-                              lower: true,
-                              strict: true,
-                              trim: true,
-                            }) === searchParams.get("license")
-                        ) || null
-                      : null
+                    licenseData.find(
+                      (item) => slugify(item.name, slugOption) === filterBy.license
+                    ) || null
                   }
                   isOptionEqualToValue={(option, value) => option.name === value.name}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("license");
+
+                        return params;
+                      });
+                    }
+
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set(
-                          "license",
-                          slugify(chosenValue.name, {
-                            lower: true,
-                            strict: true,
-                            trim: true,
-                          })
-                        );
+                        params.set("license", slugify(chosenValue.name, slugOption));
 
                         return params;
                       });
@@ -280,31 +299,25 @@ export default function Dataset() {
                   }}
                   options={spatialCoverageData}
                   value={
-                    searchParams.get("spatial-coverage") !== null
-                      ? spatialCoverageData.find(
-                          (item) =>
-                            slugify(item.label, {
-                              lower: true,
-                              strict: true,
-                              trim: true,
-                            }) === searchParams.get("spatial-coverage")
-                        ) || null
-                      : null
+                    spatialCoverageData.find(
+                      (item) => slugify(item.label, slugOption) === filterBy.spatialCoverage
+                    ) || null
                   }
                   isOptionEqualToValue={(option, value) => option.label === value.label}
                   onChange={(_, val) => {
                     const chosenValue = val;
 
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("spatial-coverage");
+
+                        return params;
+                      });
+                    }
+
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set(
-                          "spatial-coverage",
-                          slugify(chosenValue.label, {
-                            lower: true,
-                            strict: true,
-                            trim: true,
-                          })
-                        );
+                        params.set("spatial-coverage", slugify(chosenValue.label, slugOption));
 
                         return params;
                       });
@@ -317,7 +330,7 @@ export default function Dataset() {
           <div className="flex flex-col gap-8">
             <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4">
               <p>
-                <span>{data ? data.length : "0"}</span> results
+                <span>{data ? data.count : "0"}</span> results
               </p>
               <div className="flex items-center gap-2">
                 <p className="whitespace-nowrap text-sm">Sort by:</p>
@@ -353,15 +366,23 @@ export default function Dataset() {
                   </div>
                 ))}
               </div>
-            ) : data && data.length > 0 ? (
+            ) : data?.results && data.results.length > 0 ? (
               <>
                 <main className="w-full flex flex-col gap-8">
-                  {data.map((item, index) => (
+                  {data.results.map((item, index) => (
                     <Card key={index + 1} {...item} />
                   ))}
                 </main>
                 <footer className="flex items-center justify-center">
-                  <Pagination count={10} variant="outlined" shape="rounded" />
+                  <Pagination
+                    count={Math.ceil(data.count / datasetPerPage)}
+                    page={page}
+                    onChange={(_, page) => {
+                      setPage(page);
+                    }}
+                    variant="outlined"
+                    shape="rounded"
+                  />
                 </footer>
               </>
             ) : (

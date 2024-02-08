@@ -59,7 +59,7 @@ export default function Dataset() {
       field: "views",
       headerName: "VIEWS",
       flex: 1,
-      minWidth: 70,
+      minWidth: 100,
       valueFormatter: ({ value }) => {
         return value.count;
       },
@@ -72,7 +72,7 @@ export default function Dataset() {
     {
       field: "files_count",
       headerName: "FILES",
-      minWidth: 70,
+      minWidth: 100,
       valueFormatter: ({ value }) => {
         return value;
       },
@@ -135,6 +135,12 @@ export default function Dataset() {
           obj.element = (
             <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>
               Published
+            </p>
+          );
+        } else if (value === "unpublished") {
+          obj.element = (
+            <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
+              Unpublished
             </p>
           );
         } else if (value === "rejected") {

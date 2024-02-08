@@ -21,6 +21,14 @@ const columns: GridColDef[] = [
 
       return getAllRowIds().indexOf(row.id) + 1;
     },
+    sortComparator: (v1, v2, { api }) => {
+      const { getAllRowIds } = api;
+
+      const num1 = parseInt(getAllRowIds().indexOf(v1) + 1, 10);
+      const num2 = parseInt(getAllRowIds().indexOf(v2) + 1, 10);
+
+      return num1 - num2;
+    },
   },
   {
     field: "title",
@@ -62,7 +70,7 @@ const columns: GridColDef[] = [
     field: "views",
     headerName: "VIEWS",
     flex: 1,
-    minWidth: 70,
+    minWidth: 100,
     valueFormatter: ({ value }) => {
       return value.count;
     },
@@ -75,7 +83,7 @@ const columns: GridColDef[] = [
   {
     field: "files_count",
     headerName: "FILES",
-    minWidth: 70,
+    minWidth: 100,
     valueFormatter: ({ value }) => {
       return value;
     },
@@ -95,26 +103,28 @@ const columns: GridColDef[] = [
         styles: string;
       } = {
         element: "-------",
-        styles: "py-1 px-2 rounded-full text-xs",
+        styles: "py-1 px-2 rounded-full border text-xs",
       };
 
       if (value === "pending") {
         obj.element = (
-          <p className={twMerge(obj.styles, `text-orange-500 border border-orange-500`)}>Pending</p>
+          <p className={twMerge(obj.styles, `text-orange-500 border-orange-500`)}>Pending</p>
         );
       } else if (value === "published") {
         obj.element = (
-          <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>Published</p>
+          <p className={twMerge(obj.styles, `text-green-500 border-green-500`)}>Published</p>
+        );
+      } else if (value === "unpublished") {
+        obj.element = (
+          <p className={twMerge(obj.styles, `text-info-500 border-info-500`)}>Unpublished</p>
         );
       } else if (value === "rejected") {
         obj.element = (
-          <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>Rejected</p>
+          <p className={twMerge(obj.styles, `text-red-500 border-red-500`)}>Rejected</p>
         );
       } else if (value === "further_review") {
         obj.element = (
-          <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
-            Further Review
-          </p>
+          <p className={twMerge(obj.styles, `text-info-800 border-info-800`)}>Further Review</p>
         );
       }
 
