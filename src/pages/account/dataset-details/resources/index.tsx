@@ -7,6 +7,8 @@ import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useUserDatasetFiles } from "~/queries/dataset";
 import DeleteConfirmation from "./delete-confirmation";
+import Button from "~/components/button";
+import FileUpload from "./file-upload";
 
 export default function Resources() {
   const { id } = useParams();
@@ -22,6 +24,7 @@ export default function Resources() {
     open: false,
     data: null,
   });
+  const [openFileUpload, setOpenFileUpload] = useState(false);
 
   const { isLoading, data } = useUserDatasetFiles(
     id || "",
@@ -108,7 +111,18 @@ export default function Resources() {
   return (
     <>
       <div className="border p-4 rounded-md flex flex-col gap-4">
-        <h3 className="text-lg font-medium">Resources</h3>
+        <header className="flex items-center gap-4 justify-between">
+          <h3 className="text-lg font-medium">Resources</h3>
+          <Button
+            className="!py-2 px-1"
+            onClick={() => {
+              setOpenFileUpload(true);
+            }}
+            disabled
+          >
+            Add
+          </Button>
+        </header>
         <div className="flex flex-col gap-4">
           <div className="min-h-[500px]">
             <DataGrid
@@ -141,6 +155,7 @@ export default function Resources() {
         }}
         data={deleteModal.data as Dataset["files"][0]}
       />
+      <FileUpload open={openFileUpload} setOpen={(bool: boolean) => setOpenFileUpload(bool)} />
     </>
   );
 }
