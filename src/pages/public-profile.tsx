@@ -86,7 +86,7 @@ export default function PublicProfile() {
                 className="w-full h-full object-contain"
               />
             </figure>
-            <h1 className="text-2xl font-semibold">
+            <h1 className="text-2xl font-semibold capitalize">
               {data.first_name && data.last_name
                 ? `${data.first_name} ${data.last_name}`
                 : "----------"}

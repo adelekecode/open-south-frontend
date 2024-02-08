@@ -1,7 +1,7 @@
 import { TiInfo } from "react-icons/ti";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-// import { useChangeOrganizationStatus } from "~/mutations/organization";
+import { useChangeUserStatus } from "~/mutations/user";
 
 type BlockModalProps = {
   open: boolean;
@@ -9,8 +9,8 @@ type BlockModalProps = {
   data: CurrentUser;
 };
 
-export default function BlockModal({ open, onClose }: BlockModalProps) {
-  // const changeOrganizationStatus = useChangeOrganizationStatus();
+export default function BlockModal({ open, onClose, data }: BlockModalProps) {
+  const changeUserStatus = useChangeUserStatus();
 
   return (
     <Modal
@@ -31,16 +31,16 @@ export default function BlockModal({ open, onClose }: BlockModalProps) {
             Cancel
           </Button>
           <Button
-            // loading={changeOrganizationStatus.isLoading}
+            loading={changeUserStatus.isLoading}
             onClick={async () => {
-              // const response = await changeOrganizationStatus.mutateAsync({
-              //   id: data?.id || "",
-              //   action: "block",
-              // });
+              const response = await changeUserStatus.mutateAsync({
+                id: data?.id || "",
+                action: "block",
+              });
 
-              // if (response) {
-              onClose();
-              // }
+              if (response) {
+                onClose();
+              }
             }}
           >
             Confirm

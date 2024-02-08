@@ -1,6 +1,7 @@
 import { MdDeleteOutline } from "react-icons/md";
 import Modal from "~/components/modal";
 import Button from "~/components/button";
+import { useChangeUserStatus } from "~/mutations/user";
 
 type DeleteModalProps = {
   open: boolean;
@@ -8,8 +9,8 @@ type DeleteModalProps = {
   data: CurrentUser;
 };
 
-export default function DeleteModal({ open, onClose }: DeleteModalProps) {
-  // const changeOrganizationStatus = useChangeOrganizationStatus();
+export default function DeleteModal({ open, onClose, data }: DeleteModalProps) {
+  const changeUserStatus = useChangeUserStatus();
 
   return (
     <Modal
@@ -30,16 +31,16 @@ export default function DeleteModal({ open, onClose }: DeleteModalProps) {
             Cancel
           </Button>
           <Button
-            // loading={changeOrganizationStatus.isLoading}
+            loading={changeUserStatus.isLoading}
             onClick={async () => {
-              // const response = await changeOrganizationStatus.mutateAsync({
-              //   id: data?.id || "",
-              //   action: "delete",
-              // });
+              const response = await changeUserStatus.mutateAsync({
+                id: data?.id || "",
+                action: "delete",
+              });
 
-              // if (response) {
-              onClose();
-              // }
+              if (response) {
+                onClose();
+              }
             }}
           >
             Confirm

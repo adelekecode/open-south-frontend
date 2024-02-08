@@ -67,14 +67,8 @@ export default function Organization() {
 
   const { data, isLoading } = useAdminOrganizations(
     useDebounce(search).trim(),
-    {
-      status: filterBy.status as string,
-      isActive: filterBy.isActive as string,
-      isVerified: filterBy.isVerified as string,
-    },
-    {
-      ...pagination,
-    }
+    filterBy,
+    pagination
   );
   const { data: indicatorData } = useAdminOrganizationsIndicators();
 

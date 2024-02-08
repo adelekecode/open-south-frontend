@@ -33,12 +33,23 @@ type State = {
       page: number;
     };
   };
+  user: {
+    search: string;
+    filterBy: {
+      isActive: "true" | "false" | null;
+    };
+    pagination: {
+      pageSize: number;
+      page: number;
+    };
+  };
 };
 
 type Action = {
   setDataset: (obj: State["dataset"]) => void;
   setOrganization: (obj: State["organization"]) => void;
   setNews: (obj: State["news"]) => void;
+  setUser: (obj: State["user"]) => void;
 };
 
 const useAdminTableStore = create<State & Action>()((set) => ({
@@ -86,6 +97,20 @@ const useAdminTableStore = create<State & Action>()((set) => ({
   setNews: (news) =>
     set({
       news,
+    }),
+  user: {
+    search: "",
+    filterBy: {
+      isActive: null,
+    },
+    pagination: {
+      pageSize: 10,
+      page: 0,
+    },
+  },
+  setUser: (user) =>
+    set({
+      user,
     }),
 }));
 
