@@ -8,12 +8,22 @@ export function useCurrentUser(
 }
 
 export function useGetAllUsers(
-  pageSize: number = 10,
-  page: number = 1,
+  search = "",
+  filterBy: {
+    isActive: string | null;
+  } = {
+    isActive: null,
+  },
+  pagination: { pageSize: number; page: number },
   options?: UseQueryOptions<PaginationData<CurrentUser[]>>
 ) {
+  const { isActive } = filterBy;
+  const { page, pageSize } = pagination;
+
   return useQuery<PaginationData<CurrentUser[]>>(
-    [`/admin/users/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    [
+      `/admin/users/?search=${search}&active=${isActive || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+    ],
     options
   );
 }

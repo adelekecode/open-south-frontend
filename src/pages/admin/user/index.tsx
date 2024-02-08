@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   ClickAwayListener,
@@ -20,6 +21,8 @@ import { useGetAllUsers } from "~/queries/user";
 import BlockConfirmationModal from "./confirmation-modals/block";
 import DeleteConfirmationModal from "./confirmation-modals/delete";
 import UnblockConfirmationModal from "./confirmation-modals/unblock";
+import useAdminTableStore from "~/store/admin-table";
+import useDebounce from "~/hooks/debounce";
 
 type Modal = {
   open: boolean;
@@ -27,14 +30,12 @@ type Modal = {
 };
 
 export default function User() {
+  const navigate = useNavigate();
+
+  const { user: userTable, setUser: setUserTable } = useAdminTableStore();
+  const { pagination, filterBy, search } = userTable;
+
   const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [filterBy, setFilterBy] = useState<{
-    isActive: "true" | "false" | null;
-  }>({
-    isActive: null,
-  });
   const [blockModal, setBlockModal] = useState<Modal>({
     open: false,
     data: null,
@@ -52,15 +53,18 @@ export default function User() {
     return Boolean(anchorElObj[id]);
   }
 
+  const { isLoading, data } = useGetAllUsers(useDebounce(search).trim(), filterBy, pagination);
+
   const columns: GridColDef[] = [
     {
       field: "id",
       headerName: "NO.",
       minWidth: 100,
       renderCell: ({ api, row }) => {
+        const { page, pageSize } = pagination;
         const { getAllRowIds } = api;
 
-        return getAllRowIds().indexOf(row.id) + 1;
+        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
       },
     },
     {
@@ -90,19 +94,19 @@ export default function User() {
       field: "first_name",
       headerName: "First Name",
       minWidth: 150,
-      type: "string",
       flex: 1,
       headerAlign: "center",
       align: "center",
+      cellClassName: "capitalize",
     },
     {
       field: "last_name",
       headerName: "Last Name",
       minWidth: 150,
-      type: "string",
       flex: 1,
       headerAlign: "center",
       align: "center",
+      cellClassName: "capitalize",
     },
     {
       field: "email",
@@ -202,6 +206,14 @@ export default function User() {
                     <Paper className="flex flex-col [&>button]:p-4 [&>button]:text-sm [&>button]:py-3 overflow-hidden relative divide-y !shadow">
                       <button
                         className="hover:bg-info-100"
+                        onClick={() => {
+                          navigate(`/users/${row.id}`);
+                        }}
+                      >
+                        View
+                      </button>
+                      <button
+                        className="hover:bg-info-100"
                         onClick={(e) => {
                           if (row.is_active) {
                             setBlockModal({
@@ -255,8 +267,6 @@ export default function User() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  const { isLoading, data } = useGetAllUsers(pageSize, page);
-
   return (
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
@@ -270,6 +280,13 @@ export default function User() {
                 <OutlinedInput
                   placeholder="Search for name..."
                   className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
+                  value={search}
+                  onChange={(e) => {
+                    setUserTable({
+                      ...userTable,
+                      search: e.target.value,
+                    });
+                  }}
                 />
                 <Select
                   className="w-[200px] !text-sm !py-0 !px-0 !h-full"
@@ -277,10 +294,13 @@ export default function User() {
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setFilterBy((prev) => ({
-                      ...prev,
-                      isActive: chosenValue as typeof filterBy.isActive,
-                    }));
+                    setUserTable({
+                      ...userTable,
+                      filterBy: {
+                        ...filterBy,
+                        isActive: chosenValue as typeof filterBy.isActive,
+                      },
+                    });
                   }}
                   displayEmpty
                 >
@@ -298,19 +318,20 @@ export default function User() {
               loading={isLoading}
               rows={data ? data.results : []}
               columns={columns}
-              rowCount={data?.count}
-              onPaginationModelChange={({ page, pageSize }) => {
-                setPage(page);
-                setPageSize(pageSize);
-              }}
-              initialState={{
-                pagination: {
-                  paginationModel: {
+              rowCount={data?.count || 0}
+              paginationModel={pagination}
+              onPaginationModelChange={({ page, pageSize }, { reason }) => {
+                if (!reason) return;
+
+                setUserTable({
+                  ...userTable,
+                  pagination: {
                     page,
                     pageSize,
                   },
-                },
+                });
               }}
+              paginationMode="server"
             />
           </div>
         </div>

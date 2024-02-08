@@ -1,6 +1,7 @@
 import { TiInfo } from "react-icons/ti";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
+import { useChangeUserStatus } from "~/mutations/user";
 
 type UnblockModalProps = {
   open: boolean;
@@ -8,8 +9,8 @@ type UnblockModalProps = {
   data: CurrentUser;
 };
 
-export default function UnblockModal({ open, onClose }: UnblockModalProps) {
-  // const changeOrganizationStatus = useChangeOrganizationStatus();
+export default function UnblockModal({ open, onClose, data }: UnblockModalProps) {
+  const changeUserStatus = useChangeUserStatus();
 
   return (
     <Modal
@@ -30,16 +31,16 @@ export default function UnblockModal({ open, onClose }: UnblockModalProps) {
             Cancel
           </Button>
           <Button
-            // loading={changeOrganizationStatus.isLoading}
+            loading={changeUserStatus.isLoading}
             onClick={async () => {
-              // const response = await changeOrganizationStatus.mutateAsync({
-              //   id: data?.id || "",
-              //   action: "unblock",
-              // });
+              const response = await changeUserStatus.mutateAsync({
+                id: data?.id || "",
+                action: "unblock",
+              });
 
-              // if (response) {
-              onClose();
-              // }
+              if (response) {
+                onClose();
+              }
             }}
           >
             Confirm
