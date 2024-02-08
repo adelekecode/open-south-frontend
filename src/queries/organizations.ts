@@ -1,7 +1,7 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-export function useUserOrganizations() {
-  return useQuery<Organization[]>([`/user/organisations/`]);
+export function useUserOrganizations(options?: UseQueryOptions<Organization[]>) {
+  return useQuery<Organization[]>([`/user/organisations/`], options);
 }
 
 export function useUserOrganizationDetails(slug: string, options?: UseQueryOptions<Organization>) {
