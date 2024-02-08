@@ -44,7 +44,7 @@ export default function Category() {
             ))}
           </div>
         ) : data ? (
-          <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:550px)]:!grid-cols-1 gap-6 tablet:gap-4">
+          <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:768px)]:!grid-cols-1 gap-6 tablet:gap-4">
             {data.map((item, index) => (
               <Item key={index + 1} {...item} />
             ))}
