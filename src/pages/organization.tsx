@@ -15,9 +15,7 @@ type SortByValue = "relevance" | "most-datasets" | "most-recent";
 export default function Organization() {
   const navigate = useNavigate();
 
-  const [searchParams, setSearchParams] = useSearchParams({
-    q: "",
-  });
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [sortBy, setSortBy] = useState<SortByValue>("relevance");
   const [page, setPage] = useState(1);
@@ -29,10 +27,6 @@ export default function Organization() {
     page,
     pageSize: dataPerPage,
   });
-
-  const indexOfLastDataset = 1 * dataPerPage;
-  const indexOfFirstDataset = indexOfLastDataset - dataPerPage;
-  const currentDataset = data?.results?.slice(indexOfFirstDataset, indexOfLastDataset);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -117,7 +111,7 @@ export default function Organization() {
               </div>
             ))}
           </div>
-        ) : data && data.results.length > 0 && currentDataset && currentDataset.length > 0 ? (
+        ) : data && data.results.length > 0 ? (
           <main className="flex flex-col gap-12">
             <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
               {data.results.map((item, index) => {

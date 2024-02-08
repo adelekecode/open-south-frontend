@@ -112,7 +112,9 @@ export default function DatasetDetails() {
     <>
       <Seo title={data?.title || ""} description={stripedDescription || ""} />
       <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 pb-12 tablet:px-6 largeMobile:!px-4">
-        <h1 className="text-2xl font-semibold">{data?.title}</h1>
+        <h1 className="text-2xl font-semibold">
+          {data?.title ? data.title.charAt(0).toUpperCase() + data.title.slice(1) : "------"}
+        </h1>
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">Description</h3>
           <p ref={descriptionRef}></p>

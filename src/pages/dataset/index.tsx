@@ -60,10 +60,6 @@ export default function Dataset() {
   const { data: organizations, isLoading: isLoadingOrganizations } = usePublicOrganizations();
   const { data: tags, isLoading: isLoadingTags } = usePublicTags(); //? Add pagination and search
 
-  const indexOfLastDataset = 1 * datasetPerPage;
-  const indexOfFirstDataset = indexOfLastDataset - datasetPerPage;
-  const currentDataset = data?.results?.slice(indexOfFirstDataset, indexOfLastDataset);
-
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
@@ -370,13 +366,10 @@ export default function Dataset() {
                   </div>
                 ))}
               </div>
-            ) : data?.results &&
-              data.results.length > 0 &&
-              currentDataset &&
-              currentDataset.length > 0 ? (
+            ) : data?.results && data.results.length > 0 ? (
               <>
                 <main className="w-full flex flex-col gap-8">
-                  {currentDataset.map((item, index) => (
+                  {data.results.map((item, index) => (
                     <Card key={index + 1} {...item} />
                   ))}
                 </main>

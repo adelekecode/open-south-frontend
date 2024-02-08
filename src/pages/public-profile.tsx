@@ -13,17 +13,21 @@ export default function PublicProfile() {
 
   const navigate = useNavigate();
 
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 9,
-    page: 0,
-  });
+  // const [paginationModel, setPaginationModel] = useState({
+  //   pageSize: 9,
+  //   page: 0,
+  // });
+  const [page, setPage] = useState(1);
+  const datasetPerPage = 9;
+
   const { data, isLoading } = usePublicProfile(id || "", {
     enabled: !!id,
   });
   const { data: dataset, isLoading: isLoadingDataset } = usePublicUserDataset(
     id || "",
     {
-      ...paginationModel,
+      page,
+      pageSize: datasetPerPage,
     },
     {
       enabled: !!id,
@@ -66,7 +70,6 @@ export default function PublicProfile() {
     return <NotFound />;
   }
 
-  //? About not set
   return (
     <>
       <Seo
@@ -149,17 +152,13 @@ export default function PublicProfile() {
                 </div>
                 <div className="flex items-center justify-center mt-4">
                   <Pagination
-                    // count={9}
-
+                    count={Math.ceil(dataset.count / datasetPerPage)}
+                    page={page}
+                    onChange={(_, page) => {
+                      setPage(page);
+                    }}
                     variant="outlined"
                     shape="rounded"
-                    page={paginationModel.page}
-                    onChange={(_, value) => {
-                      setPaginationModel((prev) => ({
-                        ...prev,
-                        page: value,
-                      }));
-                    }}
                   />
                 </div>
               </>
