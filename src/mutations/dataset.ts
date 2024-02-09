@@ -211,7 +211,13 @@ export function useChangeDatasetStatus() {
   const { status } = filterBy;
 
   return useMutation(
-    async ({ id, action }: { id: string; action: Dataset["status"] | "delete" }) => {
+    async ({
+      id,
+      action,
+    }: {
+      id: string;
+      action: Dataset["status"] | "delete" | "unpublished";
+    }) => {
       const response = await axiosPrivate.post(`/admin/datasets/pk/${id}/actions/${action}/`);
 
       return response;

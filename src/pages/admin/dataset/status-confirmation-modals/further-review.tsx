@@ -3,13 +3,13 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import { useChangeDatasetStatus } from "~/mutations/dataset";
 
-type ApproveModalProps = {
+type UnblockModalProps = {
   open: boolean;
   onClose: () => void;
   data: Dataset;
 };
 
-export default function ApproveModal({ open, onClose, data }: ApproveModalProps) {
+export default function UnblockModal({ open, onClose, data }: UnblockModalProps) {
   const changeDatasetStatus = useChangeDatasetStatus();
 
   return (
@@ -24,7 +24,7 @@ export default function ApproveModal({ open, onClose, data }: ApproveModalProps)
           <TiInfo className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3.5rem] !font-extralight" />
         </span>
         <p className="text-base largeMobile:!text-sm font-medium text-center">
-          Are you sure you want to approve this dataset?
+          Are you sure you want change this dataset status to further review?
         </p>
         <div className="mt-10 flex gap-6 justify-between">
           <Button variant="outlined" onClick={onClose}>
@@ -35,7 +35,7 @@ export default function ApproveModal({ open, onClose, data }: ApproveModalProps)
             onClick={async () => {
               const response = await changeDatasetStatus.mutateAsync({
                 id: data?.id || "",
-                action: "published",
+                action: "further_review",
               });
 
               if (response) {
