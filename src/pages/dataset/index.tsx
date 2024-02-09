@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MenuItem, Pagination } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import slugify from "slugify";
 import SearchInput from "~/components/inputs/search-input";
 import Seo from "~/components/seo";
 import SelectInput from "~/components/inputs/select-input";
@@ -27,24 +26,18 @@ export default function Dataset() {
   const [page, setPage] = useState(1);
   const datasetPerPage = 10;
 
-  const slugOption = {
-    lower: true,
-    strict: true,
-    trim: true,
-  };
-
   const search = searchParams.get("q") || "";
   const filterBy = {
     organization: searchParams.get("organization") || "",
     category: searchParams.get("category") || "",
-    tag: slugify(searchParams.get("tag") || "", slugOption),
-    license: slugify(searchParams.get("license") || "", slugOption),
-    format: slugify(searchParams.get("format") || "", slugOption),
-    spatialCoverage: slugify(searchParams.get("spatial-coverage") || "", slugOption),
+    tag: searchParams.get("tag") || "",
+    license: searchParams.get("license") || "",
+    format: searchParams.get("format") || "",
+    spatialCoverage: searchParams.get("spatial-coverage") || "",
   };
   // const sortBy = {};
 
-  const { isLoading, data } = usePublicDatasets(
+  const { isLoading, data, refetch } = usePublicDatasets(
     useDebounce(search).trim(),
     {
       ...filterBy,
@@ -105,6 +98,9 @@ export default function Dataset() {
                 <p className="text-white tablet:hidden text-base">Search</p>
               </div>
             }
+            onSearch={async () => {
+              await refetch();
+            }}
           />
         </div>
         <div className="w-full grid grid-cols-[0.8fr,2fr] py-6 gap-6 tablet:grid-cols-1">
@@ -159,11 +155,7 @@ export default function Dataset() {
                     placeholder: "All Tags",
                   }}
                   loading={isLoadingTags}
-                  value={
-                    tags?.results?.find(
-                      (item) => slugify(item.name, slugOption) === filterBy.tag
-                    ) || null
-                  }
+                  value={tags?.results?.find((item) => item.name === filterBy.tag) || null}
                   isOptionEqualToValue={(option, value) => option.name === value.name}
                   onChange={(_, val) => {
                     const chosenValue = val;
@@ -178,7 +170,7 @@ export default function Dataset() {
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("tag", slugify(chosenValue.name, slugOption));
+                        params.set("tag", chosenValue.name);
 
                         return params;
                       });
@@ -211,7 +203,7 @@ export default function Dataset() {
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("category", slugify(chosenValue.slug, slugOption));
+                        params.set("category", chosenValue.slug);
 
                         return params;
                       });
@@ -227,11 +219,7 @@ export default function Dataset() {
                     placeholder: "All Formarts",
                   }}
                   options={formatData}
-                  value={
-                    formatData.find(
-                      (item) => slugify(item.label, slugOption) === filterBy.format
-                    ) || null
-                  }
+                  value={formatData.find((item) => item.label === filterBy.format) || null}
                   isOptionEqualToValue={(option, value) => option.label === value.label}
                   onChange={(_, val) => {
                     const chosenValue = val;
@@ -246,7 +234,7 @@ export default function Dataset() {
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("format", slugify(chosenValue.label, slugOption));
+                        params.set("format", chosenValue.label);
 
                         return params;
                       });
@@ -263,11 +251,7 @@ export default function Dataset() {
                   }}
                   getOptionLabel={(opt) => opt.name ?? opt}
                   options={licenseData}
-                  value={
-                    licenseData.find(
-                      (item) => slugify(item.name, slugOption) === filterBy.license
-                    ) || null
-                  }
+                  value={licenseData.find((item) => item.name === filterBy.license) || null}
                   isOptionEqualToValue={(option, value) => option.name === value.name}
                   onChange={(_, val) => {
                     const chosenValue = val;
@@ -282,7 +266,7 @@ export default function Dataset() {
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("license", slugify(chosenValue.name, slugOption));
+                        params.set("license", chosenValue.name);
 
                         return params;
                       });
@@ -299,9 +283,8 @@ export default function Dataset() {
                   }}
                   options={spatialCoverageData}
                   value={
-                    spatialCoverageData.find(
-                      (item) => slugify(item.label, slugOption) === filterBy.spatialCoverage
-                    ) || null
+                    spatialCoverageData.find((item) => item.label === filterBy.spatialCoverage) ||
+                    null
                   }
                   isOptionEqualToValue={(option, value) => option.label === value.label}
                   onChange={(_, val) => {
@@ -317,7 +300,7 @@ export default function Dataset() {
 
                     if (chosenValue) {
                       setSearchParams((params) => {
-                        params.set("spatial-coverage", slugify(chosenValue.label, slugOption));
+                        params.set("spatial-coverage", chosenValue.label);
 
                         return params;
                       });

@@ -58,7 +58,7 @@ export function usePublicFilePreview(
 }
 
 export function useAdminDatasetDetails(id: string) {
-  return useQuery<any>([`/datasets/${id}/`]);
+  return useQuery<Dataset>([`/datasets/${id}/`]);
 }
 
 export function useAdminDatasets(

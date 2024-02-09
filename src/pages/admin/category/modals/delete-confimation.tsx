@@ -44,11 +44,9 @@ export default function DeleteConfirmation({ modal, setModal }: DeleteConfirmati
           <Button
             loading={deleteCategory.isLoading}
             onClick={async () => {
-              const response = await deleteCategory.mutateAsync(data?.id || "");
+              await deleteCategory.mutateAsync(data?.id || "");
 
-              if (response) {
-                onClose();
-              }
+              onClose();
             }}
             className="h-full"
           >

@@ -23,7 +23,7 @@ export default function Organization() {
 
   const search = searchParams.get("q") || "";
 
-  const { isLoading, data } = usePublicOrganizations(useDebounce(search).trim(), {
+  const { isLoading, data, refetch } = usePublicOrganizations(useDebounce(search).trim(), {
     page,
     pageSize: dataPerPage,
   });
@@ -72,6 +72,9 @@ export default function Organization() {
                   replace: true,
                 }
               );
+            }}
+            onSearch={async () => {
+              await refetch();
             }}
           />
         </div>
