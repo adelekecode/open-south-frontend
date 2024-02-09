@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -41,6 +41,10 @@ export default function Signup() {
   const { signupState, setSignupState } = useAppStore();
 
   const signup = useSignUp();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
