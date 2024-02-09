@@ -94,7 +94,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                     <div className="flex gap-6 items-center largeMobile:flex-col largeMobile:items-start largeMobile:gap-4 largeMobile:mb-2">
                       <figure
                         id="image"
-                        className="w-56 h-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden bg-primary-50"
+                        className="w-80 h-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden bg-primary-50"
                       >
                         {image ? (
                           <img
@@ -109,6 +109,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                       <input
                         ref={inputRef}
                         type="file"
+                        accept=".png, .jpg, .jpeg"
                         className="hidden"
                         onChange={(e) => {
                           const file = e.target.files![0];
@@ -116,16 +117,34 @@ export default function Create({ modal, setModal }: CreateProps) {
                           setImage(file);
                         }}
                       />
-                      <Button
-                        variant="outlined"
-                        color="info"
-                        className="!py-2 !text-xs !font-normal"
-                        onClick={() => {
-                          inputRef.current?.click();
-                        }}
-                      >
-                        <span>Upload an image</span>
-                      </Button>
+                      <div className="flex flex-col gap-2">
+                        <h4 className="text-sm">Upload an image</h4>
+                        <p className="text-xs text-info-800">
+                          The image should be in PNG, JPG or JPEG format
+                        </p>
+                        <div className="flex items-center mt-1">
+                          <Button
+                            variant="outlined"
+                            color="info"
+                            className="!py-2 !px-3 !text-xs"
+                            onClick={() => {
+                              inputRef.current?.click();
+                            }}
+                          >
+                            <span>Choose image</span>
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="info"
+                            className="!py-2 !border-transparent !px-3 !text-xs"
+                            onClick={() => {
+                              setImage(null);
+                            }}
+                          >
+                            <span>Remove</span>
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <FormField

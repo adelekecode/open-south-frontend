@@ -43,6 +43,13 @@ type State = {
       page: number;
     };
   };
+  category: {
+    search: string;
+    pagination: {
+      pageSize: number;
+      page: number;
+    };
+  };
 };
 
 type Action = {
@@ -50,6 +57,7 @@ type Action = {
   setOrganization: (obj: State["organization"]) => void;
   setNews: (obj: State["news"]) => void;
   setUser: (obj: State["user"]) => void;
+  setCategory: (obj: State["category"]) => void;
 };
 
 const useAdminTableStore = create<State & Action>()((set) => ({
@@ -111,6 +119,17 @@ const useAdminTableStore = create<State & Action>()((set) => ({
   setUser: (user) =>
     set({
       user,
+    }),
+  category: {
+    search: "",
+    pagination: {
+      pageSize: 10,
+      page: 0,
+    },
+  },
+  setCategory: (category) =>
+    set({
+      category,
     }),
 }));
 
