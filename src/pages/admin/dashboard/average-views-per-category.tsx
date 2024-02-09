@@ -60,20 +60,23 @@ export default function AverageViewsPerCategory() {
     <div className="w-full border border-info-100 bg-white p-4 rounded-md flex flex-col gap-4 py-5 pt-4">
       <div className="flex items-center justify-center">
         <h1 className="text-base font-semibold text-info-950 text-center [@media(max-width:1350px)]:text-sm">
-          Average Download per Category Across Different Time Frames
+          Average views per category
         </h1>
       </div>
-      <Line
-        options={{
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "top" as const,
+      <div className="w-full">
+        <Line
+          className="!w-full"
+          options={{
+            responsive: true,
+            plugins: {
+              legend: {
+                position: "top" as const,
+              },
             },
-          },
-        }}
-        data={data}
-      />
+          }}
+          data={data}
+        />
+      </div>
     </div>
   );
 }
