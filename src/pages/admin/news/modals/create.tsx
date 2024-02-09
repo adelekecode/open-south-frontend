@@ -75,7 +75,6 @@ export default function Create({ modal, setModal }: CreateProps) {
                 </Button>
                 <Button
                   className="!text-xs !p-2"
-                  variant="outlined"
                   onClick={async () => {
                     if (createNews.data) {
                       const response = await changeNewsStatus.mutateAsync({
@@ -88,6 +87,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                       }
                     }
                   }}
+                  loading={changeNewsStatus.isLoading}
                 >
                   Yes
                 </Button>
