@@ -15,10 +15,11 @@ import { GoKebabHorizontal } from "react-icons/go";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useAdminDatasets } from "~/queries/dataset";
-import { useChangeDatasetStatus } from "~/mutations/dataset";
 import DeleteConfirmationModal from "./delete-confirmation";
-import ApproveConfirmationModal from "./status-confirmation-modals/approve";
+import PublishConfirmationModal from "./status-confirmation-modals/publish";
 import RejectConfirmationModal from "./status-confirmation-modals/reject";
+import UnpublishConfirmationModal from "./status-confirmation-modals/unpublish";
+import FurtherReviewConfirmationModal from "./status-confirmation-modals/further-review";
 import useDebounce from "~/hooks/debounce";
 import useAdminTableStore from "~/store/admin-table";
 
@@ -34,11 +35,19 @@ export default function Dataset() {
   const { pagination, filterBy, search } = datasetTable;
   const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
   const [statusObj, setStatusObj] = useState<{ [key: string]: Dataset["status"] }>({});
-  const [approveModal, setApproveModal] = useState<Modal>({
+  const [publishModal, setPublishModal] = useState<Modal>({
     open: false,
     data: null,
   });
   const [rejectModal, setRejectModal] = useState<Modal>({
+    open: false,
+    data: null,
+  });
+  const [unpublishModal, setUnpublishModal] = useState<Modal>({
+    open: false,
+    data: null,
+  });
+  const [furtherReviewModal, setFurtherReviewModal] = useState<Modal>({
     open: false,
     data: null,
   });
@@ -60,7 +69,6 @@ export default function Dataset() {
       ...pagination,
     }
   );
-  const changeDatasetStatus = useChangeDatasetStatus();
 
   const columns: GridColDef[] = [
     {
@@ -172,25 +180,58 @@ export default function Dataset() {
                   ...prevStatusObj,
                   [row.id]: chosenValue as Dataset["status"],
                 }));
-
-                await changeDatasetStatus.mutateAsync({
-                  id: row.id,
-                  action: chosenValue as Dataset["status"],
-                });
               }
             }}
           >
             <MenuItem value="pending" className="!hidden">
               Pending
             </MenuItem>
-            <MenuItem value="unpublished" className={`${value === "unpublished" && "!hidden"}`}>
+            <MenuItem
+              value="unpublished"
+              className={`${value === "unpublished" || (value === "pending" && "!hidden")}`}
+              onClick={() => {
+                setUnpublishModal({
+                  open: true,
+                  data: row,
+                });
+              }}
+            >
               Unpublished
             </MenuItem>
-            <MenuItem value="published" className={`${value === "published" && "!hidden"}`}>
+            <MenuItem
+              value="published"
+              className={`${value === "published" && "!hidden"}`}
+              onClick={() => {
+                setPublishModal({
+                  open: true,
+                  data: row,
+                });
+              }}
+            >
               Published
             </MenuItem>
-            <MenuItem value="rejected">Rejected</MenuItem>
-            <MenuItem value="further_review">Further Review</MenuItem>
+            <MenuItem
+              value="rejected"
+              onClick={() => {
+                setRejectModal({
+                  open: true,
+                  data: row,
+                });
+              }}
+            >
+              Rejected
+            </MenuItem>
+            <MenuItem
+              value="further_review"
+              onClick={() => {
+                setFurtherReviewModal({
+                  open: true,
+                  data: row,
+                });
+              }}
+            >
+              Further Review
+            </MenuItem>
           </Select>
         );
       },
@@ -199,7 +240,7 @@ export default function Dataset() {
     {
       field: "created_at",
       headerName: "CREATED AT",
-      minWidth: 150,
+      minWidth: 180,
       headerAlign: "center",
       align: "center",
       valueFormatter: ({ value }) => {
@@ -214,7 +255,7 @@ export default function Dataset() {
     {
       field: "updated_at",
       headerName: "UPDATED AT",
-      minWidth: 150,
+      minWidth: 180,
       flex: 1,
       headerAlign: "center",
       align: "center",
@@ -370,15 +411,15 @@ export default function Dataset() {
           </div>
         </div>
       </main>
-      <ApproveConfirmationModal
-        open={approveModal.open}
+      <PublishConfirmationModal
+        open={publishModal.open}
         onClose={() => {
-          setApproveModal({
+          setPublishModal({
             open: false,
             data: null,
           });
         }}
-        data={approveModal.data as Dataset}
+        data={publishModal.data as Dataset}
       />
       <RejectConfirmationModal
         open={rejectModal.open}
@@ -389,6 +430,26 @@ export default function Dataset() {
           });
         }}
         data={rejectModal.data as Dataset}
+      />
+      <UnpublishConfirmationModal
+        open={unpublishModal.open}
+        onClose={() => {
+          setUnpublishModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={unpublishModal.data as Dataset}
+      />
+      <FurtherReviewConfirmationModal
+        open={furtherReviewModal.open}
+        onClose={() => {
+          setFurtherReviewModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={furtherReviewModal.data as Dataset}
       />
       <DeleteConfirmationModal
         open={deleteModal.open}

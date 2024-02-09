@@ -1,16 +1,16 @@
 import { TiInfo } from "react-icons/ti";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import { useChangeNewsStatus } from "~/mutations/news";
+import { useChangeDatasetStatus } from "~/mutations/dataset";
 
-type UnpublishModalProps = {
+type PublishModalProps = {
   open: boolean;
   onClose: () => void;
-  data: News;
+  data: Dataset;
 };
 
-export default function UnpublishModal({ open, onClose, data }: UnpublishModalProps) {
-  const changeNewsStatus = useChangeNewsStatus();
+export default function PublishModal({ open, onClose, data }: PublishModalProps) {
+  const changeDatasetStatus = useChangeDatasetStatus();
 
   return (
     <Modal
@@ -24,18 +24,18 @@ export default function UnpublishModal({ open, onClose, data }: UnpublishModalPr
           <TiInfo className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3.5rem] !font-extralight" />
         </span>
         <p className="text-base largeMobile:!text-sm font-medium text-center">
-          Are you sure you want unpublish this news?
+          Are you sure you want to publish this dataset?
         </p>
         <div className="mt-10 flex gap-6 justify-between">
           <Button variant="outlined" onClick={onClose}>
             Cancel
           </Button>
           <Button
-            loading={changeNewsStatus.isLoading}
+            loading={changeDatasetStatus.isLoading}
             onClick={async () => {
-              const response = await changeNewsStatus.mutateAsync({
+              const response = await changeDatasetStatus.mutateAsync({
                 id: data?.id || "",
-                action: "unpublish",
+                action: "published",
               });
 
               if (response) {
