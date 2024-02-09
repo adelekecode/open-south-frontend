@@ -36,11 +36,9 @@ export default function DeleteModal({ open, onClose, data }: DeleteModalProps) {
           <Button
             loading={deleteNews.isLoading}
             onClick={async () => {
-              const response = await deleteNews.mutateAsync(data?.id || "");
+              await deleteNews.mutateAsync(data?.id || "");
 
-              if (response) {
-                onClose();
-              }
+              onClose();
             }}
             className="h-full"
           >

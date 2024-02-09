@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import Modal from "~/components/modal";
 
 type ViewProps = {
@@ -6,12 +7,27 @@ type ViewProps = {
 };
 
 export default function View({ modal, setModal }: ViewProps) {
-  const { data, state } = modal;
+  const { data } = modal;
+
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (!descriptionRef.current) return;
+    if (data?.body) {
+      descriptionRef.current.innerHTML = data.body;
+    } else {
+      descriptionRef.current.innerHTML = "";
+    }
+  }, [data?.body]);
+
+  if (!data) {
+    return;
+  }
 
   return (
     <Modal
       muiModal={{
-        open: state === "view",
+        open: true,
         onClose: () => {
           setModal({
             state: null,
@@ -28,8 +44,8 @@ export default function View({ modal, setModal }: ViewProps) {
           View News
         </h1>
         <div className="flex flex-col gap-4">
-          <div className="w-full bg-primary-50">
-            <figure className="flex justify-center items-center mx-auto w-full aspect-video max-h-[16rem] largeMobile:w-[80%]">
+          <div className="w-full px-6 [@media(max-width:500px)]:px-4">
+            <figure className="flex justify-center items-center mx-auto w-full">
               <img
                 src={data?.image_url || ""}
                 alt="news image"
@@ -37,13 +53,14 @@ export default function View({ modal, setModal }: ViewProps) {
               />
             </figure>
           </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-lg font-semibold largeMobile:text-sm px-8 [@media(max-width:500px)]:px-4">
+          <div className="flex flex-col gap-4">
+            <h3 className="text-lg font-semibold largeMobile:text-sm px-6 [@media(max-width:500px)]:px-4">
               {data?.title || "------"}
             </h3>
-            <p className="text-sm largeMobile:text-xs px-8 [@media(max-width:500px)]:px-4">
-              {data?.body || "------"}
-            </p>
+            <p
+              className="text-sm largeMobile:text-xs px-6 [@media(max-width:500px)]:px-4 [&_a]:text-blue-600 [&_a]:underline"
+              ref={descriptionRef}
+            ></p>
           </div>
         </div>
       </div>

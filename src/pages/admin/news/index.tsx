@@ -57,18 +57,18 @@ export default function News() {
     {
       field: "id",
       headerName: "NO.",
-      minWidth: 10,
-      maxWidth: 70,
+      minWidth: 100,
       renderCell: ({ api, row }) => {
+        const { page, pageSize } = pagination;
         const { getAllRowIds } = api;
 
-        return getAllRowIds().indexOf(row.id) + 1;
+        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
       },
     },
     {
       field: "title",
       headerName: "Title",
-      minWidth: 200,
+      minWidth: 250,
       flex: 1,
     },
     {
@@ -290,7 +290,9 @@ export default function News() {
         </div>
       </main>
       <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
-      <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      {modal.state === "view" && (
+        <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      )}
       <DeleteConfirmationModal
         open={deleteModal.open}
         onClose={() => {

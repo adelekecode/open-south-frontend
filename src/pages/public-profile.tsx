@@ -96,7 +96,7 @@ export default function PublicProfile() {
         <main className="w-full max-w-maxAppWidth mx-auto flex flex-col gap-12 p-6 px-10 tablet:px-6 largeMobile:!px-4">
           <div className="flex flex-col gap-3">
             <h2 className="font-semibold text-base">Bio</h2>
-            <p className="text-sm">{data.bio || "-------"}</p>
+            <p className="text-sm [&_a]:text-blue-600 [&_a]:underline">{data.bio || "-------"}</p>
           </div>
           <div className="w-full flex flex-col gap-3">
             <div className="flex items-center justify-between gap-4">

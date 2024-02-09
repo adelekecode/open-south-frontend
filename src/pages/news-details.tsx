@@ -82,7 +82,7 @@ export default function NewsDetails() {
         <figure className="w-full aspect-video">
           <img src={data.image_url || ""} className="object-cover w-full h-full" alt="banner" />
         </figure>
-        <p ref={descriptionRef} />
+        <p className="[&_a]:text-blue-600 [&_a]:underline" ref={descriptionRef} />
       </main>
     </>
   );

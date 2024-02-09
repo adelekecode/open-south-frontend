@@ -117,7 +117,7 @@ export default function DatasetDetails() {
         </h1>
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">Description</h3>
-          <p ref={descriptionRef}></p>
+          <p className="[&_a]:text-blue-600 [&_a]:underline" ref={descriptionRef}></p>
         </div>
         {data.files && data.files.length > 0 && (
           <div className="flex flex-col gap-3">
