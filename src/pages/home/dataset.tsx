@@ -28,7 +28,7 @@ export default function Dataset() {
       </header>
       {isLoading ? (
         <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
-          {Array.from({ length: 5 }).map((_, index) => (
+          {Array.from({ length: 9 }).map((_, index) => (
             <div
               className="grid grid-cols-[5rem,1fr] gap-6 border-[1.5px] border-info-200 p-6"
               key={index + 1}
@@ -48,6 +48,9 @@ export default function Dataset() {
           {data.slice(0, 9).map((item, index) => {
             const { dataset_data } = item;
             const { slug, title, publisher_data } = dataset_data;
+
+            if (slug === "water-in-a-bus") return <></>;
+            if (slug === "house-on-a-car-in-a-boat") return <></>;
 
             return (
               <button
