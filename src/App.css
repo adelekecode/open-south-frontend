@@ -66,3 +66,7 @@ ol.order-list li::marker {
     transform: rotate(360deg);
   }
 }
+
+.ql-align-justify {
+  text-align: justify;
+}

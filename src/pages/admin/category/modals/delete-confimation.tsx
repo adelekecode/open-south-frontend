@@ -6,9 +6,17 @@ import { useDeleteCategory } from "~/mutations/category";
 type DeleteConfirmationProps = {
   modal: CategoyModal;
   setModal: (obj: CategoyModal) => void;
+  pagination: {
+    page: number;
+    pageSize: number;
+  };
 };
 
-export default function DeleteConfirmation({ modal, setModal }: DeleteConfirmationProps) {
+export default function DeleteConfirmation({
+  modal,
+  setModal,
+  pagination,
+}: DeleteConfirmationProps) {
   const { data, state } = modal;
 
   function onClose() {
@@ -18,7 +26,7 @@ export default function DeleteConfirmation({ modal, setModal }: DeleteConfirmati
     });
   }
 
-  const deleteCategory = useDeleteCategory();
+  const deleteCategory = useDeleteCategory(pagination);
 
   return (
     <Modal

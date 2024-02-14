@@ -46,11 +46,7 @@ export default function Dataset() {
       ) : data && data.length > 0 ? (
         <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
           {data.slice(0, 9).map((item, index) => {
-            const { dataset_data } = item;
-            const { slug, title, publisher_data } = dataset_data;
-
-            if (slug === "water-in-a-bus") return <></>;
-            if (slug === "house-on-a-car-in-a-boat") return <></>;
+            const { slug, title, publisher_data } = item;
 
             return (
               <button
@@ -78,7 +74,9 @@ export default function Dataset() {
                   </Avatar>
                 )}
                 <div className="flex flex-col gap-2">
-                  <h1 className="text-sm font-semibold text-start capitalize">{title}</h1>
+                  <h1 className="text-sm font-semibold text-start">
+                    {title.charAt(0).toUpperCase() + title.slice(1)}
+                  </h1>
                   <p className="text-start text-xs">
                     <span className="pr-1">by</span>
                     <Link

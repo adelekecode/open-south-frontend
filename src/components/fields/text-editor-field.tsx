@@ -54,6 +54,7 @@ export default function TextEditorField({
                 ["bold", "italic", "underline", "strike", "blockquote"],
                 [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
                 ["link"],
+                [{ align: [] }],
                 ["clean"],
               ],
               ...modules,
@@ -69,6 +70,8 @@ export default function TextEditorField({
               "bullet",
               "indent",
               "link",
+              "align",
+              // "direction",
               ...(formats || []),
             ]}
           />

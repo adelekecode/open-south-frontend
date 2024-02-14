@@ -193,7 +193,13 @@ export default function News() {
               <IoEyeOutline className="text-lg" />
             </IconButton>
             <IconButton
-            // color="warning"
+              // color="warning"
+              onClick={() => {
+                setModal({
+                  state: "edit",
+                  data: row,
+                });
+              }}
             >
               <FiEdit className="text-sm" />
             </IconButton>

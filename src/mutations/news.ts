@@ -46,6 +46,54 @@ export function useCreateNews() {
   );
 }
 
+export function useEditNews() {
+  const queryClient = useQueryClient();
+  const { news } = useAdminTableStore();
+
+  const { pagination, filterBy, search } = news;
+  const { pageSize, page } = pagination;
+  const { status } = filterBy;
+
+  return useMutation(
+    async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Record<"title" | "body", string> & { image?: File };
+    }) => {
+      const { data: response } = await axiosPrivate.patchForm(`/admin/news/${id}/`, data);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        notifySuccess("News successfully updated");
+
+        return queryClient.invalidateQueries([
+          `/admin/news/list/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+        ]);
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            const data = error.response.data;
+
+            if (data.image) {
+              return notifyError(data.image[0]);
+            }
+            notifyError("Error occured while updating dataset");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
 export function useDeleteNews() {
   const queryClient = useQueryClient();
   const { news } = useAdminTableStore();

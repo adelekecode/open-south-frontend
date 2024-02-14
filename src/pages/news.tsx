@@ -10,6 +10,14 @@ export default function News() {
 
   const { data, isLoading } = usePublicNews();
 
+  function textConverter(str: string, maxLen: number) {
+    if (str.length > maxLen) {
+      return str.substring(0, maxLen).split(" ").slice(0, -1).join(" ") + "...";
+    }
+
+    return str;
+  }
+
   return (
     <>
       <Seo title="News" description="Check out our latest news" />
@@ -61,18 +69,15 @@ export default function News() {
                       className="object-cover w-full h-full"
                     />
                   </figure>
-                  <div className="flex flex-col items-start gap-4 p-4">
-                    <h2 className="text-base font-semibold text-start">{title}</h2>
+                  <div className="flex flex-col items-start gap-3 p-4">
+                    <h2 className="text-base font-semibold text-start">
+                      {textConverter(title, 70)}
+                    </h2>
                     <h5 className="text-xs font-medium">
                       Published on{" "}
                       {published_at ? moment(published_at).format("MMMM D, YYYY") : "-----"}
                     </h5>
-                    <p className="text-start text-sm">
-                      {stripedDescription.length > 300
-                        ? stripedDescription.substring(0, 300).split(" ").slice(0, -1).join(" ") +
-                          "..."
-                        : stripedDescription}
-                    </p>
+                    <p className="text-start text-sm">{textConverter(stripedDescription, 180)}</p>
                   </div>
                 </button>
               );
