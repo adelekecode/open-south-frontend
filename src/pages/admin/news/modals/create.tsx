@@ -8,7 +8,7 @@ import { notifyError } from "~/utils/toast";
 import Button from "~/components/button";
 import SuccessIllustration from "~/assets/illustrations/success.png";
 import FormField from "~/components/fields/form-field";
-import { useChangeNewsStatus, useCreateNews } from "~/mutations/news";
+import { useChangeNewsStatus, useCreateNews, useEditNews } from "~/mutations/news";
 import TextEditorField from "~/components/fields/text-editor-field";
 
 type CreateProps = {
@@ -33,6 +33,7 @@ export default function Create({ modal, setModal }: CreateProps) {
   const [image, setImage] = useState<File | null>(null);
 
   const createNews = useCreateNews();
+  const editNews = useEditNews();
   const changeNewsStatus = useChangeNewsStatus();
 
   function onClose() {
@@ -44,10 +45,12 @@ export default function Create({ modal, setModal }: CreateProps) {
     setImage(null);
   }
 
+  const isEditState = modal.state === "edit";
+
   return (
     <Modal
       muiModal={{
-        open: modal.state === "create",
+        open: modal.state === "create" || isEditState,
         onClose,
       }}
       innerContainer={{
@@ -55,7 +58,7 @@ export default function Create({ modal, setModal }: CreateProps) {
       }}
     >
       <div className="flex flex-col gap-2 w-full">
-        <h1 className="text-xl font-semibold">Add News</h1>
+        <h1 className="text-xl font-semibold">{isEditState ? "Edit News" : "Add News"}</h1>
         {formCompleted ? (
           <div className="p-6 pt-2 w-full flex flex-col items-center gap-4">
             <figure className="max-w-[7rem]">
@@ -97,12 +100,34 @@ export default function Create({ modal, setModal }: CreateProps) {
         ) : (
           <Formik
             initialValues={{
-              title: "",
-              description: "",
+              title: modal.data?.title || "",
+              description: modal.data?.body || "",
             }}
             validateOnBlur={false}
             validationSchema={validationSchema}
             onSubmit={async (values) => {
+              if (isEditState) {
+                if (!image && !modal.data?.image_url) return notifyError("Image field is required");
+
+                const data: { title: string; body: string; image?: File } = {
+                  title: values.title,
+                  body: values.description,
+                };
+
+                if (image) {
+                  data.image = image;
+                }
+
+                const response = await editNews.mutateAsync({
+                  id: modal.data?.id || "",
+                  data,
+                });
+
+                if (response) {
+                  return onClose();
+                }
+              }
+
               if (!image) return notifyError("Image field is required");
 
               const response = await createNews.mutateAsync({
@@ -130,14 +155,12 @@ export default function Create({ modal, setModal }: CreateProps) {
                     <div className="flex gap-6 items-center largeMobile:flex-col largeMobile:items-start largeMobile:gap-4 largeMobile:mb-2">
                       <figure
                         id="image"
-                        className="w-56 h-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden"
+                        className="w-56 h-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden [&>img]:w-full [&>img]:h-full [&>img]:object-contain"
                       >
                         {image ? (
-                          <img
-                            src={URL.createObjectURL(image)}
-                            alt="category image"
-                            className="w-full h-full object-contain"
-                          />
+                          <img src={URL.createObjectURL(image)} alt="category image" />
+                        ) : modal.data?.image_url ? (
+                          <img src={modal.data?.image_url} alt="category image" />
                         ) : (
                           <ImFilePicture className="w-[25%] h-44 text-info-500" />
                         )}
@@ -204,7 +227,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                 <footer className="p-4 py-0 flex items-center justify-between">
                   <div></div>
                   <Button type="submit" className="!py-2" loading={isSubmitting}>
-                    Submit
+                    {isEditState ? "Save" : "Submit"}
                   </Button>
                 </footer>
               </form>

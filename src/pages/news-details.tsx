@@ -45,14 +45,15 @@ export default function NewsDetails() {
     return (
       <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 pb-16 tablet:px-6 largeMobile:!px-4">
         <div className="flex flex-col gap-2">
-          <div className="w-[100px] h-8 animate-pulse rounded-sm bg-gray-200" />
-          <div className="w-[50px] h-4 animate-pulse rounded-sm bg-gray-200" />
+          <div className="w-[40%] largeMobile:w-[200px] smallMobile:w-[120px] h-8 animate-pulse rounded-sm bg-gray-200" />
+          <div className="w-[80px] h-4 animate-pulse rounded-sm bg-gray-200" />
         </div>
         <div className="w-full aspect-video bg-gray-200 animate-pulse rounded-md" />
-        <div className="w-full grid grid-rows-6">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index + 1} className="animate-pulse rounded-sm bg-gray-200 h-full" />
+        <div className="w-full flex flex-col gap-2">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index + 1} className="animate-pulse rounded-sm bg-gray-200 h-5 w-full" />
           ))}
+          <div className="animate-pulse rounded-sm bg-gray-200 h-5 w-[50%]" />
         </div>
       </main>
     );
