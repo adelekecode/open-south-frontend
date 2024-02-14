@@ -46,8 +46,7 @@ export default function Dataset() {
       ) : data && data.length > 0 ? (
         <main className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
           {data.slice(0, 9).map((item, index) => {
-            const { dataset_data } = item;
-            const { slug, title, publisher_data } = dataset_data;
+            const { slug, title, publisher_data } = item;
 
             return (
               <button

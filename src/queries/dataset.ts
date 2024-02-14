@@ -125,7 +125,7 @@ export function useUserDatasetFiles(
   const { pageSize, page } = pagination;
 
   return useQuery<PaginationData<Dataset["files"][]>>(
-    [`/user/datasets/${id}/files/?limit=${pageSize}&offset=${page * pageSize}`],
+    [`/user/dataset/pk/${id}/files/?limit=${pageSize}&offset=${page * pageSize}`],
     options
   );
 }
@@ -152,15 +152,5 @@ export function usePublicUserDataset(
 }
 
 export function usePopularDatasets() {
-  return useQuery<
-    {
-      count: number;
-      created_at: string;
-      dataset_data: {
-        title: string;
-        slug: string;
-        publisher_data: Dataset["publisher_data"];
-      };
-    }[]
-  >([`/public/popular/dataset/?key=public`]);
+  return useQuery<Dataset[]>([`/public/popular/dataset/?key=public`]);
 }
