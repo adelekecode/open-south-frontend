@@ -65,7 +65,7 @@ axiosPrivate.interceptors.response.use(
 
       return Promise.reject(message);
     } else if (message === "Network Error") {
-      notifyError("Server down, Please try again later");
+      notifyError("Offline. Check your network connection.");
 
       return Promise.reject(message);
     } else return Promise.reject(error);
