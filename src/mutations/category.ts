@@ -3,8 +3,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
 import useAdminTableStore from "~/store/admin-table";
+import { useSearchParams } from "react-router-dom";
 
-function useCreateCategory() {
+export function useCreateCategory() {
   const queryClient = useQueryClient();
   const { dataset } = useAdminTableStore();
 
@@ -40,11 +41,55 @@ function useCreateCategory() {
   );
 }
 
-function useDeleteCategory() {
+export function useEditCategory(pagination: { page: number; pageSize: number }) {
   const queryClient = useQueryClient();
-  const { dataset } = useAdminTableStore();
+  const [searchParams] = useSearchParams();
 
-  const { pagination, search } = dataset;
+  const search = searchParams.get("q") || "";
+
+  const { pageSize, page } = pagination;
+
+  return useMutation(
+    async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Record<"name" | "description", string> & { image?: File };
+    }) => {
+      const { data: response } = await axiosPrivate.patchForm(`/categories/${id}/`, data);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        notifySuccess("Category successfully updated");
+
+        return queryClient.invalidateQueries([
+          `/admin/categories/?search=${search}&limit=${pageSize}&offset=${page * pageSize}`,
+        ]);
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured while updating category");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export function useDeleteCategory(pagination: { page: number; pageSize: number }) {
+  const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
+
+  const search = searchParams.get("q") || "";
+
   const { pageSize, page } = pagination;
 
   return useMutation(
@@ -75,5 +120,3 @@ function useDeleteCategory() {
     }
   );
 }
-
-export { useCreateCategory, useDeleteCategory };

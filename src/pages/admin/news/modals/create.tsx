@@ -158,9 +158,9 @@ export default function Create({ modal, setModal }: CreateProps) {
                         className="w-56 h-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden [&>img]:w-full [&>img]:h-full [&>img]:object-contain"
                       >
                         {image ? (
-                          <img src={URL.createObjectURL(image)} alt="category image" />
+                          <img src={URL.createObjectURL(image)} alt="news image" />
                         ) : modal.data?.image_url ? (
-                          <img src={modal.data?.image_url} alt="category image" />
+                          <img src={modal.data?.image_url} alt="news image" />
                         ) : (
                           <ImFilePicture className="w-[25%] h-44 text-info-500" />
                         )}

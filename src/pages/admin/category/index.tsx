@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { IconButton, OutlinedInput } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { IoEyeOutline } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDelete } from "react-icons/md";
+import { FiPlus } from "react-icons/fi";
 import moment from "moment";
 import { useAdminCategories } from "~/queries/category";
 import DataGrid from "~/components/data-grid";
@@ -11,16 +13,20 @@ import Button from "~/components/button";
 import CreateModal from "./modals/create";
 import ViewModal from "./modals/view";
 import DeleteConfirmation from "./modals/delete-confimation";
-import useAdminTableStore from "~/store/admin-table";
 import useDebounce from "~/hooks/debounce";
 
 export default function Category() {
-  const { category: categoryTable, setCategory: setCategoryTable } = useAdminTableStore();
-  const { pagination, search } = categoryTable;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const search = searchParams.get("q") || "";
 
   const [modal, setModal] = useState<CategoyModal>({
     state: null,
     data: null,
+  });
+  const [pagination, setPagination] = useState({
+    page: 0,
+    pageSize: 10,
   });
 
   const { isLoading, data } = useAdminCategories(useDebounce(search).trim(), {
@@ -71,8 +77,17 @@ export default function Category() {
       flex: 1,
       headerAlign: "center",
       align: "center",
-      renderCell: (params) => {
-        return <p>{moment(params.value).format("MMMM D, YYYY")}</p>;
+      valueFormatter: ({ value }) => {
+        const result = moment(value).fromNow();
+
+        if (result === "a day ago") {
+          return "Yesterday";
+        }
+
+        return result.charAt(0).toUpperCase() + result.slice(1);
+      },
+      sortComparator: (v1, v2) => {
+        return new Date(v1).getTime() - new Date(v2).getTime();
       },
     },
     {
@@ -96,7 +111,15 @@ export default function Category() {
             >
               <IoEyeOutline className="text-lg" />
             </IconButton>
-            <IconButton size="medium">
+            <IconButton
+              size="medium"
+              onClick={() => {
+                setModal({
+                  state: "edit",
+                  data: params.row,
+                });
+              }}
+            >
               <FiEdit className="text-sm" />
             </IconButton>
             <IconButton
@@ -129,29 +152,49 @@ export default function Category() {
         </div>
         <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
           <div className="flex items-center border-y p-4 py-4 border-info-100">
-            <div className="flex items-center gap-4 h-10 w-full justify-between">
+            <div className="flex items-center gap-4 h-10 w-full justify-between largeMobile:gap-2">
               <OutlinedInput
                 placeholder="Search for title..."
-                className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
+                className="w-[400px] [@media(max-width:500px)]:!w-full !h-full !text-sm"
                 value={search}
                 onChange={(e) => {
-                  setCategoryTable({
-                    ...categoryTable,
-                    search: e.target.value,
-                  });
+                  const value = e.target.value;
+
+                  if (!value) {
+                    return setSearchParams((params) => {
+                      params.delete("q");
+
+                      return params;
+                    });
+                  }
+
+                  setSearchParams(
+                    (params) => {
+                      params.set("q", value);
+
+                      return params;
+                    },
+                    {
+                      replace: true,
+                    }
+                  );
                 }}
               />
-              <Button
-                onClick={() => {
-                  setModal({
-                    state: "create",
-                    data: null,
-                  });
-                }}
-                className="!py-2 !h-full"
-              >
-                Add category
-              </Button>
+              <div>
+                <Button
+                  onClick={() => {
+                    setModal({
+                      state: "create",
+                      data: null,
+                    });
+                  }}
+                  className="!py-2 !h-full flex gap-[0.35rem] largeMobile:!py-0 largeMobile:!px-0 largeMobile:!w-4"
+                >
+                  <span className="largeMobile:hidden">Add</span>
+                  <FiPlus className="largeMobile:block hidden text-xl" />
+                  <span className="tablet:hidden">Category</span>
+                </Button>
+              </div>
             </div>
           </div>
           <div className="min-h-[500px] p-4">
@@ -164,12 +207,17 @@ export default function Category() {
               onPaginationModelChange={({ page, pageSize }, { reason }) => {
                 if (!reason) return;
 
-                setCategoryTable({
-                  ...categoryTable,
-                  pagination: {
-                    page,
-                    pageSize,
-                  },
+                // setCategoryTable({
+                //   ...categoryTable,
+                //   pagination: {
+                //     page,
+                //     pageSize,
+                //   },
+                // });
+
+                setPagination({
+                  page,
+                  pageSize,
                 });
               }}
               paginationMode="server"
@@ -177,9 +225,17 @@ export default function Category() {
           </div>
         </div>
       </main>
-      <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      <CreateModal
+        modal={modal}
+        setModal={(obj: typeof modal) => setModal(obj)}
+        pagination={pagination}
+      />
       <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
-      <DeleteConfirmation modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      <DeleteConfirmation
+        modal={modal}
+        setModal={(obj: typeof modal) => setModal(obj)}
+        pagination={pagination}
+      />
     </>
   );
 }

@@ -49,9 +49,6 @@ export default function Dataset() {
             const { dataset_data } = item;
             const { slug, title, publisher_data } = dataset_data;
 
-            if (slug === "water-in-a-bus") return <></>;
-            if (slug === "house-on-a-car-in-a-boat") return <></>;
-
             return (
               <button
                 key={index + 1}
@@ -78,7 +75,9 @@ export default function Dataset() {
                   </Avatar>
                 )}
                 <div className="flex flex-col gap-2">
-                  <h1 className="text-sm font-semibold text-start capitalize">{title}</h1>
+                  <h1 className="text-sm font-semibold text-start">
+                    {title.charAt(0).toUpperCase() + title.slice(1)}
+                  </h1>
                   <p className="text-start text-xs">
                     <span className="pr-1">by</span>
                     <Link

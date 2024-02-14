@@ -82,7 +82,7 @@ export function useEditNews() {
             if (data.image) {
               return notifyError(data.image[0]);
             }
-            notifyError("Error occured while editting dataset");
+            notifyError("Error occured while updating dataset");
           } else {
             if (typeof error === "string") {
               notifyError(error);
