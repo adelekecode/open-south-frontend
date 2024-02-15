@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import Seo from "~/components/seo";
 
 export default function About() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <Seo title="About" description="See what we are about" />
