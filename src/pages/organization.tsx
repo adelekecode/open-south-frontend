@@ -19,7 +19,7 @@ export default function Organization() {
 
   const [sortBy, setSortBy] = useState<SortByValue>("relevance");
   const [page, setPage] = useState(1);
-  const dataPerPage = 18;
+  const dataPerPage = 12;
 
   const search = searchParams.get("q") || "";
 
