@@ -8,9 +8,7 @@ import Modal from "~/components/modal";
 import { formatFileSize } from "~/utils/helper";
 import FileUploadIllustration from "~/assets/illustrations/file-upload.png";
 import Button from "~/components/button";
-import { notifyError } from "~/utils/toast";
 import { useUploadDatasetFile } from "~/mutations/dataset";
-import SuccessIllustration from "~/assets/illustrations/success.png";
 
 type FileUploadProps = {
   open: boolean;
@@ -37,7 +35,6 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
     success: [],
     failed: [],
   });
-  const [displaySuccess, setDisplaySuccess] = useState(false);
 
   const uploadDatasetFile = useUploadDatasetFile();
 
@@ -81,9 +78,12 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
 
   function onClose() {
     setOpen(false);
+    setFilesUploaded({
+      success: [],
+      failed: [],
+    });
+    setFiles([]);
   }
-
-  //? Create a separate array for successfully upload files and not successfully uploaded files then create a ui that shows those 2 array in a format then create and array that hold all the files that the user uploaded, that array will be filtered every time the user clicks on upload, so that array will initiailly hold all the files then after the files has been upload it will hold the files that hasn't been upload.
 
   return (
     <Modal
@@ -97,152 +97,140 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
     >
       <div className="w-full flex flex-col gap-4 mediumMobile:gap-1">
         <h1 className="text-xl font-semibold">Upload Files</h1>
-        {displaySuccess ? (
-          <div className="p-6 pt-4 w-full flex flex-col items-center gap-4">
-            <figure className="max-w-[9rem]">
-              <img src={SuccessIllustration} alt="Success illustrion" />
-            </figure>
-            <p className="text-sm text-center">You have successfully created a dataset</p>
-          </div>
-        ) : (
-          <>
-            <div
-              className="border border-info-300 rounded-md flex flex-col items-center justify-center w-full p-8 cursor-pointer outline-0 gap-4"
-              {...getRootProps()}
-            >
-              <input {...getInputProps()} className="" />
-              <figure className="max-w-[10rem] ">
-                <img
-                  src={FileUploadIllustration}
-                  alt="file upload illustration"
-                  className="w-full h-full object-cover"
-                />
-              </figure>
-              <p className="text-xs text-center">
-                Drag and drop files here to upload. Allowed file types: .csv, .json, .xlsx, .zip.
-              </p>
-            </div>
-            {files.length > 0 && (
-              <div className="flex flex-col gap-4">
-                {files.map((item, index) => (
-                  <div
-                    key={index + 1}
-                    className="flex justify-between items-center border p-2 rounded-md border-info-300"
-                  >
-                    <div className="flex gap-8 items-center">
-                      <div className="flex flex-col gap-2">
-                        <h4 className="text-sm font-medium">
-                          {item.fileName.replace(/\.[^/.]+$/, "")}
-                        </h4>
-                        <div className="[&>p]:text-xs">
-                          <p>File size: {item.fileSize}</p>
-                          <p>File Type: {item.fileType}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <IconButton
-                      onClick={() => {
-                        setFiles((prev) => prev.filter((_, i) => i !== index));
-                      }}
-                      size="small"
-                    >
-                      <IoClose />
-                    </IconButton>
-                  </div>
-                ))}
-                {[...filesUploaded.failed, ...filesUploaded.success].map((item, index) => (
-                  <div key={index + 1} className="rounded-md border-info-300 overflow-hidden">
-                    {filesUploaded.failed.some((obj) => obj.reason) && (
-                      <p className="bg-red-300 w-full p-1 px-2 text-xs font-medium">
-                        {"skjdsdnksdk"}
-                      </p>
-                    )}
-                    <div className="flex justify-between items-center border p-2">
-                      <div className="flex gap-8 items-center">
-                        <div className="flex flex-col gap-2">
-                          <h4 className="text-sm font-medium">
-                            {item.fileName.replace(/\.[^/.]+$/, "")}
-                          </h4>
-                          <div className="[&>p]:text-xs">
-                            <p>File size: {item.fileSize}</p>
-                            <p>File Type: {item.fileType}</p>
-                          </div>
-                        </div>
-                        {filesUploaded.success.some((obj) => obj.id === item.id) && (
-                          <p className="text-xs px-3 py-1 border border-green-500 text-green-500 rounded-full">
-                            uploaded
-                          </p>
-                        )}
-                      </div>
-                      {filesUploaded.failed.some((obj) => obj.id === item.id) && (
-                        <IconButton
-                          onClick={() => {
-                            setFilesUploaded((prev) => ({
-                              ...prev,
-                              failed: prev.failed.filter((_, i) => i !== index),
-                            }));
-                          }}
-                          size="small"
-                        >
-                          <IoClose />
-                        </IconButton>
-                      )}
+        <div
+          className="border border-info-300 rounded-md flex flex-col items-center justify-center w-full p-8 cursor-pointer outline-0 gap-4"
+          {...getRootProps()}
+        >
+          <input {...getInputProps()} className="" />
+          <figure className="max-w-[10rem] ">
+            <img
+              src={FileUploadIllustration}
+              alt="file upload illustration"
+              className="w-full h-full object-cover"
+            />
+          </figure>
+          <p className="text-xs text-center">
+            Drag and drop files here to upload. Allowed file types: .csv, .json, .xlsx, .zip.
+          </p>
+        </div>
+        {files.length > 0 && (
+          <div className="flex flex-col gap-4">
+            {files.map((item, index) => (
+              <div
+                key={index + 1}
+                className="flex justify-between items-center border p-2 rounded-md border-info-300"
+              >
+                <div className="flex gap-8 items-center">
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-sm font-medium">
+                      {item.fileName.replace(/\.[^/.]+$/, "")}
+                    </h4>
+                    <div className="[&>p]:text-xs">
+                      <p>File size: {item.fileSize}</p>
+                      <p>File Type: {item.fileType}</p>
                     </div>
                   </div>
-                ))}
+                </div>
+                <IconButton
+                  onClick={() => {
+                    setFiles((prev) => prev.filter((_, i) => i !== index));
+                  }}
+                  size="small"
+                >
+                  <IoClose />
+                </IconButton>
               </div>
-            )}
-            <Button
-              className="!py-2 !mt-4"
-              loading={isLoading}
-              onClick={async () => {
-                setIsLoading(true);
-                try {
-                  await Promise.all(
-                    files.map(async (item, index) => {
-                      try {
-                        await uploadDatasetFile.mutateAsync({
-                          datasetId: id || "",
-                          file: item.file,
-                          format: item.fileType,
-                          size: item.fileSize,
-                        });
-
-                        setFilesUploaded((prev) => ({ ...prev, success: [...prev.success, item] }));
-                        files.splice(index, 1);
-                      } catch (error) {
-                        // console.log(error);
-
-                        notifyError(`File "${item.fileName}" already exist`);
-                        setFilesUploaded((prev) => ({
-                          ...prev,
-                          failed: [
-                            ...prev.failed,
-                            {
-                              ...item,
-                              reason: "",
-                            },
-                          ],
-                        }));
-                        files.splice(index, 1);
-                        throw error;
-                      }
-                    })
-                  );
-                  setDisplaySuccess(true);
-                } catch (error) {
-                  console.error(error);
-                  throw error;
-                } finally {
-                  setIsLoading(false);
-                }
-              }}
-              disabled={!(files.length > 0)}
-            >
-              {"Upload"}
-            </Button>
-          </>
+            ))}
+          </div>
         )}
+        {[...filesUploaded.failed, ...filesUploaded.success].map(
+          (item: (typeof filesUploaded.success)[0] | (typeof filesUploaded.failed)[0], index) => (
+            <div key={index + 1} className="rounded-md border-info-300 overflow-hidden">
+              {"reason" in item && (
+                <p className="bg-red-300 w-full p-1 px-2 text-xs font-medium">
+                  {item.reason.charAt(0).toUpperCase() + item.reason.slice(1)}
+                </p>
+              )}
+              <div className="flex justify-between items-center border p-2">
+                <div className="flex gap-8 items-center">
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-sm font-medium">
+                      {item.fileName.replace(/\.[^/.]+$/, "")}
+                    </h4>
+                    <div className="[&>p]:text-xs">
+                      <p>File size: {item.fileSize}</p>
+                      <p>File Type: {item.fileType}</p>
+                    </div>
+                  </div>
+                  {filesUploaded.success.some((obj) => obj.id === item.id) && (
+                    <p className="text-xs px-3 py-1 border border-green-500 text-green-500 rounded-full">
+                      uploaded
+                    </p>
+                  )}
+                </div>
+                {filesUploaded.failed.some((obj) => obj.id === item.id) && (
+                  <IconButton
+                    onClick={() => {
+                      setFilesUploaded((prev) => ({
+                        ...prev,
+                        failed: prev.failed.filter((_, i) => i !== index),
+                      }));
+                    }}
+                    size="small"
+                  >
+                    <IoClose />
+                  </IconButton>
+                )}
+              </div>
+            </div>
+          )
+        )}
+        <Button
+          className="!py-2 !mt-4"
+          loading={isLoading}
+          onClick={async () => {
+            setIsLoading(true);
+            try {
+              await Promise.all(
+                files.map(async (item) => {
+                  try {
+                    await uploadDatasetFile.mutateAsync({
+                      datasetId: id || "",
+                      file: item.file,
+                      format: item.fileType,
+                      size: item.fileSize,
+                    });
+
+                    setFilesUploaded((prev) => ({ ...prev, success: [...prev.success, item] }));
+                    setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
+                  } catch (error: any) {
+                    const errMsg = error.response.data?.error || "";
+
+                    setFilesUploaded((prev) => ({
+                      ...prev,
+                      failed: [
+                        ...prev.failed,
+                        {
+                          ...item,
+                          reason: errMsg,
+                        },
+                      ],
+                    }));
+                    setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
+                  }
+                })
+              );
+            } catch (error) {
+              console.error(error);
+              throw error;
+            } finally {
+              setIsLoading(false);
+            }
+          }}
+          disabled={!(files.length > 0)}
+        >
+          {"Upload"}
+        </Button>
       </div>
     </Modal>
   );
