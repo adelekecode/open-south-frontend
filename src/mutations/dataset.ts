@@ -114,12 +114,8 @@ export function useUploadDatasetFile() {
     {
       onError(error) {
         if (isAxiosError(error)) {
-          if (error.response?.status === 400) {
-            notifyError("Error occured while creating tags");
-          } else {
-            if (typeof error === "string") {
-              notifyError(error);
-            }
+          if (typeof error === "string") {
+            notifyError(error);
           }
         }
       },
@@ -228,6 +224,32 @@ export function useChangeDatasetStatus() {
           `/admin/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
         ]);
         notifySuccess("Successfully changed dataset status");
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured while changing status");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export function useDatasetFileDownload() {
+  return useMutation(
+    async (id: string) => {
+      const response = await axiosPrivate.post(`/datasets/downloads/${id}/`);
+
+      return response;
+    },
+    {
+      onSuccess: () => {
+        notifySuccess("File downloaded successfully");
       },
       onError(error) {
         if (isAxiosError(error)) {

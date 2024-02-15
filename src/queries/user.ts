@@ -20,10 +20,16 @@ export function useGetAllUsers(
   const { isActive } = filterBy;
   const { page, pageSize } = pagination;
 
+  let status = "";
+
+  if (isActive === "true") {
+    status = "active";
+  } else if (isActive === "false") {
+    status = "inactive";
+  }
+
   return useQuery<PaginationData<CurrentUser[]>>(
-    [
-      `/admin/users/?search=${search}&active=${isActive || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-    ],
+    [`/admin/users/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`],
     options
   );
 }

@@ -8,9 +8,10 @@ import slugify from "slugify";
 import Seo from "~/components/seo";
 import { useDatasetView } from "~/mutations/dataset";
 import File from "./file";
-import FilePreview from "./file-preview";
 import { usePublicDatasetDetails } from "~/queries/dataset";
 import NotFound from "../404";
+import FilePreview from "~/components/file/preview";
+import { useDatasetFileDownload } from "~/mutations/dataset";
 
 export default function DatasetDetails() {
   const { slug } = useParams();
@@ -33,6 +34,7 @@ export default function DatasetDetails() {
     enabled: !!slug,
   });
   const datasetView = useDatasetView();
+  const fileDownload = useDatasetFileDownload();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -253,6 +255,7 @@ export default function DatasetDetails() {
         open={previewFile.open}
         setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
         file={previewFile.data}
+        onDownload={(id: string) => fileDownload.mutateAsync(id)}
       />
     </>
   );

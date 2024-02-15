@@ -61,7 +61,6 @@ export default function DatasetDetails() {
           <div className="flex items-center gap-6">
             <Button
               variant="outlined"
-              disabled
               className="!py-2 !px-3 !text-xs"
               onClick={() => {
                 navigate("./edit");
@@ -85,7 +84,7 @@ export default function DatasetDetails() {
           {data.status === "pending" && (
             <div className="p-4 py-2 w-full bg-orange-200 mt-2">
               <p className="text-xs font-medium">
-                This is dataset currently being reviewed by the admin.
+                This dataset is currently being reviewed by the admin.
               </p>
             </div>
           )}

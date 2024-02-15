@@ -3,12 +3,14 @@ import { useParams } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { MdOutlineDelete } from "react-icons/md";
+import { IoEyeOutline } from "react-icons/io5";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useUserDatasetFiles } from "~/queries/dataset";
 import DeleteConfirmation from "./delete-confirmation";
 import Button from "~/components/button";
 import FileUpload from "./file-upload";
+import FilePreview from "~/components/file/preview";
 
 export default function Resources() {
   const { id } = useParams();
@@ -25,6 +27,13 @@ export default function Resources() {
     data: null,
   });
   const [openFileUpload, setOpenFileUpload] = useState(false);
+  const [previewFile, setPreviewFile] = useState<{
+    open: boolean;
+    data: Dataset["files"][0] | null;
+  }>({
+    open: false,
+    data: null,
+  });
 
   const { isLoading, data } = useUserDatasetFiles(
     id || "",
@@ -54,7 +63,7 @@ export default function Resources() {
       headerName: "Format",
       align: "center",
       headerAlign: "center",
-      minWidth: 150,
+      minWidth: 200,
     },
     {
       field: "size",
@@ -87,10 +96,24 @@ export default function Resources() {
     {
       field: "action",
       headerName: "Action",
+      align: "center",
+      headerAlign: "center",
       minWidth: 100,
+      sortable: false,
       renderCell: ({ row }) => {
         return (
           <div className="w-full flex items-center justify-center gap-1">
+            <IconButton
+              size="medium"
+              onClick={() => {
+                setPreviewFile({
+                  open: true,
+                  data: row,
+                });
+              }}
+            >
+              <IoEyeOutline className="text-lg" />
+            </IconButton>
             <IconButton
               size="medium"
               onClick={() => {
@@ -118,31 +141,27 @@ export default function Resources() {
             onClick={() => {
               setOpenFileUpload(true);
             }}
-            disabled
           >
             Add
           </Button>
         </header>
-        <div className="flex flex-col gap-4">
-          <div className="min-h-[500px]">
-            <DataGrid
-              getRowId={(params) => params.name}
-              loading={isLoading}
-              rows={data ? data.results : []}
-              columns={columns}
-              rowCount={data?.count || 0}
-              paginationModel={paginationModel}
-              onPaginationModelChange={({ page, pageSize }, { reason }) => {
-                if (!reason) return;
+        <div className={`${(isLoading || (data && !data.results.length)) && "h-[500px]"}`}>
+          <DataGrid
+            loading={isLoading}
+            rows={data ? data.results : []}
+            columns={columns}
+            rowCount={data?.count || 0}
+            paginationModel={paginationModel}
+            onPaginationModelChange={({ page, pageSize }, { reason }) => {
+              if (!reason) return;
 
-                setPaginationModel({
-                  page,
-                  pageSize,
-                });
-              }}
-              paginationMode="server"
-            />
-          </div>
+              setPaginationModel({
+                page,
+                pageSize,
+              });
+            }}
+            paginationMode="server"
+          />
         </div>
       </div>
       <DeleteConfirmation
@@ -156,6 +175,11 @@ export default function Resources() {
         data={deleteModal.data as Dataset["files"][0]}
       />
       <FileUpload open={openFileUpload} setOpen={(bool: boolean) => setOpenFileUpload(bool)} />
+      <FilePreview
+        open={previewFile.open}
+        setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
+        file={previewFile.data}
+      />
     </>
   );
 }

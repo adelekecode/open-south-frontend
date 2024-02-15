@@ -35,12 +35,8 @@ export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<
   return useQuery<Dataset>([`/public/datasets/${slug}/?key=public`], options);
 }
 
-export function usePublicFilePreview(
-  url: string,
-  type: string,
-  options?: UseQueryOptions<any, unknown, unknown, [string]>
-) {
-  return useQuery([`${url}`], {
+export function useDatasetFilePreview(url: string, type: string, options?: UseQueryOptions<any>) {
+  return useQuery<any>([`${url}`], {
     queryFn: async () => {
       const { data: response } = await axios.get(
         url,
