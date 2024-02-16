@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { InputLabel, MenuItem } from "@mui/material";
 import { Formik } from "formik";
@@ -30,6 +30,8 @@ const validationSchema = Yup.object({
 
 export default function CreateEditOrganization() {
   const { slug } = useParams();
+
+  const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -234,7 +236,15 @@ export default function CreateEditOrganization() {
                       />
                     </div>
                     <footer className="p-4 py-2 flex items-center justify-between">
-                      <div></div>
+                      <Button
+                        color="info"
+                        className="!py-2"
+                        onClick={() => {
+                          navigate(`/account/${slug}/dashboard`);
+                        }}
+                      >
+                        Cancel
+                      </Button>
                       <Button type="submit" className="!py-2" loading={isSubmitting}>
                         Save
                       </Button>
