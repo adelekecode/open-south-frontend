@@ -1,18 +1,20 @@
 import { useEffect, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { FaAngleRight } from "react-icons/fa6";
+import moment from "moment";
 import Seo from "~/components/seo";
 import dataset from "~/utils/data/dataset.json";
 import NotFound from "./404";
 import Button from "~/components/button";
 import { useRequestToJoinOrganization } from "~/mutations/organization";
 import { usePublicOrganizationDetails } from "~/queries/organizations";
-import moment from "moment";
 
 export default function OrganizationDetails() {
   const navigate = useNavigate();
   const { slug } = useParams();
+  const { pathname } = useLocation();
+
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
   const { data, isLoading } = usePublicOrganizationDetails(slug || "", {
@@ -180,7 +182,11 @@ export default function OrganizationDetails() {
                 className="!text-xs !py-3"
                 onClick={async () => {
                   if (!currentUser) {
-                    return navigate("/login");
+                    return navigate("/login", {
+                      state: {
+                        from: pathname,
+                      },
+                    });
                   }
 
                   await requestToJoinOrganization.mutateAsync(data.id);

@@ -52,9 +52,9 @@ export function useAdminOrganizationUsers(
 
 export function useAdminOrganizationRequests(
   id: string,
-  options?: UseQueryOptions<Organization[]>
+  options?: UseQueryOptions<OrganizationRequest[]>
 ) {
-  return useQuery<Organization[]>([`/admin/organisation_requests/?pk=${id}`], options);
+  return useQuery<OrganizationRequest[]>([`/admin/organisation_requests/?pk=${id}`], options);
 }
 
 export function useAdminOrganizationsIndicators() {

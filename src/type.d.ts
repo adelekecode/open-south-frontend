@@ -58,10 +58,12 @@ type Dataset = {
     type: "individual" | "organisation";
     id: string;
   };
+  category: string;
   geojson: {
     country: string;
     coordinates: string;
   };
+  user: string;
 };
 
 type Category = {
@@ -131,4 +133,15 @@ type PaginationData<T> = {
   next: boolean | null;
   previous: boolean | null;
   results: T;
+};
+
+type OrganizationRequest = {
+  id: string;
+  status: "pending" | "denied";
+  is_accepted: boolean;
+  is_deleted: boolean;
+  updated_at: string;
+  created_at: string;
+  organisation: string;
+  user: string;
 };
