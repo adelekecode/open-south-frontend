@@ -90,6 +90,59 @@ export function useCreateDatasetTags() {
   );
 }
 
+export function useEditDataset() {
+  return useMutation(
+    async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: Record<
+        | "title"
+        | "description"
+        | "license"
+        | "updateFrequency"
+        | "spatialCoverage"
+        | "start"
+        | "end",
+        string
+      > & { category: Category; coordinates: number[] };
+    }) => {
+      const { spatialCoverage, updateFrequency, start, end, coordinates, ...rest } = data;
+      const { data: response } = await axiosPrivate.post(`/user/datasets/${id}`, {
+        ...rest,
+        update_frequency: updateFrequency,
+        temporal_coverage: `${start},${end}`,
+        spatial_coverage: spatialCoverage,
+        coordinates: coordinates.toString(),
+      });
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            const data = error.response.data;
+
+            if (data) {
+              if (typeof data.error === "string") {
+                notifyError(data.error.charAt(0).toUpperCase() + data.error.slice(1));
+              }
+            } else {
+              notifyError("Error occured while editing dataset");
+            }
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
 export function useUploadDatasetFile() {
   return useMutation(
     async ({
@@ -210,11 +263,13 @@ export function useChangeDatasetStatus() {
     async ({
       id,
       action,
+      data,
     }: {
       id: string;
       action: Dataset["status"] | "delete" | "unpublished";
+      data?: { remark: string };
     }) => {
-      const response = await axiosPrivate.post(`/admin/datasets/pk/${id}/actions/${action}/`);
+      const response = await axiosPrivate.post(`/admin/datasets/pk/${id}/actions/${action}/`, data);
 
       return response;
     },
