@@ -100,12 +100,28 @@ export function useUserDatasetDetails(id: string, options?: UseQueryOptions<Data
 
 export function useUserOrganizationDatasets(
   id: string,
-  pageSize: number = 10,
-  page: number = 1,
+  search = "",
+  filterBy: {
+    status: string | null;
+  } = {
+    status: null,
+  },
+  pagination: {
+    pageSize: number;
+    page: number;
+  } = {
+    page: 0,
+    pageSize: 10,
+  },
   options?: UseQueryOptions<PaginationData<Dataset[]>>
 ) {
+  const { pageSize, page } = pagination;
+  const { status } = filterBy;
+
   return useQuery<PaginationData<Dataset[]>>(
-    [`/user/organisations/${id}/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    [
+      `/user/organisations/${id}/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+    ],
     options
   );
 }
