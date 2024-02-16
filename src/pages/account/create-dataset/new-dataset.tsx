@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Autocomplete, InputLabel, MenuItem, TextField } from "@mui/material";
-import axios from "axios";
 import { ErrorMessage, Formik } from "formik";
 import * as Yup from "yup";
 import Button from "~/components/button";
@@ -16,7 +15,7 @@ import spatialCoverageData from "~/utils/data/spatial-coverage.json";
 import TagsField from "~/components/fields/tags-field";
 import { usePublicCategories } from "~/queries/category";
 import useCreateDatasetStore from "~/store/create-dataset";
-import { notifyError } from "~/utils/toast";
+import { getCountryCoordinates } from "~/utils/helper";
 
 const validationSchema = Yup.object({
   title: Yup.string()
@@ -49,26 +48,6 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
 
   const createDataset = useCreateDataset();
   const createDatasetTags = useCreateDatasetTags();
-
-  async function getCountryCoordinates(country: string) {
-    try {
-      const { data } = (await axios.get(
-        "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-          encodeURIComponent(country.toLowerCase()) +
-          ".json?access_token=" +
-          import.meta.env.VITE_MAPBOXGL_ACCESS_TOKEN
-      )) as any;
-
-      if (data.features.length > 0) {
-        const coordinates = data.features[0].center;
-
-        return coordinates;
-      }
-    } catch (error) {
-      notifyError("Error occured while creating dataset, please try again");
-      throw error;
-    }
-  }
 
   return (
     <Formik

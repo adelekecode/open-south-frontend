@@ -108,9 +108,10 @@ export function useEditDataset() {
         string
       > & { category: Category; coordinates: number[] };
     }) => {
-      const { spatialCoverage, updateFrequency, start, end, coordinates, ...rest } = data;
-      const { data: response } = await axiosPrivate.post(`/user/datasets/${id}`, {
+      const { category, spatialCoverage, updateFrequency, start, end, coordinates, ...rest } = data;
+      const { data: response } = await axiosPrivate.patch(`/user/datasets/${id}/`, {
         ...rest,
+        category: category.id,
         update_frequency: updateFrequency,
         temporal_coverage: `${start},${end}`,
         spatial_coverage: spatialCoverage,
