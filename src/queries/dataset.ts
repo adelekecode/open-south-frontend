@@ -159,6 +159,16 @@ export function usePublicUserDataset(
   );
 }
 
+export function usePublicPopularOrganizationDataset(
+  id: string,
+  options?: UseQueryOptions<Dataset[]>
+) {
+  return useQuery<Dataset[]>(
+    [`/public/popular/organisation/pk/${id}/datasets/?key=public`],
+    options
+  );
+}
+
 export function usePopularDatasets() {
   return useQuery<Dataset[]>([`/public/popular/dataset/?key=public`]);
 }

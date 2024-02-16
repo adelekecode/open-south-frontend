@@ -4,11 +4,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { FaAngleRight } from "react-icons/fa6";
 import moment from "moment";
 import Seo from "~/components/seo";
-import dataset from "~/utils/data/dataset.json";
 import NotFound from "./404";
 import Button from "~/components/button";
 import { useRequestToJoinOrganization } from "~/mutations/organization";
 import { usePublicOrganizationDetails } from "~/queries/organizations";
+import NoData from "~/components/no-data";
+import { usePublicPopularOrganizationDataset } from "~/queries/dataset";
 
 export default function OrganizationDetails() {
   const navigate = useNavigate();
@@ -25,6 +26,13 @@ export default function OrganizationDetails() {
   const currentUser = queryClient.getQueryData<CurrentUser>([`/auth/users/me/`]);
 
   const requestToJoinOrganization = useRequestToJoinOrganization();
+
+  const { data: dataset, isLoading: isLoadingDataset } = usePublicPopularOrganizationDataset(
+    data?.id || "",
+    {
+      enabled: !!data,
+    }
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -87,12 +95,12 @@ export default function OrganizationDetails() {
             <h1 className="text-2xl font-semibold">{data.name || "----------"}</h1>
           </header>
         </div>
-        <main className="max-w-maxAppWidth mx-auto flex flex-col gap-12 p-6 px-10 tablet:px-6 largeMobile:!px-4">
+        <main className="w-full max-w-maxAppWidth mx-auto flex flex-col gap-12 p-6 px-10 tablet:px-6 largeMobile:!px-4">
           <div className="flex flex-col gap-3">
             <h2 className="font-semibold text-base">Description</h2>
             <p className="text-sm [&_a]:text-blue-600 [&_a]:underline" ref={descriptionRef}></p>
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 w-full">
             <div className="flex items-center justify-between gap-4">
               <h2 className="font-semibold text-base">Datasets</h2>
               <Link
@@ -108,36 +116,64 @@ export default function OrganizationDetails() {
                 <FaAngleRight className="text-primary-600 text-xs" />
               </Link>
             </div>
-            <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
-              {dataset.slice(0, 9).map((item, index) => {
-                const { slug, title, organization, user } = item;
-
-                return (
-                  <button
-                    key={index + 1}
-                    onClick={() => {
-                      navigate(`/datasets/${slug}`, {
-                        state: {
-                          name: item.title,
-                        },
-                      });
-                    }}
-                    className="grid grid-cols-[80px,1fr] tabletAndBelow:grid-cols-[70px,1fr] gap-4 border-[1.5px] border-info-100 p-4 hover:bg-info-50"
-                  >
-                    <figure className="w-full border border-zinc-300 bg-white aspect-square">
-                      <img
-                        className="w-full h-full object-contain"
-                        src={organization ? organization.image : user ? user.image : ""} //? what will show here? the organization image????
-                        alt="organization or profile photo"
-                        loading="lazy"
-                      />
-                    </figure>
-                    <div className="flex flex-col gap-2">
-                      <h1 className="text-sm font-semibold text-start capitalize">{title}</h1>
+            <div className="w-full">
+              {isLoadingDataset ? (
+                <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
+                  {Array.from({ length: 9 }).map((_, index) => (
+                    <div
+                      className="grid grid-cols-[5rem,1fr] gap-6 border-[1.5px] border-info-200 p-6"
+                      key={index + 1}
+                    >
+                      <div className="w-full aspect-square animate-pulse bg-info-200"></div>
+                      <div className="grid grid-rows-[2rem] gap-2">
+                        <span className="w-full h-full animate-pulse bg-info-200"></span>
+                      </div>
                     </div>
-                  </button>
-                );
-              })}
+                  ))}
+                </div>
+              ) : dataset && dataset.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
+                    {dataset.slice(0, 9).map((item, index) => {
+                      const { slug, title, publisher_data } = item;
+                      const { logo_url } = publisher_data;
+
+                      return (
+                        <button
+                          key={index + 1}
+                          onClick={() => {
+                            navigate(`/datasets/${slug}`, {
+                              state: {
+                                name: item.title,
+                              },
+                            });
+                          }}
+                          className="grid grid-cols-[80px,1fr] tabletAndBelow:grid-cols-[70px,1fr] gap-4 border-[1.5px] border-info-100 p-4 hover:bg-info-50"
+                        >
+                          <figure className="w-full border border-zinc-300 bg-white aspect-square">
+                            <img
+                              className="w-full h-full object-contain"
+                              src={logo_url || ""}
+                              alt="creator profile image"
+                              // loading="lazy"
+                            />
+                          </figure>
+                          <div className="flex flex-col gap-2">
+                            <h1 className="text-sm font-semibold text-start capitalize">{title}</h1>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <NoData
+                  text="No dataset found"
+                  img={{
+                    alt: "No dataset illustration",
+                  }}
+                />
+              )}
             </div>
           </div>
           <div className="flex flex-col gap-3">
