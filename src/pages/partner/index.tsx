@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Seo from "~/components/seo";
 import BIDS from "~/assets/images/partner-logos/bids.png";
 import CHAI from "~/assets/images/partner-logos/chai.png";
@@ -7,6 +7,10 @@ import Form from "./form";
 
 export default function Partner() {
   const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

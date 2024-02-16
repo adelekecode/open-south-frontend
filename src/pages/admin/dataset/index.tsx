@@ -320,7 +320,7 @@ export default function Dataset() {
                           }));
                         }}
                       >
-                        delete
+                        Delete
                       </button>
                     </Paper>
                   </Fade>

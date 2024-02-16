@@ -52,9 +52,9 @@ export function useAdminOrganizationUsers(
 
 export function useAdminOrganizationRequests(
   id: string,
-  options?: UseQueryOptions<Organization[]>
+  options?: UseQueryOptions<OrganizationRequest[]>
 ) {
-  return useQuery<Organization[]>([`/admin/organisation_requests/?pk=${id}`], options);
+  return useQuery<OrganizationRequest[]>([`/admin/organisation_requests/?pk=${id}`], options);
 }
 
 export function useAdminOrganizationsIndicators() {
@@ -68,17 +68,13 @@ export function useAdminOrganizationsIndicators() {
 
 export function usePublicOrganizations(
   search = "",
-  // sortBy: {
-  //   relevance: boolean;
-  //   creationDate: boolean;
-  //   lastUpdate: boolean;
-  // },
+  sortBy: "" | "most-datasets" | "most-recent" = "",
   pagination: { pageSize: number; page: number } = { pageSize: 20, page: 1 }
 ) {
   const { pageSize, page } = pagination;
 
   return useQuery<PaginationData<Organization[]>>([
-    `/public/organisations/?key=public&search=${search}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    `/public/organisations/?key=public&search=${search}&sortBy=${sortBy}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
   ]);
 }
 

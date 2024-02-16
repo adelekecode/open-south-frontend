@@ -57,6 +57,7 @@ import EditOrganization from "./pages/account/edit-organization";
 import UserOrganization from "./layouts/user-organization";
 import PublicProfile from "./pages/public-profile";
 import AppLayoutWrapper from "./layouts/app-wrapper";
+import EditDataset from "./pages/account/edit-dataset";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -102,6 +103,7 @@ const router = createBrowserRouter(
                 }
               />
               <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
+              <Route path="/account/datasets/:id/edit" element={<EditDataset />} />
               <Route element={<UserOrganization />}>
                 <Route
                   path="/account/:slug/dashboard"
@@ -116,6 +118,14 @@ const router = createBrowserRouter(
                   element={
                     <Suspense fallback={<DashboardLoader />}>
                       <OrgDataset />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/account/:slug/datasets/:id"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <AccountDatasetDetails />
                     </Suspense>
                   }
                 />

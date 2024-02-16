@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import { IoPerson } from "react-icons/io5";
 import Button from "~/components/button";
@@ -14,6 +15,9 @@ type RequestModalProps = {
 
 export default function RequestModal({ open, setOpen }: RequestModalProps) {
   const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [choice, setChoice] = useState<"grant" | "deny" | null>(null);
 
   const { data, isLoading } = useAdminOrganizationRequests(id || "", {
     enabled: !!id,
@@ -21,14 +25,18 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
 
   const organizationRequestAction = useOrganizationRequestAction(id || "");
 
+  function onClose() {
+    setOpen(false);
+  }
+
   return (
     <Modal
       muiModal={{
         open,
-        onClose: () => setOpen(false),
+        onClose,
       }}
       innerContainer={{
-        className: "pt-[2rem]",
+        className: "pt-[2rem] min-h-[60%]",
       }}
     >
       <div className="flex flex-col gap-6 w-full">
@@ -49,7 +57,12 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
           <div className="flex flex-col gap-4">
             {data.map((item, index) => (
               <div key={index + 1} className="w-full flex items-center gap-4 justify-between">
-                <div className="flex items-center gap-2">
+                <div
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={() => {
+                    navigate(`/users/${item.user}`);
+                  }}
+                >
                   <Avatar sx={{ width: 30, height: 30 }}>
                     <IoPerson className={"text-base"} />
                   </Avatar>
@@ -63,12 +76,19 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
                     color="success"
                     variant="outlined"
                     onClick={async () => {
-                      await organizationRequestAction.mutateAsync({
+                      setChoice("grant");
+
+                      const response = await organizationRequestAction.mutateAsync({
                         id: item.id,
                         actions: "approve",
                       });
+
+                      if (response) {
+                        onClose();
+                      }
                     }}
-                    loading={organizationRequestAction.isLoading}
+                    disabled={choice ? choice !== "grant" : false}
+                    loading={choice === "grant" && organizationRequestAction.isLoading}
                   >
                     Grant
                   </Button>
@@ -76,13 +96,20 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
                     className="!text-xs !py-2 !px-3"
                     color="error"
                     variant="outlined"
-                    loading={organizationRequestAction.isLoading}
+                    loading={choice === "deny" && organizationRequestAction.isLoading}
                     onClick={async () => {
-                      await organizationRequestAction.mutateAsync({
+                      setChoice("deny");
+
+                      const response = await organizationRequestAction.mutateAsync({
                         id: item.id,
                         actions: "reject",
                       });
+
+                      if (response) {
+                        onClose();
+                      }
                     }}
+                    disabled={choice ? choice !== "deny" : false}
                   >
                     Deny
                   </Button>

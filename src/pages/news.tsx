@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { stripHtml } from "string-strip-html";
@@ -9,6 +10,10 @@ export default function News() {
   const navigate = useNavigate();
 
   const { data, isLoading } = usePublicNews();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   function textConverter(str: string, maxLen: number) {
     if (str.length > maxLen) {

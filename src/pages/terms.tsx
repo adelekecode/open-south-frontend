@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import Seo from "~/components/seo";
 
 //counters(subsection, ".") "." counters(subsection, ".") " "
 
 export default function Terms() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <Seo

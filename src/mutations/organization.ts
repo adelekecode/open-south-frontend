@@ -129,12 +129,15 @@ export function useChangeOrganizationStatus() {
     async ({
       id,
       action,
+      data,
     }: {
       id: string;
       action: "approve" | "reject" | "delete" | "block" | "unblock";
+      data?: { remark: string };
     }) => {
       const { data: response } = await axiosPrivate.post(
-        `/admin/organisations/pk/${id}/actions/${action}/`
+        `/admin/organisations/pk/${id}/actions/${action}/`,
+        data
       );
 
       return response;

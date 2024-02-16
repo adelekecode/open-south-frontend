@@ -3,21 +3,22 @@ import * as XLSX from "xlsx";
 import * as Papa from "papaparse";
 import DataGrid from "~/components/data-grid";
 import Modal from "~/components/modal";
-import { usePublicFilePreview } from "~/queries/dataset";
+import { useDatasetFilePreview } from "~/queries/dataset";
 import Button from "~/components/button";
 import { notifyError } from "~/utils/toast";
 
-type FilePreviewProps = {
+type PreviewProps = {
   open: boolean;
   setOpen: (obj: { open: boolean; data: Dataset["files"][0] | null }) => void;
   file: Dataset["files"][0] | null;
+  onDownload?: (id: string) => Promise<any>;
 };
 
-export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
+export default function Preview({ open, setOpen, file, onDownload }: PreviewProps) {
   const [excelData, setExcelData] = useState<any[] | null>(null);
   const [csvData, setCsvData] = useState<any[] | null>(null);
 
-  const { data, isLoading } = usePublicFilePreview(file?.file_url || "", file?.format || "", {
+  const { data, isLoading } = useDatasetFilePreview(file?.file_url || "", file?.format || "", {
     enabled: !!file?.file_url,
   });
 
@@ -100,10 +101,30 @@ export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
       ? Object.keys(excelData[0]).map((key) => ({
           field: key,
           headerName: key,
-          minWidth: key === "no." ? 50 : 200,
+          minWidth: key === "no." ? 100 : 200,
           flex: key === "no." ? undefined : 1,
         }))
       : null;
+
+  async function downloadHandler(blob: Blob, format: ".xlsx" | ".csv") {
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = `${file?.file_name || "example"}${format}`;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+    return onDownload?.(file?.id || "");
+  }
 
   return (
     <Modal
@@ -147,7 +168,7 @@ export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
                 color="info"
                 variant="outlined"
                 className="!p-2 !px-4 !text-xs"
-                onClick={() => {
+                onClick={async () => {
                   if (
                     file?.format === "xlsx" ||
                     file?.format ===
@@ -157,39 +178,11 @@ export default function FilePreview({ open, setOpen, file }: FilePreviewProps) {
                       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     });
 
-                    const url = URL.createObjectURL(blob);
-
-                    const link = document.createElement("a");
-
-                    link.href = url;
-
-                    link.download = `${file?.file_name || "example"}.xlsx`;
-
-                    document.body.appendChild(link);
-
-                    link.click();
-
-                    document.body.removeChild(link);
-
-                    URL.revokeObjectURL(url);
+                    downloadHandler(blob, ".xlsx");
                   } else if (file?.format === "text/csv") {
                     const blob = new Blob([data as BlobPart], { type: "text/csv" });
 
-                    const url = URL.createObjectURL(blob);
-
-                    const link = document.createElement("a");
-
-                    link.href = url;
-
-                    link.download = `${file?.file_name || "example"}.csv`;
-
-                    document.body.appendChild(link);
-
-                    link.click();
-
-                    document.body.removeChild(link);
-
-                    URL.revokeObjectURL(url);
+                    downloadHandler(blob, ".csv");
                   }
                 }}
               >

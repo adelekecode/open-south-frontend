@@ -11,11 +11,7 @@ export function usePublicDatasets(
     license: string;
     spatialCoverage: string;
   },
-  // sortBy: {
-  //   relevance: boolean;
-  //   creationDate: boolean;
-  //   lastUpdate: boolean;
-  // },
+  sortBy: "" | "creation_date" | "last_update",
   pagination: { pageSize: number; page: number }
 ) {
   const { pageSize, page } = pagination;
@@ -23,7 +19,7 @@ export function usePublicDatasets(
   // const {} = sortBy
 
   return useQuery<PaginationData<Dataset[]>>([
-    `/public/datasets/?key=public&search=${search}&organisation=${organization || ""}&tags=${tag || ""}&category=${category || ""}&format=${format}&license=${license}&spatial_coverage=${spatialCoverage}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    `/public/datasets/?key=public&search=${search}&sort=${sortBy}&organisation=${organization || ""}&tags=${tag || ""}&category=${category || ""}&format=${format}&license=${license}&spatial_coverage=${spatialCoverage}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
   ]);
 }
 
@@ -35,12 +31,8 @@ export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<
   return useQuery<Dataset>([`/public/datasets/${slug}/?key=public`], options);
 }
 
-export function usePublicFilePreview(
-  url: string,
-  type: string,
-  options?: UseQueryOptions<any, unknown, unknown, [string]>
-) {
-  return useQuery([`${url}`], {
+export function useDatasetFilePreview(url: string, type: string, options?: UseQueryOptions<any>) {
+  return useQuery<any>([`${url}`], {
     queryFn: async () => {
       const { data: response } = await axios.get(
         url,
@@ -58,7 +50,7 @@ export function usePublicFilePreview(
 }
 
 export function useAdminDatasetDetails(id: string) {
-  return useQuery<Dataset>([`/datasets/${id}/`]);
+  return useQuery<Dataset>([`/admin/dataset/${id}/`]);
 }
 
 export function useAdminDatasets(
@@ -104,12 +96,28 @@ export function useUserDatasetDetails(id: string, options?: UseQueryOptions<Data
 
 export function useUserOrganizationDatasets(
   id: string,
-  pageSize: number = 10,
-  page: number = 1,
+  search = "",
+  filterBy: {
+    status: string | null;
+  } = {
+    status: null,
+  },
+  pagination: {
+    pageSize: number;
+    page: number;
+  } = {
+    page: 0,
+    pageSize: 10,
+  },
   options?: UseQueryOptions<PaginationData<Dataset[]>>
 ) {
+  const { pageSize, page } = pagination;
+  const { status } = filterBy;
+
   return useQuery<PaginationData<Dataset[]>>(
-    [`/user/organisations/${id}/datasets/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    [
+      `/user/organisations/${id}/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+    ],
     options
   );
 }
@@ -147,6 +155,16 @@ export function usePublicUserDataset(
     [
       `/public/user/pk/${id}/datasets/?key=public&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
     ],
+    options
+  );
+}
+
+export function usePublicPopularOrganizationDataset(
+  id: string,
+  options?: UseQueryOptions<Dataset[]>
+) {
+  return useQuery<Dataset[]>(
+    [`/public/popular/organisation/pk/${id}/datasets/?key=public`],
     options
   );
 }

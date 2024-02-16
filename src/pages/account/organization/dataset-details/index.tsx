@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import Button from "~/components/button";
 import Resources from "./resources";
@@ -16,6 +17,9 @@ export default function DatasetDetails() {
   const [displayDeleteConfirmationModal, setDisplayDeleteConfirmationModal] = useState(false);
 
   const { data, isLoading } = useUserDatasetDetails(id || "");
+
+  const queryClient = useQueryClient();
+  const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
 
   useEffect(() => {
     if (!descriptionRef.current) return;
@@ -58,27 +62,29 @@ export default function DatasetDetails() {
             <span className="text-sm">{">"}</span>{" "}
             <span className="text-info-800">{data?.title || "-----"}</span>
           </h1>
-          <div className="flex items-center gap-6">
-            <Button
-              variant="outlined"
-              className="!py-2 !px-3 !text-xs"
-              onClick={() => {
-                navigate("./edit");
-              }}
-            >
-              Edit
-            </Button>
-            <Button
-              color="error"
-              className="!py-2 !px-3 !text-xs"
-              variant="outlined"
-              onClick={() => {
-                setDisplayDeleteConfirmationModal(true);
-              }}
-            >
-              Delete
-            </Button>
-          </div>
+          {currentUser?.id === data.user && (
+            <div className="flex items-center gap-6">
+              <Button
+                variant="outlined"
+                className="!py-2 !px-3 !text-xs"
+                onClick={() => {
+                  navigate("./edit");
+                }}
+              >
+                Edit
+              </Button>
+              <Button
+                color="error"
+                className="!py-2 !px-3 !text-xs"
+                variant="outlined"
+                onClick={() => {
+                  setDisplayDeleteConfirmationModal(true);
+                }}
+              >
+                Delete
+              </Button>
+            </div>
+          )}
         </header>
         <div className="border border-info-100 rounded-md overflow-hidden">
           {data.status === "pending" && (

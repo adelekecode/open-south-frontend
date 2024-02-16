@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { MdOutlineDelete } from "react-icons/md";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useUserDatasetFiles } from "~/queries/dataset";
-import FilePreview from "./file-preview";
+import FilePreview from "~/components/file/preview";
+import { IoEyeOutline } from "react-icons/io5";
 
 export default function Resources() {
   const { id } = useParams();
@@ -51,7 +51,7 @@ export default function Resources() {
       headerName: "Format",
       align: "center",
       headerAlign: "center",
-      minWidth: 150,
+      minWidth: 200,
     },
     {
       field: "size",
@@ -84,8 +84,13 @@ export default function Resources() {
     {
       field: "action",
       headerName: "Action",
+      align: "center",
+      headerAlign: "center",
       minWidth: 100,
+      sortable: false,
       renderCell: ({ row }) => {
+        const avaliableFormat = row.format === "xlsx" || row.format === "text/csv";
+
         return (
           <div className="w-full flex items-center justify-center gap-1">
             <IconButton
@@ -96,8 +101,9 @@ export default function Resources() {
                   data: row,
                 });
               }}
+              disabled={!avaliableFormat}
             >
-              <MdOutlineDelete className="text-lg" />
+              <IoEyeOutline className="text-lg" />
             </IconButton>
           </div>
         );
@@ -111,31 +117,28 @@ export default function Resources() {
         <header className="flex items-center gap-4 justify-between">
           <h3 className="text-lg font-medium">Resources</h3>
         </header>
-        <div className="flex flex-col gap-4">
-          <div className="min-h-[500px]">
-            <DataGrid
-              getRowId={(params) => params.name}
-              loading={isLoading}
-              rows={data ? data.results : []}
-              columns={columns}
-              rowCount={data?.count || 0}
-              paginationModel={paginationModel}
-              onPaginationModelChange={({ page, pageSize }, { reason }) => {
-                if (!reason) return;
+        <div className={`${(isLoading || !data || (data && !data.results.length)) && "h-[500px]"}`}>
+          <DataGrid
+            loading={isLoading}
+            rows={data ? data.results : []}
+            columns={columns}
+            rowCount={data?.count || 0}
+            paginationModel={paginationModel}
+            onPaginationModelChange={({ page, pageSize }, { reason }) => {
+              if (!reason) return;
 
-                setPaginationModel({
-                  page,
-                  pageSize,
-                });
-              }}
-              paginationMode="server"
-            />
-          </div>
+              setPaginationModel({
+                page,
+                pageSize,
+              });
+            }}
+            paginationMode="server"
+          />
         </div>
       </div>
       <FilePreview
         open={previewFile.open}
-        onClose={() => setPreviewFile({ open: false, data: null })}
+        setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
         file={previewFile.data}
       />
     </>
