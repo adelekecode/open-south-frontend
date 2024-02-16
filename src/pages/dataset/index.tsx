@@ -17,12 +17,11 @@ import { usePublicOrganizations } from "~/queries/organizations";
 import { usePublicTags } from "~/queries/tags";
 import useDebounce from "~/hooks/debounce";
 
-type SortByValue = "relevance" | "creation-date" | "last-update";
+type SortByValue = "" | "creation_date" | "last_update";
 
 export default function Dataset() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [sortBy, setSortBy] = useState<SortByValue>("relevance");
   const [page, setPage] = useState(1);
   const datasetPerPage = 10;
 
@@ -35,14 +34,18 @@ export default function Dataset() {
     format: searchParams.get("format") || "",
     spatialCoverage: searchParams.get("spatial-coverage") || "",
   };
-  // const sortBy = {};
+  const sortBy = searchParams.get("sort-by") || "";
+
+  const searchParamsOption = {
+    replace: true,
+  };
 
   const { isLoading, data, refetch } = usePublicDatasets(
     useDebounce(search).trim(),
     {
       ...filterBy,
     },
-    // {},
+    sortBy as SortByValue,
     {
       page,
       pageSize: datasetPerPage,
@@ -321,14 +324,26 @@ export default function Dataset() {
                   className="min-w-[210px]"
                   value={sortBy}
                   onChange={(e) => {
-                    if (e.target.value) {
-                      setSortBy(e.target.value as SortByValue);
+                    const value = e.target.value as string;
+
+                    if (!value) {
+                      return setSearchParams((params) => {
+                        params.delete("sort-by");
+
+                        return params;
+                      });
                     }
+
+                    setSearchParams((params) => {
+                      params.set("sort-by", value);
+
+                      return params;
+                    }, searchParamsOption);
                   }}
                 >
-                  <MenuItem value="relevance">Relevance</MenuItem>
-                  <MenuItem value="creation-date">Creation Date</MenuItem>
-                  <MenuItem value="last-update">Last Update</MenuItem>
+                  <MenuItem value="">Relevance</MenuItem>
+                  <MenuItem value="creation_date">Creation Date</MenuItem>
+                  <MenuItem value="last_update">Last Update</MenuItem>
                 </SelectInput>
               </div>
             </header>

@@ -10,23 +10,31 @@ import { usePublicOrganizations } from "~/queries/organizations";
 import NoData from "~/assets/illustrations/no-data.png";
 import useDebounce from "~/hooks/debounce";
 
-type SortByValue = "relevance" | "most-datasets" | "most-recent";
+type SortByValue = "" | "most-datasets" | "most-recent";
 
 export default function Organization() {
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [sortBy, setSortBy] = useState<SortByValue>("relevance");
   const [page, setPage] = useState(1);
   const dataPerPage = 12;
 
   const search = searchParams.get("q") || "";
+  const sortBy = searchParams.get("sort-by") || "";
 
-  const { isLoading, data, refetch } = usePublicOrganizations(useDebounce(search).trim(), {
-    page,
-    pageSize: dataPerPage,
-  });
+  const searchParamsOption = {
+    replace: true,
+  };
+
+  const { isLoading, data, refetch } = usePublicOrganizations(
+    useDebounce(search).trim(),
+    sortBy as SortByValue,
+    {
+      page,
+      pageSize: dataPerPage,
+    }
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -62,16 +70,11 @@ export default function Organization() {
                 });
               }
 
-              setSearchParams(
-                (params) => {
-                  params.set("q", value);
+              setSearchParams((params) => {
+                params.set("q", value);
 
-                  return params;
-                },
-                {
-                  replace: true,
-                }
-              );
+                return params;
+              }, searchParamsOption);
             }}
             onSearch={async () => {
               await refetch();
@@ -88,12 +91,24 @@ export default function Organization() {
               className="min-w-[210px]"
               value={sortBy}
               onChange={(e) => {
-                if (e.target.value) {
-                  setSortBy(e.target.value as SortByValue);
+                const value = e.target.value as string;
+
+                if (!value) {
+                  return setSearchParams((params) => {
+                    params.delete("sort-by");
+
+                    return params;
+                  });
                 }
+
+                setSearchParams((params) => {
+                  params.set("sort-by", value);
+
+                  return params;
+                }, searchParamsOption);
               }}
             >
-              <MenuItem value="relevance">Relevance</MenuItem>
+              <MenuItem value="">Relevance</MenuItem>
               <MenuItem value="most-datasets">The Most Datasets</MenuItem>
               <MenuItem value="most-recent">The Most Recent</MenuItem>
             </SelectInput>

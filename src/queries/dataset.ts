@@ -11,11 +11,7 @@ export function usePublicDatasets(
     license: string;
     spatialCoverage: string;
   },
-  // sortBy: {
-  //   relevance: boolean;
-  //   creationDate: boolean;
-  //   lastUpdate: boolean;
-  // },
+  sortBy: "" | "creation_date" | "last_update",
   pagination: { pageSize: number; page: number }
 ) {
   const { pageSize, page } = pagination;
@@ -23,7 +19,7 @@ export function usePublicDatasets(
   // const {} = sortBy
 
   return useQuery<PaginationData<Dataset[]>>([
-    `/public/datasets/?key=public&search=${search}&organisation=${organization || ""}&tags=${tag || ""}&category=${category || ""}&format=${format}&license=${license}&spatial_coverage=${spatialCoverage}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    `/public/datasets/?key=public&search=${search}&sort=${sortBy}&organisation=${organization || ""}&tags=${tag || ""}&category=${category || ""}&format=${format}&license=${license}&spatial_coverage=${spatialCoverage}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
   ]);
 }
 
