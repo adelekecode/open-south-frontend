@@ -89,6 +89,8 @@ export default function Resources() {
       minWidth: 100,
       sortable: false,
       renderCell: ({ row }) => {
+        const avaliableFormat = row.format === "xlsx" || row.format === "text/csv";
+
         return (
           <div className="w-full flex items-center justify-center gap-1">
             <IconButton
@@ -99,6 +101,7 @@ export default function Resources() {
                   data: row,
                 });
               }}
+              disabled={!avaliableFormat}
             >
               <IoEyeOutline className="text-lg" />
             </IconButton>
