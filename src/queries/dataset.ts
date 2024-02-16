@@ -54,7 +54,7 @@ export function useDatasetFilePreview(url: string, type: string, options?: UseQu
 }
 
 export function useAdminDatasetDetails(id: string) {
-  return useQuery<Dataset>([`/datasets/${id}/`]);
+  return useQuery<Dataset>([`/admin/dataset/${id}/`]);
 }
 
 export function useAdminDatasets(
