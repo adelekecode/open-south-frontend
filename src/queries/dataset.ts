@@ -56,11 +56,9 @@ export function useAdminDatasetDetails(id: string) {
 export function useAdminDatasets(
   search = "",
   filterBy: {
-    status: string | null;
-  } = {
-    status: null,
+    status: string;
   },
-  pagination: { pageSize: number; page: number }
+  pagination: Pagination
 ) {
   const { pageSize, page } = pagination;
   const { status } = filterBy;

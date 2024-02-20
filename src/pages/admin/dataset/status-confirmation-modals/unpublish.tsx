@@ -7,10 +7,23 @@ type UnpublishModalProps = {
   open: boolean;
   onClose: () => void;
   data: Dataset;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
-export default function UnpublishModal({ open, onClose, data }: UnpublishModalProps) {
-  const changeDatasetStatus = useChangeDatasetStatus();
+export default function UnpublishModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: UnpublishModalProps) {
+  const changeDatasetStatus = useChangeDatasetStatus(pagination, queryParams);
 
   return (
     <Modal

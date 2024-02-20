@@ -2,7 +2,13 @@ import { isAxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
-import useAdminTableStore from "~/store/admin-table";
+
+type QueryParams = {
+  search: string;
+  filter: {
+    status: string;
+  };
+};
 
 export function useCreateDataset() {
   return useMutation(
@@ -252,13 +258,14 @@ export function useDatasetView() {
   );
 }
 
-export function useChangeDatasetStatus() {
+export function useChangeDatasetStatus(pagination: Pagination, queryParams: QueryParams) {
   const queryClient = useQueryClient();
-  const { dataset } = useAdminTableStore();
 
-  const { pagination, filterBy, search } = dataset;
   const { pageSize, page } = pagination;
-  const { status } = filterBy;
+  const {
+    search,
+    filter: { status },
+  } = queryParams;
 
   return useMutation(
     async ({
