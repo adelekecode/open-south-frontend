@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { MdDeleteOutline } from "react-icons/md";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
@@ -17,6 +18,9 @@ export default function DeleteConfirmation({
   setModal,
   pagination,
 }: DeleteConfirmationProps) {
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("q") || "";
+
   const { data, state } = modal;
 
   function onClose() {
@@ -26,7 +30,7 @@ export default function DeleteConfirmation({
     });
   }
 
-  const deleteCategory = useDeleteCategory(pagination);
+  const deleteCategory = useDeleteCategory(search, pagination);
 
   return (
     <Modal
