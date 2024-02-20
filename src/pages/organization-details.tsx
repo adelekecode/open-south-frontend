@@ -103,18 +103,20 @@ export default function OrganizationDetails() {
           <div className="flex flex-col gap-3 w-full">
             <div className="flex items-center justify-between gap-4">
               <h2 className="font-semibold text-base">Datasets</h2>
-              <Link
-                to={{
-                  pathname: "/datasets",
-                  search: `?${new URLSearchParams({
-                    organization: data.slug,
-                  }).toString()}`,
-                }}
-                className="flex items-center gap-4 border-b-[1.5px] border-primary-600 hover:border-primary-700"
-              >
-                <p className="text-primary-600 text-sm">See more datasets</p>
-                <FaAngleRight className="text-primary-600 text-xs" />
-              </Link>
+              {dataset && dataset.length > 0 && (
+                <Link
+                  to={{
+                    pathname: "/datasets",
+                    search: `?${new URLSearchParams({
+                      organization: data.slug,
+                    }).toString()}`,
+                  }}
+                  className="flex items-center gap-4 border-b-[1.5px] border-primary-600 hover:border-primary-700"
+                >
+                  <p className="text-primary-600 text-sm">See more datasets</p>
+                  <FaAngleRight className="text-primary-600 text-xs" />
+                </Link>
+              )}
             </div>
             <div className="w-full">
               {isLoadingDataset ? (

@@ -30,6 +30,7 @@ import {
   DatasetDetails as AccountDatasetDetails,
   OrgDashboard,
   OrgDataset,
+  OrgDatasetDetails,
   CreateDataset,
   CreateOrganization,
 } from "./pages/account";
@@ -125,7 +126,7 @@ const router = createBrowserRouter(
                   path="/account/:slug/datasets/:id"
                   element={
                     <Suspense fallback={<DashboardLoader />}>
-                      <AccountDatasetDetails />
+                      <OrgDatasetDetails />
                     </Suspense>
                   }
                 />

@@ -7,10 +7,23 @@ type UnpublishModalProps = {
   open: boolean;
   onClose: () => void;
   data: News;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
-export default function UnpublishModal({ open, onClose, data }: UnpublishModalProps) {
-  const changeNewsStatus = useChangeNewsStatus();
+export default function UnpublishModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: UnpublishModalProps) {
+  const changeNewsStatus = useChangeNewsStatus(pagination, queryParams);
 
   return (
     <Modal

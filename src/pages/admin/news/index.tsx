@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { IconButton, MenuItem, OutlinedInput, Select } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { IoEyeOutline } from "react-icons/io5";
@@ -13,7 +14,6 @@ import DeleteConfirmationModal from "./confirmation-modals/delete";
 import PublishConfirmationModal from "./confirmation-modals/publish";
 import UnpublishConfirmationModal from "./confirmation-modals/unpublish";
 import { useAdminNews } from "~/queries/news";
-import useAdminTableStore from "~/store/admin-table";
 import useDebounce from "~/hooks/debounce";
 
 type Modal = {
@@ -21,9 +21,33 @@ type Modal = {
   data: News | null;
 };
 
+type QueryKey = "q" | "status";
+
 export default function News() {
-  const { news: newsTable, setNews: setNewsTable } = useAdminTableStore();
-  const { pagination, filterBy, search } = newsTable;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const queryParams = {
+    get: (key: QueryKey) => searchParams.get(key) || "",
+    delete: (key: QueryKey) => {
+      setSearchParams((params) => {
+        params.delete(key);
+
+        return params;
+      });
+    },
+    set: (key: QueryKey, value: string) => {
+      setSearchParams(
+        (params) => {
+          params.set(key, value);
+
+          return params;
+        },
+        {
+          replace: true,
+        }
+      );
+    },
+  };
 
   const [modal, setModal] = useState<NewsModal>({
     state: null,
@@ -43,10 +67,15 @@ export default function News() {
     data: null,
   });
 
+  const [pagination, setPagination] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+
   const { isLoading, data } = useAdminNews(
-    useDebounce(search).trim(),
+    useDebounce(queryParams.get("q")).trim(),
     {
-      status: filterBy.status as string,
+      status: queryParams.get("status"),
     },
     {
       ...pagination,
@@ -238,28 +267,29 @@ export default function News() {
               <div className="flex items-center gap-4">
                 <OutlinedInput
                   placeholder="Search for title..."
-                  value={search}
+                  value={queryParams.get("q")}
                   onChange={(e) => {
-                    setNewsTable({
-                      ...newsTable,
-                      search: e.target.value,
-                    });
+                    const value = e.target.value;
+
+                    if (!value) {
+                      return queryParams.delete("q");
+                    }
+
+                    queryParams.set("q", value);
                   }}
                   className="w-[300px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
                 />
                 <Select
                   className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                  value={filterBy.status || ""}
+                  value={queryParams.get("status")}
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setNewsTable({
-                      ...newsTable,
-                      filterBy: {
-                        ...filterBy,
-                        status: chosenValue as typeof filterBy.status,
-                      },
-                    });
+                    if (!chosenValue) {
+                      return queryParams.delete("status");
+                    }
+
+                    queryParams.set("status", chosenValue);
                   }}
                   displayEmpty
                 >
@@ -290,12 +320,32 @@ export default function News() {
               rows={data ? data.results : []}
               loading={isLoading}
               columns={columns}
-              rowCount={data?.count}
+              rowCount={data?.count || 0}
+              paginationModel={pagination}
+              onPaginationModelChange={({ page, pageSize }, { reason }) => {
+                if (!reason) return;
+
+                setPagination({
+                  page,
+                  pageSize,
+                });
+              }}
+              paginationMode="server"
             />
           </div>
         </div>
       </main>
-      <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      <CreateModal
+        modal={modal}
+        setModal={(obj: typeof modal) => setModal(obj)}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
+      />
       {modal.state === "view" && (
         <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
       )}
@@ -308,6 +358,13 @@ export default function News() {
           });
         }}
         data={deleteModal.data as News}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
       />
       <PublishConfirmationModal
         open={publishModal.open}
@@ -318,6 +375,13 @@ export default function News() {
           });
         }}
         data={publishModal.data as News}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
       />
       <UnpublishConfirmationModal
         open={unpublishModal.open}
@@ -328,6 +392,13 @@ export default function News() {
           });
         }}
         data={unpublishModal.data as News}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
       />
     </>
   );

@@ -5,21 +5,22 @@ import moment from "moment";
 import Button from "~/components/button";
 import Resources from "./resources";
 import DeleteConfirmation from "./delete-confirmation";
-import { useUserDatasetDetails } from "~/queries/dataset";
+import { useUserOrganizationDatasetDetails } from "~/queries/dataset";
 import DashboardLoader from "~/components/loader/dashboard-loader";
 import NotFound from "~/pages/404";
 
 export default function DatasetDetails() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, slug } = useParams();
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
   const [displayDeleteConfirmationModal, setDisplayDeleteConfirmationModal] = useState(false);
 
-  const { data, isLoading } = useUserDatasetDetails(id || "");
-
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
+  const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
+
+  const { data, isLoading } = useUserOrganizationDatasetDetails(organization?.id || "", id || "");
 
   useEffect(() => {
     if (!descriptionRef.current) return;

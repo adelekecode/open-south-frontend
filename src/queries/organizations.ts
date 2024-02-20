@@ -20,13 +20,13 @@ export function useAdminOrganizations(
     isVerified: null,
   },
   pagination: { pageSize: number; page: number },
-  options?: UseQueryOptions<PaginationData<Organization[]>>
+  options?: UseQueryOptions<PaginatedResponse<Organization[]>>
 ) {
   const { status, isVerified, isActive } = filterBy;
   const { page, pageSize } = pagination;
   const newStatus = status === "approve" ? "approved" : status === "reject" ? "rejected" : status;
 
-  return useQuery<PaginationData<Organization[]>>(
+  return useQuery<PaginatedResponse<Organization[]>>(
     [
       `/admin/organisations/?search=${search}&status=${newStatus || ""}&verified=${isVerified || ""}&active=${isActive || ""}&limit=${pageSize}&offset=${page * pageSize}`,
     ],
@@ -42,9 +42,9 @@ export function useAdminOrganizationUsers(
   id: string,
   pageSize: number = 10,
   page: number = 1,
-  options?: UseQueryOptions<PaginationData<CurrentUser[]>>
+  options?: UseQueryOptions<PaginatedResponse<CurrentUser[]>>
 ) {
-  return useQuery<PaginationData<CurrentUser[]>>(
+  return useQuery<PaginatedResponse<CurrentUser[]>>(
     [`/organisations/users/${id}/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
     options
   );
@@ -73,7 +73,7 @@ export function usePublicOrganizations(
 ) {
   const { pageSize, page } = pagination;
 
-  return useQuery<PaginationData<Organization[]>>([
+  return useQuery<PaginatedResponse<Organization[]>>([
     `/public/organisations/?key=public&search=${search}&sortBy=${sortBy}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
   ]);
 }

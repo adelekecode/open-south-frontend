@@ -18,7 +18,7 @@ export function usePublicDatasets(
   const { organization, tag, category, format, license, spatialCoverage } = filterBy;
   // const {} = sortBy
 
-  return useQuery<PaginationData<Dataset[]>>([
+  return useQuery<PaginatedResponse<Dataset[]>>([
     `/public/datasets/?key=public&search=${search}&sort=${sortBy}&organisation=${organization || ""}&tags=${tag || ""}&category=${category || ""}&format=${format}&license=${license}&spatial_coverage=${spatialCoverage}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
   ]);
 }
@@ -65,7 +65,7 @@ export function useAdminDatasets(
   const { pageSize, page } = pagination;
   const { status } = filterBy;
 
-  return useQuery<PaginationData<Dataset[]>>([
+  return useQuery<PaginatedResponse<Dataset[]>>([
     `/admin/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
   ]);
 }
@@ -85,13 +85,21 @@ export function useUserDatasets(
   const { pageSize, page } = pagination;
   const { status } = filterBy;
 
-  return useQuery<PaginationData<Dataset[]>>([
+  return useQuery<PaginatedResponse<Dataset[]>>([
     `/user/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
   ]);
 }
 
 export function useUserDatasetDetails(id: string, options?: UseQueryOptions<Dataset>) {
   return useQuery<Dataset>([`/user/datasets/${id}/`], options);
+}
+
+export function useUserOrganizationDatasetDetails(
+  orgId: string,
+  id: string,
+  options?: UseQueryOptions<Dataset>
+) {
+  return useQuery<Dataset>([`/user/organisations/pk/${orgId}/dataset/pk/${id}/details/`], options);
 }
 
 export function useUserOrganizationDatasets(
@@ -109,12 +117,12 @@ export function useUserOrganizationDatasets(
     page: 0,
     pageSize: 10,
   },
-  options?: UseQueryOptions<PaginationData<Dataset[]>>
+  options?: UseQueryOptions<PaginatedResponse<Dataset[]>>
 ) {
   const { pageSize, page } = pagination;
   const { status } = filterBy;
 
-  return useQuery<PaginationData<Dataset[]>>(
+  return useQuery<PaginatedResponse<Dataset[]>>(
     [
       `/user/organisations/${id}/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
     ],
@@ -128,11 +136,11 @@ export function useUserDatasetFiles(
     pageSize: number;
     page: number;
   },
-  options?: UseQueryOptions<PaginationData<Dataset["files"][]>>
+  options?: UseQueryOptions<PaginatedResponse<Dataset["files"][]>>
 ) {
   const { pageSize, page } = pagination;
 
-  return useQuery<PaginationData<Dataset["files"][]>>(
+  return useQuery<PaginatedResponse<Dataset["files"][]>>(
     [`/user/dataset/pk/${id}/files/?limit=${pageSize}&offset=${page * pageSize}`],
     options
   );
@@ -147,11 +155,11 @@ export function usePublicUserDataset(
     pageSize: 10,
     page: 0,
   },
-  options?: UseQueryOptions<PaginationData<Dataset[]>>
+  options?: UseQueryOptions<PaginatedResponse<Dataset[]>>
 ) {
   const { page, pageSize } = pagination;
 
-  return useQuery<PaginationData<Dataset[]>>(
+  return useQuery<PaginatedResponse<Dataset[]>>(
     [
       `/public/user/pk/${id}/datasets/?key=public&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
     ],
