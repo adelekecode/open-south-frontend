@@ -122,10 +122,12 @@ export default function OrganizationDetails() {
           </div>
         </div>
       </main>
-      <RequestModal
-        setOpen={(bool: boolean) => setDisplayRequestModal(bool)}
-        open={displayRequestModal}
-      />
+      {displayRequestModal && (
+        <RequestModal
+          setOpen={(bool: boolean) => setDisplayRequestModal(bool)}
+          open={displayRequestModal}
+        />
+      )}
     </>
   );
 }

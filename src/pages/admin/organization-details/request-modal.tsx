@@ -56,18 +56,20 @@ export default function RequestModal({ open, setOpen }: RequestModalProps) {
         ) : data && data.length > 0 ? (
           <div className="flex flex-col gap-4">
             {data.map((item, index) => (
-              <div key={index + 1} className="w-full flex items-center gap-4 justify-between">
-                <div
-                  className="flex items-center gap-2 cursor-pointer"
-                  onClick={() => {
-                    navigate(`/users/${item.user}`);
-                  }}
-                >
+              <div
+                key={index + 1}
+                className="w-full flex items-center gap-4 justify-between"
+                onClick={() => {
+                  navigate(`/users/${item.user}`);
+                }}
+              >
+                <div className="flex items-center gap-2 cursor-pointer">
                   <Avatar sx={{ width: 30, height: 30 }}>
                     <IoPerson className={"text-base"} />
                   </Avatar>
                   <p className="capitalize text-sm">
-                    <span>{"John"}</span> <span>{"Doe"}</span>
+                    <span>{item?.user_data.first_name || "----"}</span>{" "}
+                    <span>{item?.user_data.last_name || "----"}</span>
                   </p>
                 </div>
                 <div className="flex items-center gap-3">

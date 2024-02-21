@@ -144,6 +144,12 @@ type OrganizationRequest = {
   created_at: string;
   organisation: string;
   user: string;
+  user_data: {
+    first_name: string;
+    last_name: string;
+    role: string;
+    email: string;
+  };
 };
 
 type Pagination = { pageSize: number; page: number };

@@ -532,6 +532,7 @@ export default function Organization() {
               onRowClick={(params) => {
                 navigate(`./${params.id}`);
               }}
+              getRowClassName={() => `cursor-pointer`}
               rowCount={data?.count || 0}
               paginationModel={pagination}
               onPaginationModelChange={({ page, pageSize }, { reason }) => {

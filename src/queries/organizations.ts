@@ -39,13 +39,20 @@ export function useAdminOrganizationDetails(id: string, options?: UseQueryOption
 }
 
 export function useAdminOrganizationUsers(
-  id: string,
-  pageSize: number = 10,
-  page: number = 1,
+  orgId: string,
+  search = "",
+  pagination: {
+    pageSize: number;
+    page: number;
+  },
   options?: UseQueryOptions<PaginatedResponse<CurrentUser[]>>
 ) {
+  const { page, pageSize } = pagination;
+
   return useQuery<PaginatedResponse<CurrentUser[]>>(
-    [`/organisations/users/${id}/?limit=${pageSize}&offset=${(page - 1) * pageSize}`],
+    [
+      `/organisations/users/${orgId}/?search=${search}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    ],
     options
   );
 }
