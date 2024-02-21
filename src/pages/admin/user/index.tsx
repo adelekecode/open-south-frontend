@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Avatar,
   ClickAwayListener,
@@ -21,7 +21,6 @@ import { useGetAllUsers } from "~/queries/user";
 import BlockConfirmationModal from "./confirmation-modals/block";
 import DeleteConfirmationModal from "./confirmation-modals/delete";
 import UnblockConfirmationModal from "./confirmation-modals/unblock";
-import useAdminTableStore from "~/store/admin-table";
 import useDebounce from "~/hooks/debounce";
 
 type Modal = {
@@ -29,12 +28,35 @@ type Modal = {
   data: CurrentUser | null;
 };
 
+type QueryKey = "q" | "is-active";
+
 export default function User() {
   const navigate = useNavigate();
 
-  const { user: userTable, setUser: setUserTable } = useAdminTableStore();
-  const { pagination, filterBy, search } = userTable;
+  const [searchParams, setSearchParams] = useSearchParams();
 
+  const queryParams = {
+    get: (key: QueryKey) => searchParams.get(key) || "",
+    delete: (key: QueryKey) => {
+      setSearchParams((params) => {
+        params.delete(key);
+
+        return params;
+      });
+    },
+    set: (key: QueryKey, value: string) => {
+      setSearchParams(
+        (params) => {
+          params.set(key, value);
+
+          return params;
+        },
+        {
+          replace: true,
+        }
+      );
+    },
+  };
   const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
   const [blockModal, setBlockModal] = useState<Modal>({
     open: false,
@@ -49,11 +71,22 @@ export default function User() {
     data: null,
   });
 
+  const [pagination, setPagination] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+
   function dropdownDisplay(id: string) {
     return Boolean(anchorElObj[id]);
   }
 
-  const { isLoading, data } = useGetAllUsers(useDebounce(search).trim(), filterBy, pagination);
+  const { isLoading, data } = useGetAllUsers(
+    useDebounce(queryParams.get("q")).trim(),
+    {
+      isActive: queryParams.get("is-active"),
+    },
+    pagination
+  );
 
   const columns: GridColDef[] = [
     {
@@ -280,27 +313,28 @@ export default function User() {
                 <OutlinedInput
                   placeholder="Search for name..."
                   className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
-                  value={search}
+                  value={queryParams.get("q")}
                   onChange={(e) => {
-                    setUserTable({
-                      ...userTable,
-                      search: e.target.value,
-                    });
+                    const value = e.target.value;
+
+                    if (!value) {
+                      return queryParams.delete("q");
+                    }
+
+                    queryParams.set("q", value);
                   }}
                 />
                 <Select
                   className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                  value={filterBy.isActive || ""}
+                  value={queryParams.get("is-active")}
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setUserTable({
-                      ...userTable,
-                      filterBy: {
-                        ...filterBy,
-                        isActive: chosenValue as typeof filterBy.isActive,
-                      },
-                    });
+                    if (!chosenValue) {
+                      return queryParams.delete("is-active");
+                    }
+
+                    queryParams.set("is-active", chosenValue);
                   }}
                   displayEmpty
                 >
@@ -323,12 +357,9 @@ export default function User() {
               onPaginationModelChange={({ page, pageSize }, { reason }) => {
                 if (!reason) return;
 
-                setUserTable({
-                  ...userTable,
-                  pagination: {
-                    page,
-                    pageSize,
-                  },
+                setPagination({
+                  page,
+                  pageSize,
                 });
               }}
               paginationMode="server"
@@ -345,6 +376,13 @@ export default function User() {
           });
         }}
         data={blockModal.data as CurrentUser}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            isActive: queryParams.get("is-active"),
+          },
+        }}
       />
       <DeleteConfirmationModal
         open={deleteModal.open}
@@ -355,6 +393,13 @@ export default function User() {
           });
         }}
         data={deleteModal.data as CurrentUser}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            isActive: queryParams.get("is-active"),
+          },
+        }}
       />
       <UnblockConfirmationModal
         open={unblockModal.open}
@@ -365,6 +410,13 @@ export default function User() {
           });
         }}
         data={unblockModal.data as CurrentUser}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            isActive: queryParams.get("is-active"),
+          },
+        }}
       />
     </>
   );

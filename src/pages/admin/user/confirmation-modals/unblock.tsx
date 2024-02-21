@@ -7,10 +7,23 @@ type UnblockModalProps = {
   open: boolean;
   onClose: () => void;
   data: CurrentUser;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      isActive: string;
+    };
+  };
 };
 
-export default function UnblockModal({ open, onClose, data }: UnblockModalProps) {
-  const changeUserStatus = useChangeUserStatus();
+export default function UnblockModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: UnblockModalProps) {
+  const changeUserStatus = useChangeUserStatus(pagination, queryParams);
 
   return (
     <Modal

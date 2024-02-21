@@ -10,11 +10,9 @@ export function useCurrentUser(
 export function useGetAllUsers(
   search = "",
   filterBy: {
-    isActive: string | null;
-  } = {
-    isActive: null,
+    isActive: string;
   },
-  pagination: { pageSize: number; page: number },
+  pagination: Pagination,
   options?: UseQueryOptions<PaginatedResponse<CurrentUser[]>>
 ) {
   const { isActive } = filterBy;
