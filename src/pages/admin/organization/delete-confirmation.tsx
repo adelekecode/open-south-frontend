@@ -3,18 +3,16 @@ import { useChangeOrganizationStatus } from "~/mutations/organization";
 import Modal from "~/components/modal";
 import Button from "~/components/button";
 
-type DeleteConfirmationModalProps = {
-  open: boolean;
-  onClose: () => void;
-  data: Organization;
-};
+type DeleteConfirmationModalProps = OrganizationModalProps;
 
 export default function DeleteConfirmationModal({
   open,
   onClose,
   data,
+  pagination,
+  queryParams,
 }: DeleteConfirmationModalProps) {
-  const changeOrganizationStatus = useChangeOrganizationStatus();
+  const changeOrganizationStatus = useChangeOrganizationStatus(pagination, queryParams);
 
   return (
     <Modal

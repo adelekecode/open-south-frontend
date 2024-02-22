@@ -3,14 +3,16 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import { useChangeOrganizationStatus } from "~/mutations/organization";
 
-type BlockModalProps = {
-  open: boolean;
-  onClose: () => void;
-  data: Organization;
-};
+type BlockModalProps = OrganizationModalProps;
 
-export default function BlockModal({ open, onClose, data }: BlockModalProps) {
-  const changeOrganizationStatus = useChangeOrganizationStatus();
+export default function BlockModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: BlockModalProps) {
+  const changeOrganizationStatus = useChangeOrganizationStatus(pagination, queryParams);
 
   return (
     <Modal

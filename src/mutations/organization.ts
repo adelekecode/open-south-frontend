@@ -1,8 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import useAdminTableStore from "~/store/admin-table";
 import { axiosPrivate } from "~/utils/api";
 import { notifyError, notifySuccess } from "~/utils/toast";
+
+type QueryParams = {
+  search: string;
+  filter: {
+    isActive: string;
+    isVerified: string;
+    status: string;
+  };
+};
 
 export function useCreateOrganization() {
   const queryClient = useQueryClient();
@@ -115,13 +123,14 @@ export function useResendCode() {
   );
 }
 
-export function useChangeOrganizationStatus() {
+export function useChangeOrganizationStatus(pagination: Pagination, queryParams: QueryParams) {
   const queryClient = useQueryClient();
-  const { organization } = useAdminTableStore();
 
-  const { pagination, filterBy, search } = organization;
-  const { status, isVerified, isActive } = filterBy;
   const { page, pageSize } = pagination;
+  const {
+    search,
+    filter: { isActive, isVerified, status },
+  } = queryParams;
 
   const newStatus = status === "approve" ? "approved" : status === "reject" ? "rejected" : status;
 
