@@ -50,9 +50,7 @@ export function useAdminOrganizationUsers(
   const { page, pageSize } = pagination;
 
   return useQuery<PaginatedResponse<CurrentUser[]>>(
-    [
-      `/organisations/users/${orgId}/?search=${search}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
-    ],
+    [`/organisations/users/${orgId}/?search=${search}&limit=${pageSize}&offset=${page * pageSize}`],
     options
   );
 }

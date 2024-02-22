@@ -149,6 +149,7 @@ type OrganizationRequest = {
     last_name: string;
     role: string;
     email: string;
+    image_url: string;
   };
 };
 

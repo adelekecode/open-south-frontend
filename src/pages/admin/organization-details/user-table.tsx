@@ -16,8 +16,20 @@ import { IoPerson } from "react-icons/io5";
 import DataGrid from "~/components/data-grid";
 import { useAdminOrganizationUsers } from "~/queries/organizations";
 import useDebounce from "~/hooks/debounce";
+import RemoveModal from "./confirmation-modal/remove";
 
-export default function UserTable() {
+type UserTableProps<T> = {
+  pagination: T;
+  setPagination: (obj: T) => void;
+};
+
+export default function UserTable({
+  pagination,
+  setPagination,
+}: UserTableProps<{
+  page: number;
+  pageSize: number;
+}>) {
   const { id } = useParams();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,9 +37,12 @@ export default function UserTable() {
   const search = searchParams.get("q") || "";
 
   const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
-  const [pagination, setPagination] = useState({
-    pageSize: 10,
-    page: 1,
+  const [removeModal, setRemoveModal] = useState<{
+    open: boolean;
+    data: CurrentUser | null;
+  }>({
+    open: false,
+    data: null,
   });
 
   const { data, isLoading } = useAdminOrganizationUsers(
@@ -166,6 +181,11 @@ export default function UserTable() {
                         <button
                           className="hover:bg-info-100"
                           onClick={() => {
+                            setRemoveModal({
+                              open: true,
+                              data: row,
+                            });
+
                             setAnchorElObj((prev) => ({
                               ...prev,
                               [row.id]: null,
@@ -193,7 +213,7 @@ export default function UserTable() {
         <h3 className="text-lg font-medium">Users</h3>
         <div className="flex flex-col gap-4">
           <OutlinedInput
-            placeholder="Search..."
+            placeholder="Search for user..."
             className="w-[450px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !text-sm !py-0"
             value={search}
             onChange={(e) => {
@@ -239,6 +259,17 @@ export default function UserTable() {
           </div>
         </div>
       </div>
+      <RemoveModal
+        open={removeModal.open}
+        onClose={() => {
+          setRemoveModal({
+            open: false,
+            data: null,
+          });
+        }}
+        data={removeModal.data as CurrentUser}
+        pagination={pagination}
+      />
     </>
   );
 }
