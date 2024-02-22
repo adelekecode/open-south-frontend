@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { usePublicDatasets } from "~/queries/dataset";
+import { usePublicMapDatasets } from "~/queries/dataset";
 import AppLoader from "~/components/loader/app-loader";
 
 export default function Map() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { data, isLoading } = usePublicDatasets();
+  const { data, isLoading } = usePublicMapDatasets();
 
   useEffect(() => {
     if (!data) return;
@@ -20,9 +20,7 @@ export default function Map() {
           type: string;
           coordinates: number[];
         };
-        properties: {
-          country: string;
-        };
+        properties: Dataset;
       }[];
     } = {
       type: "FeatureCollection",
@@ -45,9 +43,7 @@ export default function Map() {
             type: "Point",
             coordinates,
           },
-          properties: {
-            country: data[i].geojson.country,
-          },
+          properties: data[i],
         };
 
         mapData.features.push(obj);
@@ -67,7 +63,7 @@ export default function Map() {
     map.addControl(new mapboxgl.NavigationControl());
 
     map.on("load", () => {
-      map.addSource("earthquakes", {
+      map.addSource("datasets", {
         type: "geojson",
         data: mapData as any,
         cluster: true,
@@ -78,32 +74,107 @@ export default function Map() {
       map.addLayer({
         id: "clusters",
         type: "circle",
-        source: "earthquakes",
+        source: "datasets",
         filter: ["has", "point_count"],
         paint: {
-          "circle-color": [
-            "step",
-            ["get", "point_count"],
-            "#51bbd6",
-            100,
-            "#f1f075",
-            750,
-            "#f28cb1",
-          ],
+          "circle-color": "#51bbd6",
           "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
+        },
+      });
+
+      map.addLayer({
+        id: "unclustered",
+        type: "circle",
+        source: "datasets",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": "#11b4da",
+          "circle-radius": 15,
         },
       });
 
       map.addLayer({
         id: "cluster-count",
         type: "symbol",
-        source: "earthquakes",
+        source: "datasets",
         filter: ["has", "point_count"],
         layout: {
           "text-field": ["get", "point_count_abbreviated"],
           "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
           "text-size": 12,
         },
+      });
+
+      map.addLayer({
+        id: "unclustered-point",
+        type: "symbol",
+        source: "datasets",
+        filter: ["!", ["has", "point_count"]],
+        layout: {
+          "text-field": "1",
+          "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+          "text-size": 10,
+        },
+      });
+
+      // map.on("click", ["clusters", "unclustered"], (e) => {
+      //   const features = map.queryRenderedFeatures(e.point, {
+      //     layers: ["clusters", "unclustered"],
+      //   });
+
+      //   if (features.length > 0) {
+      //     for (let i = 0; i < data.length; i++) {
+      //       if (features[i]) {
+      //         const { properties } = features[i];
+      //         const datasets = JSON.parse(JSON.stringify(properties)) as Dataset;
+
+      //         navigate(
+      //           `/datasets?spatial-coverage=${slugify(datasets.spatial_coverage, {
+      //             lower: true,
+      //             strict: true,
+      //             trim: true,
+      //           })}`
+      //         );
+      //       }
+      //     }
+      //   }
+      // });
+
+      map.on("click", ["clusters", "unclustered"], (e) => {
+        const features = map.queryRenderedFeatures(e.point, {
+          layers: ["clusters", "unclustered"],
+        });
+
+        if (features.length > 0) {
+          if (features[0]) {
+            const { properties } = features[0];
+
+            const dataset = JSON.parse(JSON.stringify(properties));
+
+            if (!dataset.title) return;
+            const { spatial_coverage } = dataset;
+
+            new mapboxgl.Popup()
+              .setLngLat(e.lngLat)
+              .setHTML(
+                `
+                <div class="flex flex-col gap-2">
+                  <h1 class="font-semibold text-xl">${spatial_coverage}</h1>
+                  <h2 class="text-xs">No. of datasets in this country: <span class="text-sm font-medium">${dataset ? "1" : "0"}</span></h2>
+                  <a class="text-xs text-primary-600 underline" href="/datasets?spatial-coverage=${dataset.spatial_coverage}">View Datasets</a>
+                </div>
+                  `
+              )
+              .addTo(map);
+          }
+        }
+      });
+
+      map.on("mouseenter", ["clusters", "unclustered"], () => {
+        map.getCanvas().style.cursor = "pointer";
+      });
+      map.on("mouseleave", ["clusters", "unclustered"], () => {
+        map.getCanvas().style.cursor = "";
       });
     });
 

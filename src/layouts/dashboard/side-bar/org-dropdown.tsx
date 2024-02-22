@@ -2,9 +2,10 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Collapse } from "@mui/material";
 import { FaAngleDown } from "react-icons/fa6";
-import { IoGridOutline, IoPersonOutline } from "react-icons/io5";
+import { IoGridOutline } from "react-icons/io5";
 import { GoDatabase } from "react-icons/go";
 import { twMerge } from "tailwind-merge";
+import useUserOrganizationStore from "~/store/user-organization";
 
 type OrgDropdownProps = Organization & {
   navLinkClassNameHandler: (obj: { isActive: boolean; isPending: boolean }) => string;
@@ -17,24 +18,18 @@ const links = [
     icon: IoGridOutline,
   },
   {
-    name: "Dataset",
+    name: "Datasets",
     to: "/datasets",
     icon: GoDatabase,
   },
-  {
-    name: "User",
-    to: "/users",
-    icon: IoPersonOutline,
-  },
 ];
 
-export default function OrgDropdown({
-  name,
-  slug,
-  logo,
-  navLinkClassNameHandler,
-}: OrgDropdownProps) {
+export default function OrgDropdown({ navLinkClassNameHandler, ...data }: OrgDropdownProps) {
+  const { is_verified, name, slug, logo, status } = data;
+
   const [clicked, setClicked] = useState(false);
+
+  const { setVerificationModal, setPendingModal, setRejectedModal } = useUserOrganizationStore();
 
   return (
     <div className="w-full">
@@ -43,7 +38,24 @@ export default function OrgDropdown({
           clicked && "bg-info-200"
         }`}
         onClick={() => {
-          setClicked((prev) => !prev);
+          if (is_verified) {
+            if (status === "pending") {
+              setPendingModal({
+                open: true,
+              });
+            } else if (status === "approved") {
+              setClicked((prev) => !prev);
+            } else if (status === "rejected") {
+              setRejectedModal({
+                open: true,
+              });
+            }
+          } else {
+            return setVerificationModal({
+              open: true,
+              data,
+            });
+          }
         }}
       >
         <div className="grid grid-cols-[30px,1fr,12px] items-center gap-1">

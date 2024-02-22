@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { IoArrowBack } from "react-icons/io5";
 import Button from "~/components/button";
 import NotFoundIllustration from "~/assets/illustrations/404.png";
 
 export default function NotFound() {
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
+  const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/user/me/"]);
 
   return (
     <div className="w-full flex flex-col flex-grow items-center justify-center gap-2 p-8">
@@ -18,7 +22,7 @@ export default function NotFound() {
         <Button
           variant="outlined"
           onClick={() => {
-            navigate("/account/dashboard");
+            navigate(currentUser?.role === "admin" ? "/admin/dashboard" : "/account/dashboard");
           }}
         >
           Go to Dashboard

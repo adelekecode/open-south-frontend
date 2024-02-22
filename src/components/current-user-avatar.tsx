@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Avatar, AvatarProps } from "@mui/material";
 import { IoPerson } from "react-icons/io5";
 import { twMerge } from "tailwind-merge";
@@ -19,16 +20,19 @@ export default function CurrentUserAvatar({
   iconContainer,
   ...props
 }: CurrentUserAvatarProps) {
-  const currentUser = {
-    image: null,
-  };
+  const queryClient = useQueryClient();
+  const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
 
   const [element, setElement] = useState<null | React.ReactNode>();
 
   useEffect(() => {
-    if (currentUser?.image) {
+    if (currentUser?.image_url) {
       return setElement(
-        <img src={currentUser.image} alt="profile picture" className="w-full h-full object-cover" />
+        <img
+          src={currentUser.image_url}
+          alt="profile picture"
+          className="w-full h-full object-contain"
+        />
       );
     } else {
       return setElement(
@@ -46,7 +50,7 @@ export default function CurrentUserAvatar({
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser?.image]);
+  }, [currentUser?.image_url]);
 
   return (
     <Avatar
@@ -55,6 +59,7 @@ export default function CurrentUserAvatar({
       sx={{
         width: 30,
         height: 30,
+        backgroundColor: currentUser?.image_url ? "white" : undefined,
         ...sx,
       }}
       className={twMerge("", className)}

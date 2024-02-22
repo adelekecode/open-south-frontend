@@ -5,7 +5,7 @@ import { BsEyeSlash } from "react-icons/bs";
 import { AiOutlineEye } from "react-icons/ai";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 import { useResetPassword } from "~/mutations/auth/password";
 import Button from "~/components/button";
 import NotFound from "../../404";
@@ -15,13 +15,13 @@ const validationSchema = Yup.object({
   newPassword: Yup.string()
     .min(8, "New password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
       "New password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     ),
   confirmPassword: Yup.string()
     .min(8, "Confirm password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
       "Confirm password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     )
     .oneOf([Yup.ref("newPassword")], "Passwords must match")

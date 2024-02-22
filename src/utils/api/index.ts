@@ -59,12 +59,16 @@ axiosPrivate.interceptors.response.use(
           logout();
         }
         // } else if (status && status.toString().includes("50")) {
-      } else if (status === 500) {
-        notifyError("Something went wrong. Please try again later.");
-
-        return Promise.reject(message);
       } else return Promise.reject(message);
-    } else return Promise.reject(message);
+    } else if (status === 500) {
+      notifyError("Something went wrong. Please try again later.");
+
+      return Promise.reject(message);
+    } else if (message === "Network Error") {
+      notifyError("Offline. Check your network connection.");
+
+      return Promise.reject(message);
+    } else return Promise.reject(error);
   }
 );
 

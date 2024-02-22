@@ -1,18 +1,23 @@
 import { useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { InputLabel } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { InputLabel } from "@mui/material";
 import { ImFilePicture } from "react-icons/im";
 import Modal from "~/components/modal";
-import { useCreateCategory } from "~/mutations/category";
+import { useCreateCategory, useEditCategory } from "~/mutations/category";
 import { notifyError } from "~/utils/toast";
 import Button from "~/components/button";
 import SuccessIllustration from "~/assets/illustrations/success.png";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 
 type CreateProps = {
   modal: CategoyModal;
   setModal: (obj: CategoyModal) => void;
+  pagination: {
+    page: number;
+    pageSize: number;
+  };
 };
 
 const validationSchema = Yup.object({
@@ -26,24 +31,34 @@ const validationSchema = Yup.object({
     .min(3, "Description must be atleast 3 characters"),
 });
 
-export default function Create({ modal, setModal }: CreateProps) {
+export default function Create({ modal, setModal, pagination }: CreateProps) {
+  const [searchParams] = useSearchParams();
+
+  const search = searchParams.get("q") || "";
+
   const inputRef = useRef<HTMLInputElement | null>(null);
+
   const [formCompleted, setFormCompleted] = useState(false);
   const [image, setImage] = useState<File | null>(null);
 
-  const createCategory = useCreateCategory();
+  const createCategory = useCreateCategory(search, pagination);
+  const editCategory = useEditCategory(search, pagination);
+
+  function onClose() {
+    setFormCompleted(false);
+    setModal({
+      state: null,
+      data: null,
+    });
+  }
+
+  const isEditState = modal.state === "edit";
 
   return (
     <Modal
       muiModal={{
-        open: modal.state === "create",
-        onClose: () => {
-          setFormCompleted(false);
-          setModal({
-            state: null,
-            data: null,
-          });
-        },
+        open: modal.state === "create" || isEditState,
+        onClose,
       }}
       innerContainer={{
         className: "pt-[2rem]",
@@ -61,12 +76,34 @@ export default function Create({ modal, setModal }: CreateProps) {
         ) : (
           <Formik
             initialValues={{
-              title: "",
-              description: "",
+              title: modal.data?.name || "",
+              description: modal.data?.description || "",
             }}
             validateOnBlur={false}
             validationSchema={validationSchema}
             onSubmit={async (values) => {
+              if (isEditState) {
+                if (!image && !modal.data?.image_url) return notifyError("Image field is required");
+
+                const data: { name: string; description: string; image?: File } = {
+                  name: values.title,
+                  description: values.description,
+                };
+
+                if (image) {
+                  data.image = image;
+                }
+
+                const response = await editCategory.mutateAsync({
+                  id: modal.data?.id || "",
+                  data,
+                });
+
+                if (response) {
+                  return onClose();
+                }
+              }
+
               if (!image) return notifyError("Image field is required");
 
               const response = await createCategory.mutateAsync({
@@ -94,14 +131,12 @@ export default function Create({ modal, setModal }: CreateProps) {
                     <div className="flex gap-6 items-center largeMobile:flex-col largeMobile:items-start largeMobile:gap-4 largeMobile:mb-2">
                       <figure
                         id="image"
-                        className="w-56 h-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden bg-primary-50"
+                        className="w-80 h-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden bg-primary-50 [&>img]:w-full [&>img]:h-full [&>img]:object-contain"
                       >
                         {image ? (
-                          <img
-                            src={URL.createObjectURL(image)}
-                            alt="category image"
-                            className="w-full h-full object-contain"
-                          />
+                          <img src={URL.createObjectURL(image)} alt="category image" />
+                        ) : modal.data?.image_url ? (
+                          <img src={modal.data?.image_url} alt="category image" />
                         ) : (
                           <ImFilePicture className="w-[25%] h-44 text-info-500" />
                         )}
@@ -109,6 +144,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                       <input
                         ref={inputRef}
                         type="file"
+                        accept=".png, .jpg, .jpeg"
                         className="hidden"
                         onChange={(e) => {
                           const file = e.target.files![0];
@@ -116,16 +152,34 @@ export default function Create({ modal, setModal }: CreateProps) {
                           setImage(file);
                         }}
                       />
-                      <Button
-                        variant="outlined"
-                        color="info"
-                        className="!py-2 !text-xs !font-normal"
-                        onClick={() => {
-                          inputRef.current?.click();
-                        }}
-                      >
-                        <span>Upload an image</span>
-                      </Button>
+                      <div className="flex flex-col gap-2">
+                        <h4 className="text-sm">Upload an image</h4>
+                        <p className="text-xs text-info-800">
+                          The image should be in PNG, JPG or JPEG format
+                        </p>
+                        <div className="flex items-center mt-1">
+                          <Button
+                            variant="outlined"
+                            color="info"
+                            className="!py-2 !px-3 !text-xs"
+                            onClick={() => {
+                              inputRef.current?.click();
+                            }}
+                          >
+                            <span>Choose image</span>
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="info"
+                            className="!py-2 !border-transparent !px-3 !text-xs"
+                            onClick={() => {
+                              setImage(null);
+                            }}
+                          >
+                            <span>Remove</span>
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <FormField
@@ -149,7 +203,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                 <footer className="p-4 py-2 flex items-center justify-between">
                   <div></div>
                   <Button type="submit" className="!py-2" loading={isSubmitting}>
-                    Submit
+                    {isEditState ? "Save" : "Submit"}
                   </Button>
                 </footer>
               </form>

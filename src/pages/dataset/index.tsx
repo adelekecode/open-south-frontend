@@ -1,25 +1,60 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { MenuItem, Pagination } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
-import SearchInput from "~/components/search-input";
+import SearchInput from "~/components/inputs/search-input";
 import Seo from "~/components/seo";
-import SelectInput from "~/components/select-input";
+import SelectInput from "~/components/inputs/select-input";
 import Card from "./card";
-// import data from "~/utils/data/dataset.json";
-import AutocompleteInput from "~/components/auto-complete-input";
-import organizationData from "~/utils/data/organization.json";
-import tagData from "~/utils/data/tag.json";
+import AutocompleteInput from "~/components/inputs/auto-complete-input";
 import formatData from "~/utils/data/format.json";
+import licenseData from "~/utils/data/license.json";
 import spatialCoverageData from "~/utils/data/spatial-coverage.json";
 import { usePublicDatasets } from "~/queries/dataset";
 import NoData from "~/assets/illustrations/no-data.png";
+import { usePublicCategories } from "~/queries/category";
+import { usePublicOrganizations } from "~/queries/organizations";
+import { usePublicTags } from "~/queries/tags";
+import useDebounce from "~/hooks/debounce";
 
-type SortByValue = "relevance" | "creation-date" | "last-update";
+type SortByValue = "" | "creation_date" | "last_update";
 
 export default function Dataset() {
-  const [sortBy, setSortBy] = useState<SortByValue>("relevance");
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const { isLoading, data } = usePublicDatasets();
+  const [page, setPage] = useState(1);
+  const datasetPerPage = 10;
+
+  const search = searchParams.get("q") || "";
+  const filterBy = {
+    organization: searchParams.get("organization") || "",
+    category: searchParams.get("category") || "",
+    tag: searchParams.get("tag") || "",
+    license: searchParams.get("license") || "",
+    format: searchParams.get("format") || "",
+    spatialCoverage: searchParams.get("spatial-coverage") || "",
+  };
+  const sortBy = searchParams.get("sort-by") || "";
+
+  const searchParamsOption = {
+    replace: true,
+  };
+
+  const { isLoading, data, refetch } = usePublicDatasets(
+    useDebounce(search).trim(),
+    {
+      ...filterBy,
+    },
+    sortBy as SortByValue,
+    {
+      page,
+      pageSize: datasetPerPage,
+    }
+  );
+
+  const { data: categories, isLoading: isLoadingCategories } = usePublicCategories();
+  const { data: organizations, isLoading: isLoadingOrganizations } = usePublicOrganizations();
+  const { data: tags, isLoading: isLoadingTags } = usePublicTags(); //? Add pagination and search
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -36,6 +71,29 @@ export default function Dataset() {
         <div className="flex flex-col gap-2 pt-4">
           <SearchInput
             placeholder="Search"
+            value={search}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (!value) {
+                return setSearchParams((params) => {
+                  params.delete("q");
+
+                  return params;
+                });
+              }
+
+              setSearchParams(
+                (params) => {
+                  params.set("q", value);
+
+                  return params;
+                },
+                {
+                  replace: true,
+                }
+              );
+            }}
             className="w-full h-[inherit]"
             searchIcon={
               <div className="flex items-center gap-2 p-2">
@@ -43,6 +101,9 @@ export default function Dataset() {
                 <p className="text-white tablet:hidden text-base">Search</p>
               </div>
             }
+            onSearch={async () => {
+              await refetch();
+            }}
           />
         </div>
         <div className="w-full grid grid-cols-[0.8fr,2fr] py-6 gap-6 tablet:grid-cols-1">
@@ -55,40 +116,207 @@ export default function Dataset() {
                 <label htmlFor="organization">Organizations</label>
                 <AutocompleteInput
                   id="organization"
-                  options={organizationData.map((item) => ({
-                    label: item.name,
-                    slug: item.slug,
-                    id: item.id,
-                  }))}
-                  placeholder="All Organization"
+                  options={organizations ? organizations.results : []}
+                  getOptionLabel={(opt) => opt.name ?? opt}
+                  inputParams={{
+                    placeholder: "All Organizations",
+                  }}
+                  loading={isLoadingOrganizations}
+                  value={
+                    organizations?.results?.find((item) => item.slug === filterBy.organization) ||
+                    null
+                  }
+                  isOptionEqualToValue={(option, value) => option.slug === value.slug}
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("organization");
+
+                        return params;
+                      });
+                    }
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("organization", chosenValue.slug);
+
+                        return params;
+                      });
+                    }
+                  }}
                 />
               </div>
               <div>
                 <label htmlFor="tag">Tags</label>
-                <AutocompleteInput id="tag" options={tagData} />
+                <AutocompleteInput
+                  id="tag"
+                  options={tags?.results || ([] as Dataset["tags_data"])}
+                  getOptionLabel={(opt) => opt.name ?? opt}
+                  inputParams={{
+                    placeholder: "All Tags",
+                  }}
+                  loading={isLoadingTags}
+                  value={tags?.results?.find((item) => item.name === filterBy.tag) || null}
+                  isOptionEqualToValue={(option, value) => option.name === value.name}
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("tag");
+
+                        return params;
+                      });
+                    }
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("tag", chosenValue.name);
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
               <div>
                 <label htmlFor="category">Category</label>
-                <AutocompleteInput id="category" options={tagData} />
+                <AutocompleteInput
+                  id="category"
+                  inputParams={{
+                    placeholder: "All Categories",
+                  }}
+                  options={categories || ([] as Category[])}
+                  getOptionLabel={(opt) => opt.name ?? opt}
+                  loading={isLoadingCategories}
+                  value={categories?.find((item) => item.slug === filterBy.category) || null}
+                  isOptionEqualToValue={(option, value) => option.slug === value.slug}
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("category");
+
+                        return params;
+                      });
+                    }
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("category", chosenValue.slug);
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
               <div>
                 <label htmlFor="format">Formats</label>
-                <AutocompleteInput id="format" options={formatData} />
+                <AutocompleteInput
+                  id="format"
+                  inputParams={{
+                    placeholder: "All Formarts",
+                  }}
+                  options={formatData}
+                  value={formatData.find((item) => item.label === filterBy.format) || null}
+                  isOptionEqualToValue={(option, value) => option.label === value.label}
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("format");
+
+                        return params;
+                      });
+                    }
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("format", chosenValue.label);
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
               <div>
                 <label htmlFor="licenses">Licenses</label>
-                <AutocompleteInput id="license" options={tagData} />
+                <AutocompleteInput
+                  id="license"
+                  inputParams={{
+                    placeholder: "All Licenses",
+                  }}
+                  getOptionLabel={(opt) => opt.name ?? opt}
+                  options={licenseData}
+                  value={licenseData.find((item) => item.name === filterBy.license) || null}
+                  isOptionEqualToValue={(option, value) => option.name === value.name}
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("license");
+
+                        return params;
+                      });
+                    }
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("license", chosenValue.name);
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
               <div>
                 <label htmlFor="spatial-coverage">Spatial coverage</label>
-                <AutocompleteInput id="spatial-coverage" options={spatialCoverageData} />
+                <AutocompleteInput
+                  id="spatial-coverage"
+                  inputParams={{
+                    placeholder: "All Spatial Coverage",
+                  }}
+                  options={spatialCoverageData}
+                  value={
+                    spatialCoverageData.find((item) => item.label === filterBy.spatialCoverage) ||
+                    null
+                  }
+                  isOptionEqualToValue={(option, value) => option.label === value.label}
+                  onChange={(_, val) => {
+                    const chosenValue = val;
+
+                    if (!chosenValue) {
+                      return setSearchParams((params) => {
+                        params.delete("spatial-coverage");
+
+                        return params;
+                      });
+                    }
+
+                    if (chosenValue) {
+                      setSearchParams((params) => {
+                        params.set("spatial-coverage", chosenValue.label);
+
+                        return params;
+                      });
+                    }
+                  }}
+                />
               </div>
             </main>
           </div>
           <div className="flex flex-col gap-8">
             <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4">
               <p>
-                <span>{data ? data.length : "---"}</span> results
+                <span>{data ? data.count : "0"}</span> results
               </p>
               <div className="flex items-center gap-2">
                 <p className="whitespace-nowrap text-sm">Sort by:</p>
@@ -96,14 +324,26 @@ export default function Dataset() {
                   className="min-w-[210px]"
                   value={sortBy}
                   onChange={(e) => {
-                    if (e.target.value) {
-                      setSortBy(e.target.value as SortByValue);
+                    const value = e.target.value as string;
+
+                    if (!value) {
+                      return setSearchParams((params) => {
+                        params.delete("sort-by");
+
+                        return params;
+                      });
                     }
+
+                    setSearchParams((params) => {
+                      params.set("sort-by", value);
+
+                      return params;
+                    }, searchParamsOption);
                   }}
                 >
-                  <MenuItem value="relevance">Relevance</MenuItem>
-                  <MenuItem value="creation-date">Creation Date</MenuItem>
-                  <MenuItem value="last-update">Last Update</MenuItem>
+                  <MenuItem value="">Relevance</MenuItem>
+                  <MenuItem value="creation_date">Creation Date</MenuItem>
+                  <MenuItem value="last_update">Last Update</MenuItem>
                 </SelectInput>
               </div>
             </header>
@@ -124,15 +364,23 @@ export default function Dataset() {
                   </div>
                 ))}
               </div>
-            ) : data && data.length > 0 ? (
+            ) : data?.results && data.results.length > 0 ? (
               <>
                 <main className="w-full flex flex-col gap-8">
-                  {data.map((item, index) => (
+                  {data.results.map((item, index) => (
                     <Card key={index + 1} {...item} />
                   ))}
                 </main>
                 <footer className="flex items-center justify-center">
-                  <Pagination count={10} variant="outlined" shape="rounded" />
+                  <Pagination
+                    count={Math.ceil(data.count / datasetPerPage)}
+                    page={page}
+                    onChange={(_, page) => {
+                      setPage(page);
+                    }}
+                    variant="outlined"
+                    shape="rounded"
+                  />
                 </footer>
               </>
             ) : (

@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { MdDeleteOutline } from "react-icons/md";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
@@ -6,9 +7,20 @@ import { useDeleteCategory } from "~/mutations/category";
 type DeleteConfirmationProps = {
   modal: CategoyModal;
   setModal: (obj: CategoyModal) => void;
+  pagination: {
+    page: number;
+    pageSize: number;
+  };
 };
 
-export default function DeleteConfirmation({ modal, setModal }: DeleteConfirmationProps) {
+export default function DeleteConfirmation({
+  modal,
+  setModal,
+  pagination,
+}: DeleteConfirmationProps) {
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("q") || "";
+
   const { data, state } = modal;
 
   function onClose() {
@@ -18,7 +30,7 @@ export default function DeleteConfirmation({ modal, setModal }: DeleteConfirmati
     });
   }
 
-  const deleteCategory = useDeleteCategory();
+  const deleteCategory = useDeleteCategory(search, pagination);
 
   return (
     <Modal
@@ -44,11 +56,9 @@ export default function DeleteConfirmation({ modal, setModal }: DeleteConfirmati
           <Button
             loading={deleteCategory.isLoading}
             onClick={async () => {
-              const response = await deleteCategory.mutateAsync(data?.id || "");
+              await deleteCategory.mutateAsync(data?.id || "");
 
-              if (response) {
-                onClose();
-              }
+              onClose();
             }}
             className="h-full"
           >

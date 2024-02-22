@@ -1,42 +1,17 @@
 [
   {
-    "id": "986814a2-3abd-4f1e-9f45-3e3f194efe33",
-    "license": "Licence Ouverte / Open Licence version 2.0"
+    "name": "Creative Commons Attribution (CC BY)"
   },
   {
-    "id": "72c3b9f7-87e1-4c38-ae99-6cf1f41a1ebc",
-    "license": "Creative Commons Attribution 4.0 International License"
+    "name": "Creative Commons Attribution-NoDerivs (CC BY-ND)"
   },
   {
-    "id": "c135b1f0-ee3e-46cd-9e6a-521f60a21df8",
-    "license": "MIT License"
+    "name": "Creative Commons Attribution-NonCommercial (CC BY-NC)"
   },
   {
-    "id": "4e3a577d-3a12-49d8-a2ef-df63bc014d5a",
-    "license": "Apache License 2.0"
+    "name": "Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA)"
   },
   {
-    "id": "8fde8efb-bb47-4855-b6c9-93a871d1f515",
-    "license": "GNU General Public License v3.0"
-  },
-  {
-    "id": "9eae6b7a-188c-44b7-b879-5bc23e0e3f1b",
-    "license": "BSD 3-Clause License"
-  },
-  {
-    "id": "af11f956-2044-4ab2-b92d-5f878ba88f3f",
-    "license": "Eclipse Public License 2.0"
-  },
-  {
-    "id": "623b1c97-ee10-4f4a-b2b7-3655ea3184d0",
-    "license": "GNU Lesser General Public License v2.1"
-  },
-  {
-    "id": "3bb3e8dd-6a2f-44f4-8e6b-634d472154ea",
-    "license": "Mozilla Public License 2.0"
-  },
-  {
-    "id": "7a56e7e0-0cf3-426d-8a93-5684cc1b4a17",
-    "license": "The Unlicense"
+    "name": "Creative Commons Attribution-NonCommercial-NoDerivs (CC BY-NC-ND)"
   }
 ]

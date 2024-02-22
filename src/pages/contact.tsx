@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Button from "~/components/button";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 import Seo from "~/components/seo";
 import { useSendMessage } from "~/mutations/contact";
 
@@ -13,6 +14,10 @@ const validationSchema = Yup.object({
 
 export default function Contact() {
   const sendMessage = useSendMessage();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>

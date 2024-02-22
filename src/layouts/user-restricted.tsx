@@ -1,5 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import OrganizationVerificationModal from "~/components/organization/verification-modal";
+import OrganizationPendingModal from "~/components/organization/pending-modal";
+import OrganizationRejectedModal from "~/components/organization/rejected-modal";
 import DashboardLayout from "./dashboard";
 
 export default function UserRestricted() {
@@ -13,6 +16,9 @@ export default function UserRestricted() {
   return (
     <DashboardLayout>
       <Outlet />
+      <OrganizationVerificationModal />
+      <OrganizationPendingModal />
+      <OrganizationRejectedModal />
     </DashboardLayout>
   );
 }

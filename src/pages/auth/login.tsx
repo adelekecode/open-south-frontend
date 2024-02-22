@@ -1,4 +1,4 @@
-import { useState, ReactNode, Fragment } from "react";
+import { useState, ReactNode, Fragment, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
@@ -7,7 +7,7 @@ import { BsEyeSlash } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 import useLogin from "~/mutations/auth/login";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
@@ -19,7 +19,7 @@ const loginSchema = Yup.object({
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
       "Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     )
     .required("Password is required"),
@@ -36,6 +36,10 @@ export default function Login() {
   const { setSignupState } = useAppStore();
 
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   function handleActivationError(email: string): ReactNode {
     if (!login.error) return <Fragment />;
@@ -101,8 +105,8 @@ export default function Login() {
                 state?.from
                   ? state.from
                   : data.role === "admin"
-                  ? "/admin/dashboard"
-                  : "/account/dashboard"
+                    ? "/admin/dashboard"
+                    : "/account/dashboard"
               );
             }
           }}

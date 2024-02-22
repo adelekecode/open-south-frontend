@@ -1,8 +1,8 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Button from "~/components/button";
-import FormField from "~/components/form-field";
-import PhoneNumberField from "~/components/phone-number-field";
+import FormField from "~/components/fields/form-field";
+import PhoneNumberField from "~/components/fields/phone-number-field";
 
 const validationSchema = Yup.object({});
 

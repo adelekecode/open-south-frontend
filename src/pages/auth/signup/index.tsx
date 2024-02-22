@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -6,7 +6,7 @@ import { IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
-import FormField from "~/components/form-field";
+import FormField from "~/components/fields/form-field";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
 import useSignUp from "~/mutations/auth/signup";
@@ -20,13 +20,13 @@ const signupSchema = Yup.object({
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
       "Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     ),
   confirmPassword: Yup.string()
     .min(8, "Confirm password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
       "Confirm password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     )
     .oneOf([Yup.ref("password")], "Passwords must match")
@@ -41,6 +41,10 @@ export default function Signup() {
   const { signupState, setSignupState } = useAppStore();
 
   const signup = useSignUp();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
