@@ -2,15 +2,22 @@ import { isAxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
-import useAdminTableStore from "~/store/admin-table";
 
-export function useCreateNews() {
+type QueryParams = {
+  search: string;
+  filter: {
+    status: string;
+  };
+};
+
+export function useCreateNews(pagination: Pagination, queryParams: QueryParams) {
   const queryClient = useQueryClient();
-  const { news } = useAdminTableStore();
 
-  const { pagination, filterBy, search } = news;
   const { pageSize, page } = pagination;
-  const { status } = filterBy;
+  const {
+    search,
+    filter: { status },
+  } = queryParams;
 
   return useMutation(
     async (data: Record<"title" | "body", string> & { image: File }) => {
@@ -46,13 +53,13 @@ export function useCreateNews() {
   );
 }
 
-export function useEditNews() {
+export function useEditNews(pagination: Pagination, queryParams: QueryParams) {
   const queryClient = useQueryClient();
-  const { news } = useAdminTableStore();
-
-  const { pagination, filterBy, search } = news;
   const { pageSize, page } = pagination;
-  const { status } = filterBy;
+  const {
+    search,
+    filter: { status },
+  } = queryParams;
 
   return useMutation(
     async ({
@@ -94,13 +101,14 @@ export function useEditNews() {
   );
 }
 
-export function useDeleteNews() {
+export function useDeleteNews(pagination: Pagination, queryParams: QueryParams) {
   const queryClient = useQueryClient();
-  const { news } = useAdminTableStore();
 
-  const { pagination, filterBy, search } = news;
   const { pageSize, page } = pagination;
-  const { status } = filterBy;
+  const {
+    search,
+    filter: { status },
+  } = queryParams;
 
   return useMutation(
     async (id: string) => {
@@ -131,13 +139,14 @@ export function useDeleteNews() {
   );
 }
 
-export function useChangeNewsStatus() {
+export function useChangeNewsStatus(pagination: Pagination, queryParams: QueryParams) {
   const queryClient = useQueryClient();
-  const { news } = useAdminTableStore();
 
-  const { pagination, filterBy, search } = news;
   const { pageSize, page } = pagination;
-  const { status } = filterBy;
+  const {
+    search,
+    filter: { status },
+  } = queryParams;
 
   return useMutation(
     async ({ id, action }: { id: string; action: "publish" | "unpublish" }) => {
@@ -150,7 +159,7 @@ export function useChangeNewsStatus() {
         notifySuccess("Successfully changed news status");
 
         return queryClient.invalidateQueries([
-          `/admin/news/list/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+          `/admin/news/list/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`,
         ]);
       },
       onError(error) {

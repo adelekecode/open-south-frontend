@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { InputLabel } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { InputLabel } from "@mui/material";
 import { ImFilePicture } from "react-icons/im";
 import Modal from "~/components/modal";
 import { useCreateCategory, useEditCategory } from "~/mutations/category";
@@ -31,13 +32,17 @@ const validationSchema = Yup.object({
 });
 
 export default function Create({ modal, setModal, pagination }: CreateProps) {
+  const [searchParams] = useSearchParams();
+
+  const search = searchParams.get("q") || "";
+
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [formCompleted, setFormCompleted] = useState(false);
   const [image, setImage] = useState<File | null>(null);
 
-  const createCategory = useCreateCategory();
-  const editCategory = useEditCategory(pagination);
+  const createCategory = useCreateCategory(search, pagination);
+  const editCategory = useEditCategory(search, pagination);
 
   function onClose() {
     setFormCompleted(false);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   ClickAwayListener,
   Fade,
@@ -21,18 +21,42 @@ import RejectConfirmationModal from "./status-confirmation-modals/reject";
 import UnpublishConfirmationModal from "./status-confirmation-modals/unpublish";
 import FurtherReviewConfirmationModal from "./status-confirmation-modals/further-review";
 import useDebounce from "~/hooks/debounce";
-import useAdminTableStore from "~/store/admin-table";
 
 type Modal = {
   open: boolean;
   data: Dataset | null;
 };
 
+type QueryKey = "q" | "status";
+
 export default function Dataset() {
   const navigate = useNavigate();
 
-  const { dataset: datasetTable, setDataset: setDatasetTable } = useAdminTableStore();
-  const { pagination, filterBy, search } = datasetTable;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const queryParams = {
+    get: (key: QueryKey) => searchParams.get(key) || "",
+    delete: (key: QueryKey) => {
+      setSearchParams((params) => {
+        params.delete(key);
+
+        return params;
+      });
+    },
+    set: (key: QueryKey, value: string) => {
+      setSearchParams(
+        (params) => {
+          params.set(key, value);
+
+          return params;
+        },
+        {
+          replace: true,
+        }
+      );
+    },
+  };
+
   const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
   const [statusObj, setStatusObj] = useState<{ [key: string]: Dataset["status"] }>({});
   const [publishModal, setPublishModal] = useState<Modal>({
@@ -56,14 +80,19 @@ export default function Dataset() {
     data: null,
   });
 
+  const [pagination, setPagination] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+
   function dropdownDisplay(id: string) {
     return Boolean(anchorElObj[id]);
   }
 
   const { data, isLoading } = useAdminDatasets(
-    useDebounce(search).trim(),
+    useDebounce(queryParams.get("q")).trim(),
     {
-      status: filterBy.status as string,
+      status: queryParams.get("status"),
     },
     {
       ...pagination,
@@ -348,28 +377,29 @@ export default function Dataset() {
             <div className="flex items-center gap-4 h-10 w-full">
               <OutlinedInput
                 placeholder="Search for title..."
-                value={search}
+                value={queryParams.get("q")}
                 onChange={(e) => {
-                  setDatasetTable({
-                    ...datasetTable,
-                    search: e.target.value,
-                  });
+                  const value = e.target.value;
+
+                  if (!value) {
+                    return queryParams.delete("q");
+                  }
+
+                  queryParams.set("q", value);
                 }}
                 className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
               />
               <Select
                 className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                value={filterBy.status || ""}
+                value={queryParams.get("status")}
                 onChange={async (e) => {
                   const chosenValue = e.target.value;
 
-                  setDatasetTable({
-                    ...datasetTable,
-                    filterBy: {
-                      ...filterBy,
-                      status: chosenValue as typeof filterBy.status,
-                    },
-                  });
+                  if (!chosenValue) {
+                    return queryParams.delete("status");
+                  }
+
+                  queryParams.set("status", chosenValue);
                 }}
                 displayEmpty
               >
@@ -398,12 +428,9 @@ export default function Dataset() {
               onPaginationModelChange={({ page, pageSize }, { reason }) => {
                 if (!reason) return;
 
-                setDatasetTable({
-                  ...datasetTable,
-                  pagination: {
-                    page,
-                    pageSize,
-                  },
+                setPagination({
+                  page,
+                  pageSize,
                 });
               }}
               paginationMode="server"
@@ -420,6 +447,13 @@ export default function Dataset() {
           });
         }}
         data={publishModal.data as Dataset}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
       />
       <RejectConfirmationModal
         open={rejectModal.open}
@@ -430,6 +464,13 @@ export default function Dataset() {
           });
         }}
         data={rejectModal.data as Dataset}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
       />
       <UnpublishConfirmationModal
         open={unpublishModal.open}
@@ -440,6 +481,13 @@ export default function Dataset() {
           });
         }}
         data={unpublishModal.data as Dataset}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
       />
       <FurtherReviewConfirmationModal
         open={furtherReviewModal.open}
@@ -450,6 +498,13 @@ export default function Dataset() {
           });
         }}
         data={furtherReviewModal.data as Dataset}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
       />
       <DeleteConfirmationModal
         open={deleteModal.open}
@@ -460,6 +515,13 @@ export default function Dataset() {
           });
         }}
         data={deleteModal.data as Dataset}
+        pagination={pagination}
+        queryParams={{
+          search: queryParams.get("q"),
+          filter: {
+            status: queryParams.get("status"),
+          },
+        }}
       />
     </>
   );

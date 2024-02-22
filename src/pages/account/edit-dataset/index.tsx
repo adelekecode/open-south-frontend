@@ -8,7 +8,7 @@ import Button from "~/components/button";
 import DashboardLoader from "~/components/loader/dashboard-loader";
 import NotFound from "~/pages/404";
 import { useUserDatasetDetails } from "~/queries/dataset";
-import { useEditDataset } from "~/mutations/dataset";
+import { useAddDatasetTags, useEditDataset, useRemoveDatasetTags } from "~/mutations/dataset";
 import Success from "./success";
 import SelectField from "~/components/fields/select-field";
 import DatePickerField from "~/components/fields/date-picker-field";
@@ -51,6 +51,8 @@ export default function EditDataset() {
   const { data: categories, isLoading: isLoadingCategories } = usePublicCategories();
 
   const editDataset = useEditDataset();
+  const addDatasetTags = useAddDatasetTags();
+  const removeDatasetTags = useRemoveDatasetTags();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -75,18 +77,13 @@ export default function EditDataset() {
   }
 
   const arr = data.temporal_coverage?.split(",");
+
   const temporalCoverage = {
-    from: arr?.[0],
-    to: arr?.[1],
+    from: dayjs(arr?.[0], "DD-MM-YYYY"),
+    to: dayjs(arr?.[1], "DD-MM-YYYY"),
   };
 
-  // console.log(
-  //   data,
-  //   temporalCoverage,
-  //   category,
-  //   dayjs(temporalCoverage.from).format("MM-DD-YYYY"),
-  //   data.tags_data.map((item) => item.name)
-  // );
+  const tagsData = data.tags_data ? data.tags_data.map((item) => item.name) : [];
 
   return (
     <>
@@ -112,32 +109,66 @@ export default function EditDataset() {
                 validateOnBlur={false}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => {
-                  if (!chosenCategoryObj) return;
-
                   const newValues: Omit<typeof values, "category"> & {
                     category?: string;
-                  } = structuredClone(values);
+                  } = values;
 
                   delete newValues.category;
 
-                  const { tags, spatialCoverage, ...rest } = newValues;
+                  const {
+                    tags,
+                    spatialCoverage,
+                    start,
+                    end,
+                    updateFrequency,
+                    ...rest
+                  }: Omit<typeof values, "category"> = newValues;
 
-                  console.error(tags);
+                  const reqData: typeof rest & {
+                    coordinates?: string;
+                    update_frequency: string;
+                    temporal_coverage?: string;
+                    spatial_coverage: string;
+                    category?: Category;
+                  } = {
+                    ...rest,
+                    spatial_coverage: spatialCoverage,
+                    update_frequency: updateFrequency,
+                    temporal_coverage: `${start.format("DD-MM-YYYY")},${end.format("DD-MM-YYYY")}`,
+                  };
 
-                  const coordinates = await getCountryCoordinates(spatialCoverage);
+                  if (chosenCategoryObj) {
+                    reqData.category = chosenCategoryObj || undefined;
+                  }
+
+                  if (!(data.spatial_coverage === values.spatialCoverage)) {
+                    reqData.coordinates = (await getCountryCoordinates(spatialCoverage)).toString();
+                  }
 
                   const datasetResponse = await editDataset.mutateAsync({
                     id: id || "",
-                    data: {
-                      ...rest,
-                      spatialCoverage,
-                      coordinates,
-                      category: chosenCategoryObj,
-                    },
+                    data: reqData,
                   });
 
                   if (datasetResponse) {
-                    setFormCompleted(true);
+                    const tagsToBeRemoved = tagsData.filter((item) => !tags.includes(item));
+                    const tagsToBeAdded = tags.filter((item) => !tagsData.includes(item));
+
+                    if (tagsToBeAdded.length > 0) {
+                      await addDatasetTags.mutateAsync({
+                        datasetId: datasetResponse.id,
+                        tags: tagsToBeAdded,
+                      });
+                    }
+
+                    if (tagsToBeRemoved.length > 0) {
+                      await removeDatasetTags.mutateAsync({
+                        datasetId: datasetResponse.id,
+                        tags: tagsToBeRemoved,
+                      });
+                    }
+
+                    return setFormCompleted(true);
                   }
                 }}
               >
@@ -200,6 +231,9 @@ export default function EditDataset() {
                             labelProps={{
                               className: "!font-medium",
                             }}
+                            onChange={(tags) => {
+                              setFieldValue("tags", Array.from(new Set(tags)));
+                            }}
                           />
                         </div>
                         <div className="w-full flex flex-col">
@@ -216,7 +250,7 @@ export default function EditDataset() {
                               format="DD-MM-YYYY"
                               required
                               disableFuture
-                              value={dayjs(values.start) as any}
+                              value={values.start as any}
                               onChange={(date) =>
                                 setFieldValue("start", dayjs(date).format("DD-MM-YYYY"))
                               }
@@ -227,7 +261,7 @@ export default function EditDataset() {
                               name="end"
                               format="DD-MM-YYYY"
                               required
-                              value={dayjs(values.end) as any}
+                              value={values.end as any}
                               onChange={(date) =>
                                 setFieldValue("end", dayjs(date).format("DD-MM-YYYY"))
                               }

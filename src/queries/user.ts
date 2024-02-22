@@ -10,12 +10,10 @@ export function useCurrentUser(
 export function useGetAllUsers(
   search = "",
   filterBy: {
-    isActive: string | null;
-  } = {
-    isActive: null,
+    isActive: string;
   },
-  pagination: { pageSize: number; page: number },
-  options?: UseQueryOptions<PaginationData<CurrentUser[]>>
+  pagination: Pagination,
+  options?: UseQueryOptions<PaginatedResponse<CurrentUser[]>>
 ) {
   const { isActive } = filterBy;
   const { page, pageSize } = pagination;
@@ -28,7 +26,7 @@ export function useGetAllUsers(
     status = "inactive";
   }
 
-  return useQuery<PaginationData<CurrentUser[]>>(
+  return useQuery<PaginatedResponse<CurrentUser[]>>(
     [`/admin/users/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`],
     options
   );

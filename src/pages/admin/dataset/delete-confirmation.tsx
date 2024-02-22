@@ -7,14 +7,23 @@ type DeleteConfirmationModalProps = {
   open: boolean;
   onClose: () => void;
   data: Dataset;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
 export default function DeleteConfirmationModal({
   open,
   onClose,
   data,
+  pagination,
+  queryParams,
 }: DeleteConfirmationModalProps) {
-  const changeDatasetStatus = useChangeDatasetStatus();
+  const changeDatasetStatus = useChangeDatasetStatus(pagination, queryParams);
 
   return (
     <Modal

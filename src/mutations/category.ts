@@ -2,15 +2,11 @@ import { isAxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
-import useAdminTableStore from "~/store/admin-table";
-import { useSearchParams } from "react-router-dom";
 
-export function useCreateCategory() {
+export function useCreateCategory(search: string, pagination: Pagination) {
   const queryClient = useQueryClient();
-  const { dataset } = useAdminTableStore();
 
-  const { pagination, search } = dataset;
-  const { pageSize, page } = pagination;
+  const { page, pageSize } = pagination;
 
   return useMutation(
     async (data: Record<"name" | "description", string> & { image: File }) => {
@@ -41,11 +37,8 @@ export function useCreateCategory() {
   );
 }
 
-export function useEditCategory(pagination: { page: number; pageSize: number }) {
+export function useEditCategory(search: string, pagination: { page: number; pageSize: number }) {
   const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
-
-  const search = searchParams.get("q") || "";
 
   const { pageSize, page } = pagination;
 
@@ -84,11 +77,8 @@ export function useEditCategory(pagination: { page: number; pageSize: number }) 
   );
 }
 
-export function useDeleteCategory(pagination: { page: number; pageSize: number }) {
+export function useDeleteCategory(search: string, pagination: { page: number; pageSize: number }) {
   const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
-
-  const search = searchParams.get("q") || "";
 
   const { pageSize, page } = pagination;
 

@@ -207,14 +207,6 @@ export default function Category() {
               onPaginationModelChange={({ page, pageSize }, { reason }) => {
                 if (!reason) return;
 
-                // setCategoryTable({
-                //   ...categoryTable,
-                //   pagination: {
-                //     page,
-                //     pageSize,
-                //   },
-                // });
-
                 setPagination({
                   page,
                   pageSize,

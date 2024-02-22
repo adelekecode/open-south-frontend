@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 export function useAdminCategories(search = "", pagination: { pageSize: number; page: number }) {
   const { pageSize, page } = pagination;
 
-  return useQuery<PaginationData<Category[]>>([
+  return useQuery<PaginatedResponse<Category[]>>([
     `/admin/categories/?search=${search}&limit=${pageSize}&offset=${page * pageSize}`,
   ]);
 }

@@ -1,10 +1,32 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import useAdminTableStore from "~/store/admin-table";
 import { axiosPrivate } from "~/utils/api";
 import { notifyError, notifySuccess } from "~/utils/toast";
 
-export function useDeleteUser() {
+type QueryParams = {
+  search: string;
+  filter: {
+    isActive: string;
+  };
+};
+
+export function useDeleteUser(pagination: Pagination, queryParams: QueryParams) {
+  const queryClient = useQueryClient();
+
+  const { pageSize, page } = pagination;
+  const {
+    search,
+    filter: { isActive },
+  } = queryParams;
+
+  let status = "";
+
+  if (isActive === "true") {
+    status = "active";
+  } else if (isActive === "false") {
+    status = "inactive";
+  }
+
   return useMutation(
     async (id: string) => {
       const { data: response } = await axiosPrivate.delete(`/auth/users/${id}/`);
@@ -13,6 +35,10 @@ export function useDeleteUser() {
     },
     {
       onSuccess() {
+        queryClient.invalidateQueries([
+          `/admin/users/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`,
+        ]);
+
         notifySuccess("User successfully deleted");
       },
       onError(error) {
@@ -30,13 +56,22 @@ export function useDeleteUser() {
   );
 }
 
-export function useChangeUserStatus() {
+export function useChangeUserStatus(pagination: Pagination, queryParams: QueryParams) {
   const queryClient = useQueryClient();
-  const { user } = useAdminTableStore();
 
-  const { pagination, filterBy, search } = user;
-  const { isActive } = filterBy;
-  const { page, pageSize } = pagination;
+  const { pageSize, page } = pagination;
+  const {
+    search,
+    filter: { isActive },
+  } = queryParams;
+
+  let status = "";
+
+  if (isActive === "true") {
+    status = "active";
+  } else if (isActive === "false") {
+    status = "inactive";
+  }
 
   return useMutation(
     async ({ id, action }: { id: string; action: "delete" | "block" | "unblock" }) => {
@@ -49,7 +84,7 @@ export function useChangeUserStatus() {
     {
       onSuccess(data) {
         queryClient.invalidateQueries([
-          `/admin/users/?search=${search}&active=${isActive || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+          `/admin/users/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`,
         ]);
 
         if (typeof data.message === "string") {

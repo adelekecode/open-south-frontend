@@ -7,10 +7,23 @@ type UnblockModalProps = {
   open: boolean;
   onClose: () => void;
   data: Dataset;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
-export default function UnblockModal({ open, onClose, data }: UnblockModalProps) {
-  const changeDatasetStatus = useChangeDatasetStatus();
+export default function UnblockModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: UnblockModalProps) {
+  const changeDatasetStatus = useChangeDatasetStatus(pagination, queryParams);
 
   return (
     <Modal

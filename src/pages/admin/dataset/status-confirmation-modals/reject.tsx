@@ -10,6 +10,13 @@ type RejectModalProps = {
   open: boolean;
   onClose: () => void;
   data: Dataset;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
 const validationSchema = Yup.object({
@@ -19,8 +26,14 @@ const validationSchema = Yup.object({
     .min(3, "This field must contain atleast 3 characters"),
 });
 
-export default function RejectModal({ open, onClose, data }: RejectModalProps) {
-  const changeDatasetStatus = useChangeDatasetStatus();
+export default function RejectModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: RejectModalProps) {
+  const changeDatasetStatus = useChangeDatasetStatus(pagination, queryParams);
 
   return (
     <Modal

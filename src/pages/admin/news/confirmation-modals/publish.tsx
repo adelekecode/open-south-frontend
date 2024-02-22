@@ -7,10 +7,23 @@ type PublishModalProps = {
   open: boolean;
   onClose: () => void;
   data: News;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
-export default function PublishModal({ open, onClose, data }: PublishModalProps) {
-  const changeNewsStatus = useChangeNewsStatus();
+export default function PublishModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: PublishModalProps) {
+  const changeNewsStatus = useChangeNewsStatus(pagination, queryParams);
 
   return (
     <Modal

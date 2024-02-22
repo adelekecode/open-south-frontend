@@ -199,8 +199,17 @@ export function useRequestToJoinOrganization() {
   );
 }
 
-export function useOrganizationRequestAction(orgId: string) {
+export function useOrganizationRequestAction(
+  orgId: string,
+  search = "",
+  pagination: {
+    page: number;
+    pageSize: number;
+  }
+) {
   const queryClient = useQueryClient();
+
+  const { page, pageSize } = pagination;
 
   return useMutation(
     async ({ id, actions }: { id: string; actions: "reject" | "approve" }) => {
@@ -216,7 +225,56 @@ export function useOrganizationRequestAction(orgId: string) {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
 
+        queryClient.invalidateQueries([
+          `/organisations/users/${orgId}/?search=${search}&limit=${pageSize}&offset=${page * pageSize}`,
+        ]);
+
         return queryClient.invalidateQueries([`/admin/organisation_requests/?pk=${orgId}`]);
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export function useRemoveUserFromOrganization(
+  orgId: string,
+  search = "",
+  pagination: {
+    page: number;
+    pageSize: number;
+  }
+) {
+  const queryClient = useQueryClient();
+
+  const { page, pageSize } = pagination;
+
+  return useMutation(
+    async (userId: string) => {
+      const { data: response } = await axiosPrivate.delete(
+        `/organisations/${orgId}/users/${userId}/`
+      );
+
+      return response;
+    },
+    {
+      onSuccess(data) {
+        if (typeof data.message === "string") {
+          notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
+        }
+
+        return queryClient.invalidateQueries([
+          `/organisations/users/${orgId}/?search=${search}&limit=${pageSize}&offset=${page * pageSize}`,
+        ]);
       },
       onError(error) {
         if (isAxiosError(error)) {

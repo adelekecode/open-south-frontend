@@ -7,10 +7,23 @@ type BlockModalProps = {
   open: boolean;
   onClose: () => void;
   data: CurrentUser;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      isActive: string;
+    };
+  };
 };
 
-export default function BlockModal({ open, onClose, data }: BlockModalProps) {
-  const changeUserStatus = useChangeUserStatus();
+export default function BlockModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: BlockModalProps) {
+  const changeUserStatus = useChangeUserStatus(pagination, queryParams);
 
   return (
     <Modal

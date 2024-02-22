@@ -1,41 +1,31 @@
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { MdDeleteOutline } from "react-icons/md";
-import Button from "~/components/button";
 import Modal from "~/components/modal";
-import { useDeleteCategory } from "~/mutations/category";
+import Button from "~/components/button";
+import { useRemoveUserFromOrganization } from "~/mutations/organization";
 
-type DeleteConfirmationProps = {
-  modal: CategoyModal;
-  setModal: (obj: CategoyModal) => void;
-  pagination: {
-    page: number;
-    pageSize: number;
-  };
+type RemoveModalProps = {
+  open: boolean;
+  onClose: () => void;
+  data: CurrentUser;
+  pagination: Pagination;
 };
 
-export default function DeleteConfirmation({
-  modal,
-  setModal,
-  pagination,
-}: DeleteConfirmationProps) {
+export default function RemoveModal({ open, onClose, data, pagination }: RemoveModalProps) {
+  const { id } = useParams();
+
   const [searchParams] = useSearchParams();
-  const search = searchParams.get("q") || "";
 
-  const { data, state } = modal;
-
-  function onClose() {
-    setModal({
-      state: null,
-      data: null,
-    });
-  }
-
-  const deleteCategory = useDeleteCategory(search, pagination);
+  const removeUserFromOrganization = useRemoveUserFromOrganization(
+    id || "",
+    searchParams.get("q") || "",
+    pagination
+  );
 
   return (
     <Modal
       muiModal={{
-        open: state === "delete",
+        open,
         onClose,
       }}
       innerContainer={{
@@ -47,16 +37,16 @@ export default function DeleteConfirmation({
           <MdDeleteOutline className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3rem] !font-extralight" />
         </span>
         <h1 className="text-base text-center largeMobile:text-sm">
-          Are you sure you want to delete this category?
+          Are you sure you want to remove this user from this organization?
         </h1>
         <div className="mt-10 flex gap-6 justify-between h-10">
           <Button color="error" onClick={onClose} className="h-full">
             Cancel
           </Button>
           <Button
-            loading={deleteCategory.isLoading}
+            loading={removeUserFromOrganization.isLoading}
             onClick={async () => {
-              await deleteCategory.mutateAsync(data?.id || "");
+              await removeUserFromOrganization.mutateAsync(data.id);
 
               onClose();
             }}

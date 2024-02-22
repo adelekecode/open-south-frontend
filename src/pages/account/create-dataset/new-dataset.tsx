@@ -8,7 +8,7 @@ import FormField from "~/components/fields/form-field";
 import SelectField from "~/components/fields/select-field";
 import TextEditorField from "~/components/fields/text-editor-field";
 import { useCreateDataset } from "~/mutations/dataset";
-import { useCreateDatasetTags } from "~/mutations/dataset";
+import { useAddDatasetTags } from "~/mutations/dataset";
 import UpdateFrequencyData from "~/utils/data/update-frequency.json";
 import LicenseData from "~/utils/data/license.json";
 import spatialCoverageData from "~/utils/data/spatial-coverage.json";
@@ -47,7 +47,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
   const { data: categories, isLoading: isLoadingCategories } = usePublicCategories();
 
   const createDataset = useCreateDataset();
-  const createDatasetTags = useCreateDatasetTags();
+  const addDatasetTags = useAddDatasetTags();
 
   return (
     <Formik
@@ -88,7 +88,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
         if (datasetResponse) {
           setDataset({ ...values, id: datasetResponse.id || "" });
 
-          const tagsResponse = await createDatasetTags.mutateAsync({
+          const tagsResponse = await addDatasetTags.mutateAsync({
             datasetId: datasetResponse.id,
             tags,
           });
@@ -160,6 +160,9 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                   label="Tags"
                   labelProps={{
                     className: "!font-medium",
+                  }}
+                  onChange={(tags) => {
+                    setFieldValue("tags", Array.from(new Set(tags)));
                   }}
                 />
               </div>

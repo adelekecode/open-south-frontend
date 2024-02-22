@@ -128,7 +128,7 @@ type NewsModal = {
   data: News | null;
 };
 
-type PaginationData<T> = {
+type PaginatedResponse<T> = {
   count: number;
   next: boolean | null;
   previous: boolean | null;
@@ -144,4 +144,13 @@ type OrganizationRequest = {
   created_at: string;
   organisation: string;
   user: string;
+  user_data: {
+    first_name: string;
+    last_name: string;
+    role: string;
+    email: string;
+    image_url: string;
+  };
 };
+
+type Pagination = { pageSize: number; page: number };

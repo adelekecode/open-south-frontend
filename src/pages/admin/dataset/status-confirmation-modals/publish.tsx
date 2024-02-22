@@ -7,10 +7,23 @@ type PublishModalProps = {
   open: boolean;
   onClose: () => void;
   data: Dataset;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
-export default function PublishModal({ open, onClose, data }: PublishModalProps) {
-  const changeDatasetStatus = useChangeDatasetStatus();
+export default function PublishModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: PublishModalProps) {
+  const changeDatasetStatus = useChangeDatasetStatus(pagination, queryParams);
 
   return (
     <Modal

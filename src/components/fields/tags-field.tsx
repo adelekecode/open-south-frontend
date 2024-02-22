@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import ReactTagsInput, { ReactTagsInputProps } from "react-tagsinput";
 import "react-tagsinput/react-tagsinput.css";
 
-type TagsFieldProps = Omit<ReactTagsInputProps, "value" | "onChange"> &
+type TagsFieldProps = Omit<ReactTagsInputProps, "value"> &
   FieldConfig & {
     label?: string;
     required?: boolean;
@@ -14,7 +14,7 @@ type TagsFieldProps = Omit<ReactTagsInputProps, "value" | "onChange"> &
 export default function TagsField({ label, className, labelProps, ...props }: TagsFieldProps) {
   return (
     <Field name={props.name}>
-      {({ field, form }: FieldProps) => (
+      {({ field }: FieldProps) => (
         <div className="w-full">
           {label && (
             <div className="w-full flex justify-between items-center">
@@ -36,7 +36,6 @@ export default function TagsField({ label, className, labelProps, ...props }: Ta
             {...field}
             {...props}
             value={field.value || []}
-            onChange={(tags) => form.setFieldValue(field.name, tags)}
           />
           <ErrorMessage
             name={props.name}

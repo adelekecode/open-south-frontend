@@ -10,7 +10,7 @@ import { usePublicOrganizations } from "~/queries/organizations";
 import NoData from "~/assets/illustrations/no-data.png";
 import useDebounce from "~/hooks/debounce";
 
-type SortByValue = "" | "most-datasets" | "most-recent";
+type SortByValue = "" | "most-recent";
 
 export default function Organization() {
   const navigate = useNavigate();
@@ -109,8 +109,7 @@ export default function Organization() {
               }}
             >
               <MenuItem value="">Relevance</MenuItem>
-              <MenuItem value="most-datasets">The Most Datasets</MenuItem>
-              <MenuItem value="most-recent">The Most Recent</MenuItem>
+              <MenuItem value="most-recent">Most Recent</MenuItem>
             </SelectInput>
           </div>
         </header>

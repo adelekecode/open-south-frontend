@@ -14,6 +14,13 @@ import TextEditorField from "~/components/fields/text-editor-field";
 type CreateProps = {
   modal: NewsModal;
   setModal: (obj: NewsModal) => void;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
 const validationSchema = Yup.object({
@@ -27,14 +34,14 @@ const validationSchema = Yup.object({
     .min(3, "Description must be atleast 3 characters"),
 });
 
-export default function Create({ modal, setModal }: CreateProps) {
+export default function Create({ modal, setModal, pagination, queryParams }: CreateProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [formCompleted, setFormCompleted] = useState(false);
   const [image, setImage] = useState<File | null>(null);
 
-  const createNews = useCreateNews();
-  const editNews = useEditNews();
-  const changeNewsStatus = useChangeNewsStatus();
+  const createNews = useCreateNews(pagination, queryParams);
+  const editNews = useEditNews(pagination, queryParams);
+  const changeNewsStatus = useChangeNewsStatus(pagination, queryParams);
 
   function onClose() {
     setFormCompleted(false);

@@ -2,7 +2,13 @@ import { isAxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
-import useAdminTableStore from "~/store/admin-table";
+
+type QueryParams = {
+  search: string;
+  filter: {
+    status: string;
+  };
+};
 
 export function useCreateDataset() {
   return useMutation(
@@ -65,7 +71,7 @@ export function useCreateDataset() {
   );
 }
 
-export function useCreateDatasetTags() {
+export function useAddDatasetTags() {
   return useMutation(
     async ({ datasetId, tags }: { datasetId: string; tags: string[] }) => {
       const { data: response } = await axiosPrivate.post(`/datasets/tags/${datasetId}/`, {
@@ -78,7 +84,34 @@ export function useCreateDatasetTags() {
       onError(error) {
         if (isAxiosError(error)) {
           if (error.response?.status === 400) {
-            notifyError("Error occured while creating tags");
+            notifyError("Error occured while adding tags");
+          } else {
+            if (typeof error === "string") {
+              notifyError(error);
+            }
+          }
+        }
+      },
+    }
+  );
+}
+
+export function useRemoveDatasetTags() {
+  return useMutation(
+    async ({ datasetId, tags }: { datasetId: string; tags: string[] }) => {
+      const { data: response } = await axiosPrivate.delete(`/datasets/tags/${datasetId}/`, {
+        data: {
+          keywords: tags,
+        },
+      });
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Error occured while removing tags");
           } else {
             if (typeof error === "string") {
               notifyError(error);
@@ -94,29 +127,29 @@ export function useEditDataset() {
   return useMutation(
     async ({
       id,
-      data,
+      data: { category, ...rest },
     }: {
       id: string;
-      data: Record<
-        | "title"
-        | "description"
-        | "license"
-        | "updateFrequency"
-        | "spatialCoverage"
-        | "start"
-        | "end",
-        string
-      > & { category: Category; coordinates: number[] };
+      data: {
+        title: string;
+        description: string;
+        license: string;
+        category?: Category;
+        coordinates?: string;
+        temporal_coverage?: string;
+        update_frequency: string;
+        spatial_coverage: string;
+      };
     }) => {
-      const { category, spatialCoverage, updateFrequency, start, end, coordinates, ...rest } = data;
-      const { data: response } = await axiosPrivate.patch(`/user/datasets/${id}/`, {
+      const obj: typeof rest & { category?: string } = {
         ...rest,
-        category: category.id,
-        update_frequency: updateFrequency,
-        temporal_coverage: `${start},${end}`,
-        spatial_coverage: spatialCoverage,
-        coordinates: coordinates.toString(),
-      });
+      };
+
+      if (category) {
+        obj.category = category.id;
+      }
+
+      const { data: response } = await axiosPrivate.patch(`/user/datasets/${id}/`, obj);
 
       return response;
     },
@@ -252,13 +285,14 @@ export function useDatasetView() {
   );
 }
 
-export function useChangeDatasetStatus() {
+export function useChangeDatasetStatus(pagination: Pagination, queryParams: QueryParams) {
   const queryClient = useQueryClient();
-  const { dataset } = useAdminTableStore();
 
-  const { pagination, filterBy, search } = dataset;
   const { pageSize, page } = pagination;
-  const { status } = filterBy;
+  const {
+    search,
+    filter: { status },
+  } = queryParams;
 
   return useMutation(
     async ({

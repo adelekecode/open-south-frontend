@@ -7,10 +7,23 @@ type DeleteModalProps = {
   open: boolean;
   onClose: () => void;
   data: CurrentUser;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      isActive: string;
+    };
+  };
 };
 
-export default function DeleteModal({ open, onClose, data }: DeleteModalProps) {
-  const changeUserStatus = useChangeUserStatus();
+export default function DeleteModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: DeleteModalProps) {
+  const changeUserStatus = useChangeUserStatus(pagination, queryParams);
 
   return (
     <Modal

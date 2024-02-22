@@ -7,10 +7,23 @@ type DeleteModalProps = {
   open: boolean;
   onClose: () => void;
   data: News;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      status: string;
+    };
+  };
 };
 
-export default function DeleteModal({ open, onClose, data }: DeleteModalProps) {
-  const deleteNews = useDeleteNews();
+export default function DeleteModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: DeleteModalProps) {
+  const deleteNews = useDeleteNews(pagination, queryParams);
 
   return (
     <Modal
