@@ -15,7 +15,7 @@ export default function Success({ data }: SuccessProps) {
         <figure className="max-w-[9rem]">
           <img src={SuccessIllustration} alt="Success illustrion" />
         </figure>
-        <p className="text-sm">You have successfully updated {`${data.title}`}</p>
+        <p className="text-sm">You have successfully updated - {`${data.title}`}</p>
       </div>
       <Button
         onClick={() => {
@@ -23,7 +23,7 @@ export default function Success({ data }: SuccessProps) {
         }}
         className="w-fit !py-2"
       >
-        View datasets
+        View dataset
       </Button>
     </div>
   );

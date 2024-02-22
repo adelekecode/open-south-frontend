@@ -111,7 +111,7 @@ export default function EditDataset() {
                 onSubmit={async (values) => {
                   const newValues: Omit<typeof values, "category"> & {
                     category?: string;
-                  } = structuredClone(values);
+                  } = values;
 
                   delete newValues.category;
 
@@ -134,7 +134,7 @@ export default function EditDataset() {
                     ...rest,
                     spatial_coverage: spatialCoverage,
                     update_frequency: updateFrequency,
-                    temporal_coverage: `${start},${end}`,
+                    temporal_coverage: `${start.format("DD-MM-YYYY")},${end.format("DD-MM-YYYY")}`,
                   };
 
                   if (chosenCategoryObj) {
@@ -250,7 +250,7 @@ export default function EditDataset() {
                               format="DD-MM-YYYY"
                               required
                               disableFuture
-                              value={dayjs(values.start) as any}
+                              value={values.start as any}
                               onChange={(date) =>
                                 setFieldValue("start", dayjs(date).format("DD-MM-YYYY"))
                               }
@@ -261,7 +261,7 @@ export default function EditDataset() {
                               name="end"
                               format="DD-MM-YYYY"
                               required
-                              value={dayjs(values.end) as any}
+                              value={values.end as any}
                               onChange={(date) =>
                                 setFieldValue("end", dayjs(date).format("DD-MM-YYYY"))
                               }
