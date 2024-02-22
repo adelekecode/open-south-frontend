@@ -61,7 +61,7 @@ export default function Dataset() {
                 className="grid grid-cols-[80px,1fr] tabletAndBelow:grid-cols-[70px,1fr] gap-4 border-[1.5px] border-info-100 p-4 hover:bg-info-50"
               >
                 {publisher_data?.image_url || publisher_data?.logo_url ? (
-                  <figure className="border border-zinc-300 w-full aspect-square bg-white">
+                  <figure className="border border-zinc-300 aspect-square w-20 tabletAndBelow:w-[70px] bg-white">
                     <img
                       className="w-full h-full object-contain"
                       src={publisher_data.image_url || publisher_data.logo_url || ""}
@@ -69,7 +69,7 @@ export default function Dataset() {
                     />
                   </figure>
                 ) : (
-                  <Avatar variant="square" className="!w-[5rem] !h-[5rem]">
+                  <Avatar variant="square" className="!size-20">
                     <IoPerson className={`text-3xl`} />
                   </Avatar>
                 )}
