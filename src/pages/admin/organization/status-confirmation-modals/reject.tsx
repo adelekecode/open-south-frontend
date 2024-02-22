@@ -6,11 +6,7 @@ import TextEditorField from "~/components/fields/text-editor-field";
 import Modal from "~/components/modal";
 import { useChangeOrganizationStatus } from "~/mutations/organization";
 
-type RejectModalProps = {
-  open: boolean;
-  onClose: () => void;
-  data: Organization;
-};
+type RejectModalProps = OrganizationModalProps;
 
 const validationSchema = Yup.object({
   remark: Yup.string()
@@ -19,8 +15,14 @@ const validationSchema = Yup.object({
     .min(3, "This field must contain atleast 3 characters"),
 });
 
-export default function RejectModal({ open, onClose, data }: RejectModalProps) {
-  const changeOrganizationStatus = useChangeOrganizationStatus();
+export default function RejectModal({
+  open,
+  onClose,
+  data,
+  queryParams,
+  pagination,
+}: RejectModalProps) {
+  const changeOrganizationStatus = useChangeOrganizationStatus(pagination, queryParams);
 
   return (
     <Modal

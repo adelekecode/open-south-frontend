@@ -11,15 +11,11 @@ export function useUserOrganizationDetails(slug: string, options?: UseQueryOptio
 export function useAdminOrganizations(
   search = "",
   filterBy: {
-    status: string | null;
-    isVerified: string | null;
-    isActive: string | null;
-  } = {
-    status: null,
-    isActive: null,
-    isVerified: null,
+    status: string;
+    isVerified: string;
+    isActive: string;
   },
-  pagination: { pageSize: number; page: number },
+  pagination: Pagination,
   options?: UseQueryOptions<PaginatedResponse<Organization[]>>
 ) {
   const { status, isVerified, isActive } = filterBy;
@@ -41,10 +37,7 @@ export function useAdminOrganizationDetails(id: string, options?: UseQueryOption
 export function useAdminOrganizationUsers(
   orgId: string,
   search = "",
-  pagination: {
-    pageSize: number;
-    page: number;
-  },
+  pagination: Pagination,
   options?: UseQueryOptions<PaginatedResponse<CurrentUser[]>>
 ) {
   const { page, pageSize } = pagination;
@@ -74,7 +67,7 @@ export function useAdminOrganizationsIndicators() {
 export function usePublicOrganizations(
   search = "",
   sortBy: "" | "most-datasets" | "most-recent" = "",
-  pagination: { pageSize: number; page: number } = { pageSize: 20, page: 1 }
+  pagination: Pagination = { pageSize: 20, page: 1 }
 ) {
   const { pageSize, page } = pagination;
 

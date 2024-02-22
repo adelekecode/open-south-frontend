@@ -3,14 +3,16 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import { useChangeOrganizationStatus } from "~/mutations/organization";
 
-type UnblockModalProps = {
-  open: boolean;
-  onClose: () => void;
-  data: Organization;
-};
+type UnblockModalProps = OrganizationModalProps;
 
-export default function UnblockModal({ open, onClose, data }: UnblockModalProps) {
-  const changeOrganizationStatus = useChangeOrganizationStatus();
+export default function UnblockModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: UnblockModalProps) {
+  const changeOrganizationStatus = useChangeOrganizationStatus(pagination, queryParams);
 
   return (
     <Modal

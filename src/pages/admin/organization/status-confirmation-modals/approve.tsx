@@ -3,14 +3,16 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import { useChangeOrganizationStatus } from "~/mutations/organization";
 
-type ApproveModalProps = {
-  open: boolean;
-  onClose: () => void;
-  data: Organization;
-};
+type ApproveModalProps = OrganizationModalProps;
 
-export default function ApproveModal({ open, onClose, data }: ApproveModalProps) {
-  const changeOrganizationStatus = useChangeOrganizationStatus();
+export default function ApproveModal({
+  open,
+  onClose,
+  data,
+  pagination,
+  queryParams,
+}: ApproveModalProps) {
+  const changeOrganizationStatus = useChangeOrganizationStatus(pagination, queryParams);
 
   return (
     <Modal

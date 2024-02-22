@@ -154,3 +154,18 @@ type OrganizationRequest = {
 };
 
 type Pagination = { pageSize: number; page: number };
+
+type OrganizationModalProps = {
+  open: boolean;
+  onClose: () => void;
+  data: Organization;
+  pagination: Pagination;
+  queryParams: {
+    search: string;
+    filter: {
+      isActive: string;
+      isVerified: string;
+      status: string;
+    };
+  };
+};

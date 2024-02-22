@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Avatar,
   ClickAwayListener,
@@ -23,7 +23,6 @@ import RejectConfirmationModal from "./status-confirmation-modals/reject";
 import BlockConfirmationModal from "./active-confirmation-modals/block";
 import UnblockConfirmationModal from "./active-confirmation-modals/unblock";
 import DeleteConfirmationModal from "./delete-confirmation";
-import useAdminTableStore from "~/store/admin-table";
 import useDebounce from "~/hooks/debounce";
 
 type Modal = {
@@ -31,12 +30,40 @@ type Modal = {
   data: Organization | null;
 };
 
+type QueryKey = "q" | "is-active" | "is-verified" | "status";
+
 export default function Organization() {
   const navigate = useNavigate();
 
-  const { organization: organizationTable, setOrganization: setOrganizationTable } =
-    useAdminTableStore();
-  const { pagination, filterBy, search } = organizationTable;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const queryParams = {
+    get: (key: QueryKey) => searchParams.get(key) || "",
+    delete: (key: QueryKey) => {
+      setSearchParams((params) => {
+        params.delete(key);
+
+        return params;
+      });
+    },
+    set: (key: QueryKey, value: string) => {
+      setSearchParams(
+        (params) => {
+          params.set(key, value);
+
+          return params;
+        },
+        {
+          replace: true,
+        }
+      );
+    },
+  };
+
+  const search = queryParams.get("q");
+  const isVerified = queryParams.get("is-verified");
+  const isActive = queryParams.get("is-active");
+  const status = queryParams.get("status");
 
   const [statusObj, setStatusObj] = useState<{ [key: string]: Organization["status"] }>({});
   const [approveModal, setApproveModal] = useState<Modal>({
@@ -60,14 +87,31 @@ export default function Organization() {
     data: null,
   });
   const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
+  const [pagination, setPagination] = useState({
+    page: 0,
+    pageSize: 10,
+  });
 
   function dropdownDisplay(id: string) {
     return Boolean(anchorElObj[id]);
   }
 
+  const paramsProp = {
+    search: queryParams.get("q"),
+    filter: {
+      isActive: queryParams.get("is-active"),
+      isVerified: queryParams.get("is-verified"),
+      status: queryParams.get("status"),
+    },
+  };
+
   const { data, isLoading } = useAdminOrganizations(
     useDebounce(search).trim(),
-    filterBy,
+    {
+      isVerified,
+      isActive,
+      status,
+    },
     pagination
   );
   const { data: indicatorData } = useAdminOrganizationsIndicators();
@@ -442,10 +486,13 @@ export default function Organization() {
                   placeholder="Search for name..."
                   value={search}
                   onChange={(e) => {
-                    setOrganizationTable({
-                      ...organizationTable,
-                      search: e.target.value,
-                    });
+                    const value = e.target.value;
+
+                    if (!value) {
+                      return queryParams.delete("q");
+                    }
+
+                    queryParams.set("q", value);
                   }}
                   className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
                 />
@@ -455,17 +502,15 @@ export default function Organization() {
               <div className="flex w-full items-center justify-end gap-4 h-10">
                 <Select
                   className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                  value={filterBy.status || ""}
+                  value={status || ""}
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setOrganizationTable({
-                      ...organizationTable,
-                      filterBy: {
-                        ...filterBy,
-                        status: chosenValue as typeof filterBy.status,
-                      },
-                    });
+                    if (!chosenValue) {
+                      return queryParams.delete("status");
+                    }
+
+                    queryParams.set("status", chosenValue);
                   }}
                   displayEmpty
                 >
@@ -478,17 +523,15 @@ export default function Organization() {
                 </Select>
                 <Select
                   className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                  value={filterBy.isVerified || ""}
+                  value={isVerified || ""}
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setOrganizationTable({
-                      ...organizationTable,
-                      filterBy: {
-                        ...filterBy,
-                        isVerified: chosenValue as typeof filterBy.isVerified,
-                      },
-                    });
+                    if (!chosenValue) {
+                      return queryParams.delete("is-verified");
+                    }
+
+                    queryParams.set("is-verified", chosenValue);
                   }}
                   displayEmpty
                 >
@@ -500,17 +543,15 @@ export default function Organization() {
                 </Select>
                 <Select
                   className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                  value={filterBy.isActive || ""}
+                  value={isActive || ""}
                   onChange={async (e) => {
                     const chosenValue = e.target.value;
 
-                    setOrganizationTable({
-                      ...organizationTable,
-                      filterBy: {
-                        ...filterBy,
-                        isActive: chosenValue as typeof filterBy.isActive,
-                      },
-                    });
+                    if (!chosenValue) {
+                      return queryParams.delete("is-active");
+                    }
+
+                    queryParams.set("is-active", chosenValue);
                   }}
                   displayEmpty
                 >
@@ -538,12 +579,9 @@ export default function Organization() {
               onPaginationModelChange={({ page, pageSize }, { reason }) => {
                 if (!reason) return;
 
-                setOrganizationTable({
-                  ...organizationTable,
-                  pagination: {
-                    page,
-                    pageSize,
-                  },
+                setPagination({
+                  page,
+                  pageSize,
                 });
               }}
               paginationMode="server"
@@ -560,6 +598,8 @@ export default function Organization() {
           });
         }}
         data={approveModal.data as Organization}
+        pagination={pagination}
+        queryParams={paramsProp}
       />
       <RejectConfirmationModal
         open={rejectModal.open}
@@ -570,6 +610,8 @@ export default function Organization() {
           });
         }}
         data={rejectModal.data as Organization}
+        pagination={pagination}
+        queryParams={paramsProp}
       />
       <BlockConfirmationModal
         open={blockModal.open}
@@ -580,6 +622,8 @@ export default function Organization() {
           });
         }}
         data={blockModal.data as Organization}
+        pagination={pagination}
+        queryParams={paramsProp}
       />
       <UnblockConfirmationModal
         open={unblockModal.open}
@@ -590,6 +634,8 @@ export default function Organization() {
           });
         }}
         data={unblockModal.data as Organization}
+        pagination={pagination}
+        queryParams={paramsProp}
       />
       <DeleteConfirmationModal
         open={deleteModal.open}
@@ -600,6 +646,8 @@ export default function Organization() {
           });
         }}
         data={deleteModal.data as Organization}
+        pagination={pagination}
+        queryParams={paramsProp}
       />
     </>
   );
