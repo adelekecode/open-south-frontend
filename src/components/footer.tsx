@@ -46,10 +46,14 @@ export default function Footer() {
           <div>
             <h3>Social Media</h3>
             <div className="!flex-row">
-              <a href="" target="_blank" rel="noopener noreferrer">
+              <a href="https://twitter.com/OpenSouthData" target="_blank" rel="noopener noreferrer">
                 <FaSquareXTwitter className="text-2xl text-black" />
               </a>
-              <a href="" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.linkedin.com/company/100535350"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <FaLinkedin className="text-2xl text-[#0a66c2]" />
               </a>
             </div>
