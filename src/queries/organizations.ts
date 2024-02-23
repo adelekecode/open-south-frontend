@@ -65,7 +65,7 @@ export function useAdminOrganizationsIndicators() {
 
 export function usePublicOrganizations(
   search = "",
-  sortBy: "relevance" | "most-recent",
+  sortBy: "relevance" | "most-recent" | "" = "",
   pagination: Pagination = { pageSize: 20, page: 1 }
 ) {
   const { pageSize, page } = pagination;
