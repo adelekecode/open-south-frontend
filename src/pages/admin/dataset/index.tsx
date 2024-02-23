@@ -57,8 +57,10 @@ export default function Dataset() {
     },
   };
 
+  const search = queryParams.get("q") || "";
+  const status = queryParams.get("status") || "";
+
   const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
-  const [statusObj, setStatusObj] = useState<{ [key: string]: Dataset["status"] }>({});
   const [publishModal, setPublishModal] = useState<Modal>({
     open: false,
     data: null,
@@ -90,9 +92,9 @@ export default function Dataset() {
   }
 
   const { data, isLoading } = useAdminDatasets(
-    useDebounce(queryParams.get("q")).trim(),
+    useDebounce(search).trim(),
     {
-      status: queryParams.get("status"),
+      status,
     },
     {
       ...pagination,
@@ -193,7 +195,7 @@ export default function Dataset() {
         return (
           <Select
             className="w-full !text-[0.85rem] !py-0 !px-0"
-            value={statusObj[row.id] || value}
+            value={value}
             onClick={(e) => {
               e.stopPropagation();
             }}
@@ -204,11 +206,32 @@ export default function Dataset() {
                 return;
               }
 
-              if (chosenValue && chosenValue !== statusObj[row.id]) {
-                setStatusObj((prevStatusObj) => ({
-                  ...prevStatusObj,
-                  [row.id]: chosenValue as Dataset["status"],
-                }));
+              if (chosenValue === "unpublished") {
+                setUnpublishModal({
+                  open: true,
+                  data: row,
+                });
+              }
+
+              if (chosenValue === "published") {
+                setPublishModal({
+                  open: true,
+                  data: row,
+                });
+              }
+
+              if (chosenValue === "rejected") {
+                setRejectModal({
+                  open: true,
+                  data: row,
+                });
+              }
+
+              if (chosenValue === "further_review") {
+                setFurtherReviewModal({
+                  open: true,
+                  data: row,
+                });
               }
             }}
           >
@@ -217,50 +240,15 @@ export default function Dataset() {
             </MenuItem>
             <MenuItem
               value="unpublished"
-              className={`${value === "unpublished" || (value === "pending" && "!hidden")}`}
-              onClick={() => {
-                setUnpublishModal({
-                  open: true,
-                  data: row,
-                });
-              }}
+              className={`${value === "unpublished" || (["pending", "further_review"].includes(value) && "!hidden")}`}
             >
               Unpublished
             </MenuItem>
-            <MenuItem
-              value="published"
-              className={`${value === "published" && "!hidden"}`}
-              onClick={() => {
-                setPublishModal({
-                  open: true,
-                  data: row,
-                });
-              }}
-            >
+            <MenuItem value="published" className={`${value === "published" && "!hidden"}`}>
               Published
             </MenuItem>
-            <MenuItem
-              value="rejected"
-              onClick={() => {
-                setRejectModal({
-                  open: true,
-                  data: row,
-                });
-              }}
-            >
-              Rejected
-            </MenuItem>
-            <MenuItem
-              value="further_review"
-              onClick={() => {
-                setFurtherReviewModal({
-                  open: true,
-                  data: row,
-                });
-              }}
-            >
-              Further Review
-            </MenuItem>
+            <MenuItem value="rejected">Rejected</MenuItem>
+            <MenuItem value="further_review">Further Review</MenuItem>
           </Select>
         );
       },
@@ -377,7 +365,7 @@ export default function Dataset() {
             <div className="flex items-center gap-4 h-10 w-full">
               <OutlinedInput
                 placeholder="Search for title..."
-                value={queryParams.get("q")}
+                value={search}
                 onChange={(e) => {
                   const value = e.target.value;
 
@@ -391,7 +379,7 @@ export default function Dataset() {
               />
               <Select
                 className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                value={queryParams.get("status")}
+                value={status}
                 onChange={async (e) => {
                   const chosenValue = e.target.value;
 
@@ -438,91 +426,101 @@ export default function Dataset() {
           </div>
         </div>
       </main>
-      <PublishConfirmationModal
-        open={publishModal.open}
-        onClose={() => {
-          setPublishModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={publishModal.data as Dataset}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
-      <RejectConfirmationModal
-        open={rejectModal.open}
-        onClose={() => {
-          setRejectModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={rejectModal.data as Dataset}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
-      <UnpublishConfirmationModal
-        open={unpublishModal.open}
-        onClose={() => {
-          setUnpublishModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={unpublishModal.data as Dataset}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
-      <FurtherReviewConfirmationModal
-        open={furtherReviewModal.open}
-        onClose={() => {
-          setFurtherReviewModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={furtherReviewModal.data as Dataset}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
-      <DeleteConfirmationModal
-        open={deleteModal.open}
-        onClose={() => {
-          setDeleteModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={deleteModal.data as Dataset}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
+      {publishModal.open && (
+        <PublishConfirmationModal
+          open={publishModal.open}
+          onClose={() => {
+            setPublishModal({
+              open: false,
+              data: null,
+            });
+          }}
+          data={publishModal.data as Dataset}
+          pagination={pagination}
+          queryParams={{
+            search,
+            filter: {
+              status,
+            },
+          }}
+        />
+      )}
+      {rejectModal.open && (
+        <RejectConfirmationModal
+          open={rejectModal.open}
+          onClose={() => {
+            setRejectModal({
+              open: false,
+              data: null,
+            });
+          }}
+          data={rejectModal.data as Dataset}
+          pagination={pagination}
+          queryParams={{
+            search,
+            filter: {
+              status,
+            },
+          }}
+        />
+      )}
+      {unpublishModal.open && (
+        <UnpublishConfirmationModal
+          open={unpublishModal.open}
+          onClose={() => {
+            setUnpublishModal({
+              open: false,
+              data: null,
+            });
+          }}
+          data={unpublishModal.data as Dataset}
+          pagination={pagination}
+          queryParams={{
+            search,
+            filter: {
+              status,
+            },
+          }}
+        />
+      )}
+      {furtherReviewModal.open && (
+        <FurtherReviewConfirmationModal
+          open={furtherReviewModal.open}
+          onClose={() => {
+            setFurtherReviewModal({
+              open: false,
+              data: null,
+            });
+          }}
+          data={furtherReviewModal.data as Dataset}
+          pagination={pagination}
+          queryParams={{
+            search,
+            filter: {
+              status,
+            },
+          }}
+        />
+      )}
+      {deleteModal.open && (
+        <DeleteConfirmationModal
+          open={deleteModal.open}
+          onClose={() => {
+            setDeleteModal({
+              open: false,
+              data: null,
+            });
+          }}
+          data={deleteModal.data as Dataset}
+          pagination={pagination}
+          queryParams={{
+            search,
+            filter: {
+              status,
+            },
+          }}
+        />
+      )}
     </>
   );
 }

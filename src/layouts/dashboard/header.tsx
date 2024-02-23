@@ -95,7 +95,7 @@ export default function Header() {
                         height: 70,
                       }}
                     />
-                    <p className="text-xs flex items-center gap-1">
+                    <p className="text-xs flex items-center gap-1 capitalize">
                       <span>
                         {currentUser?.first_name ||
                           currentUser?.profile_data?.first_name ||
