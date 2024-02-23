@@ -20,11 +20,10 @@ export function useAdminOrganizations(
 ) {
   const { status, isVerified, isActive } = filterBy;
   const { page, pageSize } = pagination;
-  const newStatus = status === "approve" ? "approved" : status === "reject" ? "rejected" : status;
 
   return useQuery<PaginatedResponse<Organization[]>>(
     [
-      `/admin/organisations/?search=${search}&status=${newStatus || ""}&verified=${isVerified || ""}&active=${isActive || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+      `/admin/organisations/?search=${search}&status=${status || ""}&verified=${isVerified || ""}&active=${isActive ? isActive.charAt(0).toUpperCase() + isActive.slice(1) : ""}&limit=${pageSize}&offset=${page * pageSize}`,
     ],
     options
   );

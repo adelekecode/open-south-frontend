@@ -43,7 +43,7 @@ export default function RejectModal({
         onSubmit={async (values) => {
           const response = await changeOrganizationStatus.mutateAsync({
             id: data?.id || "",
-            action: "reject",
+            action: "rejected",
             data: values,
           });
 
