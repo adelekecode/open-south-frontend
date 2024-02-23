@@ -132,8 +132,6 @@ export function useChangeOrganizationStatus(pagination: Pagination, queryParams:
     filter: { isActive, isVerified, status },
   } = queryParams;
 
-  const newStatus = status === "approve" ? "approved" : status === "reject" ? "rejected" : status;
-
   return useMutation(
     async ({
       id,
@@ -141,7 +139,7 @@ export function useChangeOrganizationStatus(pagination: Pagination, queryParams:
       data,
     }: {
       id: string;
-      action: "approve" | "reject" | "delete" | "block" | "unblock";
+      action: "approved" | "rejected" | "delete" | "block" | "unblock";
       data?: { remark: string };
     }) => {
       const { data: response } = await axiosPrivate.post(
@@ -154,7 +152,7 @@ export function useChangeOrganizationStatus(pagination: Pagination, queryParams:
     {
       onSuccess(data) {
         queryClient.invalidateQueries([
-          `/admin/organisations/?search=${search}&status=${newStatus || ""}&verified=${isVerified || ""}&active=${isActive || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+          `/admin/organisations/?search=${search}&status=${status || ""}&verified=${isVerified || ""}&active=${isActive ? isActive.charAt(0).toUpperCase() + isActive.slice(1) : ""}&limit=${pageSize}&offset=${page * pageSize}`,
         ]);
 
         if (typeof data.message === "string") {

@@ -37,7 +37,7 @@ export default function ApproveModal({
             onClick={async () => {
               const response = await changeOrganizationStatus.mutateAsync({
                 id: data?.id || "",
-                action: "approve",
+                action: "approved",
               });
 
               if (response) {

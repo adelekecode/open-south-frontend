@@ -30,7 +30,7 @@ type Modal = {
   data: Organization | null;
 };
 
-type QueryKey = "q" | "is-active" | "is-verified" | "status";
+type QueryKey = "q" | "active" | "verified" | "status";
 
 export default function Organization() {
   const navigate = useNavigate();
@@ -60,12 +60,11 @@ export default function Organization() {
     },
   };
 
-  const search = queryParams.get("q");
-  const isVerified = queryParams.get("is-verified");
-  const isActive = queryParams.get("is-active");
-  const status = queryParams.get("status");
+  const search = queryParams.get("q") || "";
+  const isVerified = queryParams.get("verified") || "";
+  const isActive = queryParams.get("active") || "";
+  const status = queryParams.get("status") || "";
 
-  const [statusObj, setStatusObj] = useState<{ [key: string]: Organization["status"] }>({});
   const [approveModal, setApproveModal] = useState<Modal>({
     open: false,
     data: null,
@@ -97,11 +96,11 @@ export default function Organization() {
   }
 
   const paramsProp = {
-    search: queryParams.get("q"),
+    search: search,
     filter: {
-      isActive: queryParams.get("is-active"),
-      isVerified: queryParams.get("is-verified"),
-      status: queryParams.get("status"),
+      isActive,
+      isVerified,
+      status,
     },
   };
 
@@ -203,14 +202,11 @@ export default function Organization() {
       minWidth: 180,
       flex: 1,
       renderCell: ({ value, row }) => {
-        const newValue = value === "approved" ? "approve" : value === "rejected" ? "reject" : value;
-        const val = statusObj[row.id] || newValue;
-
         return (
           <Tooltip title={!row.is_verified && "Organization not verified"}>
             <Select
               className="w-[180px] !text-[0.85rem] !py-0 !px-0"
-              value={val}
+              value={value}
               disabled={!row.is_verified}
               onChange={async (e) => {
                 const chosenValue = e.target.value;
@@ -219,39 +215,30 @@ export default function Organization() {
                   return;
                 }
 
-                if (chosenValue && chosenValue !== statusObj[row.id]) {
-                  setStatusObj((prevStatusObj) => ({
-                    ...prevStatusObj,
-                    [row.id]: chosenValue as Dataset["status"],
-                  }));
+                if (chosenValue === value) {
+                  return;
+                }
+
+                if (chosenValue === "rejected") {
+                  setRejectModal({
+                    open: true,
+                    data: row,
+                  });
+                }
+
+                if (chosenValue === "approved") {
+                  setApproveModal({
+                    open: true,
+                    data: row,
+                  });
                 }
               }}
             >
               <MenuItem value="pending" className="!hidden">
                 Pending
               </MenuItem>
-              <MenuItem
-                value="reject"
-                onClick={() => {
-                  setRejectModal({
-                    open: true,
-                    data: row,
-                  });
-                }}
-              >
-                Rejected
-              </MenuItem>
-              <MenuItem
-                value="approve"
-                onClick={() => {
-                  setApproveModal({
-                    open: true,
-                    data: row,
-                  });
-                }}
-              >
-                Approved
-              </MenuItem>
+              <MenuItem value="rejected">Rejected</MenuItem>
+              <MenuItem value="approved">Approved</MenuItem>
             </Select>
           </Tooltip>
         );
@@ -518,8 +505,8 @@ export default function Organization() {
                     <span className="text-info-600">Filter by status</span>
                   </MenuItem>
                   <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="reject">Rejected</MenuItem>
-                  <MenuItem value="approve">Approved</MenuItem>
+                  <MenuItem value="rejected">Rejected</MenuItem>
+                  <MenuItem value="approved">Approved</MenuItem>
                 </Select>
                 <Select
                   className="w-[200px] !text-sm !py-0 !px-0 !h-full"
@@ -528,10 +515,10 @@ export default function Organization() {
                     const chosenValue = e.target.value;
 
                     if (!chosenValue) {
-                      return queryParams.delete("is-verified");
+                      return queryParams.delete("verified");
                     }
 
-                    queryParams.set("is-verified", chosenValue);
+                    queryParams.set("verified", chosenValue);
                   }}
                   displayEmpty
                 >
@@ -548,10 +535,10 @@ export default function Organization() {
                     const chosenValue = e.target.value;
 
                     if (!chosenValue) {
-                      return queryParams.delete("is-active");
+                      return queryParams.delete("active");
                     }
 
-                    queryParams.set("is-active", chosenValue);
+                    queryParams.set("active", chosenValue);
                   }}
                   displayEmpty
                 >
