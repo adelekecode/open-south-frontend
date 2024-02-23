@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { MenuItem, Pagination } from "@mui/material";
 import { stripHtml } from "string-strip-html";
+import slugify from "slugify";
 import { FiSearch } from "react-icons/fi";
 import SearchInput from "~/components/inputs/search-input";
 import SelectInput from "~/components/inputs/select-input";
@@ -10,7 +11,7 @@ import { usePublicOrganizations } from "~/queries/organizations";
 import NoData from "~/assets/illustrations/no-data.png";
 import useDebounce from "~/hooks/debounce";
 
-type SortByValue = "" | "most-recent";
+type SortByValue = "relevance" | "most-recent";
 
 export default function Organization() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export default function Organization() {
   const { isLoading, data, refetch } = usePublicOrganizations(
     useDebounce(search).trim(),
     sortBy as SortByValue,
+    // (sortBy || "relevance") as SortByValue,
     {
       page,
       pageSize: dataPerPage,
@@ -132,7 +134,7 @@ export default function Organization() {
           <main className="flex flex-col gap-12">
             <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
               {data.results.map((item, index) => {
-                const { name, slug, logo, description } = item;
+                const { name, slug, logo, description, data_count } = item;
 
                 const stripedDescription = stripHtml(`${description}`, {
                   stripTogetherWithTheirContents: ["style", "pre"],
@@ -166,6 +168,25 @@ export default function Organization() {
                           "..."
                         : stripedDescription}
                     </p>
+                    <Link
+                      className="px-4 py-1 rounded-full bg-primary-100 hover:bg-primary-300 transition-all text-sm text-primary-700"
+                      key={index + 1}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      to={{
+                        pathname: "/datasets",
+                        search: `?${new URLSearchParams({
+                          organization: `${slugify(name, {
+                            lower: true,
+                            strict: true,
+                            trim: true,
+                          })}`,
+                        }).toString()}`,
+                      }}
+                    >
+                      <span className="font-semibold">{data_count}</span> datasets
+                    </Link>
                   </button>
                 );
               })}
