@@ -1,16 +1,19 @@
 import { isAxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { notifyError } from "~/utils/toast";
+import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
 
-function useSendMessage() {
+export function useSendMessage() {
   return useMutation(
-    async (data: Record<"fullName" | "email" | "message", string>) => {
-      const { data: response } = await axiosPrivate.post(`/send-message/`, data);
+    async (data: Record<"name" | "email" | "message", string>) => {
+      const { data: response } = await axiosPrivate.post(`/public/support/system/`, data);
 
       return response;
     },
     {
+      onSuccess() {
+        notifySuccess("Message sent successfully!");
+      },
       onError(error) {
         if (isAxiosError(error)) {
           if (error.response?.status === 400) {
@@ -25,5 +28,3 @@ function useSendMessage() {
     }
   );
 }
-
-export { useSendMessage };
