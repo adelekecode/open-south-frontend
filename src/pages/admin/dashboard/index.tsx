@@ -4,8 +4,12 @@ import { IoGridOutline, IoNewspaperOutline } from "react-icons/io5";
 import AverageDownloadsPerCategory from "./average-downloads-per-category";
 import AverageViewsPerCategory from "./average-views-per-category";
 import MostAccessedDatasets from "./most-accessed-datasets";
+import MostPublishedOrganizations from "./most-published-organizations";
+import { useDashboardCards } from "~/queries/admin-dashboard";
 
 export default function Dashboard() {
+  const { data } = useDashboardCards();
+
   return (
     <>
       <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4 gap-4 flex flex-col">
@@ -17,7 +21,7 @@ export default function Dashboard() {
             <div className="bg-amber-50">
               <div>
                 <p className="text-info-950">Users</p>
-                <h1 className="text-neutral-800">{"150"}</h1>
+                <h1 className="text-neutral-800">{data?.users ?? "0"}</h1>
               </div>
               <span className="p-2 border border-amber-500 h-fit rounded text-amber-500 text-base">
                 <HiOutlineUserGroup />
@@ -26,7 +30,7 @@ export default function Dashboard() {
             <div className="bg-red-50">
               <div>
                 <p className="text-info-950">Datasets</p>
-                <h1 className="text-neutral-800">{"92,345"}</h1>
+                <h1 className="text-neutral-800">{data?.datasets ?? "0"}</h1>
               </div>
               <span className="p-2 border border-red-500 h-fit rounded text-red-500 text-base">
                 <IoGridOutline />
@@ -35,7 +39,7 @@ export default function Dashboard() {
             <div className="bg-blue-50">
               <div>
                 <p className="text-info-950">Organizations</p>
-                <h1 className="text-neutral-800">{"92,345"}</h1>
+                <h1 className="text-neutral-800">{data?.organisations ?? "0"}</h1>
               </div>
               <span className="p-2 border border-blue-500 h-fit rounded text-blue-500 text-base">
                 <GoOrganization />
@@ -44,7 +48,7 @@ export default function Dashboard() {
             <div className="bg-emerald-50">
               <div>
                 <p className="text-info-950">News</p>
-                <h1 className="text-neutral-800">{`${"42"}`}</h1>
+                <h1 className="text-neutral-800">{data?.news ?? "0"}</h1>
               </div>
               <span className="p-2 border border-emerald-500 h-fit rounded text-emerald-500 text-base">
                 <IoNewspaperOutline />
@@ -56,6 +60,7 @@ export default function Dashboard() {
           <AverageViewsPerCategory />
           <AverageDownloadsPerCategory />
           <MostAccessedDatasets />
+          <MostPublishedOrganizations />
         </div>
       </main>
     </>

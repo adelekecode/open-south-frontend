@@ -7,7 +7,7 @@ import Seo from "~/components/seo";
 import { useSendMessage } from "~/mutations/contact";
 
 const validationSchema = Yup.object({
-  fullName: Yup.string().trim().required("Full name field is required"),
+  name: Yup.string().trim().required("Name field is required"),
   email: Yup.string().email("Invalid email address").required("Email field is required"),
   message: Yup.string().trim().required("Message field is required"),
 });
@@ -37,7 +37,7 @@ export default function Contact() {
         </div>
         <Formik
           initialValues={{
-            fullName: "",
+            name: "",
             email: "",
             message: "",
           }}
@@ -55,7 +55,7 @@ export default function Contact() {
         >
           {({ handleSubmit, isSubmitting }) => (
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-2xl mx-auto">
-              <FormField label="Name" required placeholder="John Doe" name="fullName" />
+              <FormField label="Name" required placeholder="John Doe" name="name" />
               <FormField
                 label="Email"
                 required

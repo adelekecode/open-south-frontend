@@ -10,6 +10,7 @@ import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import TopViewers from "./top-viewers";
 import { useUserDatasets } from "~/queries/dataset";
+import { useDashboardCards } from "~/queries/user-dashboard";
 
 const columns: GridColDef[] = [
   {
@@ -145,6 +146,8 @@ export default function Dashboard() {
     page: 0,
   };
 
+  const { data } = useDashboardCards();
+
   const { data: datasets, isLoading: isDatasetsLoading } = useUserDatasets(undefined, undefined, {
     ...paginationModel,
   });
@@ -160,7 +163,7 @@ export default function Dashboard() {
             <div className="bg-red-50">
               <div>
                 <p className="text-info-950">Datasets</p>
-                <h1 className="text-neutral-800">{"92,345"}</h1>
+                <h1 className="text-neutral-800">{data?.datasets ?? "0"}</h1>
               </div>
               <span className="p-2 border border-red-500 h-fit rounded text-red-500 text-base">
                 <IoGridOutline />
@@ -169,7 +172,7 @@ export default function Dashboard() {
             <div className="bg-blue-50">
               <div>
                 <p className="text-info-950">Organizations</p>
-                <h1 className="text-neutral-800">{"92,345"}</h1>
+                <h1 className="text-neutral-800">{data?.organisations ?? "0"}</h1>
               </div>
               <span className="p-2 border border-blue-500 h-fit rounded text-blue-500 text-base">
                 <GoOrganization />
@@ -178,7 +181,7 @@ export default function Dashboard() {
             <div className="bg-purple-50">
               <div>
                 <p className="text-info-950">Views</p>
-                <h1 className="text-neutral-800">{"92,345"}</h1>
+                <h1 className="text-neutral-800">{data?.views ?? "0"}</h1>
               </div>
               <span className="p-2 border border-purple-500 h-fit rounded text-purple-500 text-base">
                 <AiOutlineEye />
@@ -187,7 +190,7 @@ export default function Dashboard() {
             <div className="bg-lime-50">
               <div>
                 <p className="text-info-950">Downloads</p>
-                <h1 className="text-neutral-800">{`${"10,442"}`}</h1>
+                <h1 className="text-neutral-800">{data?.downloads ?? "0"}</h1>
               </div>
               <span className="p-2 border border-lime-500 h-fit rounded text-lime-500 text-base">
                 <IoCloudDownloadOutline />
