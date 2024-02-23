@@ -65,13 +65,13 @@ export function useAdminOrganizationsIndicators() {
 
 export function usePublicOrganizations(
   search = "",
-  sortBy: "" | "most-datasets" | "most-recent" = "",
+  sortBy: "relevance" | "most-recent",
   pagination: Pagination = { pageSize: 20, page: 1 }
 ) {
   const { pageSize, page } = pagination;
 
   return useQuery<PaginatedResponse<Organization[]>>([
-    `/public/organisations/?key=public&search=${search}&sortBy=${sortBy}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
+    `/public/organisations/?key=public&search=${search}&sort=${sortBy}&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
   ]);
 }
 
