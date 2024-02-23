@@ -219,7 +219,7 @@ export default function Dataset() {
                 <AutocompleteInput
                   id="format"
                   inputParams={{
-                    placeholder: "All Formarts",
+                    placeholder: "All Formats",
                   }}
                   options={formatData}
                   value={formatData.find((item) => item.label === filterBy.format) || null}
