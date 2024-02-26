@@ -1,28 +1,109 @@
 import { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { LngLat, LngLatLike, Map as MapBoxMap, MapboxGeoJSONFeature } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { usePublicMapDatasets } from "~/queries/dataset";
 import AppLoader from "~/components/loader/app-loader";
+
+type Source = {
+  type: string;
+  features: {
+    type: string;
+    geometry: {
+      type: string;
+      coordinates: number[];
+    };
+    properties: Dataset;
+  }[];
+};
+
+type Cluster = {
+  cluster: true;
+  cluster_id: number;
+  point_count: number;
+  point_count_abbreviated: number;
+};
+
+type Feature = {
+  geometry: {
+    type: string;
+    coordinates: number[];
+  };
+  properties: Cluster;
+  type: string;
+  id: number;
+};
+
+function popupHandler(map: MapBoxMap, num: number, lngLat: LngLat, country: string) {
+  new mapboxgl.Popup()
+    .setLngLat(lngLat)
+    .setHTML(
+      `
+        <div class="flex flex-col gap-2 min-w-24">
+          <h1 class="font-semibold text-xl">${country}</h1>
+          <h2 class="text-xs">Datasets: <span class="text-sm font-medium">${num}</span></h2>
+          <a class="text-xs text-primary-600 underline" href="/datasets?spatial-coverage=${country}">View Datasets</a>
+        </div>
+    `
+    )
+    .addTo(map);
+}
 
 export default function Map() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { data, isLoading } = usePublicMapDatasets();
 
+  async function zoomHandler(
+    map: MapBoxMap,
+    clusterId: number,
+    clusterSource: any,
+    feature: MapboxGeoJSONFeature
+  ) {
+    const clusterChildren = await new Promise<Promise<Source["features"]> | Feature[]>(
+      (resolve, reject) => {
+        clusterSource.getClusterChildren(clusterId, (err: any, feature: any) => {
+          if (err) {
+            reject(err);
+          }
+
+          resolve(feature);
+        });
+      }
+    );
+
+    const obj = {
+      isZoomedOnCountry: false,
+      country: "",
+      count: 0,
+    };
+
+    obj.isZoomedOnCountry = clusterChildren.every((item) => {
+      if ("id" in item) {
+        clusterSource.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
+          if (err) return;
+
+          map.easeTo({
+            center: (feature.geometry as { type: string; coordinates: LngLatLike }).coordinates,
+            zoom,
+          });
+        });
+
+        return false;
+      }
+
+      obj.country = item.properties.spatial_coverage;
+      obj.count++;
+
+      return true;
+    });
+
+    return obj;
+  }
+
   useEffect(() => {
     if (!data) return;
 
-    const mapData: {
-      type: string;
-      features: {
-        type: string;
-        geometry: {
-          type: string;
-          coordinates: number[];
-        };
-        properties: Dataset;
-      }[];
-    } = {
+    const mapData: Source = {
       type: "FeatureCollection",
       features: [],
     };
@@ -117,32 +198,9 @@ export default function Map() {
         },
       });
 
-      // map.on("click", ["clusters", "unclustered"], (e) => {
-      //   const features = map.queryRenderedFeatures(e.point, {
-      //     layers: ["clusters", "unclustered"],
-      //   });
-
-      //   if (features.length > 0) {
-      //     for (let i = 0; i < data.length; i++) {
-      //       if (features[i]) {
-      //         const { properties } = features[i];
-      //         const datasets = JSON.parse(JSON.stringify(properties)) as Dataset;
-
-      //         navigate(
-      //           `/datasets?spatial-coverage=${slugify(datasets.spatial_coverage, {
-      //             lower: true,
-      //             strict: true,
-      //             trim: true,
-      //           })}`
-      //         );
-      //       }
-      //     }
-      //   }
-      // });
-
-      map.on("click", ["clusters", "unclustered"], (e) => {
+      map.on("click", ["unclustered"], (e) => {
         const features = map.queryRenderedFeatures(e.point, {
-          layers: ["clusters", "unclustered"],
+          layers: ["unclustered"],
         });
 
         if (features.length > 0) {
@@ -154,18 +212,36 @@ export default function Map() {
             if (!dataset.title) return;
             const { spatial_coverage } = dataset;
 
-            new mapboxgl.Popup()
-              .setLngLat(e.lngLat)
-              .setHTML(
-                `
-                <div class="flex flex-col gap-2">
-                  <h1 class="font-semibold text-xl">${spatial_coverage}</h1>
-                  <h2 class="text-xs">No. of datasets in this country: <span class="text-sm font-medium">${dataset ? "1" : "0"}</span></h2>
-                  <a class="text-xs text-primary-600 underline" href="/datasets?spatial-coverage=${dataset.spatial_coverage}">View Datasets</a>
-                </div>
-                  `
-              )
-              .addTo(map);
+            popupHandler(map, 1, e.lngLat, spatial_coverage);
+          }
+        }
+      });
+
+      map.on("click", ["clusters"], async (e) => {
+        const features = map.queryRenderedFeatures(e.point, {
+          layers: ["clusters"],
+        });
+
+        if (features.length > 0) {
+          const feature = features[0];
+
+          if (feature) {
+            const properties = feature.properties as Cluster;
+
+            const clusterId = properties.cluster_id;
+
+            const clusterSource: any = map.getSource("datasets");
+
+            const { count, isZoomedOnCountry, country } = await zoomHandler(
+              map,
+              clusterId,
+              clusterSource,
+              feature
+            );
+
+            if (isZoomedOnCountry) {
+              popupHandler(map, count, e.lngLat, country as string);
+            }
           }
         }
       });

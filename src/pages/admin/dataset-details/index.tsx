@@ -56,13 +56,6 @@ export default function DatasetDetails() {
           </h1>
         </header>
         <div className="border border-info-100 rounded-md overflow-hidden">
-          {data.status === "pending" && (
-            <div className="p-4 py-2 w-full bg-orange-200 mt-2">
-              <p className="text-xs font-medium">
-                This is dataset currently being reviewed by the admin.
-              </p>
-            </div>
-          )}
           <div
             className={`bg-white w-full flex flex-col gap-6 p-6 ${data.status === "pending" && "pt-4"} tablet:px-4`}
           >
