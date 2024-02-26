@@ -9,17 +9,21 @@ function formatFileSize(size: number): string {
 
 async function getCountryCoordinates(country: string) {
   try {
+    const encodeCountry = encodeURIComponent(country.toLowerCase());
+
     const { data } = (await axios.get(
       "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
-        encodeURIComponent(country.toLowerCase()) +
+        encodeCountry +
         ".json?access_token=" +
         import.meta.env.VITE_MAPBOXGL_ACCESS_TOKEN
     )) as any;
 
-    if (data.features.length > 0) {
-      const coordinates = data.features[0].center;
+    for (const item of data.features) {
+      if (encodeURIComponent(item.text.toLowerCase()) === encodeCountry) {
+        const coordinates = item.center;
 
-      return coordinates;
+        return coordinates;
+      }
     }
   } catch (error) {
     notifyError("Error occured while creating dataset, please try again");
