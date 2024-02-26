@@ -77,16 +77,26 @@ export default function Map() {
       count: 0,
     };
 
+    function zoomIn() {
+      clusterSource.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
+        if (err) return;
+
+        map.easeTo({
+          center: (feature.geometry as { type: string; coordinates: LngLatLike }).coordinates,
+          zoom,
+        });
+      });
+    }
+
     obj.isZoomedOnCountry = clusterChildren.every((item) => {
       if ("id" in item) {
-        clusterSource.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
-          if (err) return;
+        zoomIn();
 
-          map.easeTo({
-            center: (feature.geometry as { type: string; coordinates: LngLatLike }).coordinates,
-            zoom,
-          });
-        });
+        return false;
+      }
+
+      if (obj.country && obj.country !== item.properties.spatial_coverage) {
+        zoomIn();
 
         return false;
       }
