@@ -24,12 +24,6 @@
     "label": "Armenia"
   },
   {
-    "label": "Australia"
-  },
-  {
-    "label": "Austria"
-  },
-  {
     "label": "Azerbaijan"
   },
   {
@@ -46,9 +40,6 @@
   },
   {
     "label": "Belarus"
-  },
-  {
-    "label": "Belgium"
   },
   {
     "label": "Belize"
@@ -93,9 +84,6 @@
     "label": "Cameroon"
   },
   {
-    "label": "Canada"
-  },
-  {
     "label": "Central African Republic"
   },
   {
@@ -127,12 +115,6 @@
   },
   {
     "label": "Cyprus"
-  },
-  {
-    "label": "Czech Republic"
-  },
-  {
-    "label": "Denmark"
   },
   {
     "label": "Djibouti"
@@ -171,12 +153,6 @@
     "label": "Fiji"
   },
   {
-    "label": "Finland"
-  },
-  {
-    "label": "France"
-  },
-  {
     "label": "Gabon"
   },
   {
@@ -184,9 +160,6 @@
   },
   {
     "label": "Georgia"
-  },
-  {
-    "label": "Germany"
   },
   {
     "label": "Ghana"
@@ -219,9 +192,6 @@
     "label": "Hungary"
   },
   {
-    "label": "Iceland"
-  },
-  {
     "label": "India"
   },
   {
@@ -234,19 +204,10 @@
     "label": "Iraq"
   },
   {
-    "label": "Ireland"
-  },
-  {
     "label": "Israel"
   },
   {
-    "label": "Italy"
-  },
-  {
     "label": "Jamaica"
-  },
-  {
-    "label": "Japan"
   },
   {
     "label": "Jordan"
@@ -366,12 +327,6 @@
     "label": "Nepal"
   },
   {
-    "label": "Netherlands"
-  },
-  {
-    "label": "New Zealand"
-  },
-  {
     "label": "Nicaragua"
   },
   {
@@ -382,9 +337,6 @@
   },
   {
     "label": "North Macedonia"
-  },
-  {
-    "label": "Norway"
   },
   {
     "label": "Oman"
@@ -424,9 +376,6 @@
   },
   {
     "label": "Romania"
-  },
-  {
-    "label": "Russia"
   },
   {
     "label": "Rwanda"
@@ -550,12 +499,6 @@
   },
   {
     "label": "United Arab Emirates"
-  },
-  {
-    "label": "United Kingdom"
-  },
-  {
-    "label": "United States"
   },
   {
     "label": "Uruguay"
