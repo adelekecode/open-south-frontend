@@ -13,6 +13,8 @@ import NotFound from "../404";
 import FilePreview from "~/components/file/preview";
 import { useDatasetFileDownload } from "~/mutations/dataset";
 
+const filesPerPage = 3;
+
 export default function DatasetDetails() {
   const { slug } = useParams();
 
@@ -27,7 +29,6 @@ export default function DatasetDetails() {
     data: null,
   });
 
-  const filesPerPage = 3;
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading } = usePublicDatasetDetails(slug || "", {
@@ -50,16 +51,16 @@ export default function DatasetDetails() {
   }, [data?.description]);
 
   useEffect(() => {
-    if (!effectHasRun.current) {
-      (async () => {
-        effectHasRun.current = true;
-        if (data?.id) {
+    if (data?.id) {
+      if (!effectHasRun.current) {
+        (async () => {
           await datasetView.mutateAsync(data.id);
-        }
-      })();
+          effectHasRun.current = true;
+        })();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data?.id]);
 
   if (isLoading) {
     return (
