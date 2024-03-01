@@ -7,7 +7,7 @@ function useSignUp() {
     async (
       data: Record<"first_name" | "last_name" | "email" | "password" | "re_password", string>
     ) => {
-      const { data: response } = await axios.post("/auth/users/", { ...data, role: "user" });
+      const response = await axios.post("/auth/users/", { ...data, role: "user" });
 
       return response;
     },

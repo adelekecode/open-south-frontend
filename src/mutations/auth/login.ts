@@ -7,7 +7,7 @@ export default function useLogin() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (data: { email: string; password: string }) => {
+    async (data: { email: string; password: string; rememberMe: boolean }) => {
       const { data: response } = await axios.post<{
         data: {
           access: string;
@@ -15,11 +15,15 @@ export default function useLogin() {
         } & CurrentUser;
       }>("/auth/login/", data);
 
-      return response.data;
+      return { ...response.data, rememberMe: data.rememberMe };
     },
     {
       onSuccess(data) {
-        localStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
+        if (data.rememberMe) {
+          sessionStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
+        } else {
+          localStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
+        }
         axios.defaults.headers.common["Authorization"] = "Bearer " + data.access;
         queryClient.setQueriesData(["/auth/users/me/"], data);
         notifySuccess("Login successful");

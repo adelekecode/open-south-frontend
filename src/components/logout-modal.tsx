@@ -32,7 +32,9 @@ export default function LogoutModal() {
             variant="outlined"
             loading={logout.isLoading}
             onClick={async () => {
-              let token = localStorage.getItem(REFRESH_TOKEN_KEY);
+              let token =
+                localStorage.getItem(REFRESH_TOKEN_KEY) ||
+                sessionStorage.getItem(REFRESH_TOKEN_KEY);
 
               token = token ? JSON.parse(token) : undefined;
 
