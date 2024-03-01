@@ -32,6 +32,10 @@ export default function Otp({ email }: OtpProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <div
       className={`w-full tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
@@ -81,6 +85,10 @@ export default function Otp({ email }: OtpProps) {
             });
 
             if (response) {
+              setSignupState({
+                signuped: false,
+                email: "",
+              });
               navigate("/login");
             }
           }}
