@@ -34,7 +34,8 @@ axiosPrivate.interceptors.response.use(
         message === "Given token not valid for any token type" ||
         message === "Authentication credentials were not provided."
       ) {
-        let token = localStorage.getItem(REFRESH_TOKEN_KEY);
+        const sessionToken = sessionStorage.getItem(REFRESH_TOKEN_KEY);
+        let token = localStorage.getItem(REFRESH_TOKEN_KEY) || sessionToken;
 
         token = token ? JSON.parse(token) : undefined;
 
@@ -47,8 +48,14 @@ axiosPrivate.interceptors.response.use(
 
           try {
             const { data } = await refreshPromise;
+            const refresh = JSON.stringify(data.refresh);
 
-            localStorage.setItem(REFRESH_TOKEN_KEY, data.refresh);
+            if (sessionToken) {
+              sessionStorage.setItem(REFRESH_TOKEN_KEY, refresh);
+            } else {
+              localStorage.setItem(REFRESH_TOKEN_KEY, refresh);
+            }
+
             axiosPrivate.defaults.headers.common["Authorization"] = "Bearer " + data.access;
 
             return axiosPrivate.request(error?.config);
@@ -73,7 +80,8 @@ axiosPrivate.interceptors.response.use(
 );
 
 export async function fetchAccessTokenIfRefreshTokenExists() {
-  let token = localStorage.getItem(REFRESH_TOKEN_KEY);
+  const sessionToken = sessionStorage.getItem(REFRESH_TOKEN_KEY);
+  let token = localStorage.getItem(REFRESH_TOKEN_KEY) || sessionToken;
 
   token = token ? JSON.parse(token) : undefined;
 
@@ -84,7 +92,14 @@ export async function fetchAccessTokenIfRefreshTokenExists() {
   if (token) {
     const data = await refreshToken(token);
 
-    localStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
+    const refresh = JSON.stringify(data.refresh);
+
+    if (sessionToken) {
+      sessionStorage.setItem(REFRESH_TOKEN_KEY, refresh);
+    } else {
+      localStorage.setItem(REFRESH_TOKEN_KEY, refresh);
+    }
+
     axiosPrivate.defaults.headers.common["Authorization"] = "Bearer " + data.access;
   } else {
     throw new Error("Token not found");

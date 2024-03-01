@@ -96,8 +96,7 @@ export default function Login() {
           validationSchema={loginSchema}
           onSubmit={async (values) => {
             const data = await login.mutateAsync({
-              email: values.email,
-              password: values.password,
+              ...values,
             });
 
             if (data) {
