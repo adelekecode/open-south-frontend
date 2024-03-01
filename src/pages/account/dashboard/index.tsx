@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { GridColDef } from "@mui/x-data-grid";
-import { BarChart } from "@mui/x-charts/BarChart";
 import { IoCloudDownloadOutline, IoGridOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import { GoOrganization } from "react-icons/go";
@@ -8,9 +7,10 @@ import { twMerge } from "tailwind-merge";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
-import TopViewers from "./top-viewers";
 import { useUserDatasets } from "~/queries/dataset";
 import { useDashboardCards } from "~/queries/user-dashboard";
+import TopTrafficLocations from "./top-traffic-locations";
+import MostAccessedDatasets from "./most-accessed-datasets";
 
 const columns: GridColDef[] = [
   {
@@ -199,40 +199,8 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 tablet:grid-cols-1">
-          <div className="border p-4 flex flex-col gap-4 border-info-100 bg-white rounded-md">
-            <h1 className="text-base text-info-700 font-medium">Most used spacial coverage</h1>
-            <BarChart
-              sx={{
-                width: "100%",
-              }}
-              height={250}
-              xAxis={[{ scaleType: "band", dataKey: "country" }]}
-              dataset={[
-                {
-                  count: 1,
-                  country: "Columbia",
-                },
-                {
-                  count: 3,
-                  country: "Nigeria",
-                },
-                {
-                  count: 10,
-                  country: "Kenya",
-                },
-                {
-                  count: 6,
-                  country: "Ghana",
-                },
-                {
-                  count: 2,
-                  country: "Egypt",
-                },
-              ]}
-              series={[{ dataKey: "count" }]}
-            />
-          </div>
-          <TopViewers />
+          <MostAccessedDatasets />
+          <TopTrafficLocations />
         </div>
         <div className="w-full border border-info-100 bg-white p-4 rounded-md flex flex-col gap-4 py-5 pt-4">
           <div className="flex items-center justify-between">
