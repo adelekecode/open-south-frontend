@@ -6,6 +6,8 @@ import AverageViewsPerCategory from "./average-views-per-category";
 import MostAccessedDatasets from "./most-accessed-datasets";
 import MostPublishedOrganizations from "./most-published-organizations";
 import { useDashboardCards } from "~/queries/admin-dashboard";
+import TopTrafficLocations from "./top-traffic-locations";
+import Performance from "./perfomance";
 
 export default function Dashboard() {
   const { data } = useDashboardCards();
@@ -61,6 +63,8 @@ export default function Dashboard() {
           <AverageDownloadsPerCategory />
           <MostAccessedDatasets />
           <MostPublishedOrganizations />
+          <Performance />
+          <TopTrafficLocations />
         </div>
       </main>
     </>

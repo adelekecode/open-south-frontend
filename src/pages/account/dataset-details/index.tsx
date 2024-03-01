@@ -81,7 +81,7 @@ export default function DatasetDetails() {
           </div>
         </header>
         <div className="border border-info-100 rounded-md overflow-hidden">
-          {data.status === "pending" && (
+          {["pending", "further_review"].includes(data.status) && (
             <div className="p-4 py-2 w-full bg-orange-200 mt-2">
               <p className="text-xs font-medium">
                 This dataset is currently being reviewed by the admin.
