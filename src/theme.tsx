@@ -135,6 +135,27 @@ const theme = createTheme({
         },
       },
     },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          gap: "1rem",
+        },
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          minWidth: "fit-content",
+        },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          padding: "0px",
+        },
+      },
+    },
   },
 });
 
