@@ -4,6 +4,7 @@ import { FaLinkedin } from "react-icons/fa";
 import Logo from "./logo";
 import BIDS from "~/assets/images/partner-logos/bids.png";
 import CHAI from "~/assets/images/partner-logos/chai.png";
+import EAAMO from "~/assets/images/partner-logos/eaamo.png";
 
 export default function Footer() {
   return (
@@ -73,11 +74,24 @@ export default function Footer() {
           <Link to={"/"} className="p-6 [@media(max-width:580px)]:p-4 w-fit hover:bg-zinc-100">
             <Logo className="w-40 [@media(max-width:580px)]:w-36 largeMobile:!w-32" />
           </Link>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 max-w-[70%] [@media(max-width:580px)]:max-w-[none]">
             <p className="text-sm font-medium text-center">Our Partners</p>
-            <div className="flex [@media(max-width:580px)]:flex-wrap gap-6 [&>img]:h-[4rem]">
-              <img src={CHAI} alt="CHAI logo" />
-              <img src={BIDS} alt="partner logo" />
+            <div className="grid grid-cols-2 gap-6 largeMobile:flex largeMobile:flex-wrap [&_div]:flex [&_img]:h-[4rem] [&_img]:min-w-[4rem]">
+              <div className="justify-end">
+                <a href="https://humancompatible.ai" target="_blank" rel="noopener noreferrer">
+                  <img src={CHAI} alt="CHAI logo" />
+                </a>
+              </div>
+              <div className="justify-start">
+                <a href="https://bids.berkeley.edu" target="_blank" rel="noopener noreferrer">
+                  <img src={BIDS} alt="BIDS logo" />
+                </a>
+              </div>
+              <div className="justify-center col-span-2 pr-[20%] largeMobile:pr-0">
+                <a href="https://www.eaamo.org" target="_blank" rel="noopener noreferrer">
+                  <img src={EAAMO} alt="EAAMO logo" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

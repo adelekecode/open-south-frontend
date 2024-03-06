@@ -1,8 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { IconButton } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import { BiLock } from "react-icons/bi";
-import { IoPersonCircleOutline, IoLogOutOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
+import {
+  IoPersonCircleOutline,
+  IoLogOutOutline,
+  IoMenu,
+  IoSettingsOutline,
+  IoGridOutline,
+} from "react-icons/io5";
+import { GoOrganization } from "react-icons/go";
 import { twMerge } from "tailwind-merge";
 import Logo from "~/components/logo";
 import SearchInput from "~/components/inputs/search-input";
@@ -19,6 +35,16 @@ type HeaderProps = {
 export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderProps) {
   const navigate = useNavigate();
   const { pathname, state } = useLocation();
+
+  const [search, setSearch] = useState("");
+  const [showList, setShowList] = useState(false);
+
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
+
+  function handleInputBlur() {
+    setShowList(false);
+  }
 
   useEffect(() => {
     const route = routes.find((item) => pathname.startsWith(item.to));
@@ -45,6 +71,25 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        listRef.current &&
+        !listRef.current.contains(event.target as Node) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target as Node)
+      ) {
+        handleInputBlur();
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const { setDisplayLogoutModal } = useAppStore();
 
@@ -136,11 +181,75 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
                 </>
               )}
             </div>
-            <SearchInput
-              placeholder="Search"
-              className="w-[300px] tablet:w-full"
-              wrapperClassName="tablet:w-full tablet:pl-4"
-            />
+            <div className="w-[400px] tablet:w-full relative">
+              <div className="tablet:pl-4">
+                <SearchInput
+                  placeholder="Search"
+                  value={search}
+                  inputRef={searchInputRef}
+                  onChange={(e) => {
+                    if (!showList) {
+                      setShowList(true);
+                    }
+                    setSearch(e.target.value);
+                  }}
+                  onFocus={(e) => {
+                    if (e.target.value.trim()) {
+                      setShowList(true);
+                    }
+                  }}
+                  className="w-full"
+                  wrapperClassName="tablet:w-full"
+                />
+              </div>
+              <Box
+                className={`!w-full absolute transition top-[41px] z-10 !bg-transparent ${showList ? "block" : "hidden"}`}
+                ref={listRef}
+              >
+                <List className="tablet:!ml-4 bg-white shadow-md">
+                  <ListItem
+                    disablePadding
+                    onClick={() => {
+                      if (search.trim()) navigate(`/datasets?q=${search}`);
+
+                      handleInputBlur();
+                    }}
+                  >
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <IoGridOutline className="text-info-950" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={`Search for "${search}" in datasets`}
+                        className="break-words"
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                  <div className="w-full px-4">
+                    <Divider />
+                  </div>
+
+                  <ListItem
+                    disablePadding
+                    onClick={() => {
+                      if (search.trim()) navigate(`/organizations?q=${search}`);
+
+                      handleInputBlur();
+                    }}
+                  >
+                    <ListItemButton>
+                      <ListItemIcon>
+                        <GoOrganization className="text-info-950" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={`Search for "${search}" in organizations`}
+                        className="break-words"
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Box>
+            </div>
           </div>
         </div>
       </div>
