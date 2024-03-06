@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import mapboxgl, { LngLat, LngLatLike, Map as MapBoxMap, MapboxGeoJSONFeature } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { usePublicMapDatasets } from "~/queries/dataset";
@@ -48,7 +48,7 @@ function popupHandler(map: MapBoxMap, num: number, lngLat: LngLat, country: stri
     .addTo(map);
 }
 
-export default function Map() {
+export default memo(function Map() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { data, isLoading } = usePublicMapDatasets();
@@ -89,13 +89,7 @@ export default function Map() {
     }
 
     obj.isZoomedOnCountry = clusterChildren.every((item) => {
-      if ("id" in item) {
-        zoomIn();
-
-        return false;
-      }
-
-      if (obj.country && obj.country !== item.properties.spatial_coverage) {
+      if ("id" in item || (obj.country && obj.country !== item.properties.spatial_coverage)) {
         zoomIn();
 
         return false;
@@ -280,4 +274,4 @@ export default function Map() {
       )}
     </div>
   );
-}
+});
