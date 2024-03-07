@@ -88,8 +88,13 @@ export default function Footer() {
                 </a>
               </div>
               <div className="justify-center [@media(max-width:960px)]:col-span-2 [@media(max-width:960px)]:pr-[20%] largeMobile:pr-0">
-                <a href="https://www.eaamo.org" target="_blank" rel="noopener noreferrer">
-                  <img src={EAAMO} alt="EAAMO logo" />
+                <a
+                  href="https://www.eaamo.org"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center"
+                >
+                  <img src={EAAMO} alt="EAAMO logo" className="!h-[2.2rem]" />
                 </a>
               </div>
             </div>
