@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
+import { GoogleLogin } from "@react-oauth/google";
 import FormField from "~/components/fields/form-field";
 import Seo from "~/components/seo";
 import Button from "~/components/button";
 import useSignUp from "~/mutations/auth/signup";
 import Otp from "./otp";
 import useAppStore from "~/store/app";
+import { notifyError } from "~/utils/toast";
+import useGoogleAuth from "~/mutations/auth/google";
 
 const signupSchema = Yup.object({
   firstName: Yup.string().trim().required("First name is required"),
@@ -34,6 +37,8 @@ const signupSchema = Yup.object({
 });
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
@@ -41,6 +46,7 @@ export default function Signup() {
   const { signupState, setSignupState } = useAppStore();
 
   const signup = useSignUp();
+  const googleAuth = useGoogleAuth();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -150,7 +156,7 @@ export default function Signup() {
             </Link>
           </p>
           <p className="text-sm mt-2 mb-2 font-semibold">Or</p>
-          <Button
+          {/* <Button
             variant="outlined"
             className="!w-full flex item-center gap-[1.3rem] !p-3 !px-[0.8rem]"
           >
@@ -158,7 +164,21 @@ export default function Signup() {
               <FcGoogle className="text-xl" />
             </div>
             <p>Sign up with Google</p>
-          </Button>
+          </Button> */}
+          <GoogleLogin
+            onSuccess={async ({ credential }) => {
+              const response = await googleAuth.mutateAsync({
+                auth_token: credential!,
+              });
+
+              if (response) {
+                navigate("/");
+              }
+            }}
+            onError={() => {
+              notifyError("Error occured while logging in with google");
+            }}
+          />
         </div>
       )}
     </>
