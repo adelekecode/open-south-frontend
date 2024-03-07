@@ -94,7 +94,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="flex items-center"
                 >
-                  <img src={EAAMO} alt="EAAMO logo" className="!h-[3rem]" />
+                  <img src={EAAMO} alt="EAAMO logo" className="!h-[2.2rem]" />
                 </a>
               </div>
             </div>
