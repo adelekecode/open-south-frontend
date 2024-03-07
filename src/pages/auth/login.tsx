@@ -4,7 +4,8 @@ import { isAxiosError } from "axios";
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
-import { FcGoogle } from "react-icons/fc";
+// import { FcGoogle } from "react-icons/fc";
+import { GoogleLogin } from "@react-oauth/google";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import FormField from "~/components/fields/form-field";
@@ -13,6 +14,8 @@ import Seo from "~/components/seo";
 import Button from "~/components/button";
 import useAppStore from "~/store/app";
 import { useRequestOTP } from "~/mutations/auth/otp";
+import useGoogleAuth from "~/mutations/auth/google";
+import { notifyError } from "~/utils/toast";
 
 const loginSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Email is required"),
@@ -29,17 +32,46 @@ const loginSchema = Yup.object({
 export default function Login() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  // const googleBtnRef = useRef<HTMLDivElement | null>(null);
 
   const login = useLogin();
   const requestOtp = useRequestOTP();
+  const googleAuth = useGoogleAuth();
 
   const { setSignupState } = useAppStore();
 
   const [showPassword, setShowPassword] = useState(false);
 
+  // const googleLogin = useGoogleLogin({
+  //   // flow: "auth-code",
+
+  //   onSuccess: async ({ access_token, ...rest }) => {
+  //     console.log({ access_token, ...rest });
+
+  //     const response = await googleAuth.mutateAsync({
+  //       auth_token: access_token,
+  //     });
+
+  //     console.log(response);
+  //   },
+  //   onError: (errorResponse) => notifyError(`${errorResponse.error_description}`),
+  // });
+
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
+
+  // const googleContainer = document.querySelector(".google-container");
+
+  // useEffect(() => {
+  //   if (googleContainer) {
+  //     const googleBtn = document.querySelector(
+  //       ".google-container div div div"
+  //     ) as HTMLDivElement | null;
+
+  //     googleBtnRef.current = googleBtn;
+  //   }
+  // }, [googleContainer]);
 
   function handleActivationError(email: string): ReactNode {
     if (!login.error) return <Fragment />;
@@ -76,6 +108,27 @@ export default function Login() {
     return <Fragment />;
   }
 
+  function handleNavigation(
+    data: CurrentUser & {
+      access: string;
+      refresh: string;
+    }
+  ) {
+    let path = "/";
+
+    if (state?.from) {
+      path = state.from;
+    } else {
+      if (data.role === "admin") {
+        path = "/admin/dashboard";
+      } else {
+        path = "/account/dashboard";
+      }
+    }
+
+    navigate(path);
+  }
+
   return (
     <>
       <Seo title="Log In" description="Log in to your ATO account" />
@@ -100,13 +153,7 @@ export default function Login() {
             });
 
             if (data) {
-              navigate(
-                state?.from
-                  ? state.from
-                  : data.role === "admin"
-                    ? "/admin/dashboard"
-                    : "/account/dashboard"
-              );
+              handleNavigation(data);
             }
           }}
           validateOnBlur={false}
@@ -169,15 +216,37 @@ export default function Login() {
           </Link>
         </p>
         <p className="text-sm mt-2 mb-2 font-semibold">Or</p>
-        <Button
+        {/* <Button
           variant="outlined"
           className="!w-full flex item-center gap-[1.3rem] !p-3 !px-[0.8rem]"
+          onClick={() => {
+            googleBtnRef.current?.click();
+          }}
         >
           <div>
             <FcGoogle className="text-xl" />
           </div>
           <p>Log in with Google</p>
-        </Button>
+        </Button> */}
+        {/* <div className="w-full hidden"> */}
+        <GoogleLogin
+          // containerProps={{
+          //   className: "google-container [&_iframe]:!hidden",
+          // }}
+          onSuccess={async ({ credential }) => {
+            const response = await googleAuth.mutateAsync({
+              auth_token: credential!,
+            });
+
+            if (response) {
+              handleNavigation(response);
+            }
+          }}
+          onError={() => {
+            notifyError("Error occured while logging in with google");
+          }}
+        />
+        {/* </div> */}
       </div>
     </>
   );
