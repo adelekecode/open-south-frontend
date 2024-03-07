@@ -32,7 +32,7 @@ export default function Contact() {
             Contact Us
           </h1>
           <p className="text-base largeMobile:text-sm">
-            Do you have a question for Open South? Kindly reach out to us
+            Do you have a question for Open South? Kindly reach out to us.
           </p>
         </div>
         <Formik

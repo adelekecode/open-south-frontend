@@ -76,7 +76,7 @@ export default function Footer() {
           </Link>
           <div className="flex flex-col gap-4 max-w-[70%] [@media(max-width:580px)]:max-w-[none]">
             <p className="text-sm font-medium text-center">Our Partners</p>
-            <div className="grid grid-cols-2 gap-6 largeMobile:flex largeMobile:flex-wrap [&_div]:flex [&_img]:h-[4rem] [&_img]:min-w-[4rem]">
+            <div className="flex flex-wrap [@media(max-width:960px)]:grid [@media(max-width:960px)]:grid-cols-2 gap-6 largeMobile:flex largeMobile:flex-wrap [&_div]:flex [&_img]:h-[4rem] [&_img]:min-w-[4rem]">
               <div className="justify-end">
                 <a href="https://humancompatible.ai" target="_blank" rel="noopener noreferrer">
                   <img src={CHAI} alt="CHAI logo" />
@@ -87,7 +87,7 @@ export default function Footer() {
                   <img src={BIDS} alt="BIDS logo" />
                 </a>
               </div>
-              <div className="justify-center col-span-2 pr-[20%] largeMobile:pr-0">
+              <div className="justify-center [@media(max-width:960px)]:col-span-2 [@media(max-width:960px)]:pr-[20%] largeMobile:pr-0">
                 <a href="https://www.eaamo.org" target="_blank" rel="noopener noreferrer">
                   <img src={EAAMO} alt="EAAMO logo" />
                 </a>
