@@ -36,7 +36,7 @@ export default function SearchInput({
           },
           "& .MuiOutlinedInput-input": {
             height: "100%",
-            padding: "8px 12px",
+            padding: "10px 12px",
             fontFamily: '"Work Sans", sans-serif',
             backgroundColor: "rgb(228 228 231)",
             "&::placeholder": {

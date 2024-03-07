@@ -7,15 +7,18 @@ import theme from "./theme.tsx";
 import ReactQueryProvider from "./providers/react-query.tsx";
 import Toast from "./components/toast.tsx";
 import AppLoader from "./components/loader/app-loader.tsx";
+import { GoogleProvider } from "./providers/google.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ReactQueryProvider>
-      <ThemeProvider theme={theme}>
-        <Suspense fallback={<AppLoader />}>
-          <App />
-        </Suspense>
-      </ThemeProvider>
+      <GoogleProvider>
+        <ThemeProvider theme={theme}>
+          <Suspense fallback={<AppLoader />}>
+            <App />
+          </Suspense>
+        </ThemeProvider>
+      </GoogleProvider>
     </ReactQueryProvider>
     <Toast />
   </React.StrictMode>

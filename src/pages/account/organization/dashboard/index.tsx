@@ -8,7 +8,8 @@ import { AiOutlineEye } from "react-icons/ai";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import { useUserOrganizationDatasets } from "~/queries/dataset";
-import TopViewers from "./top-viewers";
+import MostAccessedDatasets from "./most-accessed-datasets";
+import TopTrafficLocations from "./top-traffic-locations";
 
 const columns: GridColDef[] = [
   {
@@ -186,7 +187,8 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 tablet:grid-cols-1">
-          <TopViewers />
+          <MostAccessedDatasets />
+          <TopTrafficLocations />
         </div>
         <div className="w-full border border-info-100 bg-white p-4 rounded-md flex flex-col gap-4 py-5 pt-4">
           <div className="flex items-center justify-between">

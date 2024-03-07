@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import mapboxgl, { LngLat, LngLatLike, Map as MapBoxMap, MapboxGeoJSONFeature } from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { usePublicMapDatasets } from "~/queries/dataset";
@@ -48,7 +48,7 @@ function popupHandler(map: MapBoxMap, num: number, lngLat: LngLat, country: stri
     .addTo(map);
 }
 
-export default function Map() {
+export default memo(function Map() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { data, isLoading } = usePublicMapDatasets();
@@ -77,16 +77,20 @@ export default function Map() {
       count: 0,
     };
 
-    obj.isZoomedOnCountry = clusterChildren.every((item) => {
-      if ("id" in item) {
-        clusterSource.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
-          if (err) return;
+    function zoomIn() {
+      clusterSource.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
+        if (err) return;
 
-          map.easeTo({
-            center: (feature.geometry as { type: string; coordinates: LngLatLike }).coordinates,
-            zoom,
-          });
+        map.easeTo({
+          center: (feature.geometry as { type: string; coordinates: LngLatLike }).coordinates,
+          zoom,
         });
+      });
+    }
+
+    obj.isZoomedOnCountry = clusterChildren.every((item) => {
+      if ("id" in item || (obj.country && obj.country !== item.properties.spatial_coverage)) {
+        zoomIn();
 
         return false;
       }
@@ -270,4 +274,4 @@ export default function Map() {
       )}
     </div>
   );
-}
+});

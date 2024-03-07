@@ -6,7 +6,7 @@ import { notifyError, notifySuccess } from "~/utils/toast";
 export function useForgotPassword() {
   return useMutation(
     async (data: Record<"email", string>) => {
-      const { data: response } = await axios.post("/auth/reset-password/", data);
+      const response = await axios.post("/auth/reset-password/", data);
 
       return response;
     },
@@ -18,6 +18,10 @@ export function useForgotPassword() {
         if (isAxiosError(error)) {
           if (error.response?.status === 404) {
             notifyError("User with this email does not exist!");
+          } else if (error.response?.status === 403) {
+            const errMsg = error.response.data.error as string;
+
+            notifyError(errMsg[0].toUpperCase() + errMsg.slice(1));
           }
         }
       },
