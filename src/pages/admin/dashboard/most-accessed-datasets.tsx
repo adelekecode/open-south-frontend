@@ -7,23 +7,23 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const apiData = [
   {
-    label: "Economy",
+    label: "Song",
     value: 12,
   },
   {
-    label: "Environment",
+    label: "Test 44",
     value: 19,
   },
   {
-    label: "Health",
+    label: "China reserved place",
     value: 3,
   },
   {
-    label: "Culture and History",
+    label: "Github activities in Nigeria",
     value: 5,
   },
   {
-    label: "Energy",
+    label: "Evergreen Source",
     value: 2,
   },
 ];
@@ -100,7 +100,7 @@ export default function MostAccessedDatasets() {
                         total += data[i];
                       }
 
-                      const result = (+formattedValue / total) * 360;
+                      const result = (+formattedValue / total) * 100;
 
                       return `${Math.round(result)}%`;
                     },
