@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import {
   Chart as ChartJS,
   Tooltip,
@@ -11,6 +12,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import ChartWrapper from "~/components/chart-wrapper";
+import { useAverageViewPerCategory } from "~/queries/admin-dashboard";
 
 ChartJS.register(
   CategoryScale,
@@ -23,39 +25,41 @@ ChartJS.register(
   Legend
 );
 
-export default function AverageViewsPerCategory() {
-  const labels = [
-    "Economy",
-    "Environment",
-    "Health",
-    "Culture and History",
-    "Energy",
-    "Infrastructure",
-  ];
+export default memo(function AverageViewsPerCategory() {
+  const { data: _data } = useAverageViewPerCategory();
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Day",
-        data: [5, 23, 345, 566, 400, 30],
-        backgroundColor: "#008000eb",
-        borderColor: "#008000eb",
-      },
-      {
-        label: "Week",
-        data: [1, 50, 45, 300, 300, 20],
-        backgroundColor: "#ffa500e6",
-        borderColor: "#ffa500e6",
-      },
-      {
-        label: "Month",
-        data: [1, 100, 445, 277, 350, 50],
-        backgroundColor: "#00a4ff",
-        borderColor: "#00a4ff",
-      },
-    ],
-  };
+  const { labels, values } = useMemo(() => {
+    const labels: string[] = [];
+    const values: Record<"day" | "week" | "month", number[]> = {
+      day: [],
+      week: [],
+      month: [],
+    };
+
+    if (_data) {
+      for (const key in _data) {
+        switch (key) {
+          case "daily":
+            for (const item of _data[key]) {
+              labels.push(item.name);
+              values.day.push(item.views);
+            }
+            break;
+          case "weekly":
+            for (const item of _data[key]) {
+              values.week.push(item.views);
+            }
+            break;
+          case "monthly":
+            for (const item of _data[key]) {
+              values.month.push(item.views);
+            }
+        }
+      }
+    }
+
+    return { labels, values };
+  }, [_data]);
 
   return (
     <ChartWrapper title="Average views per category">
@@ -69,8 +73,30 @@ export default function AverageViewsPerCategory() {
             },
           },
         }}
-        data={data}
+        data={{
+          labels,
+          datasets: [
+            {
+              label: "Day",
+              data: values.day,
+              backgroundColor: "#008000eb",
+              borderColor: "#008000eb",
+            },
+            {
+              label: "Week",
+              data: values.week,
+              backgroundColor: "#ffa500e6",
+              borderColor: "#ffa500e6",
+            },
+            {
+              label: "Month",
+              data: values.month,
+              backgroundColor: "#00a4ff",
+              borderColor: "#00a4ff",
+            },
+          ],
+        }}
       />
     </ChartWrapper>
   );
-}
+});

@@ -5,3 +5,9 @@ export function useDashboardCards() {
     `/admin/dashboard/counts/`,
   ]);
 }
+
+export function useAverageViewPerCategory() {
+  return useQuery<Record<"daily" | "weekly" | "monthly", { name: string; views: 0 }[]>>([
+    `/admin/average-category/chart/`,
+  ]);
+}
