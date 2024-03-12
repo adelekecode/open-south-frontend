@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import {
   Chart as ChartJS,
   Tooltip,
@@ -9,39 +10,45 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartWrapper from "~/components/chart-wrapper";
+import { useAverageDownloadPerCategory } from "~/queries/admin-dashboard";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function AverageDownloadsPerCategory() {
-  const labels = [
-    "Economy",
-    "Environment",
-    "Health",
-    "Culture and History",
-    "Energy",
-    "Infrastructure",
-  ];
+export default memo(function AverageDownloadsPerCategory() {
+  const { data } = useAverageDownloadPerCategory();
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Day",
-        data: [5, 23, 345, 566],
-        backgroundColor: "#00a4ff",
-      },
-      {
-        label: "Week",
-        data: [1, 23, 135, 500],
-        backgroundColor: "#ffa500e6",
-      },
-      {
-        label: "Month",
-        data: [1, 23, 205, 456],
-        backgroundColor: "#008000eb",
-      },
-    ],
-  };
+  const { labels, values } = useMemo(() => {
+    const labels: string[] = [];
+    const values: Record<"day" | "week" | "month", number[]> = {
+      day: [],
+      week: [],
+      month: [],
+    };
+
+    if (data) {
+      for (const key in data) {
+        switch (key) {
+          case "daily":
+            for (const item of data[key]) {
+              labels.push(item.name);
+              values.day.push(item.downloads);
+            }
+            break;
+          case "weekly":
+            for (const item of data[key]) {
+              values.week.push(item.downloads);
+            }
+            break;
+          case "monthly":
+            for (const item of data[key]) {
+              values.month.push(item.downloads);
+            }
+        }
+      }
+    }
+
+    return { labels, values };
+  }, [data]);
 
   return (
     <ChartWrapper title="Average Download per Category Across Different Time Frames">
@@ -54,8 +61,27 @@ export default function AverageDownloadsPerCategory() {
             },
           },
         }}
-        data={data}
+        data={{
+          labels,
+          datasets: [
+            {
+              label: "Day",
+              data: values.day,
+              backgroundColor: "#00a4ff",
+            },
+            {
+              label: "Week",
+              data: values.week,
+              backgroundColor: "#ffa500e6",
+            },
+            {
+              label: "Month",
+              data: values.month,
+              backgroundColor: "#008000eb",
+            },
+          ],
+        }}
       />
     </ChartWrapper>
   );
-}
+});

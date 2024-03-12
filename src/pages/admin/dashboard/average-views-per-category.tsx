@@ -26,7 +26,7 @@ ChartJS.register(
 );
 
 export default memo(function AverageViewsPerCategory() {
-  const { data: _data } = useAverageViewPerCategory();
+  const { data } = useAverageViewPerCategory();
 
   const { labels, values } = useMemo(() => {
     const labels: string[] = [];
@@ -36,22 +36,22 @@ export default memo(function AverageViewsPerCategory() {
       month: [],
     };
 
-    if (_data) {
-      for (const key in _data) {
+    if (data) {
+      for (const key in data) {
         switch (key) {
           case "daily":
-            for (const item of _data[key]) {
+            for (const item of data[key]) {
               labels.push(item.name);
               values.day.push(item.views);
             }
             break;
           case "weekly":
-            for (const item of _data[key]) {
+            for (const item of data[key]) {
               values.week.push(item.views);
             }
             break;
           case "monthly":
-            for (const item of _data[key]) {
+            for (const item of data[key]) {
               values.month.push(item.views);
             }
         }
@@ -59,7 +59,7 @@ export default memo(function AverageViewsPerCategory() {
     }
 
     return { labels, values };
-  }, [_data]);
+  }, [data]);
 
   return (
     <ChartWrapper title="Average views per category">

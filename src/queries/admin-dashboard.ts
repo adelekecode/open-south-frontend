@@ -11,3 +11,9 @@ export function useAverageViewPerCategory() {
     `/admin/average-category/chart/`,
   ]);
 }
+
+export function useAverageDownloadPerCategory() {
+  return useQuery<Record<"daily" | "weekly" | "monthly", { name: string; downloads: 0 }[]>>([
+    `/admin/average-download/chart/`,
+  ]);
+}
