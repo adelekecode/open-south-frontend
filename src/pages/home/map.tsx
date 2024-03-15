@@ -48,61 +48,61 @@ function popupHandler(map: MapBoxMap, num: number, lngLat: LngLat, country: stri
     .addTo(map);
 }
 
+async function zoomHandler(
+  map: MapBoxMap,
+  clusterId: number,
+  clusterSource: any,
+  feature: MapboxGeoJSONFeature
+) {
+  const clusterChildren = await new Promise<Promise<Source["features"]> | Feature[]>(
+    (resolve, reject) => {
+      clusterSource.getClusterChildren(clusterId, (err: any, feature: any) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve(feature);
+      });
+    }
+  );
+
+  const obj = {
+    isZoomedOnCountry: false,
+    country: "",
+    count: 0,
+  };
+
+  function zoomIn() {
+    clusterSource.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
+      if (err) return;
+
+      map.easeTo({
+        center: (feature.geometry as { type: string; coordinates: LngLatLike }).coordinates,
+        zoom,
+      });
+    });
+  }
+
+  obj.isZoomedOnCountry = clusterChildren.every((item) => {
+    if ("id" in item || (obj.country && obj.country !== item.properties.spatial_coverage)) {
+      zoomIn();
+
+      return false;
+    }
+
+    obj.country = item.properties.spatial_coverage;
+    obj.count++;
+
+    return true;
+  });
+
+  return obj;
+}
+
 export default memo(function Map() {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { data, isLoading } = usePublicMapDatasets();
-
-  async function zoomHandler(
-    map: MapBoxMap,
-    clusterId: number,
-    clusterSource: any,
-    feature: MapboxGeoJSONFeature
-  ) {
-    const clusterChildren = await new Promise<Promise<Source["features"]> | Feature[]>(
-      (resolve, reject) => {
-        clusterSource.getClusterChildren(clusterId, (err: any, feature: any) => {
-          if (err) {
-            reject(err);
-          }
-
-          resolve(feature);
-        });
-      }
-    );
-
-    const obj = {
-      isZoomedOnCountry: false,
-      country: "",
-      count: 0,
-    };
-
-    function zoomIn() {
-      clusterSource.getClusterExpansionZoom(clusterId, (err: any, zoom: number) => {
-        if (err) return;
-
-        map.easeTo({
-          center: (feature.geometry as { type: string; coordinates: LngLatLike }).coordinates,
-          zoom,
-        });
-      });
-    }
-
-    obj.isZoomedOnCountry = clusterChildren.every((item) => {
-      if ("id" in item || (obj.country && obj.country !== item.properties.spatial_coverage)) {
-        zoomIn();
-
-        return false;
-      }
-
-      obj.country = item.properties.spatial_coverage;
-      obj.count++;
-
-      return true;
-    });
-
-    return obj;
-  }
 
   useEffect(() => {
     if (!data) return;

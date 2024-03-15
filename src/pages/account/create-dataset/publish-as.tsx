@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import Button from "~/components/button";
@@ -14,10 +15,22 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
 
   const { organization, setOrganization } = useCreateDatasetStore();
 
-  const { data: organizations, isLoading: isLoadingOrganizations } = useUserOrganizations();
+  const { data, isLoading } = useUserOrganizations();
 
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
+
+  const hasApprovedOrganizations = useMemo(() => {
+    if (data) {
+      for (const item of data) {
+        if (item.status === "approved") {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }, [data]);
 
   return (
     <div className="pt-4 flex flex-col gap-10">
@@ -60,7 +73,7 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
               </button>
             </div>
           </div>
-          {isLoadingOrganizations ? (
+          {isLoading ? (
             <div className="grid grid-cols-3 gap-4 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index + 1} className="border p-2 h-[7rem] rounded-sm flex items-start">
@@ -71,13 +84,13 @@ export default function PublishAs({ setActiveIndex }: PublishAsProps) {
                 </div>
               ))}
             </div>
-          ) : organizations && organizations.length > 0 ? (
+          ) : data && data.length > 0 && hasApprovedOrganizations ? (
             <div className="flex flex-col gap-2">
               <p className="text-sm font-medium largeMobile:text-xs">
                 Publish from an organization
               </p>
               <div className="grid grid-cols-3 tablet:grid-cols-2 [@media(max-width:560px)]:grid-cols-1 gap-4">
-                {organizations.map((item, index) => {
+                {data.map((item, index) => {
                   const isActive = organization?.id === item.id;
                   const { logo, name, status } = item;
 

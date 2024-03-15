@@ -263,26 +263,13 @@ export function useDeleteDatasetFile() {
 }
 
 export function useDatasetView() {
-  return useMutation(
-    async (id: string) => {
-      const { data: response } = await axiosPrivate.post(`/datasets/views/${id}/`);
+  return useMutation(async ({ id, country }: { id: string; country?: string }) => {
+    const { data: response } = await axiosPrivate.post(`/datasets/views/${id}/`);
 
-      return response;
-    },
-    {
-      onError(error) {
-        if (isAxiosError(error)) {
-          if (error.response?.status === 400) {
-            notifyError("Error occured while counting views");
-          } else {
-            if (typeof error === "string") {
-              notifyError(error);
-            }
-          }
-        }
-      },
-    }
-  );
+    await axiosPrivate.post(`/public/location/analysis/?key=public&country=${country}`);
+
+    return response;
+  });
 }
 
 export function useChangeDatasetStatus(pagination: Pagination, queryParams: QueryParams) {
