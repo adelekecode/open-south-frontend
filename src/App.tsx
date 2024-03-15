@@ -59,6 +59,7 @@ import UserOrganization from "./layouts/user-organization";
 import PublicProfile from "./pages/public-profile";
 import AppLayoutWrapper from "./layouts/app-wrapper";
 import EditDataset from "./pages/account/edit-dataset";
+import CheckLocationPermission from "./layouts/check-location-permission";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -69,175 +70,177 @@ const router = createBrowserRouter(
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token/:uuid" element={<ResetPassword />} />
       </Route>
-      <Route loader={dashboardLoader}>
-        <Route element={<Protected />}>
-          <Route element={<AppLayoutWrapper />}>
-            <Route
-              element={
-                <>
-                  <UserRestricted />
-                </>
-              }
-            >
+      <Route element={<CheckLocationPermission />}>
+        <Route loader={dashboardLoader}>
+          <Route element={<Protected />}>
+            <Route element={<AppLayoutWrapper />}>
               <Route
-                path="/account/dashboard"
                 element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <Dashboard />
-                  </Suspense>
+                  <>
+                    <UserRestricted />
+                  </>
                 }
-              />
-              <Route
-                path="/account/datasets"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AccountDataset />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/account/datasets/new"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <CreateDataset />
-                  </Suspense>
-                }
-              />
-              <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
-              <Route path="/account/datasets/:id/edit" element={<EditDataset />} />
-              <Route element={<UserOrganization />}>
+              >
                 <Route
-                  path="/account/:slug/dashboard"
+                  path="/account/dashboard"
                   element={
                     <Suspense fallback={<DashboardLoader />}>
-                      <OrgDashboard />
+                      <Dashboard />
                     </Suspense>
                   }
                 />
                 <Route
-                  path="/account/:slug/datasets"
+                  path="/account/datasets"
                   element={
                     <Suspense fallback={<DashboardLoader />}>
-                      <OrgDataset />
+                      <AccountDataset />
                     </Suspense>
                   }
                 />
                 <Route
-                  path="/account/:slug/datasets/:id"
+                  path="/account/datasets/new"
                   element={
                     <Suspense fallback={<DashboardLoader />}>
-                      <OrgDatasetDetails />
+                      <CreateDataset />
                     </Suspense>
                   }
                 />
-                <Route path="/account/:slug/edit" element={<EditOrganization />} />
+                <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
+                <Route path="/account/datasets/:id/edit" element={<EditDataset />} />
+                <Route element={<UserOrganization />}>
+                  <Route
+                    path="/account/:slug/dashboard"
+                    element={
+                      <Suspense fallback={<DashboardLoader />}>
+                        <OrgDashboard />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/account/:slug/datasets"
+                    element={
+                      <Suspense fallback={<DashboardLoader />}>
+                        <OrgDataset />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="/account/:slug/datasets/:id"
+                    element={
+                      <Suspense fallback={<DashboardLoader />}>
+                        <OrgDatasetDetails />
+                      </Suspense>
+                    }
+                  />
+                  <Route path="/account/:slug/edit" element={<EditOrganization />} />
+                </Route>
+                <Route path="/account/organizations/new" element={<CreateOrganization />} />
+                <Route
+                  path="/account/profile"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <Profile />
+                    </Suspense>
+                  }
+                />
               </Route>
-              <Route path="/account/organizations/new" element={<CreateOrganization />} />
-              <Route
-                path="/account/profile"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <Profile />
-                  </Suspense>
-                }
-              />
-            </Route>
-            <Route element={<AdminRestricted />}>
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminDashboard />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/datasets"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminDataset />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/datasets/:id"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminDatasetDetails />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/categories"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminCategory />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/users"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <User />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/profile"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <Profile />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/news"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminNews />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/organizations"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminOrganization />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/admin/organizations/:id"
-                element={
-                  <Suspense fallback={<DashboardLoader />}>
-                    <AdminOrganizationDetails />
-                  </Suspense>
-                }
-              />
+              <Route element={<AdminRestricted />}>
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <AdminDashboard />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/admin/datasets"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <AdminDataset />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/admin/datasets/:id"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <AdminDatasetDetails />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/admin/categories"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <AdminCategory />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/admin/users"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <User />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/admin/profile"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <Profile />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/admin/news"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <AdminNews />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/admin/organizations"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <AdminOrganization />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/admin/organizations/:id"
+                  element={
+                    <Suspense fallback={<DashboardLoader />}>
+                      <AdminOrganizationDetails />
+                    </Suspense>
+                  }
+                />
+              </Route>
             </Route>
           </Route>
         </Route>
-      </Route>
-      <Route loader={appLoader}>
-        <Route element={<GetCurrentUser />}>
-          <Route element={<AppLayoutWrapper />}>
-            <Route element={<AppLayout />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/datasets" element={<Dataset />} />
-              <Route path="/datasets/:slug" element={<DatasetDetails />} />
-              <Route path="/categories" element={<Category />} />
-              <Route path="/users/:id" element={<PublicProfile />} />
-              <Route path="/organizations" element={<Organization />} />
-              <Route path="/organizations/:slug" element={<OrganizationDetails />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/news/:slug" element={<NewsDetails />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/partners" element={<Partner />} />
+        <Route loader={appLoader}>
+          <Route element={<GetCurrentUser />}>
+            <Route element={<AppLayoutWrapper />}>
+              <Route element={<AppLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/datasets" element={<Dataset />} />
+                <Route path="/datasets/:slug" element={<DatasetDetails />} />
+                <Route path="/categories" element={<Category />} />
+                <Route path="/users/:id" element={<PublicProfile />} />
+                <Route path="/organizations" element={<Organization />} />
+                <Route path="/organizations/:slug" element={<OrganizationDetails />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/news/:slug" element={<NewsDetails />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/faq" element={<Faq />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/partners" element={<Partner />} />
+              </Route>
             </Route>
           </Route>
         </Route>
