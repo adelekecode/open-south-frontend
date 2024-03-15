@@ -12,6 +12,7 @@ import { usePublicDatasetDetails } from "~/queries/dataset";
 import NotFound from "../404";
 import FilePreview from "~/components/file/preview";
 import { useDatasetFileDownload } from "~/mutations/dataset";
+import useAppStore from "~/store/app";
 
 const filesPerPage = 3;
 
@@ -21,6 +22,8 @@ export default function DatasetDetails() {
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const effectHasRun = useRef(false);
 
+  const { userLocation } = useAppStore();
+
   const [previewFile, setPreviewFile] = useState<{
     open: boolean;
     data: Dataset["files"][0] | null;
@@ -28,7 +31,6 @@ export default function DatasetDetails() {
     open: false,
     data: null,
   });
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading } = usePublicDatasetDetails(slug || "", {
@@ -54,7 +56,10 @@ export default function DatasetDetails() {
     if (data?.id) {
       if (!effectHasRun.current) {
         (async () => {
-          await datasetView.mutateAsync(data.id);
+          await datasetView.mutateAsync({
+            id: data.id,
+            country: userLocation?.country,
+          });
           effectHasRun.current = true;
         })();
       }

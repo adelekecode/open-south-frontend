@@ -5,3 +5,15 @@ export function useDashboardCards() {
     `/admin/dashboard/counts/`,
   ]);
 }
+
+export function useAverageViewPerCategory() {
+  return useQuery<Record<"daily" | "weekly" | "monthly", { name: string; views: 0 }[]>>([
+    `/admin/average-category/chart/`,
+  ]);
+}
+
+export function useAverageDownloadPerCategory() {
+  return useQuery<Record<"daily" | "weekly" | "monthly", { name: string; downloads: 0 }[]>>([
+    `/admin/average-download/chart/`,
+  ]);
+}
