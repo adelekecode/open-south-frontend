@@ -1,16 +1,14 @@
-import axios from "axios";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import axios from "axios";
 import useAppStore from "~/store/app";
 
 export default function CheckLocationPermission() {
-  const permissionRef = useRef(false);
-
-  const { setUserLocation } = useAppStore();
+  const { setUserLocation, userLocation } = useAppStore();
 
   useEffect(() => {
-    (async () => {
-      if (!permissionRef.current) {
+    if (!userLocation) {
+      (async () => {
         const result = await navigator.permissions.query({ name: "geolocation" });
 
         if (["prompt", "granted"].includes(result.state)) {
@@ -27,20 +25,19 @@ export default function CheckLocationPermission() {
                 feature.place_type.includes("country")
               );
 
-              if (countryFeature) {
+              if (countryFeature && countryFeature.text) {
                 setUserLocation({
                   country: countryFeature.text,
                   lat: latitude,
                   lng: longitude,
                 });
-                permissionRef.current = true;
               }
             }
           });
         }
-      }
-    })();
-  }, [setUserLocation]);
+      })();
+    }
+  }, [setUserLocation, userLocation]);
 
   return <Outlet />;
 }
