@@ -6,7 +6,10 @@ import { axiosPrivate } from "~/utils/api";
 export function useSendMessage() {
   return useMutation(
     async (data: Record<"name" | "email" | "message", string>) => {
-      const { data: response } = await axiosPrivate.post(`/public/support/system/`, data);
+      const { data: response } = await axiosPrivate.post(
+        `/public/support/system/?key=public`,
+        data
+      );
 
       return response;
     },

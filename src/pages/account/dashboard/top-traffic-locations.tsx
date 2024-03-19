@@ -1,41 +1,67 @@
+import { memo } from "react";
 import ChartWrapper from "~/components/chart-wrapper";
+import { useTopTrafficLocations } from "~/queries/user-dashboard";
+import TopTrafficLocationsIllustration from "~/assets/illustrations/dashboard-chart/top-traffic-locations.png";
 
-export default function TopTrafficLocations() {
-  const colors = [
-    "bg-[#00a4ff]",
-    "bg-[#ffa500e6]",
-    "bg-[#008000eb]",
-    "bg-[#ab2fab]",
-    "bg-[#a73d3d]",
-  ];
+const bgColors = [
+  "bg-[#00a4ff]",
+  "bg-[#ffa500e6]",
+  "bg-[#008000eb]",
+  "bg-[#ab2fab]",
+  "bg-[#a73d3d]",
+];
+const borderColors = [
+  "border-[#ffa500e6]",
+  "border-[#008000eb]",
+  "border-[#ab2fab]",
+  "border-[#a73d3d]",
+];
+
+export default memo(function TopTrafficLocations() {
+  const { data } = useTopTrafficLocations();
 
   return (
-    <ChartWrapper title="Top Traffic Locations" wrapperClassName="px-6 pb-6">
-      <div className="w-full flex flex-col gap-4">
-        <div className="w-full mx-auto grid grid-cols-[40%,10%,20%,20%,10%] items-center overflow-hidden rounded-full h-3 [&>span]:h-full">
-          {colors.map((color, index) => (
-            <span className={`${color}`} key={index + 1} />
-          ))}
+    <ChartWrapper title="Top Traffic Locations" wrapperClassName="px-6 largeMobile:px-4 pb-6">
+      {data?.top_locations && data.top_locations.length >= 1 ? (
+        <div className="w-full flex flex-col gap-4">
+          <div className="w-full mx-auto grid grid-cols-[40%,10%,20%,20%,10%] items-center overflow-hidden rounded-full h-3 largeMobile:h-2 [&>span]:h-full">
+            {bgColors.map((color, index) => (
+              <span className={`${color}`} key={index + 1} />
+            ))}
+          </div>
+          <div className="pl-4 largeMobile:pl-0 flex flex-col">
+            {data.top_locations.map((item, index) => (
+              <div key={index + 1} className="flex items-center gap-3">
+                <span
+                  className={`${borderColors[index]} size-4 largeMobile:size-3 border-2 rounded-full`}
+                />{" "}
+                <p className="text-base largeMobile:text-sm text-info-900">
+                  {item.country}: {item.count}
+                </p>
+              </div>
+            ))}
+            {data.others && (
+              <div className="flex items-center gap-3">
+                <span
+                  className={`${borderColors[-1]} size-4 largeMobile:size-3 border-2 rounded-full`}
+                />{" "}
+                <p className="text-base largeMobile:text-sm text-info-900">Other: {data.others}</p>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="pl-4 flex flex-col [&>div]:flex [&>div]:items-center [&>div]:gap-3 [&>div>span]:border-2 [&>div>span]:rounded-full [&>div>p]:text-base [&>div>p]:text-info-900">
-          <div>
-            <span className={`border-[#00a4ff] size-4`} />
-            <p>Nigeria: 2,030</p>
-          </div>
-          <div>
-            <span className={`border-[#ffa500e6] size-4`} /> <p>Kenya: 696</p>
-          </div>
-          <div>
-            <span className={`border-[#008000eb] size-4`} /> <p>Germany: 209</p>
-          </div>
-          <div>
-            <span className={`border-[#ab2fab] size-4`} /> <p>Ireland: 44</p>
-          </div>
-          <div>
-            <span className={`border-[#a73d3d] size-4`} /> <p>Other: 210</p>
-          </div>
+      ) : (
+        <div className="flex justify-center items-center min-h-56 flex-col">
+          <figure className="w-[200px]">
+            <img
+              src={TopTrafficLocationsIllustration}
+              alt="Top traffic locations illustration"
+              className="w-full h-full object-cover"
+            />
+          </figure>
+          <p className="text-info-600 text-sm">No traffic data available at the moment</p>
         </div>
-      </div>
+      )}
     </ChartWrapper>
   );
-}
+});
