@@ -30,3 +30,9 @@ export async function getCountryCoordinates(country: string) {
     throw error;
   }
 }
+
+export function calculatePercentage(num: number, totalCount: number) {
+  const val = (num / totalCount) * 100;
+
+  return Math.round(val) + "%";
+}

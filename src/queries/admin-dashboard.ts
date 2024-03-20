@@ -17,3 +17,22 @@ export function useAverageDownloadPerCategory() {
     `/admin/average-download/chart/`,
   ]);
 }
+
+export function useMostPublishedOrganizations() {
+  return useQuery<Organization[]>([`/admin/most-published/organisation/`]);
+}
+
+export function useTopTrafficLocations() {
+  return useQuery<{
+    top_locations: {
+      id: string;
+      country: string;
+      slug: string;
+      count: number;
+      created_at: string;
+      updated_at: string;
+      dataset: string;
+    }[];
+    others: null;
+  }>([`/admin/location/analysis/`]);
+}

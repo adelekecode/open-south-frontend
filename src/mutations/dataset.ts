@@ -266,7 +266,7 @@ export function useDatasetView() {
   return useMutation(async ({ id, country }: { id: string; country?: string }) => {
     const { data: response } = await axiosPrivate.post(`/datasets/views/${id}/`);
 
-    if (country) {
+    if (country && country !== "undefined") {
       await axiosPrivate.post(`/public/location/analysis/${id}/?key=public&country=${country}`);
     }
 

@@ -15,7 +15,7 @@ import { useAverageDownloadPerCategory } from "~/queries/admin-dashboard";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default memo(function AverageDownloadsPerCategory() {
-  const { data } = useAverageDownloadPerCategory();
+  const { data, isLoading } = useAverageDownloadPerCategory();
 
   const { labels, values } = useMemo(() => {
     const labels: string[] = [];
@@ -51,7 +51,10 @@ export default memo(function AverageDownloadsPerCategory() {
   }, [data]);
 
   return (
-    <ChartWrapper title="Average Download per Category Across Different Time Frames">
+    <ChartWrapper
+      title="Average Download per Category Across Different Time Frames"
+      isLoading={isLoading}
+    >
       <Bar
         options={{
           responsive: true,
