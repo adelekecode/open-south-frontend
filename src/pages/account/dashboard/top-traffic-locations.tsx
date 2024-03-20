@@ -27,7 +27,7 @@ function calculatePercentage(num: number, totalCount: number) {
 }
 
 export default memo(function TopTrafficLocations() {
-  const { data } = useTopTrafficLocations();
+  const { data, isLoading } = useTopTrafficLocations();
 
   const gridCols = useMemo(() => {
     if (data) {
@@ -52,7 +52,11 @@ export default memo(function TopTrafficLocations() {
   }, [data]);
 
   return (
-    <ChartWrapper title="Top Traffic Locations" wrapperClassName="px-6 tablet:px-4 pb-6">
+    <ChartWrapper
+      title="Top Traffic Locations"
+      wrapperClassName="px-6 tablet:px-4 pb-6"
+      isLoading={isLoading}
+    >
       {data?.top_locations && data.top_locations.length >= 1 ? (
         <div className="w-full flex flex-col gap-4">
           <div
