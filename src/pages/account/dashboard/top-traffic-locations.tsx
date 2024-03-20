@@ -2,31 +2,12 @@ import { memo, useMemo } from "react";
 import ChartWrapper from "~/components/chart-wrapper";
 import { useTopTrafficLocations } from "~/queries/user-dashboard";
 import TopTrafficLocationsIllustration from "~/assets/illustrations/dashboard-chart/top-traffic-locations.png";
-
-const bgColors = [
-  "bg-[#00a4ff]",
-  "bg-[#ffa500e6]",
-  "bg-[#008000eb]",
-  "bg-[#ab2fab]",
-  "bg-[#d64794]",
-  "bg-[#a73d3d]",
-];
-const borderColors = [
-  "border-[#00a4ff]",
-  "border-[#ffa500e6]",
-  "border-[#008000eb]",
-  "border-[#ab2fab]",
-  "border-[#d64794]",
-  "border-[#a73d3d]",
-];
-
-function calculatePercentage(num: number, totalCount: number) {
-  const val = (num / totalCount) * 100;
-
-  return Math.round(val) + "%";
-}
+import { calculatePercentage } from "~/utils/helper";
+import { trafficLocationColors } from "~/app-constants";
 
 export default memo(function TopTrafficLocations() {
+  const { bgColors, borderColors } = trafficLocationColors;
+
   const { data, isLoading } = useTopTrafficLocations();
 
   const gridCols = useMemo(() => {
@@ -77,7 +58,8 @@ export default memo(function TopTrafficLocations() {
                   className={`${borderColors[index]} size-4 tablet:size-3 border-2 rounded-full`}
                 />{" "}
                 <p className="text-base tablet:text-sm text-info-900">
-                  {item.country}: {item.count}
+                  <span>{item.country.charAt(0).toUpperCase() + item.country.slice(1)}</span>:{" "}
+                  <span>{item.count}</span>
                 </p>
               </div>
             ))}

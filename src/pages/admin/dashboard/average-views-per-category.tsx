@@ -26,7 +26,7 @@ ChartJS.register(
 );
 
 export default memo(function AverageViewsPerCategory() {
-  const { data } = useAverageViewPerCategory();
+  const { data, isLoading } = useAverageViewPerCategory();
 
   const { labels, values } = useMemo(() => {
     const labels: string[] = [];
@@ -62,7 +62,7 @@ export default memo(function AverageViewsPerCategory() {
   }, [data]);
 
   return (
-    <ChartWrapper title="Average views per category">
+    <ChartWrapper title="Average views per category" isLoading={isLoading}>
       <Line
         className="!w-full"
         options={{
