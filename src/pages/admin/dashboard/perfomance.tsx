@@ -4,7 +4,7 @@ export default function Performance() {
   return (
     <ChartWrapper
       title="Performance"
-      wrapperClassName="bg-transparent border-none gap-6 mt-4"
+      wrapperClassName="bg-transparent border-none gap-6 mt-4 [@media(max-width:930px)]:order-6"
       titleWrapperClassName="justify-start"
     >
       <div>

@@ -14,3 +14,7 @@ export function useTopTrafficLocations() {
     others: null;
   }>([`/organisation/location/analysis/`]);
 }
+
+export function useTopMostAccessedDatasets() {
+  return useQuery<Dataset[]>([`/organisation/most-accessed-data/`]);
+}

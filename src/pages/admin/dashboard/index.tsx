@@ -58,7 +58,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-2 tabletAndBelow:grid-cols-1 gap-4">
+        <div className="grid grid-cols-2 [@media(max-width:930px)]:grid-cols-1 gap-4">
           <AverageViewsPerCategory />
           <AverageDownloadsPerCategory />
           <MostAccessedDatasets />

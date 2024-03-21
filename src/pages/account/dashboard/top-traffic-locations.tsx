@@ -32,13 +32,23 @@ export default memo(function TopTrafficLocations() {
     }
   }, [data]);
 
+  const dataExist = data?.top_locations && data.top_locations.length >= 1;
+
   return (
     <ChartWrapper
       title="Top Traffic Locations"
       wrapperClassName="px-6 tablet:px-4 pb-6"
       isLoading={isLoading}
+      default={{
+        data: !!dataExist,
+        img: {
+          src: TopTrafficLocationsIllustration,
+          alt: "Top traffic locations illustration",
+        },
+        text: "No traffic data available at the moment",
+      }}
     >
-      {data?.top_locations && data.top_locations.length >= 1 ? (
+      {dataExist && (
         <div className="w-full flex flex-col gap-4">
           <div
             className={`w-full mx-auto grid items-center overflow-hidden rounded-full h-3 tablet:h-2 [&>span]:h-full`}
@@ -72,17 +82,6 @@ export default memo(function TopTrafficLocations() {
               </div>
             )}
           </div>
-        </div>
-      ) : (
-        <div className="flex justify-center items-center min-h-56 flex-col">
-          <figure className="w-[200px]">
-            <img
-              src={TopTrafficLocationsIllustration}
-              alt="Top traffic locations illustration"
-              className="w-full h-full object-cover"
-            />
-          </figure>
-          <p className="text-info-600 text-sm">No traffic data available at the moment</p>
         </div>
       )}
     </ChartWrapper>

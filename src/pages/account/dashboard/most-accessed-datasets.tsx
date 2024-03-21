@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartWrapper from "~/components/chart-wrapper";
@@ -11,7 +11,7 @@ const color = ["#00a4ff", "#ffa500e6", "#008000eb", "#ab2fab", "#a73d3d"];
 
 //? fix: filter
 
-export default function MostAccessedDatasets() {
+export default memo(function MostAccessedDatasets() {
   const [filteredLabels, setFilteredLabels] = useState<string[]>([]);
   const [filteredValues, setFilteredValues] = useState<number[]>([]);
 
@@ -32,8 +32,19 @@ export default function MostAccessedDatasets() {
   }, [data]);
 
   return (
-    <ChartWrapper title="Top 5 Most Accessed Datasets" isLoading={isLoading}>
-      {data ? (
+    <ChartWrapper
+      title="Top 5 Most Accessed Datasets"
+      isLoading={isLoading}
+      default={{
+        data: !!data,
+        img: {
+          src: TopMostAccessedDatasets,
+          alt: "Top most accessed datasets illustration",
+        },
+        text: "No accessed datasets at the moment",
+      }}
+    >
+      {data && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center flex-wrap gap-4">
             {labels.map((val, index) => (
@@ -102,18 +113,7 @@ export default function MostAccessedDatasets() {
             />
           </div>
         </div>
-      ) : (
-        <div className="flex justify-center items-center min-h-56 flex-col">
-          <figure className="w-[200px]">
-            <img
-              src={TopMostAccessedDatasets}
-              alt="Top most accessed datasets illustration"
-              className="w-full h-full object-cover"
-            />
-          </figure>
-          <p className="text-info-600 text-sm">No traffic data available at the moment</p>
-        </div>
       )}
     </ChartWrapper>
   );
-}
+});
