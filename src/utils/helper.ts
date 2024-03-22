@@ -36,3 +36,18 @@ export function calculatePercentage(num: number, totalCount: number) {
 
   return Math.round(val) + "%";
 }
+
+export function mostAccessedDatasetsTransformHandler(data: Dataset[] | undefined) {
+  if (data) {
+    const colors = ["#00a4ff", "#ffa500e6", "#008000eb", "#ab2fab", "#a73d3d"];
+
+    return data.map((dataset, index) => ({
+      id: dataset.id,
+      value: dataset.views,
+      label: dataset.title,
+      color: colors[index],
+    }));
+  }
+
+  return data;
+}
