@@ -11,6 +11,7 @@ import {
   Select,
 } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
+import { twMerge } from "tailwind-merge";
 import { GoKebabHorizontal } from "react-icons/go";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
@@ -192,6 +193,25 @@ export default function Dataset() {
       headerAlign: "center",
       flex: 1,
       renderCell: ({ value, row }) => {
+        const modals = {
+          unpublished: setUnpublishModal,
+          published: setPublishModal,
+          rejected: setRejectModal,
+          further_review: setFurtherReviewModal,
+        };
+
+        const options = [
+          { value: "pending", label: "Pending", condition: [] },
+          { value: "unpublished", label: "Unpublished", condition: ["published", "unpublished"] },
+          { value: "published", label: "Published" },
+          { value: "rejected", label: "Rejected", condition: ["further_review", "pending"] },
+          {
+            value: "further_review",
+            label: "Further Review",
+            condition: ["rejected", "pending"],
+          },
+        ];
+
         return (
           <Select
             className="w-full !text-[0.85rem] !py-0 !px-0"
@@ -202,53 +222,30 @@ export default function Dataset() {
             onChange={async (e) => {
               const chosenValue = e.target.value;
 
-              if (chosenValue === "pending") {
-                return;
-              }
+              if (chosenValue !== "pending") {
+                const modalSetter = modals[chosenValue as keyof typeof modals];
 
-              if (chosenValue === "unpublished") {
-                setUnpublishModal({
-                  open: true,
-                  data: row,
-                });
-              }
-
-              if (chosenValue === "published") {
-                setPublishModal({
-                  open: true,
-                  data: row,
-                });
-              }
-
-              if (chosenValue === "rejected") {
-                setRejectModal({
-                  open: true,
-                  data: row,
-                });
-              }
-
-              if (chosenValue === "further_review") {
-                setFurtherReviewModal({
-                  open: true,
-                  data: row,
-                });
+                if (modalSetter) {
+                  modalSetter({
+                    open: true,
+                    data: row,
+                  });
+                }
               }
             }}
           >
-            <MenuItem value="pending" className="!hidden">
-              Pending
-            </MenuItem>
-            <MenuItem
-              value="unpublished"
-              className={`${value === "unpublished" || (["pending", "further_review"].includes(value) && "!hidden")}`}
-            >
-              Unpublished
-            </MenuItem>
-            <MenuItem value="published" className={`${value === "published" && "!hidden"}`}>
-              Published
-            </MenuItem>
-            <MenuItem value="rejected">Rejected</MenuItem>
-            <MenuItem value="further_review">Further Review</MenuItem>
+            {options.map((option, index) => (
+              <MenuItem
+                key={index + 1}
+                value={option.value}
+                className={twMerge(
+                  !option.condition || option.condition.includes(value) ? "" : "!hidden",
+                  option.value === value ? "!hidden" : ""
+                )}
+              >
+                {option.label}
+              </MenuItem>
+            ))}
           </Select>
         );
       },
