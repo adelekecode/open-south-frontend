@@ -1,4 +1,6 @@
 import { memo, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import ChartWrapper from "~/components/chart-wrapper";
 import { useTopTrafficLocations } from "~/queries/organization-dashboard";
 import TopTrafficLocationsIllustration from "~/assets/illustrations/dashboard-chart/top-traffic-locations.png";
@@ -8,7 +10,14 @@ import { trafficLocationColors } from "~/app-constants";
 export default memo(function TopTrafficLocations() {
   const { bgColors, borderColors } = trafficLocationColors;
 
-  const { data, isLoading } = useTopTrafficLocations();
+  const { slug } = useParams();
+
+  const queryClient = useQueryClient();
+  const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
+
+  const { data, isLoading } = useTopTrafficLocations(organization?.id || "", {
+    enabled: !!organization?.id,
+  });
 
   const gridCols = useMemo(() => {
     if (data) {

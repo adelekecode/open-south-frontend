@@ -1,4 +1,6 @@
 import { memo, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartWrapper from "~/components/chart-wrapper";
@@ -12,10 +14,17 @@ const color = ["#00a4ff", "#ffa500e6", "#008000eb", "#ab2fab", "#a73d3d"];
 //? fix: filter
 
 export default memo(function MostAccessedDatasets() {
+  const { slug } = useParams();
+
   const [filteredLabels, setFilteredLabels] = useState<string[]>([]);
   const [filteredValues, setFilteredValues] = useState<number[]>([]);
 
-  const { data, isLoading } = useTopMostAccessedDatasets();
+  const queryClient = useQueryClient();
+  const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
+
+  const { data, isLoading } = useTopMostAccessedDatasets(organization?.id || "", {
+    enabled: !!organization?.id,
+  });
 
   const { values, labels } = useMemo(() => {
     const labels: string[] = [];

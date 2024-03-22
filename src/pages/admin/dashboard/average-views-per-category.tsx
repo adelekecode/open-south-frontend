@@ -72,6 +72,13 @@ export default memo(function AverageViewsPerCategory() {
               position: "top" as const,
             },
           },
+          scales: {
+            y: {
+              ticks: {
+                stepSize: 1,
+              },
+            },
+          },
         }}
         data={{
           labels,

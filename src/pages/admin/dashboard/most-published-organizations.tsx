@@ -1,24 +1,53 @@
+import { memo, useMemo } from "react";
+import {
+  Chart as ChartJS,
+  Tooltip,
+  Legend,
+  LinearScale,
+  Title,
+  CategoryScale,
+  PointElement,
+  LineElement,
+  Filler,
+} from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartWrapper from "~/components/chart-wrapper";
+import { useMostPublishedOrganizations } from "~/queries/admin-dashboard";
 
-export default function MostPublishedOrganizations() {
-  const data = {
-    labels: ["Economy", "Environment", "Health", "Culture and History", "Energy", "Infrastructure"],
-    datasets: [
-      {
-        label: "Day",
-        data: [5, 23, 345, 566, 449],
-        backgroundColor: ["#00a4ff", "#ffa500e6", "#008000eb", "#ab2fab", "#a73d3d"],
-      },
-    ],
-  };
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
+);
+
+export default memo(function MostPublishedOrganizations() {
+  const { data, isLoading } = useMostPublishedOrganizations();
+
+  const { labels, values } = useMemo(() => {
+    const labels: string[] = [];
+    const values: number[] = [];
+
+    if (data) {
+      for (const { name, data_count } of data) {
+        labels.push(name.charAt(0).toUpperCase() + name.slice(1));
+        values.push(data_count);
+      }
+    }
+
+    return { labels, values };
+  }, [data]);
 
   return (
-    <ChartWrapper title="Top 5 Most Published Organizations">
+    <ChartWrapper title="Top 5 Most Published Organizations" isLoading={isLoading}>
       <Bar
         options={{
           responsive: true,
-
+          indexAxis: "y",
           plugins: {
             legend: {
               display: false,
@@ -28,20 +57,27 @@ export default function MostPublishedOrganizations() {
             x: {
               type: "linear",
               position: "bottom",
+              ticks: {
+                stepSize: 1,
+              },
             },
             y: {
               type: "category",
               position: "left",
-
-              // scaleOverride: true,
-              // scaleSteps: 10,
-              // scaleStartValue: 0,
-              // scaleStepWidth: 1,
             },
           },
         }}
-        data={data}
+        data={{
+          labels,
+          datasets: [
+            {
+              label: "Day",
+              data: values,
+              backgroundColor: ["#00a4ff", "#ffa500e6", "#008000eb", "#ab2fab", "#a73d3d"],
+            },
+          ],
+        }}
       />
     </ChartWrapper>
   );
-}
+});
