@@ -7,29 +7,20 @@ import TopMostAccessedDatasets from "~/assets/illustrations/dashboard-chart/top-
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const color = ["#00a4ff", "#ffa500e6", "#008000eb", "#ab2fab", "#a73d3d"];
-
-//? fix: filter
+type Dataset = { id: string; value: number; label: string };
 
 export default memo(function MostAccessedDatasets() {
-  const [filteredLabels, setFilteredLabels] = useState<string[]>([]);
-  const [filteredValues, setFilteredValues] = useState<number[]>([]);
+  const [filteredDatasets, setFilteredDatasets] = useState<Dataset[]>([]);
 
   const { data, isLoading } = useTopMostAccessedDatasets();
 
-  const { values, labels } = useMemo(() => {
-    const labels: string[] = [];
-    const values: number[] = [];
+  const filteredData = useMemo(() => {
+    if (!data) return [];
 
-    if (data) {
-      for (const { title, views } of data) {
-        labels.push(title);
-        values.push(views);
-      }
-    }
-
-    return { values, labels };
-  }, [data]);
+    return data.filter(
+      (dataset) => !filteredDatasets.some((filteredDataset) => filteredDataset.id === dataset.id)
+    );
+  }, [data, filteredDatasets]);
 
   return (
     <ChartWrapper
@@ -47,31 +38,29 @@ export default memo(function MostAccessedDatasets() {
       {data && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center flex-wrap gap-4">
-            {labels.map((val, index) => (
+            {data.map((item, index) => (
               <button
                 key={index + 1}
                 className="flex items-center gap-1"
                 onClick={() => {
-                  setFilteredLabels((prev) =>
-                    prev.includes(val) ? prev.filter((item) => item !== val) : [...prev, val]
+                  const isAlreadyFiltered = filteredDatasets.some(
+                    (filteredDataset) => filteredDataset.id === item.id
                   );
 
-                  const obj = data.find((item) => item.title === val);
-
-                  if (!obj) return;
-
-                  setFilteredValues((prev) =>
-                    prev.includes(obj.views)
-                      ? prev.filter((item) => item !== obj.views)
-                      : [...prev, obj.views]
-                  );
+                  if (isAlreadyFiltered) {
+                    setFilteredDatasets((prev) =>
+                      prev.filter((filteredDataset) => filteredDataset.id !== item.id)
+                    );
+                  } else {
+                    setFilteredDatasets((prev) => [...prev, item]);
+                  }
                 }}
               >
-                <span className="size-4" style={{ backgroundColor: color[index] }} />
+                <span className="size-4" style={{ backgroundColor: item.color }} />
                 <p
-                  className={`text-xs font-medium text-info-900 ${filteredLabels.includes(val) && "line-through text-info-700"}`}
+                  className={`text-xs font-medium text-info-900 ${filteredDatasets.find((filteredDataset) => filteredDataset.id === item.id) ? "line-through text-info-700" : ""}`}
                 >
-                  {val}
+                  {item.label}
                 </p>
               </button>
             ))}
@@ -101,11 +90,11 @@ export default memo(function MostAccessedDatasets() {
                 },
               }}
               data={{
-                labels: labels.filter((val) => !filteredLabels.includes(val)),
+                labels: filteredData.map((dataset) => dataset.label),
                 datasets: [
                   {
-                    data: values.filter((val) => !filteredValues.includes(val)),
-                    backgroundColor: color,
+                    data: filteredData.map((dataset) => dataset.value),
+                    backgroundColor: filteredData.map((dataset) => dataset.color),
                     borderWidth: 1,
                   },
                 ],
