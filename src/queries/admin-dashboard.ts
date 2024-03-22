@@ -36,3 +36,7 @@ export function useTopTrafficLocations() {
     others: null;
   }>([`/admin/location/analysis/`]);
 }
+
+export function useTopMostAccessedDatasets() {
+  return useQuery<Dataset[]>([`/admin/most-accessed-data/`]);
+}

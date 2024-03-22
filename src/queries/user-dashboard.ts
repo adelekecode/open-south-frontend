@@ -26,5 +26,5 @@ export function useTopTrafficLocations() {
 }
 
 export function useTopMostAccessedDatasets() {
-  return useQuery<Dataset[]>([`/dashboard/most-accessed-data/`]);
+  return useQuery<Dataset[]>([`/user/most-accessed-data/`]);
 }
