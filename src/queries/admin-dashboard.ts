@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { mostAccessedDatasetsTransformHandler } from "~/utils/helper";
 
 export function useDashboardCards() {
   return useQuery<{ users: number; organisations: number; datasets: number; news: number }>([
@@ -38,5 +39,7 @@ export function useTopTrafficLocations() {
 }
 
 export function useTopMostAccessedDatasets() {
-  return useQuery<Dataset[]>([`/admin/most-accessed-data/`]);
+  return useQuery([`/admin/most-accessed-data/`], {
+    select: mostAccessedDatasetsTransformHandler,
+  });
 }
