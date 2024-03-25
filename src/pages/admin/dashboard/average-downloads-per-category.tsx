@@ -77,7 +77,7 @@ export default memo(function AverageDownloadsPerCategory() {
             {
               label: "Day",
               data: values.day,
-              backgroundColor: "#00a4ff",
+              backgroundColor: "#008000eb",
             },
             {
               label: "Week",
@@ -87,7 +87,7 @@ export default memo(function AverageDownloadsPerCategory() {
             {
               label: "Month",
               data: values.month,
-              backgroundColor: "#008000eb",
+              backgroundColor: "#00a4ff",
             },
           ],
         }}
