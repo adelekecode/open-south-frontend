@@ -36,7 +36,7 @@ export default memo(function TopTrafficLocations() {
 
   return (
     <ChartWrapper
-      title="Top Traffic Locations"
+      title="Top 5 Traffic Locations"
       wrapperClassName="px-6 tablet:px-4 pb-6"
       isLoading={isLoading}
       default={{

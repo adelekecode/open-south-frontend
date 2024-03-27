@@ -123,21 +123,34 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                   className: "!font-medium",
                 }}
               />
-              <SelectField
-                label="License"
-                required
-                name="license"
-                value={values.license}
-                labelProps={{
-                  className: "!font-medium",
-                }}
-              >
-                {LicenseData.map((item, index) => (
-                  <MenuItem key={index + 1} value={item.name}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </SelectField>
+              <div>
+                <SelectField
+                  label="License"
+                  required
+                  name="license"
+                  value={values.license}
+                  labelProps={{
+                    className: "!font-medium",
+                  }}
+                >
+                  {LicenseData.map((item, index) => (
+                    <MenuItem key={index + 1} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </SelectField>
+                <small className="text-info-900">
+                  Learn about licensing options for your dataset's use.{" "}
+                  <a
+                    href="https://creativecommons.org/share-your-work/cclicenses"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="!text-blue-900 underline"
+                  >
+                    Click here to find out more.
+                  </a>
+                </small>
+              </div>
               <SelectField
                 label="Update Frequency"
                 required
