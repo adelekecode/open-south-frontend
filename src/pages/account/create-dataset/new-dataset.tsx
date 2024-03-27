@@ -147,7 +147,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                     rel="noopener noreferrer"
                     className="!text-blue-900 underline"
                   >
-                    Click here to find out more.
+                    Click here to read more.
                   </a>
                 </small>
               </div>
