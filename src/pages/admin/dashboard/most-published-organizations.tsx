@@ -73,7 +73,7 @@ export default memo(function MostPublishedOrganizations() {
             {
               label: "Day",
               data: values,
-              backgroundColor: ["#00a4ff", "#ffa500e6", "#008000eb", "#ab2fab", "#a73d3d"],
+              backgroundColor: ["#00a4ffcf", "#ffa500cf", "#008000cf", "#ab2fabcf", "#d64794cf"],
             },
           ],
         }}

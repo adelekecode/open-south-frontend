@@ -8,19 +8,19 @@ export const VITE_PUBLIC_GOOGLE_CLIENT_ID = import.meta.env.VITE_PUBLIC_GOOGLE_C
 
 export const trafficLocationColors = {
   bgColors: [
-    "bg-[#00a4ff]",
-    "bg-[#ffa500e6]",
-    "bg-[#008000eb]",
-    "bg-[#ab2fab]",
+    "bg-[#00a4ffcf]",
+    "bg-[#ffa500cf]",
+    "bg-[#008000cf]",
+    "bg-[#ab2fabcf]",
     "bg-[#d64794]",
-    "bg-[#a73d3d]",
+    "bg-[#d64794cf]",
   ],
   borderColors: [
-    "border-[#00a4ff]",
-    "border-[#ffa500e6]",
-    "border-[#008000eb]",
-    "border-[#ab2fab]",
+    "border-[#00a4ffcf]",
+    "border-[#ffa500cf]",
+    "border-[#008000cf]",
+    "border-[#ab2fabcf]",
     "border-[#d64794]",
-    "border-[#a73d3d]",
+    "border-[#d64794cf]",
   ],
 };

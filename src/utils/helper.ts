@@ -39,7 +39,7 @@ export function calculatePercentage(num: number, totalCount: number) {
 
 export function mostAccessedDatasetsTransformHandler(data: Dataset[] | undefined) {
   if (data) {
-    const colors = ["#00a4ff", "#ffa500e6", "#008000eb", "#ab2fab", "#a73d3d"];
+    const colors = ["#00a4ffcf", "#ffa500cf", "#008000cf", "#ab2fabcf", "#d64794cf"];
 
     return data.map((dataset, index) => ({
       id: dataset.id,
