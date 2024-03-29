@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MenuItem, Pagination } from "@mui/material";
+import { Collapse, MenuItem, Pagination, useMediaQuery } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
+import { FaAngleDown } from "react-icons/fa6";
 import SearchInput from "~/components/inputs/search-input";
 import Seo from "~/components/seo";
 import SelectInput from "~/components/inputs/select-input";
@@ -16,6 +17,8 @@ import { usePublicCategories } from "~/queries/category";
 import { usePublicOrganizations } from "~/queries/organizations";
 import { usePublicTags } from "~/queries/tags";
 import useDebounce from "~/hooks/debounce";
+import Button from "~/components/button";
+import { twMerge } from "tailwind-merge";
 
 type SortByValue = "" | "creation_date" | "last_update";
 
@@ -24,6 +27,8 @@ export default function Dataset() {
 
   const [page, setPage] = useState(1);
   const datasetPerPage = 10;
+  const [openFilter, setOpenFilter] = useState(true);
+  const isLaptop = useMediaQuery("(min-width: 1000px)");
 
   const search = searchParams.get("q") || "";
   const filterBy = {
@@ -59,6 +64,10 @@ export default function Dataset() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
+
+  useEffect(() => {
+    setOpenFilter(isLaptop);
+  }, [isLaptop]);
 
   return (
     <>
@@ -106,213 +115,234 @@ export default function Dataset() {
             }}
           />
         </div>
-        <div className="w-full grid grid-cols-[0.8fr,2fr] py-6 gap-6 tablet:grid-cols-1">
-          <div className="w-full flex flex-col gap-3 pr-6 border-r-[1.5px] tablet:border-none border-zinc-300">
-            <header>
-              <h4 className="font-semibold text-base">Filter</h4>
-            </header>
-            <main className="flex flex-col gap-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-1">
-              <div>
-                <label htmlFor="organization">Organizations</label>
-                <AutocompleteInput
-                  id="organization"
-                  options={organizations ? organizations.results : []}
-                  getOptionLabel={(opt) => opt.name ?? opt}
-                  inputParams={{
-                    placeholder: "All Organizations",
-                  }}
-                  loading={isLoadingOrganizations}
-                  value={
-                    organizations?.results?.find((item) => item.slug === filterBy.organization) ||
-                    null
-                  }
-                  isOptionEqualToValue={(option, value) => option.slug === value.slug}
-                  onChange={(_, val) => {
-                    const chosenValue = val;
-
-                    if (!chosenValue) {
-                      return setSearchParams((params) => {
-                        params.delete("organization");
-
-                        return params;
-                      });
+        <div
+          className={twMerge(
+            "w-full grid grid-cols-[0.8fr,2fr] py-6 gap-6",
+            !isLaptop && "grid-cols-1 gap-2 pt-4",
+            openFilter && "gap-4"
+          )}
+        >
+          {!isLaptop && (
+            <Button
+              className="!justify-between !w-full !rounded-none"
+              variant="text"
+              color="info"
+              onClick={() => setOpenFilter((prev) => !prev)}
+            >
+              <p>Filter results</p>
+              <FaAngleDown className={`text-info-900 transition ${openFilter && "rotate-180"}`} />
+            </Button>
+          )}
+          <Collapse in={openFilter} timeout="auto">
+            <div
+              className={`w-full flex flex-col gap-3 ${isLaptop && "border-r-[1.5px] pr-6"} tablet:border-none border-zinc-300`}
+            >
+              <header>
+                <h4 className="font-semibold text-base">Filters</h4>
+              </header>
+              <main className="flex flex-col gap-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-1">
+                <div>
+                  <label htmlFor="organization">Organizations</label>
+                  <AutocompleteInput
+                    id="organization"
+                    options={organizations ? organizations.results : []}
+                    getOptionLabel={(opt) => opt.name ?? opt}
+                    inputParams={{
+                      placeholder: "All Organizations",
+                    }}
+                    loading={isLoadingOrganizations}
+                    value={
+                      organizations?.results?.find((item) => item.slug === filterBy.organization) ||
+                      null
                     }
+                    isOptionEqualToValue={(option, value) => option.slug === value.slug}
+                    onChange={(_, val) => {
+                      const chosenValue = val;
 
-                    if (chosenValue) {
-                      setSearchParams((params) => {
-                        params.set("organization", chosenValue.slug);
+                      if (!chosenValue) {
+                        return setSearchParams((params) => {
+                          params.delete("organization");
 
-                        return params;
-                      });
+                          return params;
+                        });
+                      }
+
+                      if (chosenValue) {
+                        setSearchParams((params) => {
+                          params.set("organization", chosenValue.slug);
+
+                          return params;
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="tag">Tags</label>
+                  <AutocompleteInput
+                    id="tag"
+                    options={tags?.results || ([] as Dataset["tags_data"])}
+                    getOptionLabel={(opt) => opt.name ?? opt}
+                    inputParams={{
+                      placeholder: "All Tags",
+                    }}
+                    loading={isLoadingTags}
+                    value={tags?.results?.find((item) => item.name === filterBy.tag) || null}
+                    isOptionEqualToValue={(option, value) => option.name === value.name}
+                    onChange={(_, val) => {
+                      const chosenValue = val;
+
+                      if (!chosenValue) {
+                        return setSearchParams((params) => {
+                          params.delete("tag");
+
+                          return params;
+                        });
+                      }
+
+                      if (chosenValue) {
+                        setSearchParams((params) => {
+                          params.set("tag", chosenValue.name);
+
+                          return params;
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="category">Category</label>
+                  <AutocompleteInput
+                    id="category"
+                    inputParams={{
+                      placeholder: "All Categories",
+                    }}
+                    options={categories || ([] as Category[])}
+                    getOptionLabel={(opt) => opt.name ?? opt}
+                    loading={isLoadingCategories}
+                    value={categories?.find((item) => item.slug === filterBy.category) || null}
+                    isOptionEqualToValue={(option, value) => option.slug === value.slug}
+                    onChange={(_, val) => {
+                      const chosenValue = val;
+
+                      if (!chosenValue) {
+                        return setSearchParams((params) => {
+                          params.delete("category");
+
+                          return params;
+                        });
+                      }
+
+                      if (chosenValue) {
+                        setSearchParams((params) => {
+                          params.set("category", chosenValue.slug);
+
+                          return params;
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="format">Formats</label>
+                  <AutocompleteInput
+                    id="format"
+                    inputParams={{
+                      placeholder: "All Formats",
+                    }}
+                    options={formatData}
+                    value={formatData.find((item) => item.label === filterBy.format) || null}
+                    isOptionEqualToValue={(option, value) => option.label === value.label}
+                    onChange={(_, val) => {
+                      const chosenValue = val;
+
+                      if (!chosenValue) {
+                        return setSearchParams((params) => {
+                          params.delete("format");
+
+                          return params;
+                        });
+                      }
+
+                      if (chosenValue) {
+                        setSearchParams((params) => {
+                          params.set("format", chosenValue.label);
+
+                          return params;
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="licenses">Licenses</label>
+                  <AutocompleteInput
+                    id="license"
+                    inputParams={{
+                      placeholder: "All Licenses",
+                    }}
+                    getOptionLabel={(opt) => opt.name ?? opt}
+                    options={licenseData}
+                    value={licenseData.find((item) => item.name === filterBy.license) || null}
+                    isOptionEqualToValue={(option, value) => option.name === value.name}
+                    onChange={(_, val) => {
+                      const chosenValue = val;
+
+                      if (!chosenValue) {
+                        return setSearchParams((params) => {
+                          params.delete("license");
+
+                          return params;
+                        });
+                      }
+
+                      if (chosenValue) {
+                        setSearchParams((params) => {
+                          params.set("license", chosenValue.name);
+
+                          return params;
+                        });
+                      }
+                    }}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="spatial-coverage">Spatial coverage</label>
+                  <AutocompleteInput
+                    id="spatial-coverage"
+                    inputParams={{
+                      placeholder: "All Spatial Coverage",
+                    }}
+                    options={spatialCoverageData}
+                    value={
+                      spatialCoverageData.find((item) => item.label === filterBy.spatialCoverage) ||
+                      null
                     }
-                  }}
-                />
-              </div>
-              <div>
-                <label htmlFor="tag">Tags</label>
-                <AutocompleteInput
-                  id="tag"
-                  options={tags?.results || ([] as Dataset["tags_data"])}
-                  getOptionLabel={(opt) => opt.name ?? opt}
-                  inputParams={{
-                    placeholder: "All Tags",
-                  }}
-                  loading={isLoadingTags}
-                  value={tags?.results?.find((item) => item.name === filterBy.tag) || null}
-                  isOptionEqualToValue={(option, value) => option.name === value.name}
-                  onChange={(_, val) => {
-                    const chosenValue = val;
+                    isOptionEqualToValue={(option, value) => option.label === value.label}
+                    onChange={(_, val) => {
+                      const chosenValue = val;
 
-                    if (!chosenValue) {
-                      return setSearchParams((params) => {
-                        params.delete("tag");
+                      if (!chosenValue) {
+                        return setSearchParams((params) => {
+                          params.delete("spatial-coverage");
 
-                        return params;
-                      });
-                    }
+                          return params;
+                        });
+                      }
 
-                    if (chosenValue) {
-                      setSearchParams((params) => {
-                        params.set("tag", chosenValue.name);
+                      if (chosenValue) {
+                        setSearchParams((params) => {
+                          params.set("spatial-coverage", chosenValue.label);
 
-                        return params;
-                      });
-                    }
-                  }}
-                />
-              </div>
-              <div>
-                <label htmlFor="category">Category</label>
-                <AutocompleteInput
-                  id="category"
-                  inputParams={{
-                    placeholder: "All Categories",
-                  }}
-                  options={categories || ([] as Category[])}
-                  getOptionLabel={(opt) => opt.name ?? opt}
-                  loading={isLoadingCategories}
-                  value={categories?.find((item) => item.slug === filterBy.category) || null}
-                  isOptionEqualToValue={(option, value) => option.slug === value.slug}
-                  onChange={(_, val) => {
-                    const chosenValue = val;
-
-                    if (!chosenValue) {
-                      return setSearchParams((params) => {
-                        params.delete("category");
-
-                        return params;
-                      });
-                    }
-
-                    if (chosenValue) {
-                      setSearchParams((params) => {
-                        params.set("category", chosenValue.slug);
-
-                        return params;
-                      });
-                    }
-                  }}
-                />
-              </div>
-              <div>
-                <label htmlFor="format">Formats</label>
-                <AutocompleteInput
-                  id="format"
-                  inputParams={{
-                    placeholder: "All Formats",
-                  }}
-                  options={formatData}
-                  value={formatData.find((item) => item.label === filterBy.format) || null}
-                  isOptionEqualToValue={(option, value) => option.label === value.label}
-                  onChange={(_, val) => {
-                    const chosenValue = val;
-
-                    if (!chosenValue) {
-                      return setSearchParams((params) => {
-                        params.delete("format");
-
-                        return params;
-                      });
-                    }
-
-                    if (chosenValue) {
-                      setSearchParams((params) => {
-                        params.set("format", chosenValue.label);
-
-                        return params;
-                      });
-                    }
-                  }}
-                />
-              </div>
-              <div>
-                <label htmlFor="licenses">Licenses</label>
-                <AutocompleteInput
-                  id="license"
-                  inputParams={{
-                    placeholder: "All Licenses",
-                  }}
-                  getOptionLabel={(opt) => opt.name ?? opt}
-                  options={licenseData}
-                  value={licenseData.find((item) => item.name === filterBy.license) || null}
-                  isOptionEqualToValue={(option, value) => option.name === value.name}
-                  onChange={(_, val) => {
-                    const chosenValue = val;
-
-                    if (!chosenValue) {
-                      return setSearchParams((params) => {
-                        params.delete("license");
-
-                        return params;
-                      });
-                    }
-
-                    if (chosenValue) {
-                      setSearchParams((params) => {
-                        params.set("license", chosenValue.name);
-
-                        return params;
-                      });
-                    }
-                  }}
-                />
-              </div>
-              <div>
-                <label htmlFor="spatial-coverage">Spatial coverage</label>
-                <AutocompleteInput
-                  id="spatial-coverage"
-                  inputParams={{
-                    placeholder: "All Spatial Coverage",
-                  }}
-                  options={spatialCoverageData}
-                  value={
-                    spatialCoverageData.find((item) => item.label === filterBy.spatialCoverage) ||
-                    null
-                  }
-                  isOptionEqualToValue={(option, value) => option.label === value.label}
-                  onChange={(_, val) => {
-                    const chosenValue = val;
-
-                    if (!chosenValue) {
-                      return setSearchParams((params) => {
-                        params.delete("spatial-coverage");
-
-                        return params;
-                      });
-                    }
-
-                    if (chosenValue) {
-                      setSearchParams((params) => {
-                        params.set("spatial-coverage", chosenValue.label);
-
-                        return params;
-                      });
-                    }
-                  }}
-                />
-              </div>
-            </main>
-          </div>
+                          return params;
+                        });
+                      }
+                    }}
+                  />
+                </div>
+              </main>
+            </div>
+          </Collapse>
           <div className="flex flex-col gap-8">
             <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4">
               <p>
