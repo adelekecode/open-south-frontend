@@ -344,7 +344,7 @@ export default function Dataset() {
             </div>
           </Collapse>
           <div className="flex flex-col gap-8">
-            <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4">
+            <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4 flex-wrap">
               <p>
                 <span>{data ? data.count : "0"}</span> results
               </p>

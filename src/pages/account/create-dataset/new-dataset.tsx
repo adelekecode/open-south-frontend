@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Autocomplete, InputLabel, MenuItem, TextField } from "@mui/material";
+import { SlInfo } from "react-icons/sl";
 import { ErrorMessage, Formik } from "formik";
 import * as Yup from "yup";
 import Button from "~/components/button";
@@ -166,7 +167,7 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                   </MenuItem>
                 ))}
               </SelectField>
-              <div>
+              <div className="flex flex-col gap-1">
                 <TagsField
                   name="tags"
                   required
@@ -178,6 +179,9 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
                     setFieldValue("tags", Array.from(new Set(tags)));
                   }}
                 />
+                <small className="flex items-center gap-2 text-info-900">
+                  <SlInfo /> Enter a tag name and press 'Enter' to add.
+                </small>
               </div>
               <div className="w-full flex flex-col">
                 <InputLabel className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}>
