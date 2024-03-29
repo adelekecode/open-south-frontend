@@ -18,15 +18,16 @@ export default memo(function TopTrafficLocations() {
         (total, location) => total + location.count,
         0
       );
-      const totalCount = topLocationCounts + (data.others || 0);
+      // const totalCount = topLocationCounts + (data.others || 0);
+      const totalCount = topLocationCounts;
 
       for (const { count } of data.top_locations) {
         gridCols.push(calculatePercentage(count, totalCount));
       }
 
-      if (data.others) {
-        gridCols.push(calculatePercentage(data.others, totalCount));
-      }
+      // if (data.others) {
+      //   gridCols.push(calculatePercentage(data.others, totalCount));
+      // }
 
       return `${gridCols.toString().replace(/,/g, " ")}`;
     }
@@ -36,7 +37,7 @@ export default memo(function TopTrafficLocations() {
 
   return (
     <ChartWrapper
-      title="Top Traffic Locations"
+      title="Top 5 Traffic Locations"
       wrapperClassName="px-6 tablet:px-4 pb-6"
       isLoading={isLoading}
       default={{
@@ -59,7 +60,7 @@ export default memo(function TopTrafficLocations() {
             {bgColors.slice(0, data.top_locations.length).map((color, index) => (
               <span className={`${color}`} key={index + 1} />
             ))}
-            {data.others && <span className={`${bgColors.slice(-1)}`} />}
+            {/* {data.others && <span className={`${bgColors.slice(-1)}`} />} */}
           </div>
           <div className="pl-4 tablet:pl-0 flex flex-col">
             {data.top_locations.map((item, index) => (
@@ -73,14 +74,14 @@ export default memo(function TopTrafficLocations() {
                 </p>
               </div>
             ))}
-            {data.others && (
+            {/* {data.others && (
               <div className="flex items-center gap-3">
                 <span
                   className={`${borderColors.slice(-1)} size-4 tablet:size-3 border-2 rounded-full`}
                 />{" "}
                 <p className="text-base tablet:text-sm text-info-900">Other: {data.others}</p>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}
