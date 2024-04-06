@@ -14,12 +14,12 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
   return (
     <div>
       <div
-        className={`flex items-start gap-6 p-4 justify-between ${!displayDetails && "border-b"}`}
+        className={`flex items-start gap-6 p-4 tablet:px-2 largeMobile:px-0 justify-between ${!displayDetails && "border-b"}`}
       >
         <div className="flex items-center gap-4">
           <FiFileText className="text-xl" />
           <div className="flex flex-col gap-1">
-            <h4 className="text-sm font-semibold">{data.file_name || "------"}</h4>
+            <h4 className="text-sm font-semibold break-words">{data.file_name || "------"}</h4>
             <p className="text-xs text-info-800 font-medium">{data.format || "------"}</p>
           </div>
         </div>
@@ -40,7 +40,7 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
 
       {displayDetails && (
         <div
-          className={`flex items-start gap-8 p-6 pt-4 justify-between ${displayDetails && "border-b"}`}
+          className={`flex items-start gap-8 p-6 pt-4 tablet:px-2 largeMobile:px-0 justify-between w-fit ${displayDetails ? "border-b" : ""}`}
         >
           <div className="flex flex-wrap gap-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-1 [&>div>h5]:text-sm [&>div>h5]:font-medium [&>div>p]:text-sm [&>div>p]:text-info-800">
             <div>
@@ -64,7 +64,7 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
             <Button
               variant="outlined"
               color="info"
-              className="!rounded-full !border-[1.5px] !px-4 !py-2 !border-info-800 gap-2"
+              className="!rounded-full !border-[1.5px] !px-4 !py-1 !border-info-800 gap-2"
               onClick={() => {
                 if (data) {
                   setPreviewFile({

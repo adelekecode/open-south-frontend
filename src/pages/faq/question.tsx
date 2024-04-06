@@ -21,11 +21,15 @@ export default function Question({ question, answer }: QuestionProps) {
             setDisplayAnswer((prev) => !prev);
           }}
         >
-          {displayAnswer ? <FaMinus /> : <FiPlus />}
+          {displayAnswer ? (
+            <FaMinus className="largeMobile:text-lg" />
+          ) : (
+            <FiPlus className="largeMobile:text-lg" />
+          )}
         </IconButton>
       </div>
       {displayAnswer && (
-        <div className="answer flex items-center p-4 px-6 pt-0">
+        <div className="answer flex items-center p-4 px-6 largeMobile:px-2 pt-0">
           <p className="text-sm">{answer}</p>
         </div>
       )}
