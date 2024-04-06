@@ -204,7 +204,9 @@ export default function Dashboard() {
         </div>
         <div className="w-full border border-info-100 bg-white p-4 rounded-md flex flex-col gap-4 py-5 pt-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-base font-semibold text-info-950">Latest dataset created</h1>
+            <h1 className="text-base font-semibold text-info-950 capitalize largeMobile:text-sm">
+              Latest dataset created
+            </h1>
             <div>
               <Button
                 className="!py-2 !px-3 !text-xs"

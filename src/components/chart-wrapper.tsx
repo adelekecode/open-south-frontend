@@ -1,10 +1,20 @@
+import { CircularProgress } from "@mui/material";
 import { twMerge } from "tailwind-merge";
 
-type ChartWrapperProps = {
+type Props = {
   title: string;
   children: React.ReactNode;
   wrapperClassName?: string;
   titleWrapperClassName?: string;
+  isLoading?: boolean;
+  default?: {
+    data: boolean;
+    img: {
+      src: string;
+      alt: string;
+    };
+    text: string;
+  };
 };
 
 export default function ChartWrapper({
@@ -12,7 +22,9 @@ export default function ChartWrapper({
   children,
   wrapperClassName,
   titleWrapperClassName,
-}: ChartWrapperProps) {
+  isLoading,
+  default: defaultChart,
+}: Props) {
   return (
     <div
       className={twMerge(
@@ -25,7 +37,26 @@ export default function ChartWrapper({
           {title}
         </h1>
       </div>
-      {children}
+
+      {isLoading ? (
+        <div className="flex justify-center items-center min-h-56 flex-col gap-4">
+          <CircularProgress />
+          <p className="text-info-600 text-sm">Loading...</p>
+        </div>
+      ) : defaultChart && !defaultChart.data ? (
+        <div className="flex justify-center items-center min-h-56 flex-col">
+          <figure className="w-[200px]">
+            <img
+              src={defaultChart.img.src}
+              alt={defaultChart.img.alt}
+              className="w-full h-full object-cover"
+            />
+          </figure>
+          <p className="text-info-600 text-sm">{defaultChart.text}</p>
+        </div>
+      ) : (
+        children
+      )}
     </div>
   );
 }

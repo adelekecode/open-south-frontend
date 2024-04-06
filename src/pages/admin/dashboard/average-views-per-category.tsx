@@ -26,7 +26,7 @@ ChartJS.register(
 );
 
 export default memo(function AverageViewsPerCategory() {
-  const { data } = useAverageViewPerCategory();
+  const { data, isLoading } = useAverageViewPerCategory();
 
   const { labels, values } = useMemo(() => {
     const labels: string[] = [];
@@ -62,7 +62,7 @@ export default memo(function AverageViewsPerCategory() {
   }, [data]);
 
   return (
-    <ChartWrapper title="Average views per category">
+    <ChartWrapper title="Average views per category" isLoading={isLoading}>
       <Line
         className="!w-full"
         options={{
@@ -72,6 +72,13 @@ export default memo(function AverageViewsPerCategory() {
               position: "top" as const,
             },
           },
+          scales: {
+            y: {
+              ticks: {
+                stepSize: 1,
+              },
+            },
+          },
         }}
         data={{
           labels,
@@ -79,20 +86,20 @@ export default memo(function AverageViewsPerCategory() {
             {
               label: "Day",
               data: values.day,
-              backgroundColor: "#008000eb",
-              borderColor: "#008000eb",
+              backgroundColor: "#008000cf",
+              borderColor: "#008000cf",
             },
             {
               label: "Week",
               data: values.week,
-              backgroundColor: "#ffa500e6",
-              borderColor: "#ffa500e6",
+              backgroundColor: "#ffa500cf",
+              borderColor: "#ffa500cf",
             },
             {
               label: "Month",
               data: values.month,
-              backgroundColor: "#00a4ff",
-              borderColor: "#00a4ff",
+              backgroundColor: "#00a4ffcf",
+              borderColor: "#00a4ffcf",
             },
           ],
         }}

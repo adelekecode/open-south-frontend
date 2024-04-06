@@ -30,3 +30,24 @@ export async function getCountryCoordinates(country: string) {
     throw error;
   }
 }
+
+export function calculatePercentage(num: number, totalCount: number) {
+  const val = (num / totalCount) * 100;
+
+  return Math.round(val) + "%";
+}
+
+export function mostAccessedDatasetsTransformHandler(data: Dataset[] | undefined) {
+  if (data) {
+    const colors = ["#00a4ffcf", "#ffa500cf", "#008000cf", "#ab2fabcf", "#d64794cf"];
+
+    return data.map((dataset, index) => ({
+      id: dataset.id,
+      value: dataset.views,
+      label: dataset.title,
+      color: colors[index],
+    }));
+  }
+
+  return data;
+}

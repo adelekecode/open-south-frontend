@@ -1,41 +1,99 @@
+import { memo, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import ChartWrapper from "~/components/chart-wrapper";
+import { useTopTrafficLocations } from "~/queries/organization-dashboard";
+import TopTrafficLocationsIllustration from "~/assets/illustrations/dashboard-chart/top-traffic-locations.png";
+import { calculatePercentage } from "~/utils/helper";
+import { trafficLocationColors } from "~/app-constants";
 
-export default function TopTrafficLocations() {
-  const colors = [
-    "bg-[#00a4ff]",
-    "bg-[#ffa500e6]",
-    "bg-[#008000eb]",
-    "bg-[#ab2fab]",
-    "bg-[#a73d3d]",
-  ];
+export default memo(function TopTrafficLocations() {
+  const { bgColors, borderColors } = trafficLocationColors;
+
+  const { slug } = useParams();
+
+  const queryClient = useQueryClient();
+  const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
+
+  const { data, isLoading } = useTopTrafficLocations(organization?.id || "", {
+    enabled: !!organization?.id,
+  });
+
+  const gridCols = useMemo(() => {
+    if (data) {
+      const gridCols: string[] = [];
+
+      const topLocationCounts = data.top_locations.reduce(
+        (total, location) => total + location.count,
+        0
+      );
+      const totalCount = topLocationCounts + (data.others || 0);
+
+      for (const { count } of data.top_locations) {
+        gridCols.push(calculatePercentage(count, totalCount));
+      }
+
+      if (data.others) {
+        gridCols.push(calculatePercentage(data.others, totalCount));
+      }
+
+      return `${gridCols.toString().replace(/,/g, " ")}`;
+    }
+  }, [data]);
 
   return (
-    <ChartWrapper title="Top Traffic Locations" wrapperClassName="px-6 pb-6">
-      <div className="w-full flex flex-col gap-4">
-        <div className="w-full mx-auto grid grid-cols-[40%,10%,20%,20%,10%] items-center overflow-hidden rounded-full h-3 [&>span]:h-full">
-          {colors.map((color, index) => (
-            <span className={`${color}`} key={index + 1} />
-          ))}
+    <ChartWrapper
+      title="Top Traffic Locations"
+      wrapperClassName="px-6 tablet:px-4 pb-6"
+      isLoading={isLoading}
+    >
+      {data?.top_locations && data.top_locations.length >= 1 ? (
+        <div className="w-full flex flex-col gap-4">
+          <div
+            className={`w-full mx-auto grid items-center overflow-hidden rounded-full h-3 tablet:h-2 [&>span]:h-full`}
+            style={{
+              gridTemplateColumns: gridCols,
+            }}
+          >
+            {bgColors.slice(0, data.top_locations.length).map((color, index) => (
+              <span className={`${color}`} key={index + 1} />
+            ))}
+            {data.others && <span className={`${bgColors.slice(-1)}`} />}
+          </div>
+          <div className="pl-4 tablet:pl-0 flex flex-col">
+            {data.top_locations.map((item, index) => (
+              <div key={index + 1} className="flex items-center gap-3">
+                <span
+                  className={`${borderColors[index]} size-4 tablet:size-3 border-2 rounded-full`}
+                />{" "}
+                <p className="text-base tablet:text-sm text-info-900">
+                  <span>{item.country.charAt(0).toUpperCase() + item.country.slice(1)}</span>:{" "}
+                  <span>{item.count}</span>
+                </p>
+              </div>
+            ))}
+            {data.others && (
+              <div className="flex items-center gap-3">
+                <span
+                  className={`${borderColors.slice(-1)} size-4 tablet:size-3 border-2 rounded-full`}
+                />{" "}
+                <p className="text-base tablet:text-sm text-info-900">Other: {data.others}</p>
+              </div>
+            )}
+          </div>
         </div>
-        <div className="pl-4 flex flex-col [&>div]:flex [&>div]:items-center [&>div]:gap-3 [&>div>span]:border-2 [&>div>span]:rounded-full [&>div>p]:text-base [&>div>p]:text-info-900">
-          <div>
-            <span className={`border-[#00a4ff] size-4`} />
-            <p>Nigeria: 2,030</p>
-          </div>
-          <div>
-            <span className={`border-[#ffa500e6] size-4`} /> <p>Kenya: 696</p>
-          </div>
-          <div>
-            <span className={`border-[#008000eb] size-4`} /> <p>Germany: 209</p>
-          </div>
-          <div>
-            <span className={`border-[#ab2fab] size-4`} /> <p>Ireland: 44</p>
-          </div>
-          <div>
-            <span className={`border-[#a73d3d] size-4`} /> <p>Other: 210</p>
-          </div>
+      ) : (
+        <div className="flex justify-center items-center min-h-56 flex-col">
+          <figure className="w-[200px]">
+            <img
+              src={TopTrafficLocationsIllustration}
+              alt="Top traffic locations illustration"
+              className="w-full h-full object-cover"
+            />
+          </figure>
+          <p className="text-info-600 text-sm">No traffic data available at the moment</p>
         </div>
-      </div>
+      )}
     </ChartWrapper>
   );
-}
+});
