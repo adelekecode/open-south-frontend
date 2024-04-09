@@ -24,3 +24,6 @@ export const trafficLocationColors = {
     "border-[#d64794cf]",
   ],
 };
+
+export const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&£^#+-.])[A-Za-z\d@$!%*?&£^#+-.]{8,}$/;

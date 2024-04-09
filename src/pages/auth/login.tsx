@@ -4,7 +4,6 @@ import { isAxiosError } from "axios";
 import { Checkbox, FormControlLabel, IconButton } from "@mui/material";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
-// import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "@react-oauth/google";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -16,13 +15,14 @@ import useAppStore from "~/store/app";
 import { useRequestOTP } from "~/mutations/auth/otp";
 import useGoogleAuth from "~/mutations/auth/google";
 import { notifyError } from "~/utils/toast";
+import { passwordRegex } from "~/app-constants";
 
 const loginSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
+      passwordRegex,
       "Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     )
     .required("Password is required"),
