@@ -94,7 +94,7 @@ export default function Resources() {
       headerAlign: "center",
     },
     {
-      field: "action",
+      field: "_",
       headerName: "Action",
       align: "center",
       headerAlign: "center",
@@ -175,7 +175,11 @@ export default function Resources() {
             data: null,
           });
         }}
-        data={deleteModal.data as Dataset["files"][0]}
+        data={
+          deleteModal.data as Dataset["files"][0] & {
+            dataset: string;
+          }
+        }
       />
       <FileUpload open={openFileUpload} setOpen={(bool: boolean) => setOpenFileUpload(bool)} />
       <FilePreview
