@@ -1,5 +1,4 @@
 import { MdDeleteOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import { useDeleteDatasetFile } from "~/mutations/dataset";
@@ -13,8 +12,6 @@ type DeleteConfirmationProps = {
 };
 
 export default function DeleteConfirmation({ open, onClose, data }: DeleteConfirmationProps) {
-  const navigate = useNavigate();
-
   const deleteDatasetFile = useDeleteDatasetFile();
 
   return (
@@ -44,7 +41,7 @@ export default function DeleteConfirmation({ open, onClose, data }: DeleteConfir
               });
 
               if (response) {
-                navigate("/account/datasets");
+                onClose();
               }
             }}
           >
