@@ -161,7 +161,7 @@ export default function DatasetDetails() {
           </div>
         )}
         <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium">Produced By</h3>
+          <h3 className="text-sm font-medium">Published By</h3>
           <div className="flex items-center gap-3 flex-wrap">
             {data.publisher_data?.image_url || data.publisher_data?.logo_url ? (
               <figure className="border border-zinc-300 w-[3.5rem] aspect-square bg-white p-1">
