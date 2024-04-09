@@ -228,10 +228,10 @@ export default function DatasetDetails() {
             <h3>License</h3>
             <p>{data.license || "------"}</p>
           </div>
-          <div>
+          {/* <div>
             <h3>ID</h3>
             <p>{data.id || "------"}</p>
-          </div>
+          </div> */}
         </div>
         <div className="flex gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:largeMobile:text-xs [&>div>p]:largeMobile:text-sm [&>div>h3]:font-medium">
           <div>
