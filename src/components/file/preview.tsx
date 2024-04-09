@@ -158,8 +158,8 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
           </div>
         ) : (
           <>
-            <header className="flex items-center justify-between gap-1">
-              <h1 className="text-lg font-medium">
+            <header className="flex items-center justify-between gap-1 largeMobile:flex-col">
+              <h1 className="text-lg largeMobile:text-base font-medium break-words largeMobile:self-start">
                 {file.file_name
                   ? file.file_name[0].toUpperCase() + file.file_name.slice(1)
                   : "-------"}
@@ -167,7 +167,7 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
               <Button
                 color="info"
                 variant="outlined"
-                className="!p-2 !px-4 !text-xs"
+                className="!p-2 !px-4 !text-xs largeMobile:self-end"
                 onClick={async () => {
                   if (
                     file?.format === "xlsx" ||

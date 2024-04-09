@@ -56,7 +56,7 @@ export default function About() {
             about driving positive change, our platform is here to support your journey. Together,
             let us harness the power of open data to shape a brighter future for the Global South.
           </p>
-          <p className="mt-4 text-lg">
+          <p className="mt-4 text-lg tablet:text-base largeMobile:!text-sm">
             <span className="font-medium">Welcome to Open South</span> –{" "}
             <span className="font-Marhey">where data transforms possibilities</span>
           </p>

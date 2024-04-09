@@ -19,7 +19,7 @@ const filesPerPage = 3;
 export default function DatasetDetails() {
   const { slug } = useParams();
 
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const descriptionRef = useRef<HTMLDivElement>(null);
   const effectHasRun = useRef(false);
 
   const { userLocation } = useAppStore();
@@ -46,7 +46,9 @@ export default function DatasetDetails() {
   useEffect(() => {
     if (!descriptionRef.current) return;
     if (data?.description) {
-      descriptionRef.current.innerHTML = data.description;
+      descriptionRef.current.innerHTML =
+        data.description +
+        "dkajasmasasaskasasa samksa saska kas akska ska sasmnja nsmaks asmj asaomkms akosk asomam samks aks ";
     } else {
       descriptionRef.current.innerHTML = "";
     }
@@ -120,15 +122,15 @@ export default function DatasetDetails() {
     <>
       <Seo title={data?.title || ""} description={stripedDescription || ""} />
       <main className="max-w-maxAppWidth mx-auto flex flex-col gap-6 p-6 px-10 pt-0 pb-12 tablet:px-6 largeMobile:!px-4">
-        <h1 className="text-2xl font-semibold">
+        <h1 className="text-2xl font-semibold largeMobile:text-xl">
           {data?.title ? data.title.charAt(0).toUpperCase() + data.title.slice(1) : "------"}
         </h1>
         <div className="flex flex-col gap-3">
           <h3 className="text-sm font-medium">Description</h3>
-          <p className="[&_a]:text-blue-600 [&_a]:underline" ref={descriptionRef}></p>
+          <div className="[&_a]:text-blue-600 [&_a]:underline text-base" ref={descriptionRef}></div>
         </div>
         {data.files && data.files.length > 0 && (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 pb-4">
             <h3 className="text-sm font-medium">
               <span>{data.files.length || "--"}</span> {data.files.length === 1 ? "File" : "Files"}
             </h3>
@@ -143,22 +145,24 @@ export default function DatasetDetails() {
                 />
               ))}
             </div>
-            <div className="flex items-center justify-center mt-4">
-              <Pagination
-                variant="outlined"
-                shape="rounded"
-                count={Math.ceil(data.files.length / filesPerPage)}
-                page={currentPage}
-                onChange={(_, page) => {
-                  setCurrentPage(page);
-                }}
-              />
-            </div>
+            {data.files.length > filesPerPage && (
+              <div className="flex items-center justify-center mt-4">
+                <Pagination
+                  variant="outlined"
+                  shape="rounded"
+                  count={Math.ceil(data.files.length / filesPerPage)}
+                  page={currentPage}
+                  onChange={(_, page) => {
+                    setCurrentPage(page);
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
         <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium">Produced By</h3>
-          <div className="flex items-center gap-3">
+          <h3 className="text-sm font-medium">Published By</h3>
+          <div className="flex items-center gap-3 flex-wrap">
             {data.publisher_data?.image_url || data.publisher_data?.logo_url ? (
               <figure className="border border-zinc-300 w-[3.5rem] aspect-square bg-white p-1">
                 <img
@@ -173,7 +177,7 @@ export default function DatasetDetails() {
               </Avatar>
             )}
             <Link
-              className="text-primary-600 capitalize hover:underline relative z-10"
+              className="text-primary-600 capitalize hover:underline relative z-10 largeMobile:text-sm"
               to={
                 data.publisher_data.type === "organisation"
                   ? `/organizations/${data.publisher_data.slug}`
@@ -200,7 +204,7 @@ export default function DatasetDetails() {
             <div className="flex items-center flex-wrap gap-4">
               {data.tags_data.map((item, index) => (
                 <Link
-                  className="px-4 py-1 rounded-full bg-primary-100 hover:bg-primary-300 transition-all text-sm text-primary-700"
+                  className="px-4 py-1 rounded-full bg-primary-100 hover:bg-primary-300 transition-all text-sm text-primary-700 largeMobile:text-xs largeMobile:px-2"
                   key={index + 1}
                   to={{
                     pathname: "/datasets",
@@ -219,17 +223,17 @@ export default function DatasetDetails() {
             </div>
           </div>
         )}
-        <div className="flex gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
+        <div className="flex gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:largeMobile:text-xs [&>div>p]:largeMobile:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>License</h3>
             <p>{data.license || "------"}</p>
           </div>
-          <div>
+          {/* <div>
             <h3>ID</h3>
             <p>{data.id || "------"}</p>
-          </div>
+          </div> */}
         </div>
-        <div className="flex gap-12 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
+        <div className="flex gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:largeMobile:text-xs [&>div>p]:largeMobile:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Creation</h3>
             <p>{data?.created_at ? moment(data.created_at).format("MMMM DD, YYYY") : "------"}</p>
@@ -243,7 +247,7 @@ export default function DatasetDetails() {
             <p>{data?.updated_at ? moment(data.updated_at).format("MMMM DD, YYYY") : "------"}</p>
           </div>
         </div>
-        <div className="flex flex-col gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:font-medium">
+        <div className="flex flex-col gap-6 flex-wrap [&>div]:flex [&>div]:flex-col [&>div]:gap-2 [&>div>h3]:text-sm [&>div>h3]:largeMobile:text-xs [&>div>p]:largeMobile:text-sm [&>div>h3]:font-medium">
           <div>
             <h3>Temporal coverage</h3>
             <p className="[&>span]:font-medium [&>span]:capitalize">
