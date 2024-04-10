@@ -51,10 +51,10 @@ export default function File({ setPreviewFile, ...data }: FileProps) {
               <h5>Size</h5>
               <p>{data.size || "------"}</p>
             </div>
-            <div>
+            {/* <div>
               <h5>ID</h5>
               <p className="break-all">{data.id || "------"}</p>
-            </div>
+            </div> */}
             <div>
               <h5>sha256</h5>
               <p className="break-all">{data.sha256 || "------"}</p>

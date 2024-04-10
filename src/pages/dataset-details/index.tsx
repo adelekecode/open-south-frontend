@@ -46,9 +46,7 @@ export default function DatasetDetails() {
   useEffect(() => {
     if (!descriptionRef.current) return;
     if (data?.description) {
-      descriptionRef.current.innerHTML =
-        data.description +
-        "dkajasmasasaskasasa samksa saska kas akska ska sasmnja nsmaks asmj asaomkms akosk asomam samks aks ";
+      descriptionRef.current.innerHTML = data.description;
     } else {
       descriptionRef.current.innerHTML = "";
     }
