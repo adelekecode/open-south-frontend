@@ -46,7 +46,7 @@ export default function DatasetDetails() {
         <header className="flex justify-between items-center">
           <h1 className="font-medium flex items-center gap-2 text-base">
             <button
-              onClick={() => navigate("/account/datasets")}
+              onClick={() => navigate("/admin/datasets")}
               className="text-2xl font-semibold largeMobile:text-xl"
             >
               Datasets

@@ -197,10 +197,10 @@ export default function PublicProfile() {
                   {data.date_joined ? moment(data.date_joined).format("MMMM DD, YYYY") : "-------"}
                 </p>
               </div>
-              <div>
+              {/* <div>
                 <h3>ID</h3>
                 <p>{data.id || "-------"}</p>
-              </div>
+              </div> */}
             </div>
           </div>
         </main>

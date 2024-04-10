@@ -190,11 +190,19 @@ export function useUploadDatasetFile() {
       format: string;
       size: string;
     }) => {
-      const { data: response } = await axiosPrivate.postForm(`/datasets/files/${datasetId}/`, {
-        file,
-        format,
-        size,
-      });
+      const { data: response } = await axiosPrivate.postForm(
+        `/datasets/files/${datasetId}/`,
+        {
+          file,
+          format,
+          size,
+        },
+        {
+          validateStatus: (status) => {
+            return status < 500;
+          },
+        }
+      );
 
       return response;
     },

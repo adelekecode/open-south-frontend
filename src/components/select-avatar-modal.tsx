@@ -14,8 +14,35 @@ import Bear from "~/assets/images/avatars/bear.png";
 import Koala from "~/assets/images/avatars/koala.png";
 import Elephant from "~/assets/images/avatars/elephant.png";
 import Butterfly from "~/assets/images/avatars/butterfly.png";
+import Bunny from "~/assets/images/avatars/bunny.png";
+import Panda from "~/assets/images/avatars/panda.png";
+import Bee from "~/assets/images/avatars/bee.png";
+import Dolphin from "~/assets/images/avatars/dolphin.png";
+import Ladybug from "~/assets/images/avatars/ladybug.png";
+import Octopus from "~/assets/images/avatars/octopus.png";
+import Owl from "~/assets/images/avatars/owl.png";
+import Penguin from "~/assets/images/avatars/penguin.png";
+import Puppy from "~/assets/images/avatars/puppy.png";
+import Sloth from "~/assets/images/avatars/sloth.png";
 
-const avatarArr = [Lion, Deer, Bear, Koala, Elephant, Butterfly];
+const avatarArr = [
+  Lion,
+  Deer,
+  Bear,
+  Koala,
+  Elephant,
+  Butterfly,
+  Bunny,
+  Panda,
+  Bee,
+  Dolphin,
+  Ladybug,
+  Octopus,
+  Owl,
+  Penguin,
+  Puppy,
+  Sloth,
+];
 
 function getRandomAvatar(): string {
   const arr: string[] = avatarArr;
