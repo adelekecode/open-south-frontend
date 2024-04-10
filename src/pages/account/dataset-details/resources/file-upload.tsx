@@ -204,7 +204,7 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
                     setFilesUploaded((prev) => ({ ...prev, success: [...prev.success, item] }));
                     setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
                   } catch (error: any) {
-                    const errMsg = error.response.data?.error || "";
+                    const errMsg = error.response?.data?.error || "";
 
                     setFilesUploaded((prev) => ({
                       ...prev,

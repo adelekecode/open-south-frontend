@@ -26,16 +26,7 @@ type Dataset = {
   description: string;
   updated_at: string;
   created_at: string;
-  files: {
-    format: string;
-    sha256: string;
-    size: string;
-    file_url: string;
-    id: string;
-    created_at: string;
-    updated_at: string;
-    file_name: string;
-  }[];
+  files: DatasetFile[];
   file_count: number;
   license: string;
   tags_data: {
@@ -77,11 +68,15 @@ type Category = {
   updated_at: string;
 };
 
-type File = {
-  file_url: string;
+type DatasetFile = {
   format: string;
   sha256: string;
   size: string;
+  file_url: string;
+  id: string;
+  created_at: string;
+  updated_at: string;
+  file_name: string;
 };
 
 type Organization = {

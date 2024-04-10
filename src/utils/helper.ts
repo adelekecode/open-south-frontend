@@ -19,7 +19,19 @@ export async function getCountryCoordinates(country: string) {
     )) as any;
 
     for (const item of data.features) {
-      if (encodeURIComponent(item.text.toLowerCase()) === encodeCountry) {
+      const featuresText = encodeURIComponent(item.text.toLowerCase());
+
+      if (featuresText === encodeCountry) {
+        const coordinates = item.center;
+
+        return coordinates;
+      }
+    }
+
+    for (const item of data.features) {
+      const featuresText = encodeURIComponent(item.text.toLowerCase());
+
+      if (encodeCountry.includes(featuresText)) {
         const coordinates = item.center;
 
         return coordinates;
@@ -50,4 +62,22 @@ export function mostAccessedDatasetsTransformHandler(data: Dataset[] | undefined
   }
 
   return data;
+}
+
+export function downloadFileHandler(file: Dataset["files"][number], blob: Blob, format: string) {
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+
+  link.href = url;
+
+  link.download = `${file?.file_name || "example"}${format}`;
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
 }
