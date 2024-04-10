@@ -127,7 +127,9 @@ export default function SelectAvatarModal() {
                 responseType: "blob",
               });
               const blob = new Blob([data], { type: "image/png" });
-              const file = new File([blob], "avatar.png", { lastModified: Date.now() });
+              const file = new File([blob], `avatar-${Date.now()}.png`, {
+                lastModified: Date.now(),
+              });
 
               const response = await uploadProfileImage.mutateAsync({ image: file });
 
