@@ -47,7 +47,9 @@ export default function EditDataset() {
   const [formCompleted, setFormCompleted] = useState(false);
   const [chosenCategoryObj, setChosenCategoryObj] = useState<Category | null>(null);
 
-  const { data, isLoading } = useUserDatasetDetails(id || "");
+  const { data, isLoading } = useUserDatasetDetails(id || "", {
+    enabled: !!id,
+  });
   const { data: categories, isLoading: isLoadingCategories } = usePublicCategories();
 
   const editDataset = useEditDataset();
@@ -63,10 +65,13 @@ export default function EditDataset() {
     [data?.spatial_coverage]
   );
 
-  const category = useMemo(
-    () => categories?.find((v) => v.id === data?.category),
-    [categories, data?.category]
-  );
+  const category = useMemo(() => {
+    if (data?.category && categories) {
+      return categories.find((v) => v.id === data.category);
+    }
+
+    return;
+  }, [categories, data?.category]);
 
   if (isLoading) {
     return <DashboardLoader />;

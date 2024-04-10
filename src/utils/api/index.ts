@@ -71,10 +71,10 @@ axiosPrivate.interceptors.response.use(
       notifyError("Something went wrong. Please try again later.");
 
       return Promise.reject(message);
-    } else if (message === "Network Error") {
+    } else if (message === "Network Error" && !status) {
       notifyError("Offline. Check your network connection.");
 
-      return Promise.reject(message);
+      return Promise.reject(error);
     } else return Promise.reject(error);
   }
 );

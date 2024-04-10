@@ -190,11 +190,19 @@ export function useUploadDatasetFile() {
       format: string;
       size: string;
     }) => {
-      const { data: response } = await axiosPrivate.postForm(`/datasets/files/${datasetId}/`, {
-        file,
-        format,
-        size,
-      });
+      const { data: response } = await axiosPrivate.postForm(
+        `/datasets/files/${datasetId}/`,
+        {
+          file,
+          format,
+          size,
+        },
+        {
+          validateStatus: (status) => {
+            return status < 500;
+          },
+        }
+      );
 
       return response;
     },
@@ -238,8 +246,10 @@ export function useDeleteDataset() {
 
 export function useDeleteDatasetFile() {
   return useMutation(
-    async (id: string) => {
-      const { data: response } = await axiosPrivate.delete(`/file/${id}`);
+    async ({ datasetId, fileId }: { datasetId: string; fileId: string }) => {
+      const { data: response } = await axiosPrivate.delete(
+        `/datasets/files/${datasetId}/?file_id=${fileId}`
+      );
 
       return response;
     },

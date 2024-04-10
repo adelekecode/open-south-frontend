@@ -15,6 +15,7 @@ import Otp from "./otp";
 import useAppStore from "~/store/app";
 import { notifyError } from "~/utils/toast";
 import useGoogleAuth from "~/mutations/auth/google";
+import { passwordRegex } from "~/app-constants";
 
 const signupSchema = Yup.object({
   firstName: Yup.string().trim().required("First name is required"),
@@ -23,13 +24,13 @@ const signupSchema = Yup.object({
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
+      passwordRegex,
       "Password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     ),
   confirmPassword: Yup.string()
     .min(8, "Confirm password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
+      passwordRegex,
       "Confirm password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     )
     .oneOf([Yup.ref("password")], "Passwords must match")

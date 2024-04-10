@@ -6,6 +6,7 @@ import Modal from "~/components/modal";
 import { useDatasetFilePreview } from "~/queries/dataset";
 import Button from "~/components/button";
 import { notifyError } from "~/utils/toast";
+import { downloadFileHandler } from "~/utils/helper";
 
 type PreviewProps = {
   open: boolean;
@@ -15,11 +16,11 @@ type PreviewProps = {
 };
 
 export default function Preview({ open, setOpen, file, onDownload }: PreviewProps) {
-  const [excelData, setExcelData] = useState<any[] | null>(null);
-  const [csvData, setCsvData] = useState<any[] | null>(null);
+  const [excelData, setExcelData] = useState<Dataset[] | null>(null);
+  const [csvData, setCsvData] = useState<Dataset[] | null>(null);
 
   const { data, isLoading } = useDatasetFilePreview(file?.file_url || "", file?.format || "", {
-    enabled: !!file?.file_url,
+    enabled: !!file?.file_url && !!file?.format,
   });
 
   useEffect(() => {
@@ -106,26 +107,6 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
         }))
       : null;
 
-  async function downloadHandler(blob: Blob, format: ".xlsx" | ".csv") {
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-
-    link.href = url;
-
-    link.download = `${file?.file_name || "example"}${format}`;
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
-
-    return onDownload?.(file?.id || "");
-  }
-
   return (
     <Modal
       muiModal={{
@@ -158,8 +139,8 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
           </div>
         ) : (
           <>
-            <header className="flex items-center justify-between gap-1">
-              <h1 className="text-lg font-medium">
+            <header className="flex items-center justify-between gap-1 largeMobile:flex-col flex-wrap">
+              <h1 className="text-lg largeMobile:text-base break-all font-medium largeMobile:self-start">
                 {file.file_name
                   ? file.file_name[0].toUpperCase() + file.file_name.slice(1)
                   : "-------"}
@@ -167,23 +148,26 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
               <Button
                 color="info"
                 variant="outlined"
-                className="!p-2 !px-4 !text-xs"
+                className="!p-2 !px-4 !text-xs largeMobile:self-end !ml-auto"
                 onClick={async () => {
+                  const newData = { ...data } as BlobPart;
+
                   if (
                     file?.format === "xlsx" ||
                     file?.format ===
                       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                   ) {
-                    const blob = new Blob([data as BlobPart], {
+                    const blob = new Blob([newData], {
                       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     });
 
-                    downloadHandler(blob, ".xlsx");
+                    downloadFileHandler(file, blob, ".xlsx");
                   } else if (file?.format === "text/csv") {
-                    const blob = new Blob([data as BlobPart], { type: "text/csv" });
+                    const blob = new Blob([newData], { type: "text/csv" });
 
-                    downloadHandler(blob, ".csv");
+                    downloadFileHandler(file, blob, ".csv");
                   }
+                  await onDownload?.(file.id);
                 }}
               >
                 Download

@@ -10,18 +10,19 @@ import { useResetPassword } from "~/mutations/auth/password";
 import Button from "~/components/button";
 import NotFound from "../../404";
 import Success from "./success";
+import { passwordRegex } from "~/app-constants";
 
 const validationSchema = Yup.object({
   newPassword: Yup.string()
     .min(8, "New password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
+      passwordRegex,
       "New password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     ),
   confirmPassword: Yup.string()
     .min(8, "Confirm password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
+      passwordRegex,
       "Confirm password must include at least one lowercase letter, one uppercase letter, one digit, and one special character"
     )
     .oneOf([Yup.ref("newPassword")], "Passwords must match")
