@@ -32,6 +32,25 @@ export function useGetAllUsers(
   );
 }
 
-export function usePublicProfile(id: string, options?: UseQueryOptions<CurrentUser>) {
-  return useQuery<CurrentUser>([`/public/user/pk/${id}/detail/`], options);
+export function usePublicProfile(
+  id: string,
+  options?: UseQueryOptions<
+    CurrentUser & {
+      user_stats: {
+        data_count: number;
+        views: number;
+        downloads: number;
+      };
+    }
+  >
+) {
+  return useQuery<
+    CurrentUser & {
+      user_stats: {
+        data_count: number;
+        views: number;
+        downloads: number;
+      };
+    }
+  >([`/public/user/pk/${id}/detail/?key=public`], options);
 }

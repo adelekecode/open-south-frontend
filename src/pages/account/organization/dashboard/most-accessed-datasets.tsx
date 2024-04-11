@@ -45,7 +45,7 @@ export default memo(function MostAccessedDatasets() {
       title="Top 5 Most Accessed Datasets"
       isLoading={isLoading}
       default={{
-        data: !!data,
+        data: !!data?.length,
         img: {
           src: TopMostAccessedDatasets,
           alt: "Top most accessed datasets illustration",

@@ -68,8 +68,7 @@ export default memo(function TopTrafficLocations() {
                   className={`${borderColors[index]} size-4 tablet:size-3 border-2 rounded-full`}
                 />{" "}
                 <p className="text-base tablet:text-sm text-info-900">
-                  <span>{item.country.charAt(0).toUpperCase() + item.country.slice(1)}</span>:{" "}
-                  <span>{item.count}</span>
+                  <span className="capitalize">{item.country}</span>: <span>{item.count}</span>
                 </p>
               </div>
             ))}
