@@ -94,10 +94,12 @@ export default function PublicProfile() {
           </header>
         </div>
         <main className="w-full max-w-maxAppWidth mx-auto flex flex-col gap-12 p-6 px-10 tablet:px-6 largeMobile:!px-4">
-          <div className="flex flex-col gap-3">
-            <h2 className="font-semibold text-base">Bio</h2>
-            <p className="text-sm [&_a]:text-blue-600 [&_a]:underline">{data.bio || "-------"}</p>
-          </div>
+          {data.bio && (
+            <div className="flex flex-col gap-3">
+              <h2 className="font-semibold text-base">Bio</h2>
+              <p className="text-sm [&_a]:text-blue-600 [&_a]:underline"></p>
+            </div>
+          )}
           <div className="w-full flex flex-col gap-3">
             <div className="flex items-center justify-between gap-4">
               <h2 className="font-semibold text-base">Datasets</h2>
@@ -176,15 +178,19 @@ export default function PublicProfile() {
             <div className="flex items-start gap-16 [&>div]:flex [&>div]:flex-col [&>div>p]:text-sm [&>div>p]:font-medium [&>div>h3]:text-4xl [&>div>h3]:font-bold">
               <div>
                 <p>Datasets</p>
-                <h3>317</h3>
+                <h3>
+                  {data.user_stats?.data_count !== undefined ? +data.user_stats.data_count : "---"}
+                </h3>
               </div>
               <div>
                 <p>Views</p>
-                <h3>4.3M</h3>
+                <h3>{data.user_stats?.views !== undefined ? +data.user_stats.views : "---"}</h3>
               </div>
               <div>
                 <p>Downloads</p>
-                <h3>1.2M</h3>
+                <h3>
+                  {data.user_stats?.downloads !== undefined ? +data.user_stats.downloads : "---"}
+                </h3>
               </div>
             </div>
           </div>
