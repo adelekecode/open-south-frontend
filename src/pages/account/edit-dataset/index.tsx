@@ -65,13 +65,15 @@ export default function EditDataset() {
     [data?.spatial_coverage]
   );
 
-  const category = useMemo(() => {
-    if (data?.category && categories) {
-      return categories.find((v) => v.id === data.category);
-    }
+  // const category = useMemo(() => {
+  //   if (data?.category && categories) {
+  //     return categories.find((v) => v.id === data.category);
+  //   }
 
-    return;
-  }, [categories, data?.category]);
+  //   return;
+  // }, [categories, data?.category]);
+
+  const category = categories?.find((v) => v.id === data?.category);
 
   if (isLoading) {
     return <DashboardLoader />;
@@ -111,12 +113,13 @@ export default function EditDataset() {
                   category: category?.name || "",
                   spatialCoverage: data.spatial_coverage || "",
                 }}
+                enableReinitialize
                 validateOnBlur={false}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => {
                   const newValues: Omit<typeof values, "category"> & {
                     category?: string;
-                  } = values;
+                  } = { ...values };
 
                   delete newValues.category;
 
@@ -282,6 +285,7 @@ export default function EditDataset() {
                             className: "!font-medium",
                           }}
                           value={values.category}
+                          defaultValue={values.category}
                         >
                           {!isLoadingCategories &&
                             categories &&
