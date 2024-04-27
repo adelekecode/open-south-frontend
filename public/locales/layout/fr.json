@@ -1,0 +1,21 @@
+{
+  "header": {
+    "links": {
+      "dataset": "Ensembles de données",
+      "category": "Catégories",
+      "organization": "Organisation",
+      "about": "À propos de nous",
+      "partner": "Partenaires",
+      "contact": "Nous contacter",
+      "news": "Actualités"
+    },
+    "signup": "S'inscrire",
+    "login": "Se connecter",
+    "search": {
+      "placeholder": "Rechercher",
+      "dataset": "Rechercher {{search}} dans les ensembles de données",
+      "organization": "Rechercher {{search}} dans les organisations"
+    },
+    "logout": "Se déconnecter"
+  }
+}

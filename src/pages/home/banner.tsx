@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { IoChevronBack } from "react-icons/io5";
 import Button from "~/components/button";
 
 export default function Banner() {
   const navigate = useNavigate();
+  const { t } = useTranslation("layout/home");
 
   return (
     <div className="bg-primary-700 w-full">
@@ -11,12 +13,14 @@ export default function Banner() {
         <div className="flex gap-3">
           <span className="w-1 bg-white rounded-full"></span>
           <div className="flex flex-col gap-6 py-4">
-            <h1 className="text-3xl font-semibold text-white mediumMobile:text-2xl">Contribute</h1>
+            <h1 className="text-3xl font-semibold text-white mediumMobile:text-2xl">
+              {t("banner.title")}
+            </h1>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <IoChevronBack className="text-white rotate-180 text-sm" />
                 <p className="text-white font-medium text-base mediumMobile:text-sm">
-                  Create or find a dataset
+                  {t("banner.subtitle")}
                 </p>
               </div>
             </div>
@@ -31,7 +35,7 @@ export default function Banner() {
               navigate("/account/datasets/new");
             }}
           >
-            <p className="text-white">Publish a dataset</p>
+            <p className="text-white">{t("banner.dataset-btn.publish")}</p>
             <IoChevronBack className="text-white rotate-180 text-base" />
           </Button>
           <Button
@@ -42,7 +46,7 @@ export default function Banner() {
               navigate("/datasets");
             }}
           >
-            <p className="text-white">Find a dataset</p>
+            <p className="text-white">{t("banner.dataset-btn.find")}</p>
             <IoChevronBack className="text-white rotate-180 text-base" />
           </Button>
         </div>

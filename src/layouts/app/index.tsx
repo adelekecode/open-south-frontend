@@ -1,5 +1,6 @@
-import { useState, ReactNode } from "react";
+import { useState, type ReactNode, useMemo } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Breadcrumbs } from "@mui/material";
 import { GrFormNext } from "react-icons/gr";
 import Footer from "~/components/footer";
@@ -9,57 +10,77 @@ import SideBar from "./side-bar";
 const routes = [
   {
     to: "/datasets",
-    name: "Datasets",
+    nameKey: "dataset",
   },
   {
     to: "/categories",
-    name: "Categories",
+    nameKey: "category",
   },
   {
     to: "/organizations",
-    name: "Organizations",
+    nameKey: "organization",
   },
   {
     to: "/about",
-    name: "About Us",
+    nameKey: "about",
   },
   {
     to: "/news",
-    name: "News",
+    nameKey: "news",
   },
   {
     to: "/partners",
-    name: "Partners",
+    nameKey: "partner",
   },
   {
     to: "/contact",
-    name: "Contact Us",
+    nameKey: "contact",
   },
 ];
 
 export default function AppLayout() {
+  const { t } = useTranslation("layout");
+
   const [routePath, setRoutePath] = useState<ReactNode[]>([]);
   const [openSidebar, setOpenSidebar] = useState(false);
 
-  const breadcrumbs = [
-    <Link key="1" to="/" className="hover:underline">
-      Welcome
-    </Link>,
-    ...routePath,
-  ];
+  const localizedRoutes = useMemo(
+    () =>
+      routes.map((route) => ({
+        ...route,
+        name: t(`header.links.${route.nameKey}`),
+      })),
+    [t]
+  );
+
+  const headerProps = {
+    routes: localizedRoutes,
+    setRoutePath: (data: ReactNode[]) => setRoutePath(data),
+    setOpenSidebar: (bool: boolean) => setOpenSidebar(bool),
+  };
+
+  const sidebarProps = {
+    routes: localizedRoutes,
+    open: openSidebar,
+    setOpen: (bool: boolean) => setOpenSidebar(bool),
+  };
+
+  const breadcrumbs = useMemo(
+    () => (
+      <>
+        <Link key="1" to="/" className="hover:underline">
+          Welcome
+        </Link>
+        {...routePath}
+      </>
+    ),
+    [routePath]
+  );
 
   return (
     <div className="w-full flex flex-col min-h-screen">
-      <Header
-        routes={routes}
-        setRoutePath={(data) => setRoutePath(data)}
-        setOpenSidebar={(bool: boolean) => setOpenSidebar(bool)}
-      />
-      <SideBar
-        routes={routes}
-        open={openSidebar}
-        setOpen={(bool: boolean) => setOpenSidebar(bool)}
-      />
+      <Header {...headerProps} />
+      <SideBar {...sidebarProps} />
       <main className="flex-grow">
         {routePath.length > 0 && (
           <div className="flex items-center max-w-maxAppWidth mx-auto p-6 px-10 tablet:px-6 largeMobile:!px-4">

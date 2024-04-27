@@ -1,0 +1,26 @@
+{
+  "banner": {
+    "title": "Contribute",
+    "subtitle": "Create or find a dataset",
+    "dataset-btn": {
+      "find": "Find a dataset",
+      "publish": "Publish a dataset"
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "link": "See more categories"
+  },
+  "datasets": {
+    "title": "Datasets",
+    "link": "See more datasets"
+  },
+  "panel": {
+    "title": "Open South",
+    "datasets": "Datasets",
+    "files": "Files",
+    "categories": "Categories",
+    "users": "Users",
+    "organizations": "Organizations"
+  }
+}
