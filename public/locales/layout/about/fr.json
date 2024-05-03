@@ -1,0 +1,15 @@
+{
+  "title": "À propos de {{company_name}}",
+  "body": {
+    "1": "Bienvenue sur {{company_name}}, votre première plateforme de données ouvertes conçue pour autonomiser les chercheurs, les universitaires, les praticiens, les décideurs et les communautés des pays du Sud mondial. Notre mission est de faciliter l'accès à des données précieuses, de favoriser la collaboration et de promouvoir le développement durable dans divers domaines.",
+    "2": "Chez {{company_name}}, nous croyons que l'accès aux données est un moteur fondamental du progrès. Nous reconnaissons le potentiel immense qui réside dans la riche toile d'informations et de connaissances existant dans le Sud mondial. Notre plateforme sert de passerelle pour libérer ce potentiel en fournissant un référentiel complet de données ouvertes.",
+    "3": "Nous nous engageons aux principes d'ouverture et de transparence. Toutes les données disponibles sur {{company_name}} sont librement téléchargeables, permettant un partage et une utilisation faciles par nos utilisateurs. Nous croyons fermement au pouvoir de la collaboration et à l'impact transformateur qu'elle peut avoir sur les sociétés. En encourageant le partage de données, nous promouvons la recherche interdisciplinaire, la prise de décision fondée sur des preuves et l'innovation dans plusieurs secteurs.",
+    "4": "L'engagement des utilisateurs et le renforcement des capacités sont au cœur de notre philosophie. Nous comprenons qu'une communauté dynamique et prospère est au cœur de toute plateforme réussie. {{company_name}} propose diverses fonctionnalités interactives de visualisation et de modélisation des données. À travers ces fonctionnalités, nous visons à encourager la participation active, l'échange de connaissances et à favoriser une meilleure compréhension des données.",
+    "5": "L'accessibilité et la localisation sont des piliers essentiels de notre plateforme. Nous nous efforçons de nous assurer que {{company_name}} est accessible aux individus et aux communautés du Sud mondial. Nous travaillons activement à améliorer l'accessibilité de la plateforme, à surmonter les barrières linguistiques et à prendre en compte les diverses infrastructures technologiques. Ce faisant, nous visons à créer un espace inclusif où la connaissance peut circuler librement, sans être entravée par des limitations géographiques ou techniques.",
+    "6": "Nous vous invitons à rejoindre notre communauté dynamique et à explorer la richesse des données et des connaissances disponibles sur {{company_name}}. Que vous soyez un chercheur à la recherche d'informations précieuses, un décideur en quête de solutions fondées sur des preuves, ou un membre de la communauté passionné par la promotion du changement positif, notre plateforme est là pour soutenir votre parcours. Ensemble, utilisons le pouvoir des données ouvertes pour façonner un avenir plus radieux pour le Sud mondial.",
+    "footnote": {
+      "welcome": "Bienvenue sur {{company_name}}",
+      "extra": "où les données transforment les possibilités"
+    }
+  }
+}
