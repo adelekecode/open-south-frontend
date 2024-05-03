@@ -13,9 +13,9 @@
     "login": "Se connecter",
     "dashboard": "Tableau de bord",
     "search": {
-      "placeholder": "Chercher",
-      "dataset": "Rechercher {{search}} dans les ensembles de données",
-      "organization": "Rechercher {{search}} dans les organisations"
+      "placeholder": "Rechercher",
+      "dataset": "Rechercher \"{{search}}\" dans les ensembles de données",
+      "organization": "Rechercher \"{{search}}\" dans les organisations"
     },
     "logout": "Se déconnecter"
   },

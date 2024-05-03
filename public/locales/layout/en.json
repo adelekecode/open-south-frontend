@@ -14,8 +14,8 @@
     "dashboard": "Dashboard",
     "search": {
       "placeholder": "Search",
-      "dataset": "Search for {{search}} in datasets",
-      "organization": "Search for {{search}} in organizations"
+      "dataset": "Search for \"{{search}}\" in datasets",
+      "organization": "Search for \"{{search}}\" in organizations"
     },
     "logout": "Logout"
   },
