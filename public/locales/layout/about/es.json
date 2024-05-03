@@ -1,0 +1,15 @@
+{
+  "title": "Acerca de {{company_name}}",
+  "body": {
+    "1": "Bienvenido a {{company_name}}, su principal plataforma de datos abiertos diseñada para empoderar a investigadores, académicos, profesionales, responsables políticos y comunidades dentro de los países del Sur Global. Nuestra misión es facilitar el acceso a datos valiosos, fomentar la colaboración y promover el desarrollo sostenible en diversos ámbitos.",
+    "2": "En {{company_name}}, creemos que el acceso a los datos es un motor fundamental del progreso. Reconocemos el inmenso potencial que se encuentra dentro del rico tapiz de información y conocimiento que existe en el Sur Global. Nuestra plataforma sirve como puerta de entrada para desbloquear este potencial al proporcionar un repositorio completo de datos abiertos.",
+    "3": "Estamos comprometidos con los principios de apertura y transparencia. Todos los datos disponibles en {{company_name}} se pueden descargar de forma gratuita, lo que facilita su compartición y utilización por parte de nuestros usuarios. Creemos firmemente en el poder de la colaboración y el impacto transformador que puede tener en las sociedades. Al fomentar el intercambio de datos, promovemos la investigación interdisciplinaria, la toma de decisiones basada en evidencia y la innovación en múltiples sectores.",
+    "4": "La participación del usuario y el desarrollo de capacidades son el núcleo de nuestra filosofía. Entendemos que una comunidad vibrante y próspera es fundamental para cualquier plataforma exitosa. {{company_name}} ofrece diversas funciones interactivas de visualización y modelado de datos. A través de estas características, nuestro objetivo es fomentar la participación activa, el intercambio de conocimientos y fomentar una mejor comprensión de los datos.",
+    "5": "La accesibilidad y la localización son pilares clave de nuestra plataforma. Nos esforzamos por asegurar que {{company_name}} sea accesible para individuos y comunidades en todo el Sur Global. Trabajamos activamente para mejorar la accesibilidad de la plataforma, abordar las barreras lingüísticas y adaptarnos a diversas infraestructuras tecnológicas. Al hacerlo, nuestro objetivo es crear un espacio inclusivo donde el conocimiento pueda fluir libremente, sin limitaciones geográficas o técnicas.",
+    "6": "Te invitamos a unirte a nuestra comunidad vibrante y explorar la riqueza de datos y conocimientos disponibles en {{company_name}}. Ya sea que sea un investigador en busca de ideas valiosas, un responsable político en busca de soluciones basadas en evidencia o un miembro de la comunidad apasionado por impulsar un cambio positivo, nuestra plataforma está aquí para apoyar su viaje. Juntos, aprovechemos el poder de los datos abiertos para dar forma a un futuro más brillante para el Sur Global.",
+    "footnote": {
+      "welcome": "Bienvenido a {{company_name}}",
+      "extra": "donde los datos transforman posibilidades"
+    }
+  }
+}
