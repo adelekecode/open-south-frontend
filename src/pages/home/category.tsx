@@ -1,22 +1,25 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { FaAngleRight } from "react-icons/fa6";
 import { usePublicCategories } from "~/queries/category";
 import NoData from "~/assets/illustrations/no-data.png";
 
 export default function Category() {
+  const { t } = useTranslation("layout/home");
+
   const { isLoading, data } = usePublicCategories();
 
   return (
     <section className="w-full max-w-maxAppWidth mx-auto p-8 tablet:px-5 largeMobile:!px-4 py-12 flex flex-col gap-4">
       <header className="flex items-center flex-wrap justify-between gap-4">
-        <h2 className="text-2xl largeMobile:text-xl font-semibold">Categories</h2>
+        <h2 className="text-2xl largeMobile:text-xl font-semibold">{t("categories.title")}</h2>
         <div className="flex items-center gap-6 ml-auto">
           {data && data.length > 0 && (
             <Link
               to={"/categories"}
               className="flex items-center gap-4 border-b-[1.5px] border-primary-600 hover:border-primary-700"
             >
-              <p className="text-primary-600 text-sm largeMobile:text-xs">See more categories</p>
+              <p className="text-primary-600 text-sm largeMobile:text-xs">{t("categories.link")}</p>
               <FaAngleRight className="text-primary-600 text-xs" />
             </Link>
           )}
@@ -82,7 +85,7 @@ export default function Category() {
               alt="No category data illustration"
             />
           </figure>
-          <p className="text-base font-semibold">No category found</p>
+          <p className="text-base font-semibold">{t("categories.empty-state")}</p>
         </div>
       )}
     </section>

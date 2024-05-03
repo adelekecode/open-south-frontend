@@ -9,14 +9,15 @@
   },
   "categories": {
     "title": "Catégories",
-    "link": "Voir plus de catégories"
+    "link": "Voir plus de catégories",
+    "empty-state": "Aucune catégorie trouvée"
   },
   "datasets": {
     "title": "Ensembles de données",
-    "link": "Voir plus d'ensembles de données"
+    "link": "Voir plus d'ensembles de données",
+    "empty-state": "Pas de données d'ensemble de données"
   },
   "panel": {
-    "title": "Ouvrir Sud",
     "datasets": "Ensembles de données",
     "files": "Fichiers",
     "categories": "Catégories",

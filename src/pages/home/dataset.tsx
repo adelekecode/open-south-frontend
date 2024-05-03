@@ -1,26 +1,29 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Avatar } from "@mui/material";
+import { IoPerson } from "react-icons/io5";
 import { FaAngleRight } from "react-icons/fa6";
 import { usePopularDatasets } from "~/queries/dataset";
 import NoData from "~/components/no-data";
-import { Avatar } from "@mui/material";
-import { IoPerson } from "react-icons/io5";
 
 export default function Dataset() {
   const navigate = useNavigate();
+
+  const { t } = useTranslation("layout/home");
 
   const { data, isLoading } = usePopularDatasets();
 
   return (
     <section className="w-full max-w-maxAppWidth mx-auto p-8 tablet:px-5 largeMobile:!px-4 py-12 flex flex-col gap-4">
       <header className="flex items-center justify-between gap-4">
-        <h2 className="text-2xl font-semibold">Datasets</h2>
+        <h2 className="text-2xl font-semibold">{t("datasets.title")}</h2>
         <div className="flex items-center gap-6">
           {data && data.length > 0 && (
             <Link
               to={"/datasets"}
               className="flex items-center gap-4 border-b-[1.5px] border-primary-600 hover:border-primary-700"
             >
-              <p className="text-primary-600 text-sm">See more datasets</p>
+              <p className="text-primary-600 text-sm">{t("categories.link")}</p>
               <FaAngleRight className="text-primary-600 text-xs" />
             </Link>
           )}
