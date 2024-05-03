@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Button from "~/components/button";
@@ -13,6 +14,8 @@ const validationSchema = Yup.object({
 });
 
 export default function Contact() {
+  const { t } = useTranslation("layout/contact");
+
   const sendMessage = useSendMessage();
 
   useEffect(() => {
@@ -28,12 +31,8 @@ export default function Contact() {
 
       <main className="w-full mx-auto max-w-maxAppWidth p-6 px-10 tablet:px-5 largeMobile:!px-4 pt-0 pb-12 flex flex-col gap-12">
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold">
-            Contact Us
-          </h1>
-          <p className="text-base largeMobile:text-sm">
-            Do you have a question for Open South? Kindly reach out to us.
-          </p>
+          <h1 className="text-3xl largeMobile:!text-2xl font-semibold">{t("title")}</h1>
+          <p className="text-base largeMobile:text-sm">{t("subtitle")}</p>
         </div>
         <Formik
           initialValues={{
@@ -55,25 +54,25 @@ export default function Contact() {
         >
           {({ handleSubmit, isSubmitting }) => (
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-2xl mx-auto">
-              <FormField label="Name" required placeholder="John Doe" name="name" />
+              <FormField label={t("form.name.label")} required placeholder="John Doe" name="name" />
               <FormField
-                label="Email"
+                label={t("form.email.label")}
                 required
-                placeholder="example@gmail.com"
+                placeholder={t("form.email.placeholder")}
                 name="email"
                 type="email"
               />
               <FormField
-                label="Message"
+                label={t("form.message.label")}
                 required
                 multiline
-                placeholder="Type your message here..."
+                placeholder={t("form.message.placeholder")}
                 name="message"
                 rows={6}
                 className="!p-0"
               />
               <Button className="w-full !mt-6" type="submit" loading={isSubmitting}>
-                Submit
+                {t("form.submit-btn")}
               </Button>
             </form>
           )}
