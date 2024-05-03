@@ -14,6 +14,18 @@ const langs = [
     value: "fr",
     text: "French",
   },
+  {
+    value: "pr",
+    text: "Portuguese",
+  },
+  {
+    value: "es",
+    text: "Spanish",
+  },
+  {
+    value: "sw",
+    text: "Swahili",
+  },
 ];
 
 export default function ChangeLang() {
@@ -28,7 +40,7 @@ export default function ChangeLang() {
   return (
     <>
       {loading ? (
-        <Button loading={loading} variant="outlined" color="info">
+        <Button loading={loading} variant="text" color="info">
           loading
         </Button>
       ) : (
@@ -48,6 +60,12 @@ export default function ChangeLang() {
               window.location.reload();
               setLoading(false);
             }
+          }}
+          sx={{
+            "& fieldset": {
+              borderWidth: "0px !important",
+              borderRadius: "0px",
+            },
           }}
         >
           {langs.map(({ value, text }, index) => (
