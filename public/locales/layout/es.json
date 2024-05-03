@@ -1,0 +1,62 @@
+{
+  "header": {
+    "links": {
+      "dataset": "Conjuntos de Datos",
+      "category": "Categorías",
+      "organization": "Organización",
+      "about": "Sobre Nosotros",
+      "partner": "Socios",
+      "contact": "Contáctenos",
+      "news": "Noticias"
+    },
+    "signup": "Registrarse",
+    "login": "Iniciar sesión",
+    "dashboard": "Panel",
+    "search": {
+      "placeholder": "Buscar",
+      "dataset": "Buscar \"{{search}}\" en conjuntos de datos",
+      "organization": "Buscar \"{{search}}\" en organizaciones"
+    },
+    "logout": "Cerrar sesión"
+  },
+  "main": {
+    "breadcrumbs": "Bienvenido"
+  },
+  "footer": {
+    "links": {
+      "useful-links": {
+        "title": "Enlaces Útiles",
+        "body": {
+          "categories": "Categorías",
+          "organizations": "Organizaciones"
+        }
+      },
+      "support": {
+        "title": "Soporte",
+        "body": {
+          "contact": "Contacto",
+          "faq": "Preguntas Frecuentes",
+          "about-us": "Sobre nosotros",
+          "feedback": "Retroalimentación"
+        }
+      },
+      "social-media": {
+        "title": "Redes Sociales"
+      },
+      "developer": {
+        "title": "Desarrollador",
+        "body": {
+          "portal-api": "API del Portal"
+        }
+      }
+    },
+    "partners": {
+      "title": "Nuestros Socios"
+    },
+    "bottom": {
+      "terms": "Términos de Servicio",
+      "policy": "Política de Privacidad",
+      "license": "Open South está licenciado bajo"
+    }
+  }
+}
