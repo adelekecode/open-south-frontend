@@ -19,6 +19,9 @@
     },
     "logout": "Logout"
   },
+  "main": {
+    "breadcrumbs": "Welcome"
+  },
   "footer": {
     "links": {
       "useful-links": {

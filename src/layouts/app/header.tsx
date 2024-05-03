@@ -9,8 +9,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  MenuItem,
-  Select,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { BiLock } from "react-icons/bi";
@@ -28,8 +26,7 @@ import SearchInput from "~/components/inputs/search-input";
 import CurrentUserAvatar from "~/components/current-user-avatar";
 import useAppStore from "~/store/app";
 import { useCurrentUser } from "~/queries/user";
-import { useChangeLang } from "~/mutations/lang";
-import Button from "~/components/button";
+import ChangeLang from "~/components/change-lang";
 
 type HeaderProps = {
   routes: { to: string; name: string }[];
@@ -38,17 +35,13 @@ type HeaderProps = {
 };
 
 export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderProps) {
-  const { lang, setLang } = useAppStore();
-
   const navigate = useNavigate();
   const { pathname, state } = useLocation();
 
-  const { t, i18n } = useTranslation("layout");
-  const { mutateAsync: changeLang } = useChangeLang();
+  const { t } = useTranslation("layout");
 
   const [search, setSearch] = useState("");
   const [showList, setShowList] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
@@ -125,33 +118,7 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
           </IconButton>
           <div className="flex flex-col items-end gap-4 pr-4 tablet:pr-0 tablet:w-full tablet:col-span-2">
             <div className="flex item-center gap-4 flex-wrap [&_button]:rounded-full [&_button>p]:text-primary-700 [&_button]:p-2 [&_button]:py-1 [&_button>p]:text-sm [&_button>p]:font-medium [&_button]:flex [&_button]:items-center [&_button]:gap-2 tablet:hidden justify-end">
-              {loading ? (
-                <Button loading={loading} variant="outlined" color="info">
-                  loading
-                </Button>
-              ) : (
-                <Select
-                  value={lang}
-                  onChange={async (e) => {
-                    const value = e.target.value;
-
-                    setLoading(true);
-                    const response = await changeLang({
-                      lang: value,
-                    });
-
-                    if (response) {
-                      i18n.changeLanguage(value);
-                      setLang(value);
-                      window.location.reload();
-                      setLoading(false);
-                    }
-                  }}
-                >
-                  <MenuItem value={"en"}>English</MenuItem>
-                  <MenuItem value={"fr"}>French</MenuItem>
-                </Select>
-              )}
+              <ChangeLang />
               {currentUser ? (
                 <>
                   <div className="flex items-center gap-3">
