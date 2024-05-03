@@ -68,11 +68,11 @@ export default function AppLayout() {
   const breadcrumbs = useMemo(
     () => [
       <Link key="1" to="/" className="hover:underline">
-        Welcome
+        {t("main.breadcrumbs")}
       </Link>,
       ...routePath,
     ],
-    [routePath]
+    [routePath, t]
   );
 
   return (
