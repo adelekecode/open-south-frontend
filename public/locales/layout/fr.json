@@ -11,11 +11,52 @@
     },
     "signup": "S'inscrire",
     "login": "Se connecter",
+    "dashboard": "Tableau de bord",
     "search": {
       "placeholder": "Rechercher",
-      "dataset": "Rechercher {{search}} dans les ensembles de données",
-      "organization": "Rechercher {{search}} dans les organisations"
+      "dataset": "Rechercher \"{{search}}\" dans les ensembles de données",
+      "organization": "Rechercher \"{{search}}\" dans les organisations"
     },
     "logout": "Se déconnecter"
+  },
+  "main": {
+    "breadcrumbs": "Bienvenue"
+  },
+  "footer": {
+    "links": {
+      "useful-links": {
+        "title": "Liens utiles",
+        "body": {
+          "categories": "Catégories",
+          "organizations": "Organisations"
+        }
+      },
+      "support": {
+        "title": "Support",
+        "body": {
+          "contact": "Contact",
+          "faq": "FAQ",
+          "about-us": "À propos de nous",
+          "feedback": "Retour d'information"
+        }
+      },
+      "social-media": {
+        "title": "Médias sociaux"
+      },
+      "developer": {
+        "title": "Développeur",
+        "body": {
+          "portal-api": "API du portail"
+        }
+      }
+    },
+    "partners": {
+      "title": "Nos partenaires"
+    },
+    "bottom": {
+      "terms": "Conditions de service",
+      "policy": "Politique de confidentialité",
+      "license": "Open South est sous licence"
+    }
   }
 }

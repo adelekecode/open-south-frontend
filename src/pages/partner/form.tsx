@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Button from "~/components/button";
@@ -7,6 +8,8 @@ import PhoneNumberField from "~/components/fields/phone-number-field";
 const validationSchema = Yup.object({});
 
 export default function Form() {
+  const { t } = useTranslation("layout/partners");
+
   return (
     <div className="flex justify-center">
       <Formik
@@ -31,53 +34,53 @@ export default function Form() {
             className="flex flex-col gap-4 w-full max-w-[700px]"
           >
             <div className="flex flex-col gap-2">
-              <h3 className="text-xl font-semibold">Become a partner</h3>
-              <p className="text-sm">Please fill the form below.</p>
+              <h3 className="text-xl font-semibold">{t("form.title")}</h3>
+              <p className="text-sm">{t("subtitle")}</p>
             </div>
             <FormField
-              label="Organization Name"
+              label={t("form.inputs.organization-name.label")}
               required
-              placeholder="Example"
               name="organizationName"
+              placeholder={t("form.inputs.organization-name.placeholder")}
             />
             <FormField
-              label="Contact Person"
+              label={t("form.inputs.contact-person.label")}
               required
-              placeholder="Enter contact person's name"
               name="contactPerson"
+              placeholder={t("form.inputs.contact-person.placeholder")}
             />
             <FormField
-              label="Email"
+              label={t("form.inputs.email.label")}
               required
-              placeholder="example@gmail.com"
               name="email"
               type="email"
+              placeholder={t("form.inputs.email.placeholder")}
             />
             <PhoneNumberField
               id="phoneNumber"
-              label="Phone Number"
+              label={t("form.inputs.phone-number.label")}
               required
               placeholder="+234 0000000000"
               name="phoneNumber"
               type="text"
             />
             <FormField
-              label="Organization Type"
+              label={t("form.inputs.organization-type.label")}
               required
-              placeholder="Specify if you are a company, nonprofit, government entity, etc."
               name="organizationType"
+              placeholder={t("form.inputs.organization-type.placeholder")}
             />
             <FormField
-              label="Purpose of Partnership"
+              label={t("form.inputs.purpose-of-partnership.label")}
               required
               multiline
-              placeholder="Briefly describe why you want to be our partner."
               name="purposeOfPartnership"
+              placeholder={t("form.inputs.purpose-of-partnership.placeholder")}
               rows={6}
               className="!p-0"
             />
             <Button className="w-full !mt-6" type="submit" loading={isSubmitting}>
-              Submit
+              {t("submit-btn")}
             </Button>
           </form>
         )}

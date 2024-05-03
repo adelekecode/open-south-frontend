@@ -1,9 +1,12 @@
+import { useTranslation } from "react-i18next";
 import Seo from "~/components/seo";
 import { usePublicCategories } from "~/queries/category";
 import Item from "./item";
 import NoData from "~/assets/illustrations/no-data.png";
 
 export default function Category() {
+  const { t } = useTranslation("layout/category");
+
   const { isLoading, data } = usePublicCategories();
 
   return (
@@ -16,12 +19,9 @@ export default function Category() {
       <main className="w-full mx-auto max-w-maxAppWidth p-6 px-10 tablet:px-6 largeMobile:!px-4 pt-0 pb-16 flex flex-col gap-16">
         <header className="flex flex-col gap-4">
           <h1 className="text-4xl tablet:text-3xl largeMobile:!text-xl font-semibold">
-            Categories of datasets
+            {t("title")}
           </h1>
-          <p className="largeMobile:text-sm">
-            Explore a variety of dataset categories, including environment, education, urbanization,
-            and more. Find valuable insights and information across different thematic areas.
-          </p>
+          <p className="largeMobile:text-sm">{t("subtitle")}</p>
         </header>
         {isLoading ? (
           <div className="grid grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:550px)]:!grid-cols-1 gap-6 tablet:gap-4">

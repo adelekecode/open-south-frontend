@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import Logo from "./logo";
@@ -7,32 +8,34 @@ import CHAI from "~/assets/images/partner-logos/chai.png";
 import EAAMO from "~/assets/images/partner-logos/eaamo.png";
 
 export default function Footer() {
+  const { t } = useTranslation("layout");
+
   return (
     <footer className="w-full">
       <div className="bg-[#f4f4f5b3] w-full">
         <div className="max-w-maxAppWidth mx-auto px-8 tablet:px-6 largeMobile:!px-4 py-8 [&_h3]:text-[0.8rem] [&_h3]:font-semibold grid grid-cols-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-4 [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:gap-4 [&>div>div>a]:w-fit [&>div>div>a]:text-[0.8rem] tablet:grid-cols-2 largeMobile:!grid-cols-1 tablet:gap-8">
           <div>
-            <h3>Useful Links</h3>
+            <h3>{t("footer.links.useful-links.title")}</h3>
             <div>
               <Link className="hover:underline" to="/categories">
-                Categories
+                {t("footer.links.useful-links.body.categories")}
               </Link>
               <Link className="hover:underline" to="/organizations">
-                Organizations
+                {t("footer.links.useful-links.body.organizations")}
               </Link>
             </div>
           </div>
           <div>
-            <h3>Support</h3>
+            <h3>{t("footer.links.support.title")}</h3>
             <div>
               <Link className="hover:underline" to="/contact">
-                Contact
+                {t("footer.links.support.body.contact")}
               </Link>
               <Link className="hover:underline" to="/faq">
-                FAQ
+                {t("footer.links.support.body.faq")}
               </Link>
               <Link className="hover:underline" to="/about">
-                About us
+                {t("footer.links.support.body.about-us")}
               </Link>
               <a
                 className="hover:underline"
@@ -40,12 +43,12 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Feedback
+                {t("footer.links.support.body.feedback")}
               </a>
             </div>
           </div>
           <div>
-            <h3>Social Media</h3>
+            <h3>{t("footer.links.social-media.title")}</h3>
             <div className="!flex-row">
               <a href="https://twitter.com/OpenSouthData" target="_blank" rel="noopener noreferrer">
                 <FaSquareXTwitter className="text-2xl text-black" />
@@ -60,10 +63,10 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h3>Developer</h3>
+            <h3>{t("footer.links.developer.title")}</h3>
             <div>
               <Link className="hover:underline" to="">
-                Portal API
+                {t("footer.links.developer.body.portal-api")}
               </Link>
             </div>
           </div>
@@ -75,7 +78,7 @@ export default function Footer() {
             <Logo className="w-40 [@media(max-width:580px)]:w-36 largeMobile:!w-32" />
           </Link>
           <div className="flex flex-col gap-4 max-w-[70%] [@media(max-width:580px)]:max-w-[none]">
-            <p className="text-sm font-medium text-center">Our Partners</p>
+            <p className="text-sm font-medium text-center">{t("footer.partners.title")}</p>
             <div className="flex flex-wrap [@media(max-width:960px)]:grid [@media(max-width:960px)]:grid-cols-2 gap-6 largeMobile:flex largeMobile:flex-wrap [&_div]:flex [&_img]:h-[4rem] [&_img]:min-w-[4rem]">
               <div className="justify-end">
                 <a href="https://humancompatible.ai" target="_blank" rel="noopener noreferrer">
@@ -104,15 +107,15 @@ export default function Footer() {
       <div className="px-6 flex items-center py-3 max-w-maxAppWidth mx-auto">
         <div className="flex gap-4 items-center [&>span]:h-4 [&>span]:w-[1px] [&>span]:rounded-full [&>span]:bg-zinc-300 [&>a]:text-xs flex-wrap">
           <Link to="/terms" className="hover:underline">
-            Terms of Services
+            {t("footer.bottom.terms")}
           </Link>
           <span></span>
           <Link to="/privacy-policy" className="hover:underline">
-            Privacy Policy
+            {t("footer.bottom.policy")}
           </Link>
           <span></span>
           <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-xs">Open South is licensed under</p>
+            <p className="text-xs">{t("footer.bottom.license")}</p>
             <a
               href="http://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1"
               target="_blank"

@@ -9,14 +9,15 @@
   },
   "categories": {
     "title": "Categories",
-    "link": "See more categories"
+    "link": "See more categories",
+    "empty-state": "No category found"
   },
   "datasets": {
     "title": "Datasets",
-    "link": "See more datasets"
+    "link": "See more datasets",
+    "empty-state": "No dataset data"
   },
   "panel": {
-    "title": "Open South",
     "datasets": "Datasets",
     "files": "Files",
     "categories": "Categories",

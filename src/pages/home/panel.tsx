@@ -1,6 +1,9 @@
+import { useTranslation } from "react-i18next";
 import { useGetPanelData } from "~/queries/home";
 
 export default function Panel() {
+  const { t } = useTranslation("layout/home");
+
   const { data } = useGetPanelData();
 
   return (
@@ -12,35 +15,35 @@ export default function Panel() {
             <span></span>
             <div>
               <h1>{data?.datasets || "0"}</h1>
-              <p>Datasets</p>
+              <p>{t("panel.datasets")}</p>
             </div>
           </div>
           <div>
             <span></span>
             <div>
               <h1>{data?.files || "0"}</h1>
-              <p>Files</p>
+              <p>{t("panel.files")}</p>
             </div>
           </div>
           <div>
             <span></span>
             <div>
               <h1>{data?.categories || "0"}</h1>
-              <p>Categories</p>
+              <p>{t("panel.categories")}</p>
             </div>
           </div>
           <div>
             <span></span>
             <div>
               <h1>{data?.users || "0"}</h1>
-              <p>Users</p>
+              <p>{t("panel.users")}</p>
             </div>
           </div>
           <div>
             <span></span>
             <div>
               <h1>{data?.organisations || "0"}</h1>
-              <p>Organizations</p>
+              <p>{t("panel.organizations")}</p>
             </div>
           </div>
         </div>
