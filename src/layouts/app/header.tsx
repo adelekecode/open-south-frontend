@@ -124,7 +124,7 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
             <IoMenu className="text-zinc-800" />
           </IconButton>
           <div className="flex flex-col items-end gap-4 pr-4 tablet:pr-0 tablet:w-full tablet:col-span-2">
-            <div className="flex item-center gap-4 flex-wrap [&_button]:rounded-full [&_button>p]:text-primary-700 [&_button]:p-2 [&_button]:py-1 [&_button>p]:text-sm [&_button>p]:font-medium [&_button]:flex [&_button]:items-center [&_button]:gap-2 tablet:hidden">
+            <div className="flex item-center gap-4 flex-wrap [&_button]:rounded-full [&_button>p]:text-primary-700 [&_button]:p-2 [&_button]:py-1 [&_button>p]:text-sm [&_button>p]:font-medium [&_button]:flex [&_button]:items-center [&_button]:gap-2 tablet:hidden justify-end">
               {loading ? (
                 <Button loading={loading} variant="outlined" color="info">
                   loading
@@ -136,14 +136,13 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
                     const value = e.target.value;
 
                     setLoading(true);
-                    i18n.changeLanguage(value);
                     const response = await changeLang({
                       lang: value,
                     });
 
-                    setLang(value);
-
                     if (response) {
+                      i18n.changeLanguage(value);
+                      setLang(value);
                       window.location.reload();
                       setLoading(false);
                     }
@@ -169,7 +168,7 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
                     </p>
                   </div>
                   <button
-                    className="hover:bg-zinc-100"
+                    className="hover:bg-zinc-100 h-fit self-center"
                     onClick={() => {
                       navigate(
                         currentUser.role === "admin" ? "/admin/dashboard" : "/account/dashboard"
@@ -180,7 +179,7 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
                     <p>{t("header.dashboard")}</p>
                   </button>
                   <button
-                    className="hover:bg-zinc-100"
+                    className="hover:bg-zinc-100 h-fit self-center"
                     onClick={() => {
                       setDisplayLogoutModal(true);
                     }}
@@ -192,7 +191,7 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
               ) : (
                 <>
                   <button
-                    className="hover:bg-zinc-100"
+                    className="hover:bg-zinc-100 h-fit self-center"
                     onClick={() => {
                       navigate("/login", {
                         state: {
@@ -205,7 +204,7 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
                     <p>{t("header.login")}</p>
                   </button>
                   <button
-                    className="hover:bg-zinc-100"
+                    className="hover:bg-zinc-100 h-fit self-center"
                     onClick={() => {
                       navigate("/signup", {
                         state: {
@@ -292,7 +291,7 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
           </div>
         </div>
       </div>
-      <div className="px-6 tablet:px-2 flex items-start w-full max-w-maxAppWidth tablet:hidden">
+      <div className="px-6 tablet:px-2 flex items-start w-full max-w-maxAppWidth tablet:hidden overflow-x-auto">
         {routes.map((item, index) => (
           <NavLink
             to={item.to}
@@ -305,7 +304,9 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
             }
           >
             {({ isActive }) => (
-              <p className={twMerge(`text-sm`, isActive && "text-primary-700")}>{item.name}</p>
+              <p className={twMerge(`text-sm text-nowrap`, isActive && "text-primary-700")}>
+                {item.name}
+              </p>
             )}
           </NavLink>
         ))}
