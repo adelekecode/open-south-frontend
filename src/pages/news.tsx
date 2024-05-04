@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { stripHtml } from "string-strip-html";
@@ -8,6 +9,8 @@ import NoData from "~/assets/illustrations/no-data.png";
 
 export default function News() {
   const navigate = useNavigate();
+
+  const { t } = useTranslation("layout/news");
 
   const { data, isLoading } = usePublicNews();
 
@@ -28,7 +31,7 @@ export default function News() {
       <Seo title="News" description="Check out our latest news" />
 
       <main className="w-full mx-auto max-w-maxAppWidth p-6 px-10 tablet:px-5 largeMobile:!px-4 pt-0 pb-12 flex flex-col gap-8">
-        <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold">News</h1>
+        <h1 className="text-3xl largeMobile:!text-2xl font-semibold">{t("title")}</h1>
         {isLoading ? (
           <div className="grid grid-cols-3 gap-4 tablet:grid-cols-2 [@media(max-width:600px)]:grid-cols-1">
             {Array.from({ length: 6 }).map((_, index) => (
@@ -79,8 +82,9 @@ export default function News() {
                       {textConverter(title, 70)}
                     </h2>
                     <h5 className="text-xs font-medium">
-                      Published on{" "}
-                      {published_at ? moment(published_at).format("MMMM D, YYYY") : "-----"}
+                      {t("date", {
+                        value: published_at ? moment(published_at).format("MMMM D, YYYY") : "-----",
+                      })}
                     </h5>
                     <p className="text-start text-sm">{textConverter(stripedDescription, 180)}</p>
                   </div>
@@ -97,7 +101,7 @@ export default function News() {
                 alt="No news data illustration"
               />
             </figure>
-            <p className="text-base font-semibold">No news for now</p>
+            <p className="text-base font-semibold">{t("empty-state")}</p>
           </div>
         )}
       </main>

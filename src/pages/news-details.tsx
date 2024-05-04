@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { stripHtml } from "string-strip-html";
 import Seo from "~/components/seo";
@@ -8,6 +9,8 @@ import { useNewsView } from "~/mutations/news";
 import { usePublicNewsDetails } from "~/queries/news";
 
 export default function NewsDetails() {
+  const { t } = useTranslation("layout/news/slug");
+
   const { slug } = useParams();
 
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -76,8 +79,11 @@ export default function NewsDetails() {
         <div className="flex flex-col gap-2">
           <h1 className="text-2xl font-semibold">{data.title}</h1>
           <p className="text-sm font-medium">
-            Published on{" "}
-            {data.published_at ? moment(data.published_at).format("MMMM D, YYYY") : "------"}
+            {t("date", {
+              value: data.published_at
+                ? moment(data.published_at).format("MMMM D, YYYY")
+                : "------",
+            })}
           </p>
         </div>
         <figure className="w-full aspect-video">

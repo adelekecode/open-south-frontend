@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import { Collapse, MenuItem, Pagination, useMediaQuery } from "@mui/material";
+import { twMerge } from "tailwind-merge";
 import { FiSearch } from "react-icons/fi";
 import { FaAngleDown } from "react-icons/fa6";
 import SearchInput from "~/components/inputs/search-input";
@@ -18,11 +20,12 @@ import { usePublicOrganizations } from "~/queries/organizations";
 import { usePublicTags } from "~/queries/tags";
 import useDebounce from "~/hooks/debounce";
 import Button from "~/components/button";
-import { twMerge } from "tailwind-merge";
 
 type SortByValue = "" | "creation_date" | "last_update";
 
 export default function Dataset() {
+  const { t } = useTranslation("layout/dataset");
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [page, setPage] = useState(1);
@@ -73,13 +76,13 @@ export default function Dataset() {
     <>
       <Seo title="Dataset" description="Checkout the dataset that have been created" />
       <main className="w-full max-w-maxAppWidth p-6 px-10 tablet:px-6 pt-0 mx-auto largeMobile:!px-4">
-        <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold mb-2">
-          Datasets
-        </h1>
-        <p className="largeMobile:text-sm">Search among all datasets on Open South</p>
+        <h1 className="text-3xl largeMobile:!text-2xl font-semibold mb-2">{t("header.title")}</h1>
+        <p className="largeMobile:text-sm">
+          {t("header.subtitle", { company_name: "Open South" })}
+        </p>
         <div className="flex flex-col gap-2 pt-4">
           <SearchInput
-            placeholder="Search"
+            placeholder={t("header.search.placeholder")}
             value={search}
             onChange={(e) => {
               const value = e.target.value;
@@ -107,7 +110,7 @@ export default function Dataset() {
             searchIcon={
               <div className="flex items-center gap-2 p-2">
                 <FiSearch className="w-5 h-5 text-white" />
-                <p className="text-white tablet:hidden text-base">Search</p>
+                <p className="text-white tablet:hidden text-base">{t("header.search.button")}</p>
               </div>
             }
             onSearch={async () => {
@@ -129,7 +132,7 @@ export default function Dataset() {
               color="info"
               onClick={() => setOpenFilter((prev) => !prev)}
             >
-              <p>Filter results</p>
+              <p>{t("sidebar.mobile-title")}</p>
               <FaAngleDown className={`text-info-900 transition ${openFilter && "rotate-180"}`} />
             </Button>
           )}
@@ -138,17 +141,17 @@ export default function Dataset() {
               className={`w-full flex flex-col gap-3 ${isLaptop && "border-r-[1.5px] pr-6"} tablet:border-none border-zinc-300`}
             >
               <header>
-                <h4 className="font-semibold text-base">Filters</h4>
+                <h4 className="font-semibold text-base">{t("sidebar.title")}</h4>
               </header>
               <main className="flex flex-col gap-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-1">
                 <div>
-                  <label htmlFor="organization">Organizations</label>
+                  <label htmlFor="organization">{t("sidebar.search.organization.title")}</label>
                   <AutocompleteInput
                     id="organization"
                     options={organizations ? organizations.results : []}
                     getOptionLabel={(opt) => opt.name ?? opt}
                     inputParams={{
-                      placeholder: "All Organizations",
+                      placeholder: t("sidebar.search.organization.placeholder"),
                     }}
                     loading={isLoadingOrganizations}
                     value={
@@ -178,13 +181,13 @@ export default function Dataset() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="tag">Tags</label>
+                  <label htmlFor="tag">{t("sidebar.search.tag.title")}</label>
                   <AutocompleteInput
                     id="tag"
                     options={tags?.results || ([] as Dataset["tags_data"])}
                     getOptionLabel={(opt) => opt.name ?? opt}
                     inputParams={{
-                      placeholder: "All Tags",
+                      placeholder: t("sidebar.search.tag.placeholder"),
                     }}
                     loading={isLoadingTags}
                     value={tags?.results?.find((item) => item.name === filterBy.tag) || null}
@@ -211,11 +214,11 @@ export default function Dataset() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="category">Category</label>
+                  <label htmlFor="category">{t("sidebar.search.category.title")}</label>
                   <AutocompleteInput
                     id="category"
                     inputParams={{
-                      placeholder: "All Categories",
+                      placeholder: t("sidebar.search.category.placeholder"),
                     }}
                     options={categories || ([] as Category[])}
                     getOptionLabel={(opt) => opt.name ?? opt}
@@ -244,11 +247,11 @@ export default function Dataset() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="format">Formats</label>
+                  <label htmlFor="format">{t("sidebar.search.formats.title")}</label>
                   <AutocompleteInput
                     id="format"
                     inputParams={{
-                      placeholder: "All Formats",
+                      placeholder: t("sidebar.search.formats.placeholder"),
                     }}
                     options={formatData}
                     value={formatData.find((item) => item.label === filterBy.format) || null}
@@ -275,11 +278,11 @@ export default function Dataset() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="licenses">Licenses</label>
+                  <label htmlFor="licenses">{t("sidebar.search.license.title")}</label>
                   <AutocompleteInput
                     id="license"
                     inputParams={{
-                      placeholder: "All Licenses",
+                      placeholder: t("sidebar.search.license.placeholder"),
                     }}
                     getOptionLabel={(opt) => opt.name ?? opt}
                     options={licenseData}
@@ -307,11 +310,13 @@ export default function Dataset() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="spatial-coverage">Spatial coverage</label>
+                  <label htmlFor="spatial-coverage">
+                    {t("sidebar.search.spatial-coverage.placeholder")}
+                  </label>
                   <AutocompleteInput
                     id="spatial-coverage"
                     inputParams={{
-                      placeholder: "All Spatial Coverage",
+                      placeholder: t("sidebar.search.spatial-coverage.placeholder"),
                     }}
                     options={spatialCoverageData}
                     value={
@@ -345,11 +350,9 @@ export default function Dataset() {
           </Collapse>
           <div className="flex flex-col gap-8">
             <header className="flex items-center gap-4 justify-between border-b-[1.5px] border-info-300 pb-4 flex-wrap">
-              <p>
-                <span>{data ? data.count : "0"}</span> results
-              </p>
+              <p>{t("main.header.result", { value: data ? data.count : "0" })}</p>
               <div className="flex items-center gap-2">
-                <p className="whitespace-nowrap text-sm">Sort by:</p>
+                <p className="whitespace-nowrap text-sm">{t("main.header.sort-by.text")}:</p>
                 <SelectInput
                   className="min-w-[210px]"
                   value={sortBy}
@@ -371,9 +374,13 @@ export default function Dataset() {
                     }, searchParamsOption);
                   }}
                 >
-                  <MenuItem value="">Relevance</MenuItem>
-                  <MenuItem value="creation_date">Creation Date</MenuItem>
-                  <MenuItem value="last_update">Last Update</MenuItem>
+                  <MenuItem value="">{t("main.header.sort-by.dropdown.relevance")}</MenuItem>
+                  <MenuItem value="creation_date">
+                    {t("main.header.sort-by.dropdown.creation-date")}
+                  </MenuItem>
+                  <MenuItem value="last_update">
+                    {t("main.header.sort-by.dropdown.last-update")}
+                  </MenuItem>
                 </SelectInput>
               </div>
             </header>

@@ -1,0 +1,34 @@
+{
+  "title": "Nuestros Socios",
+  "show-form-btn": "Convertirse en socio",
+  "form": {
+    "title": "Convertirse en socio",
+    "subtitle": "Por favor, complete el formulario a continuación.",
+    "inputs": {
+      "organization-name": {
+        "label": "Nombre de la Organización",
+        "placeholder": "Ejemplo"
+      },
+      "contact-person": {
+        "label": "Persona de Contacto",
+        "placeholder": "Ingrese el nombre de la persona de contacto"
+      },
+      "email": {
+        "label": "Correo Electrónico",
+        "placeholder": "ejemplo@gmail.com"
+      },
+      "phone-number": {
+        "label": "Número de Teléfono"
+      },
+      "organization-type": {
+        "label": "Tipo de Organización",
+        "placeholder": "Especifique si es una empresa, sin fines de lucro, entidad gubernamental, etc."
+      },
+      "purpose-of-partnership": {
+        "label": "Propósito de la Asociación",
+        "placeholder": "Describa brevemente por qué quiere ser nuestro socio."
+      }
+    },
+    "submit-btn": "Enviar"
+  }
+}

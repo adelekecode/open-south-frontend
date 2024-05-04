@@ -1,0 +1,62 @@
+{
+  "header": {
+    "links": {
+      "dataset": "Datasets",
+      "category": "Categories",
+      "organization": "Organization",
+      "about": "About Us",
+      "partner": "Partners",
+      "contact": "Contact Us",
+      "news": "News"
+    },
+    "signup": "Sign Up",
+    "login": "Log In",
+    "dashboard": "Dashboard",
+    "search": {
+      "placeholder": "Search",
+      "dataset": "Search for \"{{search}}\" in datasets",
+      "organization": "Search for \"{{search}}\" in organizations"
+    },
+    "logout": "Logout"
+  },
+  "main": {
+    "breadcrumbs": "Welcome"
+  },
+  "footer": {
+    "links": {
+      "useful-links": {
+        "title": "Useful Links",
+        "body": {
+          "categories": "Categories",
+          "organizations": "Organizations"
+        }
+      },
+      "support": {
+        "title": "Support",
+        "body": {
+          "contact": "Contact",
+          "faq": "FAQ",
+          "about-us": "About us",
+          "feedback": "Feedback"
+        }
+      },
+      "social-media": {
+        "title": "Social Media"
+      },
+      "developer": {
+        "title": "Developer",
+        "body": {
+          "portal-api": "Portal API"
+        }
+      }
+    },
+    "partners": {
+      "title": "Our Partners"
+    },
+    "bottom": {
+      "terms": "Terms of Services",
+      "policy": "Privacy Policy",
+      "license": "Open South is licensed under"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { MenuItem, Pagination } from "@mui/material";
 import { stripHtml } from "string-strip-html";
 import slugify from "slugify";
@@ -15,6 +16,7 @@ type SortByValue = "relevance" | "most-recent";
 
 export default function Organization() {
   const navigate = useNavigate();
+  const { t } = useTranslation("layout/organization");
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -46,18 +48,16 @@ export default function Organization() {
     <>
       <Seo title="Organization" description="" />
       <main className="w-full max-w-maxAppWidth p-6 px-10 tablet:px-6 pt-0 mx-auto largeMobile:!px-4 pb-16">
-        <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold mb-2">
-          Organization
-        </h1>
-        <p className="tablet:text-sm">Search among organizations on Open South.</p>
+        <h1 className="text-3xl largeMobile:!text-2xl font-semibold mb-2">{t("title")}</h1>
+        <p className="tablet:text-sm">{t("subtitle", { company_name: "Open South" })}</p>
         <div className="flex flex-col gap-2 pt-4">
           <SearchInput
-            placeholder="Search..."
+            placeholder={t("search.placeholder")}
             className="w-full h-[inherit]"
             searchIcon={
               <div className="flex items-center gap-2 p-2">
                 <FiSearch className="w-5 h-5 text-white" />
-                <p className="text-white tablet:hidden text-base">Search</p>
+                <p className="text-white tablet:hidden text-base">{t("search.button")}</p>
               </div>
             }
             value={search}
@@ -84,11 +84,9 @@ export default function Organization() {
           />
         </div>
         <header className="flex items-center flex-wrap largeMobile:flex-col gap-6 justify-between py-6">
-          <p className="self-start">
-            <span>{data?.count || 0}</span> results
-          </p>
+          <p className="self-start">{t("result", { value: data?.count || 0 })}</p>
           <div className="flex items-center gap-2 largeMobile:w-full largeMobile:flex-col largeMobile:items-start">
-            <p className="whitespace-nowrap text-sm">Sort by:</p>
+            <p className="whitespace-nowrap text-sm">{t("sort-by.text")}:</p>
             <SelectInput
               className="min-w-[210px]"
               value={sortBy}
@@ -110,8 +108,8 @@ export default function Organization() {
                 }, searchParamsOption);
               }}
             >
-              <MenuItem value="">Relevance</MenuItem>
-              <MenuItem value="most-recent">Most Recent</MenuItem>
+              <MenuItem value="">{t("sort-by.dropdown.relevance")}</MenuItem>
+              <MenuItem value="most-recent">{t("sort-by.dropdown.most-recent")}</MenuItem>
             </SelectInput>
           </div>
         </header>
@@ -185,7 +183,7 @@ export default function Organization() {
                         }).toString()}`,
                       }}
                     >
-                      <span className="font-semibold">{data_count}</span> datasets
+                      <span className="font-semibold">{data_count}</span> {t("org-card.datasets")}
                     </Link>
                   </button>
                 );

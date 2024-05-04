@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import Seo from "~/components/seo";
 import BIDS from "~/assets/images/partner-logos/bids.png";
 import CHAI from "~/assets/images/partner-logos/chai.png";
@@ -7,6 +8,8 @@ import Button from "~/components/button";
 import Form from "./form";
 
 export default function Partner() {
+  const { t } = useTranslation("layout/partners");
+
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
@@ -19,7 +22,7 @@ export default function Partner() {
 
       <main className="w-full mx-auto max-w-maxAppWidth p-6 px-10 tablet:px-5 largeMobile:!px-4 pt-0 pb-16 flex flex-col gap-10">
         <h1 className="text-4xl tablet:text-3xl largeMobile:!text-2xl font-semibold">
-          Our Partners
+          {t("title")}
         </h1>
         <div className="flex flex-col gap-4 max-w-[600px] self-center mb-10 largeMobile:mb-6">
           <div className="flex flex-col">
@@ -43,7 +46,7 @@ export default function Partner() {
               setShowForm(true);
             }}
           >
-            Become a partner
+            {t("show-form-btn")}
           </Button>
         )}
 
