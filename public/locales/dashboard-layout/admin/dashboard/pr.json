@@ -1,0 +1,37 @@
+{
+  "title": "Painel",
+  "cards": {
+    "users": "Usuários",
+    "datasets": "Conjuntos de dados",
+    "organizations": "Organizações",
+    "news": "Notícias"
+  },
+  "charts": {
+    "average-views-per-category": {
+      "title": "Visualizações médias por categoria",
+      "day": "Dia",
+      "week": "Semana",
+      "month": "Mês"
+    },
+    "average-download-per-Category": {
+      "title": "Download médio por categoria em diferentes períodos",
+      "day": "Dia",
+      "week": "Semana",
+      "month": "Mês"
+    },
+    "most-accessed-datasets": {
+      "title": "Top 5 dos Conjuntos de Dados Mais Acessados",
+      "empty-state": "Nenhum conjunto de dados acessado no momento"
+    },
+    "most-published-organizations": "Top 5 das Organizações Mais Publicadas",
+    "traffic-locations": {
+      "title": "Top 5 dos Locais de Tráfego",
+      "empty-state": "Nenhum dado de tráfego disponível no momento"
+    },
+    "performance": {
+      "title": "Desempenho",
+      "increase": "tráfego desde outubro",
+      "subtext": "DADOS DE TRANSFERÊNCIA SALVOS"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Dashibodi",
+  "cards": {
+    "users": "Watumiaji",
+    "datasets": "Seti za Takwimu",
+    "organizations": "Taasisi",
+    "news": "Habari"
+  },
+  "charts": {
+    "average-views-per-category": {
+      "title": "Watazamaji wastani kwa jamii",
+      "day": "Siku",
+      "week": "Wiki",
+      "month": "Mwezi"
+    },
+    "average-download-per-Category": {
+      "title": "Upakuaji wastani kwa Jamii kwa Nyakati Tofauti",
+      "day": "Siku",
+      "week": "Wiki",
+      "month": "Mwezi"
+    },
+    "most-accessed-datasets": {
+      "title": "Jumla 5 za Seti za Takwimu Zilizopatikana Zaidi",
+      "empty-state": "Hakuna seti za takwimu zilizopatikana kwa sasa"
+    },
+    "most-published-organizations": "Ju ml a 5 za Taasisi Zilizochapishwa Zaidi",
+    "traffic-locations": {
+      "title": "Top 5 ya Maeneo ya Trafiki",
+      "empty-state": "Hakuna data ya trafiki inayopatikana kwa sasa"
+    },
+    "performance": {
+      "title": "Utendaji",
+      "increase": "trafiki tangu Oktoba",
+      "subtext": "DATA ZA USAFIRISHAJI ZIMESAIDIA"
+    }
+  }
+}

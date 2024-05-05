@@ -1,9 +1,9 @@
 {
   "title": "Dashboard",
   "cards": {
+    "users": "Users",
     "datasets": "Datasets",
     "organizations": "Organizations",
-    "views": "Views",
     "news": "News"
   },
   "charts": {
@@ -19,10 +19,17 @@
       "week": "Week",
       "month": "Month"
     },
-    "most-accessed-datasets": "Top 5 Most Accessed Datasets",
+    "most-accessed-datasets": {
+      "title": "Top 5 Most Accessed Datasets",
+      "empty-state": "No accessed datasets at the moment"
+    },
     "most-published-organizations": "Top 5 Most Published Organizations",
-    "traffic-locations": "Top 5 Traffic Locations",
+    "traffic-locations": {
+      "title": "Top 5 Traffic Locations",
+      "empty-state": "No traffic data available at the moment"
+    },
     "performance": {
+      "title": "Performance",
       "increase": "traffic since October",
       "subtext": "DATA TRANSFER SAVED"
     }

@@ -11,6 +11,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 import ChartWrapper from "~/components/chart-wrapper";
 import { useAverageViewPerCategory } from "~/queries/admin-dashboard";
 
@@ -26,6 +27,8 @@ ChartJS.register(
 );
 
 export default memo(function AverageViewsPerCategory() {
+  const { t } = useTranslation();
+
   const { data, isLoading } = useAverageViewPerCategory();
 
   const { labels, values } = useMemo(() => {
@@ -62,7 +65,7 @@ export default memo(function AverageViewsPerCategory() {
   }, [data]);
 
   return (
-    <ChartWrapper title="Average views per category" isLoading={isLoading}>
+    <ChartWrapper title={t("charts.average-views-per-category")} isLoading={isLoading}>
       <Line
         className="!w-full"
         options={{

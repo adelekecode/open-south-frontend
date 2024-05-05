@@ -1,4 +1,5 @@
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import ChartWrapper from "~/components/chart-wrapper";
 import { useTopTrafficLocations } from "~/queries/admin-dashboard";
 import TopTrafficLocationsIllustration from "~/assets/illustrations/dashboard-chart/top-traffic-locations.png";
@@ -6,6 +7,8 @@ import { calculatePercentage } from "~/utils/helper";
 import { trafficLocationColors } from "~/app-constants";
 
 export default memo(function TopTrafficLocations() {
+  const { t } = useTranslation();
+
   const { bgColors, borderColors } = trafficLocationColors;
 
   const { data, isLoading } = useTopTrafficLocations();
@@ -37,7 +40,7 @@ export default memo(function TopTrafficLocations() {
 
   return (
     <ChartWrapper
-      title="Top 5 Traffic Locations"
+      title={t("charts.traffic-locations.title")}
       wrapperClassName="px-6 tablet:px-4 pb-6"
       isLoading={isLoading}
       default={{
@@ -46,7 +49,7 @@ export default memo(function TopTrafficLocations() {
           src: TopTrafficLocationsIllustration,
           alt: "Top traffic locations illustration",
         },
-        text: "No traffic data available at the moment",
+        text: t("charts.traffic-locations.empty-state"),
       }}
     >
       {dataExist && (
