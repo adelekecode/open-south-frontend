@@ -1,0 +1,9 @@
+{
+  "title": "Dashboard",
+  "cards": {
+    "datasets": "Datasets",
+    "organizations": "Organizations",
+    "views": "Views",
+    "downloads": "Downloads"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Users",
+  "search": {
+    "placeholder": "Search for name..."
+  },
+  "filter-by-active": {
+    "placeholder": "Filter by active",
+    "dropdown": {
+      "true": "True",
+      "false": "False"
+    }
+  },
+  "table": {
+    "no": "no.",
+    "first-name": "First Name",
+    "last-name": "Last Name",
+    "email": "Email",
+    "date-joined": "Date Joined",
+    "active": "Active",
+    "action": "Action"
+  }
+}

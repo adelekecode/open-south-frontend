@@ -1,0 +1,5 @@
+{
+  "title": "Actualités",
+  "date": "Publié le {{value}}",
+  "empty-state": "Pas de nouvelles pour le moment"
+}

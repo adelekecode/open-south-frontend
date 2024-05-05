@@ -1,0 +1,18 @@
+{
+  "title": "Contact Us",
+  "subtitle": "Do you have a question for Open South? Kindly reach out to us.",
+  "form": {
+    "name": {
+      "label": "Name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "example@gmail.com"
+    },
+    "message": {
+      "label": "Message",
+      "placeholder": "Type your message here..."
+    },
+    "submit-btn": "Submit"
+  }
+}
