@@ -1,0 +1,19 @@
+{
+  "title": "Shirika",
+  "subtitle": "Tafuta kati ya mashirika kwenye {{company_name}}.",
+  "search": {
+    "placeholder": "Tafuta...",
+    "button": "Tafuta"
+  },
+  "result": "{{value}} matokeo",
+  "sort-by": {
+    "text": "Panga kwa",
+    "dropdown": {
+      "relevance": "Ulinganifu",
+      "most-recent": "Ya Hivi Karibuni Zaidi"
+    }
+  },
+  "org-card": {
+    "datasets": "seti za data"
+  }
+}

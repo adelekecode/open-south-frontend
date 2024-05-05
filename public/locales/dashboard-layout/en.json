@@ -1,0 +1,17 @@
+{
+  "header": {
+    "admin": "Admin",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "datasets": "Datasets",
+    "profile": "Profile",
+    "organization-dropdown": {
+      "title": "Organisations",
+      "dashboard": "Dashboard",
+      "datasets": "Datasets"
+    }
+  }
+}

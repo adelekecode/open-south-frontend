@@ -1,0 +1,53 @@
+{
+  "header": {
+    "title": "Seti za Takwimu",
+    "subtitle": "Tafuta kati ya seti zote za takwimu kwenye {{company_name}}",
+    "search": {
+      "placeholder": "Tafuta",
+      "button": "Tafuta"
+    }
+  },
+  "sidebar": {
+    "title": "Vichungi",
+    "mobile-title": "Futa matokeo",
+    "search": {
+      "organization": {
+        "title": "Taasisi",
+        "placeholder": "Taasisi Zote"
+      },
+      "tag": {
+        "title": "Lebo",
+        "placeholder": "Lebo Zote"
+      },
+      "category": {
+        "title": "Jamii",
+        "placeholder": "Jamii Zote"
+      },
+      "formats": {
+        "title": "Miundo",
+        "placeholder": "Miundo Yote"
+      },
+      "license": {
+        "title": "Leseni",
+        "placeholder": "Leseni Zote"
+      },
+      "spatial-coverage": {
+        "title": "Uwiano wa Kijiografia",
+        "placeholder": "Uwiano Wote wa Kijiografia"
+      }
+    }
+  },
+  "main": {
+    "header": {
+      "result": "{{value}} matokeo",
+      "sort-by": {
+        "text": "Panga kwa",
+        "dropdown": {
+          "relevance": "Uhusiano",
+          "creation-date": "Tarehe ya Kuanzishwa",
+          "last-update": "Mwisho wa Sasisho"
+        }
+      }
+    }
+  }
+}

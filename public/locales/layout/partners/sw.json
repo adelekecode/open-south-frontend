@@ -1,0 +1,34 @@
+{
+  "title": "Washirika Wetu",
+  "show-form-btn": "Kuwa mshirika",
+  "form": {
+    "title": "Kuwa mshirika",
+    "subtitle": "Tafadhali jaza fomu hapa chini.",
+    "inputs": {
+      "organization-name": {
+        "label": "Jina la Shirika",
+        "placeholder": "Mfano"
+      },
+      "contact-person": {
+        "label": "Mtu wa Mawasiliano",
+        "placeholder": "Ingiza jina la mtu wa mawasiliano"
+      },
+      "email": {
+        "label": "Barua pepe",
+        "placeholder": "mfano@gmail.com"
+      },
+      "phone-number": {
+        "label": "Namba ya Simu"
+      },
+      "organization-type": {
+        "label": "Aina ya Shirika",
+        "placeholder": "Eleza ikiwa wewe ni kampuni, shirika lisilo la faida, taasisi ya serikali, nk."
+      },
+      "purpose-of-partnership": {
+        "label": "Lengo la Ushirikiano",
+        "placeholder": "Elezea kwa kifupi kwa nini unataka kuwa mshirika wetu."
+      }
+    },
+    "submit-btn": "Tuma"
+  }
+}

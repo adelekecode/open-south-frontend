@@ -1,0 +1,19 @@
+{
+  "title": "Organización",
+  "subtitle": "Busca entre las organizaciones en {{company_name}}.",
+  "search": {
+    "placeholder": "Buscar...",
+    "button": "Buscar"
+  },
+  "result": "{{value}} resultados",
+  "sort-by": {
+    "text": "Ordenar por",
+    "dropdown": {
+      "relevance": "Relevancia",
+      "most-recent": "Más Reciente"
+    }
+  },
+  "org-card": {
+    "datasets": "conjuntos de datos"
+  }
+}

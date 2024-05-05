@@ -1,0 +1,24 @@
+{
+  "description": {
+    "title": "Maelezo"
+  },
+  "datasets": {
+    "title": "Seti za Takwimu",
+    "empty-state": "Hakuna seti ya takwimu iliyopatikana"
+  },
+  "general-statistics": {
+    "title": "Takwimu za Jumla",
+    "datasets": "Seti za Takwimu",
+    "views": "Maoni",
+    "downloads": "Upakuaji"
+  },
+  "technical-details": {
+    "title": "Maelezo ya Kiufundi",
+    "organization-creation-date": "Tarehe ya kuanzishwa kwa shirika",
+    "id": "Kitambulisho"
+  },
+  "request": {
+    "text": "Ikiwa una nia ya shirika hili",
+    "button": "Omba kujiunga"
+  }
+}

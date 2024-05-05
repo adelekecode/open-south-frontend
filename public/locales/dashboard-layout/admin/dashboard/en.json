@@ -1,0 +1,30 @@
+{
+  "title": "Dashboard",
+  "cards": {
+    "datasets": "Datasets",
+    "organizations": "Organizations",
+    "views": "Views",
+    "news": "News"
+  },
+  "charts": {
+    "average-views-per-category": {
+      "title": "Average views per category",
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    },
+    "average-download-per-Category": {
+      "title": "Average Download per Category Across Different Time Frames",
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    },
+    "most-accessed-datasets": "Top 5 Most Accessed Datasets",
+    "most-published-organizations": "Top 5 Most Published Organizations",
+    "traffic-locations": "Top 5 Traffic Locations",
+    "performance": {
+      "increase": "traffic since October",
+      "subtext": "DATA TRANSFER SAVED"
+    }
+  }
+}
