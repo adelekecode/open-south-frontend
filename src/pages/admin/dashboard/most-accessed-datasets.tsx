@@ -11,7 +11,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 type Dataset = { id: string; value: number; label: string };
 
 export default memo(function MostAccessedDatasets() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard-layout/admin/dashboard");
 
   const [filteredDatasets, setFilteredDatasets] = useState<Dataset[]>([]);
 

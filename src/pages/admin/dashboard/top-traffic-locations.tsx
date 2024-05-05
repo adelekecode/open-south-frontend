@@ -7,7 +7,7 @@ import { calculatePercentage } from "~/utils/helper";
 import { trafficLocationColors } from "~/app-constants";
 
 export default memo(function TopTrafficLocations() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard-layout/admin/dashboard");
 
   const { bgColors, borderColors } = trafficLocationColors;
 

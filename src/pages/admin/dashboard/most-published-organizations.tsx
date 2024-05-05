@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 export default memo(function MostPublishedOrganizations() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard-layout/admin/dashboard");
 
   const { data, isLoading } = useMostPublishedOrganizations();
 

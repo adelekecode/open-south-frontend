@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import ChartWrapper from "~/components/chart-wrapper";
 
 export default function Performance() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard-layout/admin/dashboard");
 
   return (
     <ChartWrapper

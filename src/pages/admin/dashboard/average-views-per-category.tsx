@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 export default memo(function AverageViewsPerCategory() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard-layout/admin/dashboard");
 
   const { data, isLoading } = useAverageViewPerCategory();
 
@@ -65,7 +65,7 @@ export default memo(function AverageViewsPerCategory() {
   }, [data]);
 
   return (
-    <ChartWrapper title={t("charts.average-views-per-category")} isLoading={isLoading}>
+    <ChartWrapper title={t("charts.average-views-per-category.title")} isLoading={isLoading}>
       <Line
         className="!w-full"
         options={{
@@ -87,19 +87,19 @@ export default memo(function AverageViewsPerCategory() {
           labels,
           datasets: [
             {
-              label: "Day",
+              label: t("charts.average-download-per-category.day"),
               data: values.day,
               backgroundColor: "#008000cf",
               borderColor: "#008000cf",
             },
             {
-              label: "Week",
+              label: t("charts.average-download-per-category.week"),
               data: values.week,
               backgroundColor: "#ffa500cf",
               borderColor: "#ffa500cf",
             },
             {
-              label: "Month",
+              label: t("charts.average-download-per-category.month"),
               data: values.month,
               backgroundColor: "#00a4ffcf",
               borderColor: "#00a4ffcf",

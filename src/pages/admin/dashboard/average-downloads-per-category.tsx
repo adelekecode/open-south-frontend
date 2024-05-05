@@ -16,7 +16,7 @@ import { useAverageDownloadPerCategory } from "~/queries/admin-dashboard";
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default memo(function AverageDownloadsPerCategory() {
-  const { t } = useTranslation();
+  const { t } = useTranslation("dashboard-layout/admin/dashboard");
 
   const { data, isLoading } = useAverageDownloadPerCategory();
 
@@ -54,7 +54,7 @@ export default memo(function AverageDownloadsPerCategory() {
   }, [data]);
 
   return (
-    <ChartWrapper title={t("average-download-per-Category")} isLoading={isLoading}>
+    <ChartWrapper title={t("charts.average-download-per-category.title")} isLoading={isLoading}>
       <Bar
         options={{
           responsive: true,
@@ -75,17 +75,17 @@ export default memo(function AverageDownloadsPerCategory() {
           labels,
           datasets: [
             {
-              label: "Day",
+              label: t("charts.average-download-per-category.day"),
               data: values.day,
               backgroundColor: "#008000cf",
             },
             {
-              label: "Week",
+              label: t("charts.average-download-per-category.week"),
               data: values.week,
               backgroundColor: "#ffa500cf",
             },
             {
-              label: "Month",
+              label: t("charts.average-download-per-category.month"),
               data: values.month,
               backgroundColor: "#00a4ffcf",
             },
