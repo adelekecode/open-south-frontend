@@ -1,0 +1,42 @@
+{
+  "title": "Sign Up",
+  "subtitle": "Welcome to our platform! Please fill out the form below to get started.",
+  "form": {
+    "inputs": {
+      "first-name": {
+        "label": "First Name",
+        "placeholder": "John"
+      },
+      "last-name": {
+        "label": "Last Name",
+        "placeholder": "Doe"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "example@gmail.com"
+      },
+      "password": {
+        "label": "Password"
+      },
+      "confirm-password": {
+        "label": "Confirm Password"
+      }
+    },
+    "submit-btn": "Sign Up",
+    "cta-text": {
+      "text": "Already have an account?",
+      "link": "Log In"
+    },
+    "or": "Or",
+    "google-btn": "Sign in with Google"
+  },
+  "otp-modal": {
+    "title": "Enter Code",
+    "subtitle": "We sent a code to",
+    "submit-btn": "Verify",
+    "cta-text": {
+      "text": "Didn't get a code?",
+      "btn": "Resend"
+    }
+  }
+}

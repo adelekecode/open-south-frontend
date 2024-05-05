@@ -1,0 +1,42 @@
+{
+  "title": "Jisajili",
+  "subtitle": "Karibu kwenye jukwaa letu! Tafadhali jaza fomu hapo chini ili kuanza.",
+  "form": {
+    "inputs": {
+      "first-name": {
+        "label": "Jina la Kwanza",
+        "placeholder": "John"
+      },
+      "last-name": {
+        "label": "Jina la Mwisho",
+        "placeholder": "Doe"
+      },
+      "email": {
+        "label": "Barua pepe",
+        "placeholder": "mfano@gmail.com"
+      },
+      "password": {
+        "label": "Nenosiri"
+      },
+      "confirm-password": {
+        "label": "Thibitisha Nenosiri"
+      }
+    },
+    "submit-btn": "Jisajili",
+    "cta-text": {
+      "text": "Unayo akaunti tayari?",
+      "link": "Ingia"
+    },
+    "or": "Au",
+    "google-btn": "Ingia kwa kutumia Google"
+  },
+  "otp-modal": {
+    "title": "Ingiza Kanuni",
+    "subtitle": "Tumetuma kanuni kwa",
+    "submit-btn": "Thibitisha",
+    "cta-text": {
+      "text": "Hukupata kanuni?",
+      "btn": "Tuma tena"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MuiOtpInput } from "mui-one-time-password-input";
+import { useTranslation } from "react-i18next";
 import Button from "~/components/button";
 import { useRequestOTP, useVerifyOTP } from "~/mutations/auth/otp";
 import useAppStore from "~/store/app";
@@ -11,6 +12,8 @@ type OtpProps = {
 
 export default function Otp({ email }: OtpProps) {
   const navigate = useNavigate();
+
+  const { t } = useTranslation("auth/signup");
 
   const [otp, setOtp] = useState("");
   const [isComplete, setIsComplete] = useState(false);
@@ -41,9 +44,9 @@ export default function Otp({ email }: OtpProps) {
       className={`w-full tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
     >
       <header className="mb-3 flex items-center flex-col gap-2">
-        <h1 className="text-2xl font-semibold text-center">Enter Code</h1>
+        <h1 className="text-2xl font-semibold text-center">{t("otp-modal.title")}</h1>
         <p className="text-sm text-center">
-          We sent a code to <span className="font-semibold">{email}</span>
+          {t("otp-modal.subtitle")} <span className="font-semibold">{email}</span>
         </p>
       </header>
       <div className="flex flex-col items-center gap-12 py-4 w-full">
@@ -94,11 +97,11 @@ export default function Otp({ email }: OtpProps) {
           }}
           loading={verifyOtp.isLoading}
         >
-          Verify
+          {t("otp-modal.submit-btn")}
         </Button>
       </div>
       <p className="text-sm">
-        Didn't get a code?{" "}
+        {t("otp-modal.cta-text.text")}{" "}
         <button
           className="text-primary-600 font-semibold"
           onClick={async () => {
@@ -107,7 +110,7 @@ export default function Otp({ email }: OtpProps) {
             });
           }}
         >
-          Resend
+          {t("otp-modal.cta-text.btn")}
         </button>
       </p>
     </div>
