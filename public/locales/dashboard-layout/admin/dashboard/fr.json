@@ -1,0 +1,37 @@
+{
+  "title": "Tableau de bord",
+  "cards": {
+    "users": "Utilisateurs",
+    "datasets": "Ensembles de données",
+    "organizations": "Organisations",
+    "news": "Actualités"
+  },
+  "charts": {
+    "average-views-per-category": {
+      "title": "Vues moyennes par catégorie",
+      "day": "Jour",
+      "week": "Semaine",
+      "month": "Mois"
+    },
+    "average-download-per-category": {
+      "title": "Téléchargement moyen par catégorie sur différentes périodes",
+      "day": "Jour",
+      "week": "Semaine",
+      "month": "Mois"
+    },
+    "most-accessed-datasets": {
+      "title": "Top 5 des ensembles de données les plus consultés",
+      "empty-state": "Aucun ensemble de données consulté pour le moment"
+    },
+    "most-published-organizations": "Top 5 des organisations les plus publiées",
+    "traffic-locations": {
+      "title": "Top 5 des lieux de trafic",
+      "empty-state": "Aucune donnée de trafic disponible pour le moment"
+    },
+    "performance": {
+      "title": "Performance",
+      "increase": "trafic depuis octobre",
+      "subtext": "DONNÉES DE TRANSFERT SAUVÉES"
+    }
+  }
+}
