@@ -1,0 +1,24 @@
+{
+  "description": {
+    "title": "Description"
+  },
+  "datasets": {
+    "title": "Datasets",
+    "empty-state": "No dataset found"
+  },
+  "general-statistics": {
+    "title": "General Statistics",
+    "datasets": "Datasets",
+    "views": "Views",
+    "downloads": "Downloads"
+  },
+  "technical-details": {
+    "title": "Technical Details",
+    "organization-creation-date": "Organization creation date",
+    "id": "ID"
+  },
+  "request": {
+    "text": "If you are interested in this organization",
+    "button": "Request to join"
+  }
+}

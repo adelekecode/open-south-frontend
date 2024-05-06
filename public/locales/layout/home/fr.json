@@ -1,0 +1,27 @@
+{
+  "banner": {
+    "title": "Contribuer",
+    "subtitle": "Créer ou trouver un ensemble de données",
+    "dataset-btn": {
+      "find": "Trouver un ensemble de données",
+      "publish": "Publier un ensemble de données"
+    }
+  },
+  "categories": {
+    "title": "Catégories",
+    "link": "Voir plus de catégories",
+    "empty-state": "Aucune catégorie trouvée"
+  },
+  "datasets": {
+    "title": "Ensembles de données",
+    "link": "Voir plus d'ensembles de données",
+    "empty-state": "Pas de données d'ensemble de données"
+  },
+  "panel": {
+    "datasets": "Ensembles de données",
+    "files": "Fichiers",
+    "categories": "Catégories",
+    "users": "Utilisateurs",
+    "organizations": "Organisations"
+  }
+}

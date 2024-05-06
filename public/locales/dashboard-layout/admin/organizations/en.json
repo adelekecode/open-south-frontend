@@ -1,0 +1,50 @@
+{
+  "title": "Organization",
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "search": {
+    "placeholder": "Search for name..."
+  },
+  "filter": {
+    "by-status": {
+      "placeholder": "Filter by status",
+      "dropdown": {
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "approved": "Approved"
+      }
+    },
+    "by-verified": {
+      "placeholder": "Filter by verified",
+      "dropdown": {
+        "true": "True",
+        "false": "False"
+      }
+    },
+    "by-active": {
+      "placeholder": "Filter by active",
+      "dropdown": {
+        "true": "True",
+        "false": "False"
+      }
+    }
+  },
+  "table": {
+    "header": {
+      "no": "no.",
+      "name": "Name",
+      "datasets": "Datasets",
+      "views": "Views",
+      "downloads": "Downloads",
+      "status": "Status",
+      "created-at": "Created At",
+      "updated-at": "Updated At",
+      "verified": "Verified",
+      "active": "Active",
+      "action": "Action"
+    }
+  }
+}

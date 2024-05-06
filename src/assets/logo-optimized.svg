@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="816" height="407pt" viewBox="0 0 612 407">
+    <g data-name="Layer 1">
+        <symbol id="a">
+            <path d="M.268.615A.154.154 0 0 1 .184.594.07.07 0 0 1 .151.53c0-.028.011-.05.033-.065a.513.513 0 0 1 .14-.048.382.382 0 0 0 .162-.073C.523.313.541.266.541.205c0-.06-.023-.11-.069-.148A.275.275 0 0 0 .291 0 .425.425 0 0 0 0 .113l.074.089A.333.333 0 0 1 .294.11a.15.15 0 0 1 .09.024.077.077 0 0 1 .034.065c0 .027-.01.048-.032.063a.31.31 0 0 1-.108.041 1.12 1.12 0 0 0-.117.034.275.275 0 0 0-.071.041C.049.409.028.458.028.522c0 .065.023.114.07.149a.284.284 0 0 0 .175.053.418.418 0 0 0 .133-.022A.348.348 0 0 0 .52.64L.457.551a.238.238 0 0 1-.084.046.325.325 0 0 1-.105.018z"/>
+        </symbol>
+        <symbol id="b">
+            <path d="M.543.541a.233.233 0 0 1-.175.074.236.236 0 0 1-.176-.074.25.25 0 0 1-.071-.18.25.25 0 0 1 .247-.253c.07 0 .128.025.175.074.048.05.072.109.072.179a.25.25 0 0 1-.072.18M.63.103A.361.361 0 0 0 .368 0a.361.361 0 0 0-.262.103A.347.347 0 0 0 0 .361a.36.36 0 0 0 .368.362.36.36 0 0 0 .368-.362A.347.347 0 0 0 .63.103z"/>
+        </symbol>
+        <symbol id="c">
+            <path d="M.166.167a.162.162 0 0 1 .13-.056c.055 0 .098.019.13.056a.226.226 0 0 1 .048.152v.387h.118V.314c0-.1-.028-.178-.083-.233A.292.292 0 0 0 .296 0a.292.292 0 0 0-.213.081A.314.314 0 0 0 0 .314v.392h.118V.319c0-.064.016-.115.048-.152z"/>
+        </symbol>
+        <symbol id="d">
+            <path d="M.33.591V0H.212v.591H0v.108h.542V.591H.33z"/>
+        </symbol>
+        <symbol id="e">
+            <path d="M0 0v.699h.118V.396h.347v.303h.118V0H.465v.286H.118V0H0z"/>
+        </symbol>
+        <use xlink:href="#a" transform="matrix(23.228 0 0 -21.0046 203.876 160.874)" fill="#0c9444"/>
+        <use xlink:href="#b" transform="matrix(23.228 0 0 -21.0046 230.402 160.853)" fill="#0c9444"/>
+        <use xlink:href="#c" transform="matrix(23.228 0 0 -21.0046 262.364 160.853)" fill="#0c9444"/>
+        <use xlink:href="#d" transform="matrix(23.228 0 0 -21.0046 290.493 160.706)" fill="#0c9444"/>
+        <use xlink:href="#e" transform="matrix(23.228 0 0 -21.0046 317.67 160.706)" fill="#0c9444"/>
+        <clipPath id="f">
+            <path transform="matrix(1 0 0 -1 0 407)" d="M125.292 293.577c3.1.94 6.387 1.45 9.793 1.45 8.32 0 15.931-3.018 21.814-8.01 5.616-1.842 9.674-7.124 9.674-13.357 0-.08-.006-.16-.007-.24a33.652 33.652 0 0 0 2.256-12.129 33.552 33.552 0 0 0-6.507-19.904c13.849 4.2 23.937 17.052 23.937 32.273 0 18.633-15.104 33.737-33.736 33.737-11.181 0-21.085-5.443-27.224-13.82"/>
+        </clipPath>
+        <g clip-path="url(#f)">
+            <image x="125" y="99" width="62" height="67" xlink:href="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAD4AAABDCAYAAADEfbZbAAAACXBIWXMAAA7EAAAO xAGVKw4bAAABAklEQVR4nO3P+05BARzA8c7fnaPOOd4siUQpl+NW7oew5DJai5HJ 1NJkWMsyL5gH+f4+b/BRdHv3fwCkSBxG4jQSp5E4jcRpJE4jcRqJ00icRuI0il7c QuOFP2g8v4HGc7/QePaHGTcya2bczKyg8fSSGXfeLaDx229oPDWnxr+g8eQMGk98 MuNm/AMaj71D49aUGTesCTQefWPG9ciYGT8Oj5jxo/ArNB4aMuOOmwE0ft1nxrVg jxp/YcbVq2do/BIbf2LGDwNdaNzfgcYv2tC4r8WMq74mM66dN6Bx7yMz7vDWoXHP AzR+VoPG3VVqvAKNn95D464yNV5ixrUTGxnfAxeDi7G7/PjVAAAAAElFTkSuQmCC"/>
+        </g>
+        <clipPath id="g">
+            <path transform="matrix(1 0 0 -1 0 407)" d="M121.035 261.523c3.818-9.887 12.157-17.524 22.484-20.375v18.961a6.58 6.58 0 0 1-1.605 4.325 13.995 13.995 0 0 0-3.395 10.49 14.13 14.13 0 0 1-3.434.424c-7.685 0-13.925-6.169-14.05-13.825"/>
+        </clipPath>
+        <g clip-path="url(#g)">
+            <image x="121" y="131" width="23" height="35" xlink:href="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABcAAAAjCAYAAAB/wZEbAAAACXBIWXMAAA7EAAAO xAGVKw4bAAAAg0lEQVR4nGMsO+D8n4FGgHHUcKyGF+9zoZ3hBXtdaWd47m432hme tcuDdoan7/CkneHJ271oZ3jCVm/aGR67xZd2hkdt8qOd4WEb/WlneND6ANoZ7rcu kHaGe60Npp3hbqtDaGe406pQ2hluszKMdoabLg8fNXzU8FHDRw0fNZwuhgMAr3VQ huk+UVYAAAAASUVORK5CYII="/>
+        </g>
+        <clipPath id="h">
+            <path transform="matrix(1 0 0 -1 0 407)" d="M164.156 265.781c-1.789-2.638-2.644-5.798-2.644-8.985v-15.648c.27.074.536.158.803.239a33.552 33.552 0 0 1 6.507 19.904c0 4.277-.805 8.364-2.256 12.129a13.995 13.995 0 0 0-2.41-7.639"/>
+        </clipPath>
+        <g clip-path="url(#h)">
+            <image x="161" y="133" width="8" height="33" xlink:href="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAgAAAAhCAYAAADkrOp1AAAACXBIWXMAAA7EAAAO xAGVKw4bAAAAfklEQVR4nGMULN/0nwEPYBxVQDUFpesJKCheg1+BUOEK/ApECpYS UJC3mICC3AUEFGTPw69AOHM2AV+kzyAQDmlT8SvgT5mMXwFf8gT8CngTe/Er4Eno xq+AO66TgILYNgJWRLcQcGRUIwFvRtQTUBBeS0BBaBUBBSEVeBUAAIlNRPkkFZL0 AAAAAElFTkSuQmCC"/>
+        </g>
+        <clipPath id="i">
+            <path transform="matrix(1 0 0 -1 0 407)" d="M125.292 293.577a33.575 33.575 0 0 1-6.512-19.917c0-4.279.801-8.371 2.255-12.137.125 7.656 6.365 13.825 14.05 13.825a14.13 14.13 0 0 0 3.434-.424c.639 7.17 6.66 12.793 13.997 12.793 1.531 0 3.003-.248 4.383-.7-5.883 4.992-13.494 8.01-21.814 8.01-3.406 0-6.693-.51-9.793-1.45"/>
+        </clipPath>
+        <g clip-path="url(#i)">
+            <image x="118" y="111" width="39" height="35" xlink:href="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAACcAAAAjCAYAAAAXMhMjAAAACXBIWXMAAA7EAAAO xAGVKw4bAAABqUlEQVR4nO2XUUvDMBDHe89ulc59MhFFRBERUQRFkA0RBBEEQRAE QRB8EHwQfBC/4LmlaXtJrrO5pu0eehttuCW7X/7/NNlguD7BqIsA0DfIEnkubc/e rcBVANEXIx8eTghi5zEIXF0YnUOSQ5GtAVWhfdAALD4rh2sTxFAyvUNu6xKAFN+l LZ2/4o0rbAdEC2BZ5+R0W2HGm9coXbCq7UyGrJkSRYy+TA6y8fHWDS5SpSqIryo2 iA0K6oHYvkU/e7KSHiB0nH0KaFUB3DEw2LlD6YKtag+nigtP++u6K7v32AqIAcXU IjUzFWGw94BN2+OokgOb/Wk91RruP2I4RVxrzD3UdYA6ZENCfPBk2kqPjwDWcKDu k56Oxchsw+rhcw7nZc2/qviB2NuW4kiOXvJNeLEqcnvSwlEBYEGxk5pXHx2/YiP2 eIK4E51d107esGl7eCgThAsYn75jbXvI1lCqDp1cxYDx2Yd18NdVRAbCw51/Ipat lxZBWLjRxRdKF2zTAcnlNy4DCA83+SE/mboD4QKS6W83//grRA8njR5OGj2cNHo4 afwBv8J6d8KdfdMAAAAASUVORK5CYII="/>
+        </g>
+        <symbol id="j">
+            <path d="M.26 0a.547.547 0 0 0-.125.012.188.188 0 0 0-.08.04.157.157 0 0 0-.043.072.433.433 0 0 0-.012.11v.073c0 .043.004.08.012.11a.15.15 0 0 0 .043.072c.02.019.047.032.08.04A.506.506 0 0 0 .26.542h.181c.05 0 .093-.004.126-.013a.174.174 0 0 0 .08-.04.15.15 0 0 0 .042-.073.401.401 0 0 0 .013-.11V.234a.401.401 0 0 0-.013-.11.15.15 0 0 0-.042-.072.188.188 0 0 0-.08-.04A.552.552 0 0 0 .441 0H.26m.293.302a.218.218 0 0 1-.006.056.058.058 0 0 1-.02.034.074.074 0 0 1-.04.017.36.36 0 0 1-.066.005H.28A.36.36 0 0 1 .214.409a.079.079 0 0 1-.04-.017.066.066 0 0 1-.02-.034.26.26 0 0 1-.005-.056V.238A.26.26 0 0 1 .154.182a.072.072 0 0 1 .02-.034.092.092 0 0 1 .04-.017A.36.36 0 0 1 .28.126h.141a.36.36 0 0 1 .066.005c.017.003.03.009.04.017.01.009.017.02.02.034a.218.218 0 0 1 .006.056v.064z"/>
+        </symbol>
+        <symbol id="k">
+            <path d="M.451.704C.501.704.544.7.577.691a.174.174 0 0 0 .08-.04.144.144 0 0 0 .042-.072.401.401 0 0 0 .013-.11V.396a.401.401 0 0 0-.013-.11.15.15 0 0 0-.042-.072.188.188 0 0 0-.08-.04.552.552 0 0 0-.126-.012H.149V0H0v.469c0 .043.004.08.012.11a.15.15 0 0 0 .043.072c.02.019.047.032.08.04a.511.511 0 0 0 .126.013h.19M.563.465a.227.227 0 0 1-.006.058.058.058 0 0 1-.02.034.085.085 0 0 1-.041.016.418.418 0 0 1-.064.004H.266A.28.28 0 0 1 .208.572.07.07 0 0 1 .172.554.064.064 0 0 1 .154.52.24.24 0 0 1 .149.466V.289h.284a.56.56 0 0 1 .064.003c.017.003.03.008.04.016.01.008.017.02.02.034a.232.232 0 0 1 .006.059v.064z"/>
+        </symbol>
+        <symbol id="l">
+            <path d="M.149.216V.191a.16.16 0 0 1 .004-.04.048.048 0 0 1 .014-.024.067.067 0 0 1 .028-.011.273.273 0 0 1 .044-.003h.176V0H.239C.153 0 .092.016.055.049.018.082 0 .134 0 .206v.125c0 .04.004.072.011.099a.132.132 0 0 0 .04.065c.02.017.045.029.076.036a.535.535 0 0 0 .119.011h.262c.039 0 .07-.004.096-.011A.15.15 0 0 0 .665.5.1.1 0 0 0 .697.453.186.186 0 0 0 .706.394V.216H.149m.408.166C.557.4.552.412.543.418.534.424.519.427.496.427H.248A.309.309 0 0 1 .201.424.061.061 0 0 1 .17.413.051.051 0 0 1 .154.387.169.169 0 0 1 .149.341V.312h.408v.07z"/>
+        </symbol>
+        <symbol id="m">
+            <path d="M.553 0v.302a.206.206 0 0 1-.006.055.061.061 0 0 1-.019.034.072.072 0 0 1-.037.018.286.286 0 0 1-.059.005H.27A.295.295 0 0 1 .211.409.077.077 0 0 1 .174.391a.066.066 0 0 1-.02-.034.245.245 0 0 1-.005-.055V0H0v.307c0 .043.004.08.012.11a.15.15 0 0 0 .043.072c.02.019.047.032.08.04A.506.506 0 0 0 .26.542h.181c.05 0 .093-.004.126-.013a.174.174 0 0 0 .08-.04.144.144 0 0 0 .042-.072.401.401 0 0 0 .013-.11V0H.553z"/>
+        </symbol>
+        <use xlink:href="#j" transform="matrix(39.5847 0 0 -39.5847 205.084 132.728)" fill="#0e5376"/>
+        <use xlink:href="#k" transform="matrix(39.5847 0 0 -39.5847 238.177 139.14)" fill="#0e5376"/>
+        <use xlink:href="#l" transform="matrix(39.5847 0 0 -39.5847 271.626 132.728)" fill="#0e5376"/>
+        <use xlink:href="#m" transform="matrix(39.5847 0 0 -39.5847 304.72 132.728)" fill="#0e5376"/>
+    </g>
+</svg>

@@ -1,0 +1,29 @@
+{
+  "title": "Conjuntos de Dados",
+  "search": {
+    "placeholder": "Buscar por título..."
+  },
+  "filter": {
+    "by-active": {
+      "placeholder": "Filtrar por status",
+      "dropdown": {
+        "pending": "Pendente",
+        "rejected": "Rejeitado",
+        "published": "Publicado",
+        "unpublished": "Não publicado",
+        "further-review": "Revisão adicional"
+      }
+    }
+  },
+  "table": {
+    "header": {
+      "no": "nº",
+      "first-name": "Nome",
+      "last-name": "Sobrenome",
+      "email": "E-mail",
+      "date-joined": "Data de Adesão",
+      "active": "Ativo",
+      "action": "Ação"
+    }
+  }
+}

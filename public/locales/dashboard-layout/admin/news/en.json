@@ -1,0 +1,28 @@
+{
+  "title": "News",
+  "search": {
+    "placeholder": "Search for title..."
+  },
+  "filter": {
+    "by-status": {
+      "placeholder": "Filter by status",
+      "dropdown": {
+        "draft": "Draft",
+        "published": "Published",
+        "unpubished": "Unpubished"
+      }
+    }
+  },
+  "button": "Add News",
+  "table": {
+    "header": {
+      "no": "no.",
+      "title": "Title",
+      "views": "Views",
+      "created-at": "Created At",
+      "updated-at": "Updated At",
+      "status": "Status",
+      "action": "Action"
+    }
+  }
+}
