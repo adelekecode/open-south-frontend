@@ -1,0 +1,37 @@
+{
+  "title": "Tablero",
+  "cards": {
+    "users": "Usuarios",
+    "datasets": "Conjuntos de datos",
+    "organizations": "Organizaciones",
+    "news": "Noticias"
+  },
+  "charts": {
+    "average-views-per-category": {
+      "title": "Vistas promedio por categoría",
+      "day": "Día",
+      "week": "Semana",
+      "month": "Mes"
+    },
+    "average-download-per-category": {
+      "title": "Descarga promedio por categoría en diferentes períodos",
+      "day": "Día",
+      "week": "Semana",
+      "month": "Mes"
+    },
+    "most-accessed-datasets": {
+      "title": "Top 5 de Conjuntos de Datos Más Accedidos",
+      "empty-state": "No hay conjuntos de datos accesibles en este momento"
+    },
+    "most-published-organizations": "Top 5 de Organizaciones Más Publicadas",
+    "traffic-locations": {
+      "title": "Top 5 de Ubicaciones de Tráfico",
+      "empty-state": "No hay datos de tráfico disponibles en este momento"
+    },
+    "performance": {
+      "title": "Rendimiento",
+      "increase": "tráfico desde octubre",
+      "subtext": "DATOS DE TRANSFERENCIA GUARDADOS"
+    }
+  }
+}

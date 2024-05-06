@@ -15,7 +15,7 @@ const langs = [
     text: "French",
   },
   {
-    value: "pr",
+    value: "pt",
     text: "Portuguese",
   },
   {

@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
+import ChangeLang from "~/components/change-lang";
 import Footer from "~/components/footer";
 import Logo from "~/components/logo";
 
@@ -10,6 +11,9 @@ export default function Auth() {
           <Link to={"/"} className="absolute top-0 left-0 p-6">
             <Logo className="largeMobile:w-[6rem]" />
           </Link>
+          <div className="absolute top-0 right-0 p-4">
+            <ChangeLang />
+          </div>
           <div className="authDesktop:!max-w-[700px] w-full flex flex-col justify-center items-center largeMobile:px-4 largeMobile:pt-12">
             <Outlet />
           </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Modal from "~/components/modal";
 
 type ViewProps = {
@@ -7,6 +8,8 @@ type ViewProps = {
 
 export default function View({ modal, setModal }: ViewProps) {
   const { data, state } = modal;
+
+  const { t } = useTranslation("dashboard-layout/admin/categories");
 
   return (
     <Modal
@@ -25,7 +28,7 @@ export default function View({ modal, setModal }: ViewProps) {
     >
       <div className="flex flex-col gap-4 w-full">
         <h1 className="text-xl font-semibold largeMobile:text-base px-8 [@media(max-width:500px)]:px-4">
-          View Category
+          {t("view-category-modal.title")}
         </h1>
         <div className="flex flex-col gap-4">
           <div className="w-full bg-primary-50">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ClickAwayListener, Fade, IconButton, Paper, Popper } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { IoMdAdd } from "react-icons/io";
 import { FaAngleDown } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
@@ -8,9 +9,12 @@ import CurrentUserAvatar from "~/components/current-user-avatar";
 import { useCurrentUser } from "~/queries/user";
 import useAppStore from "~/store/app";
 import Logo from "~/components/logo";
+import ChangeLang from "~/components/change-lang";
 
 export default function Header({ showDrawerHandler }: { showDrawerHandler: () => void }) {
   const navigate = useNavigate();
+
+  const { t } = useTranslation("dashboard-layout");
 
   const { setDisplayLogoutModal } = useAppStore();
 
@@ -31,6 +35,7 @@ export default function Header({ showDrawerHandler }: { showDrawerHandler: () =>
         <Link to={"/"} className="mr-auto laptopAndAbove:hidden">
           <Logo className="w-[8rem] mediumMobile:w-[7rem]" />
         </Link>
+        <ChangeLang />
         {currentUser?.role === "user" && (
           <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
             <div>
@@ -54,7 +59,7 @@ export default function Header({ showDrawerHandler }: { showDrawerHandler: () =>
                           return setAnchorEl(null);
                         }}
                       >
-                        Add a dataset
+                        {t("header.create-cta-dropdown.dataset")}
                       </button>
                       <button
                         className="hover:bg-info-100"
@@ -64,7 +69,7 @@ export default function Header({ showDrawerHandler }: { showDrawerHandler: () =>
                           return setAnchorEl(null);
                         }}
                       >
-                        Add an organization
+                        {t("header.create-cta-dropdown.organization")}
                       </button>
                     </Paper>
                   </Fade>
@@ -76,7 +81,7 @@ export default function Header({ showDrawerHandler }: { showDrawerHandler: () =>
 
         {currentUser?.role === "admin" && (
           <span className="text-sm font-medium text-primary-600 p-4 py-1 rounded-full border border-primary-700 bg-primary-50">
-            Admin
+            {t("header.admin")}
           </span>
         )}
 
@@ -130,7 +135,7 @@ export default function Header({ showDrawerHandler }: { showDrawerHandler: () =>
                           return setProfileAnchorEl(null);
                         }}
                       >
-                        Profile
+                        {t("header.profile-dropdown.profile")}
                       </button>
                       <button
                         className=" text-sm p-4 py-2 hover:bg-info-50"
@@ -140,7 +145,7 @@ export default function Header({ showDrawerHandler }: { showDrawerHandler: () =>
                           return setProfileAnchorEl(null);
                         }}
                       >
-                        Logout
+                        {t("header.profile-dropdown.logout")}
                       </button>
                     </div>
                   </Paper>

@@ -1,0 +1,42 @@
+{
+  "title": "S'inscrire",
+  "subtitle": "Bienvenue sur notre plateforme ! Veuillez remplir le formulaire ci-dessous pour commencer.",
+  "form": {
+    "inputs": {
+      "first-name": {
+        "label": "Prénom",
+        "placeholder": "John"
+      },
+      "last-name": {
+        "label": "Nom de famille",
+        "placeholder": "Doe"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "exemple@gmail.com"
+      },
+      "password": {
+        "label": "Mot de passe"
+      },
+      "confirm-password": {
+        "label": "Confirmer le mot de passe"
+      }
+    },
+    "submit-btn": "S'inscrire",
+    "cta-text": {
+      "text": "Vous avez déjà un compte ?",
+      "link": "Se connecter"
+    },
+    "or": "Ou",
+    "google-btn": "Se connecter avec Google"
+  },
+  "otp-modal": {
+    "title": "Entrer le code",
+    "subtitle": "Nous avons envoyé un code à",
+    "submit-btn": "Vérifier",
+    "cta-text": {
+      "text": "Vous n'avez pas reçu de code ?",
+      "btn": "Renvoyer"
+    }
+  }
+}
