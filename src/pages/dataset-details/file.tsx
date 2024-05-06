@@ -8,6 +8,7 @@ import { acceptedFileFormat } from "~/app-constants";
 import { downloadFileHandler } from "~/utils/helper";
 import { useDatasetFilePreview } from "~/queries/dataset";
 import { useDatasetFileDownload } from "~/mutations/dataset";
+import { useTranslation } from "react-i18next";
 
 type Props = DatasetFile & {
   setPreviewFile: (obj: { open: boolean; data: DatasetFile | null }) => void;
@@ -22,6 +23,8 @@ export default function File({
   sha256,
   ...rest
 }: Props) {
+  const { t } = useTranslation("layout/dataset/slug");
+
   const [displayDetails, setDisplayDetails] = useState(false);
   const [isLoading, setIsloading] = useState(false);
 
@@ -54,7 +57,7 @@ export default function File({
               setDisplayDetails((prev) => !prev);
             }}
           >
-            <span className="text-xs font-medium">View Details</span>
+            <span className="text-xs font-medium">{t("file.view-details-btn")}</span>
             <FaAngleDown className={`text-sm ${displayDetails && "rotate-180"} transition-all`} />
           </Button>
         </div>
@@ -66,11 +69,11 @@ export default function File({
         >
           <div className="flex flex-wrap gap-4 [&>div]:flex [&>div]:flex-col [&>div]:gap-1 [&>div>h5]:text-sm [&>div>h5]:font-medium [&>div>p]:text-sm [&>div>p]:text-info-800">
             <div>
-              <h5>Created on</h5>
+              <h5>{t("file.details.created-on")}</h5>
               <p>{created_at ? moment(created_at).format("Do MMM, YYYY") : "------"}</p>
             </div>
             <div>
-              <h5>Size</h5>
+              <h5>{t("file.details.size")}</h5>
               <p>{size || "------"}</p>
             </div>
             {/* <div>
@@ -103,7 +106,9 @@ export default function File({
                     });
                   }}
                 >
-                  <p className="text-xs whitespace-nowrap font-medium">View File</p>
+                  <p className="text-xs whitespace-nowrap font-medium">
+                    {t("file.details.view-file-btn")}
+                  </p>
                 </Button>
               </div>
             )}
