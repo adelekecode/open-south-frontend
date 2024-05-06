@@ -1,0 +1,19 @@
+{
+  "bio": {
+    "title": "Biografia"
+  },
+  "datasets": {
+    "title": "Conjuntos de dados",
+    "empty-state": "Nenhum conjunto de dados encontrado"
+  },
+  "general-statistics": {
+    "title": "Estatísticas gerais",
+    "datasets": "Conjuntos de dados",
+    "views": "Visualizações",
+    "downloads": "Downloads"
+  },
+  "technical-details": {
+    "title": "Detalhes técnicos",
+    "user-joined-date": "Data de adesão do usuário"
+  }
+}

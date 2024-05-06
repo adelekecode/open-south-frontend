@@ -4,7 +4,8 @@
   },
   "datasets": {
     "title": "Datasets",
-    "empty-state": "No dataset found"
+    "empty-state": "No dataset found",
+    "link": "See more datasets"
   },
   "general-statistics": {
     "title": "General Statistics",
