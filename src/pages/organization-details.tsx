@@ -207,10 +207,10 @@ export default function OrganizationDetails() {
                   {data.created_at ? moment(data.created_at).format("MMMM D, YYYY") : "--------"}
                 </p>
               </div>
-              <div>
+              {/* <div>
                 <h3>{t("technical-details.id")}</h3>
                 <p>{data.id || "--------"}</p>
-              </div>
+              </div> */}
             </div>
           </div>
           {!currentUser?.organisations?.some(
