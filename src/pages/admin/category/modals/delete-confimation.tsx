@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { MdDeleteOutline } from "react-icons/md";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
@@ -18,6 +19,8 @@ export default function DeleteConfirmation({
   setModal,
   pagination,
 }: DeleteConfirmationProps) {
+  const { t } = useTranslation("dashboard-layout/admin/categories");
+
   const [searchParams] = useSearchParams();
   const search = searchParams.get("q") || "";
 
@@ -47,11 +50,11 @@ export default function DeleteConfirmation({
           <MdDeleteOutline className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3rem] !font-extralight" />
         </span>
         <h1 className="text-base text-center largeMobile:text-sm">
-          Are you sure you want to delete this category?
+          {t("delete-category-modal.body-text")}
         </h1>
         <div className="mt-10 flex gap-6 justify-between h-10">
           <Button color="error" onClick={onClose} className="h-full">
-            Cancel
+            {t("delete-category-modal.cta.cancel")}
           </Button>
           <Button
             loading={deleteCategory.isLoading}
@@ -62,7 +65,7 @@ export default function DeleteConfirmation({
             }}
             className="h-full"
           >
-            Confirm
+            {t("delete-category-modal.cta.confirm")}
           </Button>
         </div>
       </div>
