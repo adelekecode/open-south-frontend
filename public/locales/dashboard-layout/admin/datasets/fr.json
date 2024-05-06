@@ -1,0 +1,29 @@
+{
+  "title": "Ensembles de données",
+  "search": {
+    "placeholder": "Rechercher par titre..."
+  },
+  "filter": {
+    "by-active": {
+      "placeholder": "Filtrer par statut",
+      "dropdown": {
+        "pending": "En attente",
+        "rejected": "Rejeté",
+        "published": "Publié",
+        "unpublished": "Non publié",
+        "further-review": "Révision supplémentaire"
+      }
+    }
+  },
+  "table": {
+    "header": {
+      "no": "nº",
+      "first-name": "Prénom",
+      "last-name": "Nom",
+      "email": "E-mail",
+      "date-joined": "Date d'adhésion",
+      "active": "Actif",
+      "action": "Action"
+    }
+  }
+}
