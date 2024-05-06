@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { FaAngleRight } from "react-icons/fa6";
 import moment from "moment";
 import Seo from "~/components/seo";
@@ -15,6 +16,8 @@ export default function OrganizationDetails() {
   const navigate = useNavigate();
   const { slug } = useParams();
   const { pathname } = useLocation();
+
+  const { t } = useTranslation("layout/organization/slug");
 
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
@@ -97,12 +100,12 @@ export default function OrganizationDetails() {
         </div>
         <main className="w-full max-w-maxAppWidth mx-auto flex flex-col gap-12 p-6 px-10 tablet:px-6 largeMobile:!px-4">
           <div className="flex flex-col gap-3">
-            <h2 className="font-semibold text-base">Description</h2>
+            <h2 className="font-semibold text-base">{t("description.title")}</h2>
             <p className="text-sm [&_a]:text-blue-600 [&_a]:underline" ref={descriptionRef}></p>
           </div>
           <div className="flex flex-col gap-3 w-full">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="font-semibold text-base">Datasets</h2>
+              <h2 className="font-semibold text-base">{t("datasets.title")}</h2>
               {dataset && dataset.length > 0 && (
                 <Link
                   to={{
@@ -113,7 +116,7 @@ export default function OrganizationDetails() {
                   }}
                   className="flex items-center gap-4 border-b-[1.5px] border-primary-600 hover:border-primary-700"
                 >
-                  <p className="text-primary-600 text-sm">See more datasets</p>
+                  <p className="text-primary-600 text-sm">{t("datasets.link")}</p>
                   <FaAngleRight className="text-primary-600 text-xs" />
                 </Link>
               )}
@@ -170,7 +173,7 @@ export default function OrganizationDetails() {
                 </>
               ) : (
                 <NoData
-                  text="No dataset found"
+                  text={t("datasets.empty-state")}
                   img={{
                     alt: "No dataset illustration",
                   }}
@@ -179,33 +182,33 @@ export default function OrganizationDetails() {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <h2 className="font-semibold text-base">General Statistics</h2>
+            <h2 className="font-semibold text-base">{t("general-statistics.title")}</h2>
             <div className="flex items-start gap-16 [&>div]:flex [&>div]:flex-col [&>div>p]:text-sm [&>div>p]:font-medium [&>div>h3]:text-4xl [&>div>h3]:font-bold">
               <div>
-                <p>Datasets</p>
+                <p>{t("general-statistics.datasets")}</p>
                 <h3>{data.data_count ?? "----"}</h3>
               </div>
               <div>
-                <p>Views</p>
+                <p>{t("general-statistics.views")}</p>
                 <h3>{data.views_count ?? "----"}</h3>
               </div>
               <div>
-                <p>Downloads</p>
+                <p>{t("general-statistics.downloads")}</p>
                 <h3>{data.downloads_count ?? "----"}</h3>
               </div>
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <h2 className="font-semibold text-base">Technical Details</h2>
+            <h2 className="font-semibold text-base">{t("technical-details.title")}</h2>
             <div className="grid gap-8 grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 [&>div]:flex [&>div]:flex-col [&>div>h3]:font-semibold [&>div>h3]:text-sm">
               <div>
-                <h3>Organization creation date</h3>
+                <h3>{t("technical-details.organization-creation-date")}</h3>
                 <p>
                   {data.created_at ? moment(data.created_at).format("MMMM D, YYYY") : "--------"}
                 </p>
               </div>
               <div>
-                <h3>ID</h3>
+                <h3>{t("technical-details.id")}</h3>
                 <p>{data.id || "--------"}</p>
               </div>
             </div>
@@ -214,7 +217,7 @@ export default function OrganizationDetails() {
             (obj) => obj.id === data.id && obj.slug === data.slug && obj.name === data.name
           ) && (
             <div className="flex items-center gap-2 my-4 mt-8 justify-center">
-              <span className="text-sm">If you are interested in this organization</span>{" "}
+              <span className="text-sm">{t("request.text")}</span>{" "}
               <Button
                 loading={requestToJoinOrganization.isLoading}
                 className="!text-xs !py-3"
@@ -230,7 +233,7 @@ export default function OrganizationDetails() {
                   await requestToJoinOrganization.mutateAsync(data.id);
                 }}
               >
-                Request to join
+                {t("request.button")}
               </Button>
             </div>
           )}

@@ -4,7 +4,8 @@
   },
   "datasets": {
     "title": "Jeux de données",
-    "empty-state": "Aucun jeu de données trouvé"
+    "empty-state": "Aucun jeu de données trouvé",
+    "link": "Voir plus de jeux de données"
   },
   "general-statistics": {
     "title": "Statistiques Générales",
