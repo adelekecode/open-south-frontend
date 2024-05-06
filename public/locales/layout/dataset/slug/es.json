@@ -1,0 +1,25 @@
+{
+  "description": "Descripción",
+  "file": {
+    "text": {
+      "singular": "Archivo",
+      "plural": "Archivos"
+    },
+    "view-details-btn": "Ver detalles",
+    "details": {
+      "created-on": "Creado el",
+      "size": "Tamaño",
+      "view-file-btn": "Ver archivo"
+    }
+  },
+  "author": {
+    "text": "Publicado por"
+  },
+  "tags": "Etiquetas",
+  "license": "Licencia",
+  "created-on": "Creado el",
+  "update-frequency": "Frecuencia de actualización",
+  "latest-update": "Última actualización",
+  "temporal-coverage": "Cobertura temporal",
+  "spatial-coverage": "Cobertura espacial"
+}

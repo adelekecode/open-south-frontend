@@ -1,0 +1,25 @@
+{
+  "description": "Maelezo",
+  "file": {
+    "text": {
+      "singular": "Faili",
+      "plural": "Faili"
+    },
+    "view-details-btn": "Angalia Maelezo",
+    "details": {
+      "created-on": "Imetengenezwa tarehe",
+      "size": "Ukubwa",
+      "view-file-btn": "Angalia Faili"
+    }
+  },
+  "author": {
+    "text": "Imechapishwa na"
+  },
+  "tags": "Vitambulisho",
+  "license": "Leseni",
+  "created-on": "Imetengenezwa tarehe",
+  "update-frequency": "Mzunguko wa Sasa",
+  "latest-update": "Sasisho la Hivi Karibuni",
+  "temporal-coverage": "Ufikiaji wa Wakati",
+  "spatial-coverage": "Ufikiaji wa Nafasi"
+}

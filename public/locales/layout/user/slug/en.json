@@ -1,0 +1,19 @@
+{
+  "bio": {
+    "title": "Bio"
+  },
+  "datasets": {
+    "title": "Datasets",
+    "empty-state": "No dataset found"
+  },
+  "general-statistics": {
+    "title": "General Statistics",
+    "datasets": "Datasets",
+    "views": "Views",
+    "downloads": "Downloads"
+  },
+  "technical-details": {
+    "title": "Technical Details",
+    "user-joined-date": "User joined date"
+  }
+}
