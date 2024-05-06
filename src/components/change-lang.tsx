@@ -15,7 +15,7 @@ const langs = [
     text: "French",
   },
   {
-    value: "pr",
+    value: "pt",
     text: "Portuguese",
   },
   {
@@ -29,7 +29,7 @@ const langs = [
 ];
 
 export default function ChangeLang() {
-  const { lang, setLang } = useAppStore();
+  const { lang, setLang, setLangId } = useAppStore();
 
   const { i18n } = useTranslation("layout");
 
@@ -57,6 +57,7 @@ export default function ChangeLang() {
             if (response) {
               i18n.changeLanguage(value);
               setLang(value);
+              setLangId(response.instance.id);
               window.location.reload();
               setLoading(false);
             }

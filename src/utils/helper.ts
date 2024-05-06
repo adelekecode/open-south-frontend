@@ -1,4 +1,5 @@
 import axios from "axios";
+import i18n from "i18next";
 import { notifyError } from "./toast";
 
 export function formatFileSize(size: number): string {
@@ -80,4 +81,8 @@ export function downloadFileHandler(file: Dataset["files"][number], blob: Blob, 
   document.body.removeChild(link);
 
   URL.revokeObjectURL(url);
+}
+
+export function translate(key: string, namespace: string) {
+  return i18n.t(key, { ns: namespace });
 }

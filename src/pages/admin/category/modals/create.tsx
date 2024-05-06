@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { InputLabel } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -32,6 +33,8 @@ const validationSchema = Yup.object({
 });
 
 export default function Create({ modal, setModal, pagination }: CreateProps) {
+  const { t } = useTranslation("dashboard-layout/admin/categories");
+
   const [searchParams] = useSearchParams();
 
   const search = searchParams.get("q") || "";
@@ -65,13 +68,15 @@ export default function Create({ modal, setModal, pagination }: CreateProps) {
       }}
     >
       <div className="flex flex-col gap-2 w-full">
-        <h1 className="text-xl font-semibold">New Category</h1>
+        <h1 className="text-xl font-semibold">
+          {isEditState ? t("edit-category-modal.title") : t("add-category-modal.title")}
+        </h1>
         {formCompleted ? (
           <div className="p-6 pt-4 w-full flex flex-col items-center gap-4">
             <figure className="max-w-[9rem]">
               <img src={SuccessIllustration} alt="Success illustrion" />
             </figure>
-            <p className="text-sm">You have successfully created a category</p>
+            <p className="text-sm">{t("add-category-modal.success")}</p>
           </div>
         ) : (
           <Formik
@@ -125,7 +130,7 @@ export default function Create({ modal, setModal, pagination }: CreateProps) {
                       htmlFor={"image"}
                       className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}
                     >
-                      Image
+                      {t("add-category-modal.form.image.label")}
                       <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
                     </InputLabel>
                     <div className="flex gap-6 items-center largeMobile:flex-col largeMobile:items-start largeMobile:gap-4 largeMobile:mb-2">
@@ -153,9 +158,9 @@ export default function Create({ modal, setModal, pagination }: CreateProps) {
                         }}
                       />
                       <div className="flex flex-col gap-2">
-                        <h4 className="text-sm">Upload an image</h4>
+                        <h4 className="text-sm">{t("add-category-modal.form.image.info.title")}</h4>
                         <p className="text-xs text-info-800">
-                          The image should be in PNG, JPG or JPEG format
+                          {t("add-category-modal.form.image.info.body")}
                         </p>
                         <div className="flex items-center mt-1">
                           <Button
@@ -166,7 +171,7 @@ export default function Create({ modal, setModal, pagination }: CreateProps) {
                               inputRef.current?.click();
                             }}
                           >
-                            <span>Choose image</span>
+                            <span>{t("add-category-modal.form.image.info.cta.choose")}</span>
                           </Button>
                           <Button
                             variant="outlined"
@@ -176,7 +181,7 @@ export default function Create({ modal, setModal, pagination }: CreateProps) {
                               setImage(null);
                             }}
                           >
-                            <span>Remove</span>
+                            <span>{t("add-category-modal.form.image.info.cta.remove")}</span>
                           </Button>
                         </div>
                       </div>
@@ -203,7 +208,9 @@ export default function Create({ modal, setModal, pagination }: CreateProps) {
                 <footer className="p-4 py-2 flex items-center justify-between">
                   <div></div>
                   <Button type="submit" className="!py-2" loading={isSubmitting}>
-                    {isEditState ? "Save" : "Submit"}
+                    {isEditState
+                      ? t("edit-category-modal.button")
+                      : t("add-category-modal.form.button")}
                   </Button>
                 </footer>
               </form>

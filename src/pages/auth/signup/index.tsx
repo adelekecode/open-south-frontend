@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { IconButton } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsEyeSlash } from "react-icons/bs";
 // import { FcGoogle } from "react-icons/fc";
@@ -40,11 +41,13 @@ const signupSchema = Yup.object({
 export default function Signup() {
   const navigate = useNavigate();
 
+  const { t } = useTranslation("auth/signup");
+
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
   });
-  const { signupState, setSignupState } = useAppStore();
+  const { signupState, setSignupState, lang } = useAppStore();
 
   const signup = useSignUp();
   const googleAuth = useGoogleAuth();
@@ -64,10 +67,8 @@ export default function Signup() {
           className={`w-[85%] tabletAndBelow:w-[90%] tablet:!w-full flex flex-col gap-4 items-center p-8 largeMobile:p-0`}
         >
           <header className="mb-3 flex items-center flex-col gap-2">
-            <h1 className="text-2xl font-semibold text-center">Sign Up</h1>
-            <p className="text-sm text-center">
-              Welcome to our platform! Please fill out the form below to get started.{" "}
-            </p>
+            <h1 className="text-2xl font-semibold text-center">{t("title")}</h1>
+            <p className="text-sm text-center">{t("subtitle")}</p>
           </header>
           <Formik
             initialValues={{
@@ -98,17 +99,27 @@ export default function Signup() {
           >
             {({ handleSubmit, isSubmitting }) => (
               <form action="post" onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-                <FormField label="First Name" required placeholder="John" name="firstName" />
-                <FormField label="Last Name" required placeholder="Doe" name="lastName" />
                 <FormField
-                  label="Email"
+                  label={t("form.inputs.first-name.label")}
+                  placeholder={t("form.inputs.first-name.placeholder")}
                   required
-                  placeholder="example@gmail.com"
+                  name="firstName"
+                />
+                <FormField
+                  label={t("form.inputs.last-name.label")}
+                  placeholder={t("form.inputs.last-name.placeholder")}
+                  required
+                  name="lastName"
+                />
+                <FormField
+                  label={t("form.inputs.email.label")}
+                  placeholder={t("form.inputs.email.placeholder")}
+                  required
                   name="email"
                   type="email"
                 />
                 <FormField
-                  label="Password"
+                  label={t("form.inputs.password.label")}
                   required
                   placeholder="****************"
                   name="password"
@@ -125,7 +136,7 @@ export default function Signup() {
                   }
                 />
                 <FormField
-                  label="Confirm Password"
+                  label={t("form.inputs.confirm-password.label")}
                   required
                   placeholder="****************"
                   name="confirmPassword"
@@ -145,18 +156,18 @@ export default function Signup() {
                   }
                 />
                 <Button className="w-full !mt-4" type="submit" loading={isSubmitting}>
-                  Sign Up
+                  {t("form.submit-btn")}
                 </Button>
               </form>
             )}
           </Formik>
           <p className="text-sm">
-            Already have an account?{" "}
+            {t("form.cta-text.text")}{" "}
             <Link to={"/login"} className="text-secondary-700 font-semibold hover:underline">
-              Log In
+              {t("form.cta-text.link")}
             </Link>
           </p>
-          <p className="text-sm mt-2 mb-2 font-semibold">Or</p>
+          <p className="text-sm mt-2 mb-2 font-semibold">{t("or")}</p>
           {/* <Button
             variant="outlined"
             className="!w-full flex item-center gap-[1.3rem] !p-3 !px-[0.8rem]"
@@ -176,6 +187,7 @@ export default function Signup() {
                 navigate("/");
               }
             }}
+            locale={lang}
             onError={() => {
               notifyError("Error occured while logging in with google");
             }}

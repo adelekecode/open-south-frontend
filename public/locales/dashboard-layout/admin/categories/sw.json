@@ -1,0 +1,55 @@
+{
+  "title": "Jamii",
+  "search": {
+    "placeholder": "Tafuta kwa jina..."
+  },
+  "button": "Ongeza Jamii",
+  "table": {
+    "header": {
+      "no": "namba",
+      "title": "Jina",
+      "datasets": "Seti za Takwimu",
+      "created-at": "Imezalishwa Saa",
+      "updated-at": "Imeboreshwa Saa",
+      "action": "Tendo"
+    }
+  },
+  "add-category-modal": {
+    "title": "Jamii Mpya",
+    "form": {
+      "image": {
+        "label": "Picha",
+        "info": {
+          "title": "Pakia picha",
+          "body": "Picha inapaswa kuwa katika muundo wa PNG, JPG, au JPEG",
+          "cta": {
+            "choose": "Chagua picha",
+            "remove": "Ondoa"
+          }
+        }
+      },
+      "title": {
+        "label": "Jina"
+      },
+      "description": {
+        "label": "Maelezo"
+      },
+      "button": "Tuma"
+    },
+    "success": "Umefanikiwa kuunda jamii"
+  },
+  "view-category-modal": {
+    "title": "Angalia Jamii"
+  },
+  "edit-category-modal": {
+    "title": "Hariri Jamii",
+    "button": "Hifadhi"
+  },
+  "delete-category-modal": {
+    "body-text": "Una uhakika unataka kufuta jamii hii?",
+    "cta": {
+      "cancel": "Ghairi",
+      "confirm": "Thibitisha"
+    }
+  }
+}

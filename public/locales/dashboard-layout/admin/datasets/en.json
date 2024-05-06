@@ -1,0 +1,29 @@
+{
+  "title": "Datasets",
+  "search": {
+    "placeholder": "Search for title..."
+  },
+  "filter": {
+    "by-active": {
+      "placeholder": "Filter by status",
+      "dropdown": {
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "published": "Published",
+        "unpubished": "Unpubished",
+        "further-review": "Further Review"
+      }
+    }
+  },
+  "table": {
+    "header": {
+      "no": "no.",
+      "first-name": "First Name",
+      "last-name": "Last Name",
+      "email": "Email",
+      "date-joined": "Date Joined",
+      "active": "Active",
+      "action": "Action"
+    }
+  }
+}
