@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { axiosPrivate } from "./api";
+import axios from "axios";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -7,7 +8,24 @@ export const queryClient = new QueryClient({
       queryFn: async ({ queryKey }) => {
         const appStore = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem("app-store"))));
 
-        const langId = appStore.state.langId;
+        let langId = appStore.state.langId;
+
+        if (!langId) {
+          const { data } = await axios.get("/public/IP/");
+
+          localStorage.setItem(
+            "app-store",
+            JSON.stringify({
+              ...appStore,
+              state: {
+                lang: data.instance.lang,
+                langId: data.instance.id,
+              },
+            })
+          );
+
+          langId = data.instance.id;
+        }
 
         let url = queryKey.join("/");
 
