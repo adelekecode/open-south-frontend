@@ -1,0 +1,25 @@
+{
+  "description": "الوصف",
+  "file": {
+    "text": {
+      "singular": "ملف",
+      "plural": "ملفات"
+    },
+    "view-details-btn": "عرض التفاصيل",
+    "details": {
+      "created-on": "تم الإنشاء في",
+      "size": "الحجم",
+      "view-file-btn": "عرض الملف"
+    }
+  },
+  "author": {
+    "text": "نشر بواسطة"
+  },
+  "tags": "الوسوم",
+  "license": "الترخيص",
+  "created-on": "تم الإنشاء في",
+  "update-frequency": "تحديث التكرار",
+  "latest-update": "آخر تحديث",
+  "temporal-coverage": "التغطية الزمنية",
+  "spatial-coverage": "التغطية المكانية"
+}

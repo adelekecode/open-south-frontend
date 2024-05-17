@@ -1,0 +1,53 @@
+{
+  "header": {
+    "title": "डेटासेट्स",
+    "subtitle": "{{company_name}} पर सभी डेटासेट्स में खोजें",
+    "search": {
+      "placeholder": "खोजें",
+      "button": "खोजें"
+    }
+  },
+  "sidebar": {
+    "title": "फ़िल्टर",
+    "mobile-title": "परिणामों को फ़िल्टर करें",
+    "search": {
+      "organization": {
+        "title": "संगठन",
+        "placeholder": "सभी संगठन"
+      },
+      "tag": {
+        "title": "टैग",
+        "placeholder": "सभी टैग"
+      },
+      "category": {
+        "title": "श्रेणियाँ",
+        "placeholder": "सभी श्रेणियाँ"
+      },
+      "formats": {
+        "title": "स्वरूप",
+        "placeholder": "सभी स्वरूप"
+      },
+      "license": {
+        "title": "लाइसेंस",
+        "placeholder": "सभी लाइसेंस"
+      },
+      "spatial-coverage": {
+        "title": "स्थानिक कवरेज",
+        "placeholder": "सभी स्थानिक कवरेज"
+      }
+    }
+  },
+  "main": {
+    "header": {
+      "result": "{{value}} परिणाम",
+      "sort-by": {
+        "text": "क्रमबद्ध करें",
+        "dropdown": {
+          "relevance": "प्रासंगिकता",
+          "creation-date": "निर्माण तिथि",
+          "last-update": "अंतिम अपडेट"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "header": {
+    "title": "المجموعات البيانية",
+    "subtitle": "البحث بين جميع مجموعات البيانات على {{company_name}}",
+    "search": {
+      "placeholder": "البحث",
+      "button": "بحث"
+    }
+  },
+  "sidebar": {
+    "title": "الفلاتر",
+    "mobile-title": "تصفية النتائج",
+    "search": {
+      "organization": {
+        "title": "المنظمات",
+        "placeholder": "جميع المنظمات"
+      },
+      "tag": {
+        "title": "العلامات",
+        "placeholder": "جميع العلامات"
+      },
+      "category": {
+        "title": "الفئات",
+        "placeholder": "جميع الفئات"
+      },
+      "formats": {
+        "title": "التنسيقات",
+        "placeholder": "جميع التنسيقات"
+      },
+      "license": {
+        "title": "التراخيص",
+        "placeholder": "جميع التراخيص"
+      },
+      "spatial-coverage": {
+        "title": "التغطية المكانية",
+        "placeholder": "جميع التغطية المكانية"
+      }
+    }
+  },
+  "main": {
+    "header": {
+      "result": "{{value}} نتيجة",
+      "sort-by": {
+        "text": "ترتيب حسب",
+        "dropdown": {
+          "relevance": "الصلة",
+          "creation-date": "تاريخ الإنشاء",
+          "last-update": "آخر تحديث"
+        }
+      }
+    }
+  }
+}
