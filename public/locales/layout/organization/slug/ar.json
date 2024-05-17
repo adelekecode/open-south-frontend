@@ -1,0 +1,25 @@
+{
+  "description": {
+    "title": "الوصف"
+  },
+  "datasets": {
+    "title": "مجموعات البيانات",
+    "empty-state": "لم يتم العثور على مجموعة بيانات",
+    "link": "شاهد المزيد من مجموعات البيانات"
+  },
+  "general-statistics": {
+    "title": "إحصائيات عامة",
+    "datasets": "مجموعات البيانات",
+    "views": "المشاهدات",
+    "downloads": "التنزيلات"
+  },
+  "technical-details": {
+    "title": "تفاصيل فنية",
+    "organization-creation-date": "تاريخ إنشاء المنظمة",
+    "id": "المعرف"
+  },
+  "request": {
+    "text": "إذا كنت مهتمًا بهذه المنظمة",
+    "button": "طلب الانضمام"
+  }
+}
