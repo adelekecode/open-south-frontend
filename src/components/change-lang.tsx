@@ -26,6 +26,14 @@ const langs = [
     value: "sw",
     text: "Swahili",
   },
+  {
+    value: "ar",
+    text: "Arabic",
+  },
+  {
+    value: "hi",
+    text: "Hindi",
+  },
 ];
 
 export default function ChangeLang() {
