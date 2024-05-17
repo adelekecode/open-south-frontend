@@ -1,0 +1,37 @@
+{
+  "title": "डैशबोर्ड",
+  "cards": {
+    "users": "उपयोगकर्ता",
+    "datasets": "डेटासेट्स",
+    "organizations": "संगठन",
+    "news": "समाचार"
+  },
+  "charts": {
+    "average-views-per-category": {
+      "title": "प्रति श्रेणी औसत दृश्य",
+      "day": "दिन",
+      "week": "सप्ताह",
+      "month": "महीना"
+    },
+    "average-download-per-category": {
+      "title": "विभिन्न समय-अवधियों में प्रति श्रेणी औसत डाउनलोड",
+      "day": "दिन",
+      "week": "सप्ताह",
+      "month": "महीना"
+    },
+    "most-accessed-datasets": {
+      "title": "शीर्ष 5 सबसे पहुंची गई डेटासेट्स",
+      "empty-state": "वर्तमान में कोई पहुंची गई डेटासेट्स नहीं हैं"
+    },
+    "most-published-organizations": "शीर्ष 5 सबसे प्रकाशित संगठन",
+    "traffic-locations": {
+      "title": "शीर्ष 5 यातायात स्थान",
+      "empty-state": "वर्तमान में कोई यातायात डेटा उपलब्ध नहीं है"
+    },
+    "performance": {
+      "title": "प्रदर्शन",
+      "increase": "अक्टूबर से यातायात",
+      "subtext": "डेटा संचार बचत"
+    }
+  }
+}

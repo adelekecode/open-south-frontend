@@ -1,0 +1,37 @@
+{
+  "title": "لوحة التحكم",
+  "cards": {
+    "users": "المستخدمون",
+    "datasets": "مجموعات البيانات",
+    "organizations": "المؤسسات",
+    "news": "الأخبار"
+  },
+  "charts": {
+    "average-views-per-category": {
+      "title": "المشاهدات المتوسطة لكل فئة",
+      "day": "يوم",
+      "week": "أسبوع",
+      "month": "شهر"
+    },
+    "average-download-per-category": {
+      "title": "التنزيل المتوسط لكل فئة عبر إطارات زمنية مختلفة",
+      "day": "يوم",
+      "week": "أسبوع",
+      "month": "شهر"
+    },
+    "most-accessed-datasets": {
+      "title": "أعلى 5 مجموعات بيانات تم الوصول إليها",
+      "empty-state": "لا توجد بيانات وصول في الوقت الحالي"
+    },
+    "most-published-organizations": "أعلى 5 منظمات تم نشرها",
+    "traffic-locations": {
+      "title": "أعلى 5 مواقع لحركة المرور",
+      "empty-state": "لا توجد بيانات مرور متاحة في الوقت الحالي"
+    },
+    "performance": {
+      "title": "الأداء",
+      "increase": "حركة المرور منذ أكتوبر",
+      "subtext": "حفظ نقل البيانات"
+    }
+  }
+}
