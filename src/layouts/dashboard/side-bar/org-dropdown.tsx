@@ -6,6 +6,7 @@ import { IoGridOutline } from "react-icons/io5";
 import { GoDatabase } from "react-icons/go";
 import { twMerge } from "tailwind-merge";
 import useUserOrganizationStore from "~/store/user-organization";
+import { useTranslation } from "react-i18next";
 
 type OrgDropdownProps = Organization & {
   navLinkClassNameHandler: (obj: { isActive: boolean; isPending: boolean }) => string;
@@ -13,12 +14,12 @@ type OrgDropdownProps = Organization & {
 
 const links = [
   {
-    name: "Dashboard",
+    name: "dashboard",
     to: "/dashboard",
     icon: IoGridOutline,
   },
   {
-    name: "Datasets",
+    name: "datasets",
     to: "/datasets",
     icon: GoDatabase,
   },
@@ -26,6 +27,8 @@ const links = [
 
 export default function OrgDropdown({ navLinkClassNameHandler, ...data }: OrgDropdownProps) {
   const { is_verified, name, slug, logo, status } = data;
+
+  const { t } = useTranslation("dashboard-layout");
 
   const [clicked, setClicked] = useState(false);
 
@@ -77,7 +80,7 @@ export default function OrgDropdown({ navLinkClassNameHandler, ...data }: OrgDro
             }}
           >
             <item.icon />
-            <span>{item.name}</span>
+            <span>{t(`sidebar.${item.name}`)}</span>
           </NavLink>
         ))}
       </Collapse>
