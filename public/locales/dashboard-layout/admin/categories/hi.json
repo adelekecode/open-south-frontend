@@ -1,0 +1,55 @@
+{
+  "title": "श्रेणियाँ",
+  "search": {
+    "placeholder": "शीर्षक के लिए खोजें..."
+  },
+  "button": "श्रेणी जोड़ें",
+  "table": {
+    "header": {
+      "no": "कोई नहीं.",
+      "title": "शीर्षक",
+      "datasets": "डेटासेट्स",
+      "created-at": "तिथि से बनाई गई",
+      "updated-at": "तिथि पर अपडेट किया गया",
+      "action": "कार्रवाई"
+    }
+  },
+  "add-category-modal": {
+    "title": "नई श्रेणी",
+    "form": {
+      "image": {
+        "label": "छवि",
+        "info": {
+          "title": "एक छवि अपलोड करें",
+          "body": "छवि PNG, JPG या JPEG प्रारूप में होनी चाहिए",
+          "cta": {
+            "choose": "छवि चुनें",
+            "remove": "हटाएं"
+          }
+        }
+      },
+      "title": {
+        "label": "शीर्षक"
+      },
+      "description": {
+        "label": "विवरण"
+      },
+      "button": "प्रस्तुत"
+    },
+    "success": "आपने सफलतापूर्वक एक श्रेणी बना ली है"
+  },
+  "view-category-modal": {
+    "title": "श्रेणी देखें"
+  },
+  "edit-category-modal": {
+    "title": "श्रेणी संपादित करें",
+    "button": "सहेजें"
+  },
+  "delete-category-modal": {
+    "body-text": "क्या आप वाकई इस श्रेणी को हटाना चाहते हैं?",
+    "cta": {
+      "cancel": "रद्द करें",
+      "confirm": "पुष्टि करें"
+    }
+  }
+}

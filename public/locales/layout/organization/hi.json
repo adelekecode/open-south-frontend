@@ -1,0 +1,19 @@
+{
+  "title": "संगठन",
+  "subtitle": "{{company_name}} पर संगठनों के बीच खोजें।",
+  "search": {
+    "placeholder": "खोजें...",
+    "button": "खोजें"
+  },
+  "result": "{{value}} परिणाम",
+  "sort-by": {
+    "text": "इसके अनुसार क्रमबद्ध करें",
+    "dropdown": {
+      "relevance": "प्रासंगिकता",
+      "most-recent": "सबसे हाल का"
+    }
+  },
+  "org-card": {
+    "datasets": "डेटासेट्स"
+  }
+}

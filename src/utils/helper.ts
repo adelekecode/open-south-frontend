@@ -1,5 +1,5 @@
 import axios from "axios";
-import i18n from "i18next";
+import i18n from "../i18n";
 import { notifyError } from "./toast";
 
 export function formatFileSize(size: number): string {

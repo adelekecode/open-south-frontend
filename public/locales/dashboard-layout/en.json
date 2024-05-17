@@ -13,6 +13,7 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "datasets": "Datasets",
+    "users": "Datasets",
     "profile": "Profile",
     "organizations": "Organizations",
     "categories": "Categories",
