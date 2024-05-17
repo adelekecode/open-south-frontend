@@ -1,0 +1,34 @@
+{
+  "title": "हमारे साझेदार",
+  "show-form-btn": "साझेदार बनें",
+  "form": {
+    "title": "साझेदार बनें",
+    "subtitle": "कृपया नीचे दिए गए फॉर्म को भरें।",
+    "inputs": {
+      "organization-name": {
+        "label": "संगठन का नाम",
+        "placeholder": "उदाहरण"
+      },
+      "contact-person": {
+        "label": "संपर्क व्यक्ति",
+        "placeholder": "संपर्क व्यक्ति का नाम दर्ज करें"
+      },
+      "email": {
+        "label": "ईमेल",
+        "placeholder": "example@gmail.com"
+      },
+      "phone-number": {
+        "label": "फोन नंबर"
+      },
+      "organization-type": {
+        "label": "संगठन का प्रकार",
+        "placeholder": "निर्दिष्ट करें कि आप कंपनी, गैर-लाभकारी, सरकारी इकाई आदि हैं।"
+      },
+      "purpose-of-partnership": {
+        "label": "साझेदारी का उद्देश्य",
+        "placeholder": "संक्षेप में बताएं कि आप हमारे साझेदार क्यों बनना चाहते हैं।"
+      }
+    },
+    "submit-btn": "जमा करें"
+  }
+}

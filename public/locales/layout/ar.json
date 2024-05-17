@@ -1,0 +1,62 @@
+{
+  "header": {
+    "links": {
+      "dataset": "مجموعات البيانات",
+      "category": "الفئات",
+      "organization": "المنظمة",
+      "about": "معلومات عنا",
+      "partner": "الشركاء",
+      "contact": "اتصل بنا",
+      "news": "الأخبار"
+    },
+    "signup": "سجل",
+    "login": "تسجيل الدخول",
+    "dashboard": "لوحة القيادة",
+    "search": {
+      "placeholder": "بحث",
+      "dataset": "ابحث عن \"{{search}}\" في مجموعات البيانات",
+      "organization": "ابحث عن \"{{search}}\" في المنظمات"
+    },
+    "logout": "تسجيل خروج"
+  },
+  "main": {
+    "breadcrumbs": "مرحبا"
+  },
+  "footer": {
+    "links": {
+      "useful-links": {
+        "title": "روابط مفيدة",
+        "body": {
+          "categories": "الفئات",
+          "organizations": "المنظمات"
+        }
+      },
+      "support": {
+        "title": "الدعم",
+        "body": {
+          "contact": "اتصال",
+          "faq": "الأسئلة الشائعة",
+          "about-us": "معلومات عنا",
+          "feedback": "التغذية الراجعة"
+        }
+      },
+      "social-media": {
+        "title": "وسائل التواصل الاجتماعي"
+      },
+      "developer": {
+        "title": "المطور",
+        "body": {
+          "portal-api": "واجهة برمجة التطبيقات للبوابة"
+        }
+      }
+    },
+    "partners": {
+      "title": "شركاؤنا"
+    },
+    "bottom": {
+      "terms": "شروط الخدمة",
+      "policy": "سياسة الخصوصية",
+      "license": "مرخصة تحت Open South"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "title": "المجموعات البيانية",
+  "search": {
+    "placeholder": "البحث عن العنوان..."
+  },
+  "filter": {
+    "by-active": {
+      "placeholder": "تصفية حسب الحالة",
+      "dropdown": {
+        "pending": "قيد الانتظار",
+        "rejected": "مرفوض",
+        "published": "نشر",
+        "unpubished": "غير منشور",
+        "further-review": "مراجعة إضافية"
+      }
+    }
+  },
+  "table": {
+    "header": {
+      "no": "رقم",
+      "first-name": "الاسم الأول",
+      "last-name": "الاسم الأخير",
+      "email": "البريد الإلكتروني",
+      "date-joined": "تاريخ الانضمام",
+      "active": "نشط",
+      "action": "إجراء"
+    }
+  }
+}

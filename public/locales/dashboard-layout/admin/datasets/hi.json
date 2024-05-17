@@ -1,0 +1,29 @@
+{
+  "title": "डेटासेट्स",
+  "search": {
+    "placeholder": "शीर्षक के लिए खोजें..."
+  },
+  "filter": {
+    "by-active": {
+      "placeholder": "स्थिति के अनुसार फिल्टर करें",
+      "dropdown": {
+        "pending": "लंबित",
+        "rejected": "अस्वीकृत",
+        "published": "प्रकाशित",
+        "unpubished": "अप्रकाशित",
+        "further-review": "आगे की समीक्षा"
+      }
+    }
+  },
+  "table": {
+    "header": {
+      "no": "नंबर",
+      "first-name": "पहला नाम",
+      "last-name": "उपनाम",
+      "email": "ईमेल",
+      "date-joined": "सम्मिलित तिथि",
+      "active": "सक्रिय",
+      "action": "कार्रवाई"
+    }
+  }
+}

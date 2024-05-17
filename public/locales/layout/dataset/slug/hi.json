@@ -1,0 +1,25 @@
+{
+  "description": "विवरण",
+  "file": {
+    "text": {
+      "singular": "फ़ाइल",
+      "plural": "फ़ाइलें"
+    },
+    "view-details-btn": "विवरण देखें",
+    "details": {
+      "created-on": "पर बनाया गया",
+      "size": "आकार",
+      "view-file-btn": "फ़ाइल देखें"
+    }
+  },
+  "author": {
+    "text": "द्वारा प्रकाशित"
+  },
+  "tags": "टैग",
+  "license": "लाइसेंस",
+  "created-on": "पर बनाया गया",
+  "update-frequency": "अपडेट आवृत्ति",
+  "latest-update": "नवीनतम अपडेट",
+  "temporal-coverage": "समयात्मक कवरेज",
+  "spatial-coverage": "स्थानिक कवरेज"
+}

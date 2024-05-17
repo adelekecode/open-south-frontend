@@ -1,0 +1,55 @@
+{
+  "title": "الفئات",
+  "search": {
+    "placeholder": "البحث عن العنوان..."
+  },
+  "button": "إضافة فئة",
+  "table": {
+    "header": {
+      "no": "رقم",
+      "title": "العنوان",
+      "datasets": "مجموعات البيانات",
+      "created-at": "تم الإنشاء في",
+      "updated-at": "تم التحديث في",
+      "action": "إجراء"
+    }
+  },
+  "add-category-modal": {
+    "title": "فئة جديدة",
+    "form": {
+      "image": {
+        "label": "الصورة",
+        "info": {
+          "title": "قم بتحميل صورة",
+          "body": "يجب أن تكون الصورة بتنسيق PNG، JPG أو JPEG",
+          "cta": {
+            "choose": "اختيار الصورة",
+            "remove": "إزالة"
+          }
+        }
+      },
+      "title": {
+        "label": "العنوان"
+      },
+      "description": {
+        "label": "الوصف"
+      },
+      "button": "إرسال"
+    },
+    "success": "لقد قمت بإنشاء فئة بنجاح"
+  },
+  "view-category-modal": {
+    "title": "عرض الفئة"
+  },
+  "edit-category-modal": {
+    "title": "تحرير الفئة",
+    "button": "حفظ"
+  },
+  "delete-category-modal": {
+    "body-text": "هل أنت متأكد أنك تريد حذف هذه الفئة؟",
+    "cta": {
+      "cancel": "إلغاء",
+      "confirm": "تأكيد"
+    }
+  }
+}
