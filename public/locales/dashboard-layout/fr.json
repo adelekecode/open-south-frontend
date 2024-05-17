@@ -13,6 +13,7 @@
   "sidebar": {
     "dashboard": "Tableau de bord",
     "datasets": "Jeux de données",
+    "users": "utilisateur",
     "profile": "Profil",
     "organizations": "Organisations",
     "categories": "Catégories",
