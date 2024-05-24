@@ -25,7 +25,7 @@
         "placeholder": "Specify if you are a company, nonprofit, government entity, etc."
       },
       "purpose-of-partnership": {
-        "label": "Phone Number",
+        "label": "Purpose of partnership",
         "placeholder": "Briefly describe why you want to be our partner."
       }
     },
