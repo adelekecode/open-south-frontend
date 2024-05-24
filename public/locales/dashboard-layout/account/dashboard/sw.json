@@ -1,0 +1,43 @@
+{
+  "title": "Dashibodi",
+  "cards": {
+    "datasets": "Seti za Takwimu",
+    "organizations": "Mashirika",
+    "views": "Mawazo",
+    "downloads": "Vipakuliwa"
+  },
+  "chart": {
+    "most-accessed-datasets": {
+      "title": "Seti za Takwimu Zinazotembelewa Zaidi Top 5",
+      "empty-state": "Hakuna seti za takwimu zilizotembelewa kwa sasa"
+    },
+    "traffic-locations": {
+      "title": "Maeneo ya Trafiki ya Juu 5",
+      "empty-state": "Hakuna data ya trafiki inayopatikana kwa sasa"
+    }
+  },
+  "latest-dataset-created": {
+    "title": "Seti ya Takwimu ya Hivi Punde Iliyoanzishwa",
+    "view-all": "Tazama Zote",
+    "table": {
+      "header": {
+        "no": "NA.",
+        "title": "Kichwa",
+        "created-at": "Imeundwa Tarehe",
+        "updated-at": "Imesasishwa Tarehe",
+        "views": "Mawazo",
+        "files": "Faili",
+        "status": "Hali"
+      },
+      "body": {
+        "status": {
+          "further-review": "Mapitio Zaidi",
+          "pending": "Inasubiri",
+          "unpublished": "Haijachapishwa",
+          "published": "Imechapishwa",
+          "rejected": "Imekataliwa"
+        }
+      }
+    }
+  }
+}

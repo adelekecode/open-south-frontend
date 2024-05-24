@@ -48,6 +48,10 @@
           "last-update": "Última Actualización"
         }
       }
+    },
+    "card": {
+      "by": "por",
+      "updated": "Actualizado"
     }
   }
 }
