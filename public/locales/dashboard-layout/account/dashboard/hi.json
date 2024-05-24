@@ -1,0 +1,43 @@
+{
+  "title": "डैशबोर्ड",
+  "cards": {
+    "datasets": "डेटासेट्स",
+    "organizations": "संगठनों",
+    "views": "दृश्य",
+    "downloads": "डाउनलोड"
+  },
+  "chart": {
+    "most-accessed-datasets": {
+      "title": "शीर्ष 5 सबसे अधिक पहुँचा गया डेटा सेट",
+      "empty-state": "फिलहाल कोई भी डेटा सेट एक्सेस नहीं किया गया है"
+    },
+    "traffic-locations": {
+      "title": "शीर्ष 5 ट्रैफिक स्थान",
+      "empty-state": "फिलहाल कोई ट्रैफिक डेटा उपलब्ध नहीं है"
+    }
+  },
+  "latest-dataset-created": {
+    "title": "नवीनतम डेटा सेट बनाया गया",
+    "view-all": "सभी देखें",
+    "table": {
+      "header": {
+        "no": "क्रमांक",
+        "title": "शीर्षक",
+        "created-at": "निर्मित",
+        "updated-at": "अद्यतन",
+        "views": "दृश्य",
+        "files": "फाइलें",
+        "status": "स्थिति"
+      },
+      "body": {
+        "status": {
+          "further-review": "आगे की समीक्षा",
+          "pending": "लंबित",
+          "unpublished": "अप्रकाशित",
+          "published": "प्रकाशित",
+          "rejected": "अस्वीकृत"
+        }
+      }
+    }
+  }
+}
