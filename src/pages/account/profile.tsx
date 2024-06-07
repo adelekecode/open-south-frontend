@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { InputLabel } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { Formik } from "formik";
 import { IoCameraSharp } from "react-icons/io5";
 import * as Yup from "yup";
@@ -18,6 +19,7 @@ const validationSchema = Yup.object({
 });
 
 export default function Profile() {
+  const { t } = useTranslation("dashboard-layout/profile");
   const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -37,7 +39,7 @@ export default function Profile() {
   return (
     <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-semibold largeMobile:text-xl">Edit Profile</h1>
+        <h1 className="text-2xl font-semibold largeMobile:text-xl">{t("title")}</h1>
         {currentUser?.role === "user" && (
           <Button
             className="!py-2 !px-3 !text-xs"
@@ -46,7 +48,7 @@ export default function Profile() {
               navigate(`/users/${currentUser?.id}`);
             }}
           >
-            View Public Profile
+            {t("view-public-profile")}
           </Button>
         )}
       </div>
@@ -92,7 +94,7 @@ export default function Profile() {
                     htmlFor={"picture"}
                     className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}
                   >
-                    Profile Photo
+                    {t("form.photo.label")}
                     <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
                   </InputLabel>
                   <div className="flex gap-8 items-center largeMobile:flex-col largeMobile:items-start largeMobile:gap-4 largeMobile:mb-2">
@@ -128,10 +130,8 @@ export default function Profile() {
                       }}
                     />
                     <div className="flex flex-col gap-2">
-                      <h4 className="text-sm">Upload your photo</h4>
-                      <p className="text-xs text-info-800">
-                        Your photo should be in PNG, JPG or JPEG format
-                      </p>
+                      <h4 className="text-sm">{t("form.photo.info.title")}</h4>
+                      <p className="text-xs text-info-800">{t("form.photo.info.body")}</p>
                       <div className="flex items-center mt-1">
                         <Button
                           variant="outlined"
@@ -141,7 +141,7 @@ export default function Profile() {
                             inputRef.current?.click();
                           }}
                         >
-                          <span>Choose image</span>
+                          <span>{t("form.photo.info.cta.choose")}</span>
                         </Button>
                         <Button
                           variant="outlined"
@@ -151,7 +151,7 @@ export default function Profile() {
                             setPhoto(null);
                           }}
                         >
-                          <span>Remove</span>
+                          <span>{t("form.photo.info.cta.remove")}</span>
                         </Button>
                       </div>
                     </div>
@@ -159,7 +159,7 @@ export default function Profile() {
                 </div>
                 <div className="flex items-center gap-6 tablet:flex-col tablet:gap-4">
                   <FormField
-                    label="First Name"
+                    label={t("form.first-name.label")}
                     required
                     name="firstName"
                     className="[&_input]:!text-[0.9rem]"
@@ -168,7 +168,7 @@ export default function Profile() {
                     }}
                   />
                   <FormField
-                    label="Last Name"
+                    label={t("form.last-name.label")}
                     required
                     name="lastName"
                     className="[&_input]:!text-[0.9rem]"
@@ -178,7 +178,7 @@ export default function Profile() {
                   />
                 </div>
                 <FormField
-                  label="Email"
+                  label={t("form.email.label")}
                   required
                   name="email"
                   className="[&_input]:!text-[0.9rem]"
@@ -188,7 +188,7 @@ export default function Profile() {
                   readOnly
                 />
                 <TextEditorField
-                  label="Bio"
+                  label={t("form.bio.label")}
                   required={currentUser?.role === "user"}
                   name="aboutMe"
                   labelProps={{
@@ -199,7 +199,7 @@ export default function Profile() {
               <footer className="p-4 py-2 flex items-center justify-between">
                 <div></div>
                 <Button type="submit" className="!py-2" loading={isSubmitting}>
-                  Save
+                  {t("form.button")}
                 </Button>
               </footer>
             </form>
