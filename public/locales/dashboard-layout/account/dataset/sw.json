@@ -1,0 +1,36 @@
+{
+  "title": "Seti za Takwimu",
+  "search": {
+    "placeholder": "Tafuta kwa kichwa..."
+  },
+  "filter": {
+    "placeholder": "Chuja kwa hali",
+    "options": {
+      "pending": "Inasubiri",
+      "rejected": "Imekataliwa",
+      "published": "Imechapishwa",
+      "unpublished": "Haijachapishwa",
+      "further-review": "Uchunguzi zaidi"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "Na.",
+      "title": "Kichwa",
+      "created-at": "Imeundwa Tarehe",
+      "updated-at": "Imesasishwa Tarehe",
+      "views": "Maoni",
+      "files": "Faili",
+      "status": "Hali"
+    },
+    "body": {
+      "status": {
+        "further-review": "Uchunguzi zaidi",
+        "pending": "Inasubiri",
+        "unpublished": "Haijachapishwa",
+        "published": "Imechapishwa",
+        "rejected": "Imekataliwa"
+      }
+    }
+  }
+}

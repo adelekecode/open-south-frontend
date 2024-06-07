@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { DataGrid as MuiDataGrid, DataGridProps as MuiDataGridProps } from "@mui/x-data-grid";
 import { twMerge } from "tailwind-merge";
 import NoData from "~/assets/illustrations/no-data.png";
@@ -14,6 +15,8 @@ export default function DataGrid({
   className,
   ...props
 }: DataGridProps) {
+  const { t } = useTranslation("components/table");
+
   return (
     <MuiDataGrid
       {...props}
@@ -41,7 +44,7 @@ export default function DataGrid({
                 <img
                   src={NoData}
                   className="object-cover w-full h-full"
-                  alt="no data illustration"
+                  alt={t("empty-state.alt")}
                 />
               </figure>
             </div>

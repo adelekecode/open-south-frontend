@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { MdDeleteOutline } from "react-icons/md";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
@@ -12,6 +13,8 @@ type DeleteConfirmationProps = {
 };
 
 export default function DeleteConfirmation({ open, onClose, data }: DeleteConfirmationProps) {
+  const { t } = useTranslation("dashboard-layout/account/dataset/id");
+
   const deleteDatasetFile = useDeleteDatasetFile();
 
   return (
@@ -26,11 +29,11 @@ export default function DeleteConfirmation({ open, onClose, data }: DeleteConfir
           <MdDeleteOutline className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3rem] !font-extralight" />
         </span>
         <h1 className="text-base largeMobile:!text-sm font-medium text-center">
-          Are you sure you want to delete this file?
+          {t("resources.delete-confirmation-modal.contents")}
         </h1>
         <div className="mt-10 flex gap-6 justify-between">
           <Button variant="outlined" onClick={onClose}>
-            Cancel
+            {t("resources.delete-confirmation-modal.cta-btn.cancel")}
           </Button>
           <Button
             loading={deleteDatasetFile.isLoading}
@@ -45,7 +48,7 @@ export default function DeleteConfirmation({ open, onClose, data }: DeleteConfir
               }
             }}
           >
-            Confirm
+            {t("resources.delete-confirmation-modal.cta-btn.confirm")}
           </Button>
         </div>
       </div>

@@ -1,0 +1,57 @@
+{
+  "back-btn": {
+    "text": "Back to datasets"
+  },
+  "cta-btn": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "processing-banner": {
+    "text": "This dataset is currently being reviewed by the admin."
+  },
+  "details": {
+    "license": "License",
+    "creation": "Creation",
+    "update-frequency": "Update Frequency",
+    "latest-update": "Latest update",
+    "temporal-coverage": "Temporal coverage",
+    "spatial-coverage": "Spatial coverage"
+  },
+  "delete-confirmation-modal": {
+    "contents": "Are you sure you want to delete this dataset?",
+    "cta-btn": {
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    }
+  },
+  "resources": {
+    "title": "Resources",
+    "add-btn": "Add",
+    "table": {
+      "header": {
+        "no": "NO.",
+        "name": "Title",
+        "format": "Format",
+        "size": "Size",
+        "downloads": "Downloads",
+        "created-at": "Created At",
+        "action": "Action"
+      }
+    },
+    "delete-confirmation-modal": {
+      "contents": "Are you sure you want to delete this file?",
+      "cta-btn": {
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      }
+    },
+    "upload-file": {
+      "title": "Upload Files",
+      "dnd-box": {
+        "text": "Drag and drop files here to upload. Allowed file types: .csv, .json, .xlsx, .zip",
+        "alt": "file upload illustration"
+      },
+      "upload-btn": "Upload"
+    }
+  }
+}

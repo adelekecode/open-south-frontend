@@ -66,6 +66,7 @@ export default function ChangeLang() {
               i18n.changeLanguage(value);
               setLang(value);
               setLangId(response.instance.id);
+              window.history.replaceState({}, "");
               window.location.reload();
               setLoading(false);
             }

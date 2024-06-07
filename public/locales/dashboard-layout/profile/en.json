@@ -1,5 +1,6 @@
 {
   "title": "Edit Profile",
+  "view-public-profile": "View Public Profile",
   "form": {
     "photo": {
       "label": "Profile Photo",

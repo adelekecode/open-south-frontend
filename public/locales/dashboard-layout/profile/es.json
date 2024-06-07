@@ -1,5 +1,6 @@
 {
   "title": "Editar Perfil",
+  "view-public-profile": "Ver Perfil Público",
   "form": {
     "photo": {
       "label": "Foto de Perfil",
@@ -19,7 +20,7 @@
       "label": "Apellido"
     },
     "email": {
-      "label": "Correo Electrónico"
+      "label": "Correo electrónico"
     },
     "bio": {
       "label": "Biografía"

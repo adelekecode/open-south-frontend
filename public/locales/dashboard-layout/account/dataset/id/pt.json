@@ -1,0 +1,62 @@
+{
+  "back-btn": {
+    "text": "Voltar aos conjuntos de dados"
+  },
+  "cta-btn": {
+    "edit": "Editar",
+    "delete": "Excluir"
+  },
+  "processing-banner": {
+    "text": "Este conjunto de dados está sendo revisado pelo administrador."
+  },
+  "details": {
+    "license": "Licença",
+    "creation": "Criação",
+    "update-frequency": "Frequência de atualização",
+    "latest-update": "Última atualização",
+    "temporal-coverage": "Cobertura temporal",
+    "spatial-coverage": "Cobertura espacial"
+  },
+  "delete-confirmation-modal": {
+    "contents": "Tem certeza de que deseja excluir este conjunto de dados?",
+    "cta-btn": {
+      "cancel": "Cancelar",
+      "confirm": "Confirmar"
+    }
+  },
+  "resources": {
+    "title": "Recursos",
+    "add-btn": "Adicionar",
+    "table": {
+      "header": {
+        "no": "N°",
+        "name": "Título",
+        "format": "Formato",
+        "size": "Tamanho",
+        "downloads": "Downloads",
+        "created-at": "Criado em",
+        "action": "Ação"
+      }
+    },
+    "file-preview": {
+      "cta-btn": {
+        "download": "Baixar"
+      }
+    },
+    "delete-confirmation-modal": {
+      "contents": "Tem certeza de que deseja excluir este arquivo?",
+      "cta-btn": {
+        "cancel": "Cancelar",
+        "confirm": "Confirmar"
+      }
+    },
+    "upload-file": {
+      "title": "Carregar Arquivos",
+      "dnd-box": {
+        "text": "Arraste e solte os arquivos aqui para carregar. Tipos de arquivos permitidos: .csv, .json, .xlsx, .zip",
+        "alt": "ilustração de upload de arquivo"
+      },
+      "upload-btn": "Carregar"
+    }
+  }
+}

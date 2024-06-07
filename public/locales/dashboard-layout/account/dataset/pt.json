@@ -1,0 +1,36 @@
+{
+  "title": "Conjuntos de Dados",
+  "search": {
+    "placeholder": "Pesquisar por título..."
+  },
+  "filter": {
+    "placeholder": "Filtrar por status",
+    "options": {
+      "pending": "Pendente",
+      "rejected": "Rejeitado",
+      "published": "Publicado",
+      "unpublished": "Não publicado",
+      "further-review": "Revisão adicional"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "N°",
+      "title": "Título",
+      "created-at": "Criado em",
+      "updated-at": "Atualizado em",
+      "views": "Visualizações",
+      "files": "Arquivos",
+      "status": "Status"
+    },
+    "body": {
+      "status": {
+        "further-review": "Revisão adicional",
+        "pending": "Pendente",
+        "unpublished": "Não publicado",
+        "published": "Publicado",
+        "rejected": "Rejeitado"
+      }
+    }
+  }
+}
