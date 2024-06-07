@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { useParams } from "react-router";
+import { useTranslation } from "react-i18next";
 import { IconButton } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { IoClose } from "react-icons/io5";
@@ -24,6 +25,8 @@ type FileObj = {
 };
 
 export default function FileUpload({ open, setOpen }: FileUploadProps) {
+  const { t } = useTranslation("dashboard-layout/account/dataset/id");
+
   const { id } = useParams();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +99,7 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
       }}
     >
       <div className="w-full flex flex-col gap-4 mediumMobile:gap-1">
-        <h1 className="text-xl font-semibold">Upload Files</h1>
+        <h1 className="text-xl font-semibold">{t("resources.upload-file.title")}</h1>
         <div
           className="border border-info-300 rounded-md flex flex-col items-center justify-center w-full p-8 cursor-pointer outline-0 gap-4"
           {...getRootProps()}
@@ -105,13 +108,11 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
           <figure className="max-w-[10rem] ">
             <img
               src={FileUploadIllustration}
-              alt="file upload illustration"
+              alt={t("resources.upload-file.dnd-box.alt")}
               className="w-full h-full object-cover"
             />
           </figure>
-          <p className="text-xs text-center">
-            Drag and drop files here to upload. Allowed file types: .csv, .json, .xlsx, .zip.
-          </p>
+          <p className="text-xs text-center">{t("resources.upload-file.dnd-box.text")}</p>
         </div>
         {files.length > 0 && (
           <div className="flex flex-col gap-4">
@@ -229,7 +230,7 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
           }}
           disabled={!(files.length > 0)}
         >
-          {"Upload"}
+          {t("resources.upload-file.upload-btn")}
         </Button>
       </div>
     </Modal>

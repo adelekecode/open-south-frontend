@@ -1,0 +1,62 @@
+{
+  "back-btn": {
+    "text": "Volver a conjuntos de datos"
+  },
+  "cta-btn": {
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "processing-banner": {
+    "text": "Este conjunto de datos está siendo revisado por el administrador."
+  },
+  "details": {
+    "license": "Licencia",
+    "creation": "Creación",
+    "update-frequency": "Frecuencia de actualización",
+    "latest-update": "Última actualización",
+    "temporal-coverage": "Cobertura temporal",
+    "spatial-coverage": "Cobertura espacial"
+  },
+  "delete-confirmation-modal": {
+    "contents": "¿Está seguro de que desea eliminar este conjunto de datos?",
+    "cta-btn": {
+      "cancel": "Cancelar",
+      "confirm": "Confirmar"
+    }
+  },
+  "resourses": {
+    "title": "Recursos",
+    "add-btn": "Agregar",
+    "table": {
+      "header": {
+        "no": "N°",
+        "name": "Título",
+        "format": "Formato",
+        "size": "Tamaño",
+        "downloads": "Descargas",
+        "created-at": "Creado en",
+        "action": "Acción"
+      }
+    },
+    "file-preview": {
+      "cta-btn": {
+        "download": "Descargar"
+      }
+    },
+    "delete-confirmation-modal": {
+      "contents": "¿Está seguro de que desea eliminar este archivo?",
+      "cta-btn": {
+        "cancel": "Cancelar",
+        "confirm": "Confirmar"
+      }
+    },
+    "upload-file": {
+      "title": "Subir Archivos",
+      "dnd-box": {
+        "text": "Arrastra y suelta archivos aquí para subir. Tipos de archivos permitidos: .csv, .json, .xlsx, .zip",
+        "alt": "ilustración de carga de archivo"
+      },
+      "upload-btn": "Subir"
+    }
+  }
+}

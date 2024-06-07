@@ -1,0 +1,63 @@
+{
+  "back-btn": {
+    "text": "Retour aux jeux de données"
+  },
+  "cta-btn": {
+    "edit": "Modifier",
+    "delete": "Supprimer"
+  },
+  "processing-banner": {
+    "text": "Ce jeu de données est actuellement en cours de révision par l'administrateur."
+  },
+  "details": {
+    "license": "Licence",
+    "creation": "Création",
+    "update-frequency": "Fréquence de mise à jour",
+    "latest-update": "Dernière mise à jour",
+    "temporal-coverage": "Couverture temporelle",
+    "spatial-coverage": "Couverture spatiale"
+  },
+
+  "delete-confirmation-modal": {
+    "contents": "Êtes-vous sûr de vouloir supprimer ce jeu de données?",
+    "cta-btn": {
+      "cancel": "Annuler",
+      "confirm": "Confirmer"
+    }
+  },
+  "resourses": {
+    "title": "Ressources",
+    "add-btn": "Ajouter",
+    "table": {
+      "header": {
+        "no": "N°",
+        "name": "Titre",
+        "format": "Format",
+        "size": "Taille",
+        "downloads": "Téléchargements",
+        "created-at": "Créé le",
+        "action": "Action"
+      }
+    },
+    "file-preview": {
+      "cta-btn": {
+        "download": "Télécharger"
+      }
+    },
+    "delete-confirmation-modal": {
+      "contents": "Êtes-vous sûr de vouloir supprimer ce fichier?",
+      "cta-btn": {
+        "cancel": "Annuler",
+        "confirm": "Confirmer"
+      }
+    },
+    "upload-file": {
+      "title": "Télécharger des fichiers",
+      "dnd-box": {
+        "text": "Glissez-déposez les fichiers ici pour les télécharger. Types de fichiers autorisés: .csv, .json, .xlsx, .zip",
+        "alt": "illustration de téléchargement de fichier"
+      },
+      "upload-btn": "Télécharger"
+    }
+  }
+}

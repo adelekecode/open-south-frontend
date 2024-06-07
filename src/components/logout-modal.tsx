@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { REFRESH_TOKEN_KEY } from "~/app-constants";
 import useAppStore from "~/store/app";
@@ -7,6 +8,8 @@ import Button from "./button";
 import Modal from "./modal";
 
 export default function LogoutModal() {
+  const { t } = useTranslation("components/logout-modal");
+
   const { setDisplayLogoutModal: setOpen, displayLogoutModal: open } = useAppStore();
 
   const logout = useLogout();
@@ -25,7 +28,7 @@ export default function LogoutModal() {
           <BsDoorOpenFill className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3rem] !font-extralight" />
         </span>
         <h1 className="text-xl tablet:text-lg largeMobile:!text-sm font-medium text-center">
-          Are you sure you want to logout?
+          {t("contents")}
         </h1>
         <div className="mt-10 flex gap-6 justify-end">
           <Button
@@ -45,9 +48,9 @@ export default function LogoutModal() {
               await logout.mutateAsync(token);
             }}
           >
-            Yes
+            {t("cta-btn.yes")}
           </Button>
-          <Button onClick={() => setOpen(false)}>No</Button>
+          <Button onClick={() => setOpen(false)}>{t("cta-btn.no")}</Button>
         </div>
       </div>
     </Modal>

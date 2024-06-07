@@ -1,6 +1,7 @@
 import { memo, useMemo, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 import ChartWrapper from "~/components/chart-wrapper";
 import { useTopMostAccessedDatasets } from "~/queries/user-dashboard";
 import TopMostAccessedDatasets from "~/assets/illustrations/dashboard-chart/top-most-accessed-datasets.png";
@@ -10,6 +11,8 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 type Dataset = { id: string; value: number; label: string };
 
 export default memo(function MostAccessedDatasets() {
+  const { t } = useTranslation("dashboard-layout/account/dashboard");
+
   const [filteredDatasets, setFilteredDatasets] = useState<Dataset[]>([]);
 
   const { data, isLoading } = useTopMostAccessedDatasets();
@@ -24,7 +27,7 @@ export default memo(function MostAccessedDatasets() {
 
   return (
     <ChartWrapper
-      title="Top 5 Most Accessed Datasets"
+      title={t("chart.most-accessed-datasets.title")}
       isLoading={isLoading}
       default={{
         data: !!data?.length,
@@ -32,7 +35,7 @@ export default memo(function MostAccessedDatasets() {
           src: TopMostAccessedDatasets,
           alt: "Top most accessed datasets illustration",
         },
-        text: "No accessed datasets at the moment",
+        text: t("chart.most-accessed-datasets.title"),
       }}
     >
       {data && (

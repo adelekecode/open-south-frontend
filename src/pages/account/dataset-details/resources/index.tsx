@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
+import { useTranslation } from "react-i18next";
 import { MdOutlineDelete } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
 import moment from "moment";
@@ -13,6 +14,8 @@ import FileUpload from "./file-upload";
 import FilePreview from "~/components/file/preview";
 
 export default function Resources() {
+  const { t } = useTranslation("dashboard-layout/account/dataset/id");
+
   const { id } = useParams();
 
   const [paginationModel, setPaginationModel] = useState({
@@ -48,7 +51,7 @@ export default function Resources() {
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "NO.",
+      headerName: t("resources.table.header.no"),
       minWidth: 10,
       renderCell: ({ api, row }) => {
         const { page, pageSize } = paginationModel;
@@ -57,31 +60,31 @@ export default function Resources() {
         return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
       },
     },
-    { field: "file_name", headerName: "Name", minWidth: 250 },
+    { field: "file_name", headerName: t("resources.table.header.name"), minWidth: 250 },
     {
       field: "format",
-      headerName: "Format",
+      headerName: t("resources.table.header.format"),
       align: "center",
       headerAlign: "center",
       minWidth: 200,
     },
     {
       field: "size",
-      headerName: "Size",
+      headerName: t("resources.table.header.size"),
       align: "center",
       headerAlign: "center",
       minWidth: 150,
     },
     {
       field: "download_count",
-      headerName: "Downloads",
+      headerName: t("resources.table.header.downloads"),
       align: "center",
       headerAlign: "center",
       minWidth: 200,
     },
     {
       field: "created_at",
-      headerName: "CREATED AT",
+      headerName: t("resources.table.header.created-at"),
       flex: 1,
       minWidth: 200,
       valueFormatter: ({ value }) => {
@@ -95,7 +98,7 @@ export default function Resources() {
     },
     {
       field: "_",
-      headerName: "Action",
+      headerName: t("resources.table.header.action"),
       align: "center",
       headerAlign: "center",
       minWidth: 100,
@@ -138,14 +141,14 @@ export default function Resources() {
     <>
       <div className="border p-4 rounded-md flex flex-col gap-4">
         <header className="flex items-center gap-4 justify-between">
-          <h3 className="text-lg font-medium">Resources</h3>
+          <h3 className="text-lg font-medium">{t("resources.title")}</h3>
           <Button
             className="!py-2 px-1"
             onClick={() => {
               setOpenFileUpload(true);
             }}
           >
-            Add
+            {t("resources.add-btn")}
           </Button>
         </header>
         <div className={`${(isLoading || (data && !data.results.length)) && "h-[500px]"}`}>
