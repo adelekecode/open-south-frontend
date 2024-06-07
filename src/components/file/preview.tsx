@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx";
 import * as Papa from "papaparse";
 import DataGrid from "~/components/data-grid";
@@ -16,6 +17,8 @@ type PreviewProps = {
 };
 
 export default function Preview({ open, setOpen, file, onDownload }: PreviewProps) {
+  const { t } = useTranslation("components/file-preview");
+
   const [excelData, setExcelData] = useState<Dataset[] | null>(null);
   const [csvData, setCsvData] = useState<Dataset[] | null>(null);
 
@@ -170,7 +173,7 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
                   await onDownload?.(file.id);
                 }}
               >
-                Download
+                {t("cta-btn.download")}
               </Button>
             </header>
             <DataGrid

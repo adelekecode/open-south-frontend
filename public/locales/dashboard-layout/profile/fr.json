@@ -1,8 +1,9 @@
 {
-  "title": "Modifier le Profil",
+  "title": "Modifier le profil",
+  "view-public-profile": "Voir le profil public",
   "form": {
     "photo": {
-      "label": "Photo de Profil",
+      "label": "Photo de profil",
       "info": {
         "title": "Téléchargez votre photo",
         "body": "Votre photo doit être au format PNG, JPG ou JPEG",
@@ -16,10 +17,10 @@
       "label": "Prénom"
     },
     "last-name": {
-      "label": "Nom de Famille"
+      "label": "Nom de famille"
     },
     "email": {
-      "label": "E-mail"
+      "label": "Email"
     },
     "bio": {
       "label": "Biographie"

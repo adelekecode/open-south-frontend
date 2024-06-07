@@ -3,6 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { IoCloudDownloadOutline, IoGridOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import { GoOrganization } from "react-icons/go";
+import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
@@ -11,7 +12,6 @@ import { useUserDatasets } from "~/queries/dataset";
 import { useDashboardCards } from "~/queries/user-dashboard";
 import TopTrafficLocations from "./top-traffic-locations";
 import MostAccessedDatasets from "./most-accessed-datasets";
-import { useTranslation } from "react-i18next";
 
 const columns: GridColDef[] = [
   {
@@ -140,7 +140,7 @@ const columns: GridColDef[] = [
 ];
 
 export default function Dashboard() {
-  const { t } = useTranslation("dashboard-layout/dashboard");
+  const { t } = useTranslation("dashboard-layout/account/dashboard");
 
   const navigate = useNavigate();
 
@@ -174,7 +174,7 @@ export default function Dashboard() {
             </div>
             <div className="bg-blue-50">
               <div>
-                <p className="text-info-950">{t("cards.organization")}</p>
+                <p className="text-info-950">{t("cards.organizations")}</p>
                 <h1 className="text-neutral-800">{data?.organisations ?? "0"}</h1>
               </div>
               <span className="p-2 border border-blue-500 h-fit rounded text-blue-500 text-base">

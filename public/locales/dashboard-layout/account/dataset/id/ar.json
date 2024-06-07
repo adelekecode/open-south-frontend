@@ -1,0 +1,62 @@
+{
+  "back-btn": {
+    "text": "العودة إلى مجموعات البيانات"
+  },
+  "cta-btn": {
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+  "processing-banner": {
+    "text": "هذه المجموعة من البيانات قيد المراجعة حاليًا من قبل المسؤول."
+  },
+  "details": {
+    "license": "الترخيص",
+    "creation": "إنشاء",
+    "update-frequency": "تكرار التحديث",
+    "latest-update": "أحدث تحديث",
+    "temporal-coverage": "التغطية الزمنية",
+    "spatial-coverage": "التغطية المكانية"
+  },
+  "delete-confirmation-modal": {
+    "contents": "هل أنت متأكد أنك تريد حذف مجموعة البيانات هذه؟",
+    "cta-btn": {
+      "cancel": "إلغاء",
+      "confirm": "تأكيد"
+    }
+  },
+  "resourses": {
+    "title": "الموارد",
+    "add-btn": "إضافة",
+    "table": {
+      "header": {
+        "no": "رقم.",
+        "name": "العنوان",
+        "format": "التنسيق",
+        "size": "الحجم",
+        "downloads": "التنزيلات",
+        "created-at": "أنشئت في",
+        "action": "الإجراء"
+      }
+    },
+    "file-preview": {
+      "cta-btn": {
+        "download": "تحميل"
+      }
+    },
+    "delete-confirmation-modal": {
+      "contents": "هل أنت متأكد أنك تريد حذف هذا الملف؟",
+      "cta-btn": {
+        "cancel": "إلغاء",
+        "confirm": "تأكيد"
+      }
+    },
+    "upload-file": {
+      "title": "تحميل الملفات",
+      "dnd-box": {
+        "text": "اسحب وأفلت الملفات هنا للتحميل. أنواع الملفات المسموح بها: .csv، .json، .xlsx، .zip",
+        "alt": "رسم توضيحي لتحميل الملف"
+      },
+      "upload-btn": "تحميل"
+    }
+  }
+}

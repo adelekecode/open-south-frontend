@@ -7,8 +7,10 @@ import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useUserDatasets } from "~/queries/dataset";
 import useDebounce from "~/hooks/debounce";
+import { useTranslation } from "react-i18next";
 
 export default function Dataset() {
+  const { t } = useTranslation("dashboard-layout/account/dataset");
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
@@ -40,7 +42,7 @@ export default function Dataset() {
   const columns: GridColDef[] = [
     {
       field: "id",
-      headerName: "NO.",
+      headerName: t("table.header.no"),
       minWidth: 10,
       renderCell: ({ api, row }) => {
         const { page, pageSize } = paginationModel;
@@ -51,13 +53,13 @@ export default function Dataset() {
     },
     {
       field: "title",
-      headerName: "TITLE",
+      headerName: t("table.header.title"),
       flex: 1,
       minWidth: 200,
     },
     {
       field: "views",
-      headerName: "VIEWS",
+      headerName: t("table.header.views"),
       flex: 1,
       minWidth: 100,
       valueFormatter: ({ value }) => {
@@ -71,7 +73,7 @@ export default function Dataset() {
     },
     {
       field: "files_count",
-      headerName: "FILES",
+      headerName: t("table.header.files"),
       minWidth: 100,
       valueFormatter: ({ value }) => {
         return value;
@@ -84,7 +86,7 @@ export default function Dataset() {
     },
     {
       field: "created_at",
-      headerName: "CREATED AT",
+      headerName: t("table.header.created-at"),
       flex: 1,
       minWidth: 150,
       valueFormatter: ({ value }) => {
@@ -98,7 +100,7 @@ export default function Dataset() {
     },
     {
       field: "updated_at",
-      headerName: "UPDATED AT",
+      headerName: t("table.header.updated-at"),
       minWidth: 150,
       flex: 1,
       valueFormatter: ({ value }) => {
@@ -114,7 +116,7 @@ export default function Dataset() {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: t("table.header.status"),
       flex: 1,
       renderCell: ({ value }) => {
         const obj: {
@@ -128,29 +130,31 @@ export default function Dataset() {
         if (value === "pending") {
           obj.element = (
             <p className={twMerge(obj.styles, `text-orange-500 border border-orange-500`)}>
-              Pending
+              {t("table.body.status.pending")}
             </p>
           );
         } else if (value === "published") {
           obj.element = (
             <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>
-              Published
+              {t("table.body.status.published")}
             </p>
           );
         } else if (value === "unpublished") {
           obj.element = (
             <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
-              Unpublished
+              {t("table.body.status.unpublished")}
             </p>
           );
         } else if (value === "rejected") {
           obj.element = (
-            <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>Rejected</p>
+            <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>
+              {t("table.body.status.rejected")}
+            </p>
           );
         } else if (value === "further_review") {
           obj.element = (
             <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
-              Further Review
+              {t("table.body.status.further-review")}
             </p>
           );
         }
@@ -168,13 +172,13 @@ export default function Dataset() {
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-semibold largeMobile:text-xl">Datasets</h1>
+          <h1 className="text-2xl font-semibold largeMobile:text-xl">{t("title")}</h1>
         </div>
         <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
           <div className="flex items-center border-y p-4 py-4 border-info-100">
             <div className="flex items-center gap-4 h-10 w-full">
               <OutlinedInput
-                placeholder="Search for title..."
+                placeholder={t("search.placeholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-[400px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
@@ -193,13 +197,13 @@ export default function Dataset() {
                 displayEmpty
               >
                 <MenuItem value="" className="placeholder">
-                  <span className="text-info-600">Filter by status</span>
+                  <span className="text-info-600">{t("filter.placeholder")}</span>
                 </MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="rejected">Rejected</MenuItem>
-                <MenuItem value="published">Published</MenuItem>
-                <MenuItem value="unpublished">Unpublished</MenuItem>
-                <MenuItem value="further_review">Further Review</MenuItem>
+                <MenuItem value="pending">{t("filter.options.pending")}</MenuItem>
+                <MenuItem value="rejected">{t("filter.options.rejected")}</MenuItem>
+                <MenuItem value="published">{t("filter.options.published")}</MenuItem>
+                <MenuItem value="unpublished">{t("filter.options.unpublished")}</MenuItem>
+                <MenuItem value="further_review">{t("filter.options.further-review")}</MenuItem>
               </Select>
             </div>
           </div>
