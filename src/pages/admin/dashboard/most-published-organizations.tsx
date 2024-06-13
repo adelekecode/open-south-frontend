@@ -11,6 +11,7 @@ import {
   Filler,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 import ChartWrapper from "~/components/chart-wrapper";
 import { useMostPublishedOrganizations } from "~/queries/admin-dashboard";
 
@@ -26,6 +27,8 @@ ChartJS.register(
 );
 
 export default memo(function MostPublishedOrganizations() {
+  const { t } = useTranslation("dashboard-layout/admin/dashboard");
+
   const { data, isLoading } = useMostPublishedOrganizations();
 
   const { labels, values } = useMemo(() => {
@@ -43,7 +46,7 @@ export default memo(function MostPublishedOrganizations() {
   }, [data]);
 
   return (
-    <ChartWrapper title="Top 5 Most Published Organizations" isLoading={isLoading}>
+    <ChartWrapper title={t("charts.most-published-organizations")} isLoading={isLoading}>
       <Bar
         options={{
           responsive: true,

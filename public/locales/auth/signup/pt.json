@@ -1,0 +1,42 @@
+{
+  "title": "Cadastre-se",
+  "subtitle": "Bem-vindo à nossa plataforma! Por favor, preencha o formulário abaixo para começar.",
+  "form": {
+    "inputs": {
+      "first-name": {
+        "label": "Nome",
+        "placeholder": "John"
+      },
+      "last-name": {
+        "label": "Sobrenome",
+        "placeholder": "Doe"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "exemplo@gmail.com"
+      },
+      "password": {
+        "label": "Senha"
+      },
+      "confirm-password": {
+        "label": "Confirmar Senha"
+      }
+    },
+    "submit-btn": "Cadastrar",
+    "cta-text": {
+      "text": "Já tem uma conta?",
+      "link": "Entrar"
+    },
+    "or": "Ou",
+    "google-btn": "Entrar com Google"
+  },
+  "otp-modal": {
+    "title": "Digite o Código",
+    "subtitle": "Enviamos um código para",
+    "submit-btn": "Verificar",
+    "cta-text": {
+      "text": "Não recebeu o código?",
+      "btn": "Reenviar"
+    }
+  }
+}

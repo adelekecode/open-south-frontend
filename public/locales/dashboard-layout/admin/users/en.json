@@ -1,0 +1,28 @@
+{
+  "title": "Users",
+  "search": {
+    "placeholder": "Search for name..."
+  },
+  "filter": {
+    "by-active": {
+      "placeholder": "Filter by active",
+      "dropdown": {
+        "true": "True",
+        "false": "False"
+      }
+    }
+  },
+  "table": {
+    "header": {
+      "no": "no.",
+      "title": "Title",
+      "created-by": "Created By",
+      "views": "Views",
+      "files": "Files",
+      "status": "Status",
+      "created-at": "Created At",
+      "updated-at": "Updated At",
+      "action": "Action"
+    }
+  }
+}

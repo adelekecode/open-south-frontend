@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { GoOrganization } from "react-icons/go";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { IoGridOutline, IoNewspaperOutline } from "react-icons/io5";
@@ -10,19 +11,21 @@ import TopTrafficLocations from "./top-traffic-locations";
 import Performance from "./perfomance";
 
 export default function Dashboard() {
+  const { t } = useTranslation("dashboard-layout/admin/dashboard");
+
   const { data } = useDashboardCards();
 
   return (
     <>
       <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4 gap-4 flex flex-col">
         <header className="flex items-center gap-8 justify-between">
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <h1 className="text-2xl font-semibold">{t("title")}</h1>
         </header>
         <div className="w-full border border-info-100 bg-white p-4 rounded-md">
           <div className="grid grid-cols-4 tabletAndBelow:grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4   [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:justify-between [&>div]:min-h-[9rem]   [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:mt-2 [&>div>div]:gap-3   [&>div>div>p]:font-semibold [&>div>div>p]:text-sm [&>div>div>h1]:text-4xl [&>div>div>h1]:font-semibold">
             <div className="bg-amber-50">
               <div>
-                <p className="text-info-950">Users</p>
+                <p className="text-info-950">{t("cards.users")}</p>
                 <h1 className="text-neutral-800">{data?.users ?? "0"}</h1>
               </div>
               <span className="p-2 border border-amber-500 h-fit rounded text-amber-500 text-base">
@@ -31,7 +34,7 @@ export default function Dashboard() {
             </div>
             <div className="bg-red-50">
               <div>
-                <p className="text-info-950">Datasets</p>
+                <p className="text-info-950">{t("cards.datasets")}</p>
                 <h1 className="text-neutral-800">{data?.datasets ?? "0"}</h1>
               </div>
               <span className="p-2 border border-red-500 h-fit rounded text-red-500 text-base">
@@ -40,7 +43,7 @@ export default function Dashboard() {
             </div>
             <div className="bg-blue-50">
               <div>
-                <p className="text-info-950">Organizations</p>
+                <p className="text-info-950">{t("cards.organizations")}</p>
                 <h1 className="text-neutral-800">{data?.organisations ?? "0"}</h1>
               </div>
               <span className="p-2 border border-blue-500 h-fit rounded text-blue-500 text-base">
@@ -49,7 +52,7 @@ export default function Dashboard() {
             </div>
             <div className="bg-emerald-50">
               <div>
-                <p className="text-info-950">News</p>
+                <p className="text-info-950">{t("cards.news")}</p>
                 <h1 className="text-neutral-800">{data?.news ?? "0"}</h1>
               </div>
               <span className="p-2 border border-emerald-500 h-fit rounded text-emerald-500 text-base">
