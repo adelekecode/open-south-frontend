@@ -48,7 +48,7 @@ export default function ChangeLang() {
   return (
     <>
       {loading ? (
-        <Button loading={loading} variant="text" color="info">
+        <Button loading={loading} variant="text" color="primary">
           loading
         </Button>
       ) : (
