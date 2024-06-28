@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { DialogContent, DialogTitle } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import * as XLSX from "xlsx";
 import * as Papa from "papaparse";
@@ -87,7 +88,7 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
   }, [data, file?.format]);
 
   if (!file) {
-    return;
+    return notifyError("File not found");
   }
 
   const csvColumns =
@@ -112,78 +113,76 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
 
   return (
     <Modal
-      muiModal={{
-        open,
-        onClose: () =>
-          setOpen({
-            open: false,
-            data: null,
-          }),
-        className: "px-4",
-      }}
-      innerContainer={{
-        className: "w-[800px] tablet:!w-full pt-16",
-      }}
+      open={open}
+      onClose={() =>
+        setOpen({
+          open: false,
+          data: null,
+        })
+      }
     >
-      <div className="flex flex-col gap-4 w-full">
-        {isLoading ? (
-          <div className="flex flex-col gap-4">
-            <div className="animate-pulse bg-gray-200 h-6 w-[30%] rounded-sm" />
-            <div className="border rounded overflow-hidden p-1 flex flex-col gap-3">
-              <div className="animate-pulse bg-gray-200 h-10 rounded-t-sm" />
-              <div className="flex flex-col gap-2">
-                {Array.from({ length: 8 }).map((_, index) => (
-                  <div className={`${index < 7 && "border-b pb-2"}`} key={index + 1}>
-                    <div className={`animate-pulse bg-gray-200 h-8`} />
-                  </div>
-                ))}
-              </div>
+      {isLoading ? (
+        <div className="flex flex-col gap-4">
+          <div className="animate-pulse bg-gray-200 h-6 w-[30%] rounded-sm" />
+          <div className="border rounded overflow-hidden p-1 flex flex-col gap-3">
+            <div className="animate-pulse bg-gray-200 h-10 rounded-t-sm" />
+            <div className="flex flex-col gap-2">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div className={`${index < 7 && "border-b pb-2"}`} key={index + 1}>
+                  <div className={`animate-pulse bg-gray-200 h-8`} />
+                </div>
+              ))}
             </div>
           </div>
-        ) : (
-          <>
-            <header className="flex items-center justify-between gap-1 largeMobile:flex-col flex-wrap">
+        </div>
+      ) : (
+        <>
+          <header className="flex items-center justify-between gap-1 largeMobile:flex-col flex-wrap pb-4">
+            <DialogTitle>
               <h1 className="text-lg largeMobile:text-base break-all font-medium largeMobile:self-start">
                 {file.file_name
                   ? file.file_name[0].toUpperCase() + file.file_name.slice(1)
                   : "-------"}
               </h1>
-              <Button
-                color="info"
-                variant="outlined"
-                className="!p-2 !px-4 !text-xs largeMobile:self-end !ml-auto"
-                onClick={async () => {
-                  const newData = { ...data } as BlobPart;
+            </DialogTitle>
+            <Button
+              color="info"
+              variant="outlined"
+              size="small"
+              className="!p-2 !px-4 !text-xs largeMobile:self-end !ml-auto"
+              onClick={async () => {
+                const newData = { ...data } as BlobPart;
 
-                  if (
-                    file?.format === "xlsx" ||
-                    file?.format ===
-                      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                  ) {
-                    const blob = new Blob([newData], {
-                      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    });
+                if (
+                  file?.format === "xlsx" ||
+                  file?.format ===
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ) {
+                  const blob = new Blob([newData], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                  });
 
-                    downloadFileHandler(file, blob, ".xlsx");
-                  } else if (file?.format === "text/csv") {
-                    const blob = new Blob([newData], { type: "text/csv" });
+                  downloadFileHandler(file, blob, ".xlsx");
+                } else if (file?.format === "text/csv") {
+                  const blob = new Blob([newData], { type: "text/csv" });
 
-                    downloadFileHandler(file, blob, ".csv");
-                  }
-                  await onDownload?.(file.id);
-                }}
-              >
-                {t("cta-btn.download")}
-              </Button>
-            </header>
+                  downloadFileHandler(file, blob, ".csv");
+                }
+                await onDownload?.(file.id);
+              }}
+            >
+              {t("cta-btn.download")}
+            </Button>
+          </header>
+          <DialogContent>
             <DataGrid
               rows={csvData || excelData || []}
               columns={csvColumns || excelColumns || []}
               getRowId={(params) => params["no."]}
             />
-          </>
-        )}
-      </div>
+          </DialogContent>
+        </>
+      )}
     </Modal>
   );
 }

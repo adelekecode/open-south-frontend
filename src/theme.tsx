@@ -156,6 +156,58 @@ const theme = createTheme({
         },
       },
     },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          fontWeight: 600,
+          padding: 0,
+          fontSize: "1rem",
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          "& .MuiDialog-paper": {
+            padding: "16px",
+            minWidth: "450px",
+            maxWidth: "500px",
+            borderRadius: "0px",
+            "@media (max-width: 500px)": {
+              minWidth: "auto",
+            },
+            "@media (max-width: 425px)": {
+              marginLeft: "16px",
+              marginRight: "16px",
+              width: "100%",
+            },
+          },
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          padding: "16px 0px 12px !important",
+        },
+      },
+    },
+    MuiDialogContentText: {
+      styleOverrides: {
+        root: {
+          fontSize: "12px",
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          paddingTop: "12px",
+          gap: "8px",
+        },
+      },
+    },
   },
 });
 
