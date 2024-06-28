@@ -22,6 +22,7 @@ export default function DataGrid({
       {...props}
       sx={{
         overflowX: "auto",
+        flex: 1,
         "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
           outline: "none !important",
         },
@@ -33,9 +34,13 @@ export default function DataGrid({
             textTransform: "uppercase",
           },
         },
+        "& .MuiDataGrid-overlayWrapper": {
+          // height: "500px",
+          minHeight: "500px",
+        },
         ...sx,
       }}
-      className={twMerge(`!shadow-none`, className)}
+      className={twMerge(`!shadow-none !min-h-[500px]`, className)}
       slots={{
         noRowsOverlay: () => {
           return (
