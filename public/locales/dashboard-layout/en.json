@@ -13,11 +13,12 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "datasets": "Datasets",
-    "users": "Datasets",
+    "users": "Users",
     "profile": "Profile",
     "organizations": "Organizations",
     "categories": "Categories",
     "news": "News",
+    "developer": "Developer",
     "organization-dropdown": {
       "title": "Organizations",
       "dashboard": "Dashboard",

@@ -5,29 +5,41 @@ export default function Button({
   loading,
   variant = "contained",
   className,
+  size = "large",
   sx,
+  children,
   ...props
 }: LoadingButtonProps) {
   return (
     <LoadingButton
       variant={variant}
       className={twMerge(
-        `flex justify-center items-center !normal-case !text-[0.9rem] !p-3 !px-5 !rounded-md !font-Work-Sans`,
-        loading && `opacity-40 !cursor-not-allowed !shadow-none`,
+        `!font-Work-Sans`,
+        loading && `opacity-40 !cursor-not-allowed`,
         `${className}`
       )}
       {...props}
+      size={size}
       sx={{
         "&.MuiButton-outlinedPrimary": {
           color: "#0e82bb !important",
           borderColor: "#0e82bb !important",
+        },
+        textTransform: "none",
+        borderRadius: "8px",
+        "@media (max-width: 768px)": {
+          fontWeight: "normal",
+          fontSize: "14px",
+        },
+        "&.MuiButton-sizeSmall": {
+          padding: "8px 10px",
         },
         ...sx,
       }}
       loading={loading}
       disableElevation
     >
-      <>{props.children}</>
+      {children}
     </LoadingButton>
   );
 }

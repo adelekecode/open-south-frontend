@@ -5,6 +5,7 @@ import { useCurrentUser } from "~/queries/user";
 import CurrentUserAvatar from "~/components/current-user-avatar";
 import Button from "~/components/button";
 import useAppStore from "~/store/app";
+import ChangeLang from "~/components/change-lang";
 
 type Props = {
   open: boolean;
@@ -21,6 +22,9 @@ export default function MobileSidebar({ open, closeDrawer }: Props) {
   return (
     <Drawer open={open} onClose={closeDrawer}>
       <aside className="laptopAndAbove:hidden w-[350px] largeMobile:w-[290px] mediumMobile:!w-[250px] relative pt-20 px-4 flex flex-col items-center gap-8 justify-between h-full">
+        <div className="!absolute !left-[16px] !top-[16px] hidden tablet:block">
+          <ChangeLang />
+        </div>
         <IconButton className="w-fit !absolute !top-[16px] !right-[16px]" onClick={closeDrawer}>
           <IoClose className="text-zinc-800" />
         </IconButton>

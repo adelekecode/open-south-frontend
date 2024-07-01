@@ -33,6 +33,7 @@ import {
   OrgDatasetDetails,
   CreateDataset,
   CreateOrganization,
+  Developer as AccountDeveloper,
 } from "./pages/account";
 import News from "./pages/news";
 import NewsDetails from "./pages/news-details";
@@ -143,6 +144,7 @@ const router = createBrowserRouter(
                     </Suspense>
                   }
                 />
+                <Route path="/account/developer" element={<AccountDeveloper />} />
               </Route>
               <Route element={<AdminRestricted />}>
                 <Route

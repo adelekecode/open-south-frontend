@@ -105,3 +105,25 @@ export function useChangeUserStatus(pagination: Pagination, queryParams: QueryPa
     }
   );
 }
+
+export function useGenerateAPIKey() {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    async () => {
+      const { data: response } = await axiosPrivate.post("/user/token/manager/");
+
+      return response;
+    },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries(["/user/token/manager/"]);
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          notifyError(String(error.toJSON()));
+        }
+      },
+    }
+  );
+}
