@@ -74,6 +74,12 @@ const sideBarData = [
     allowedUserType: ["admin"],
   },
   {
+    name: "developers",
+    to: "/admin/developers",
+    icon: IoCode,
+    allowedUserType: ["admin"],
+  },
+  {
     name: "profile",
     to: "/admin/profile",
     icon: IoPersonOutline,

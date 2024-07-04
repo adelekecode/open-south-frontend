@@ -53,6 +53,7 @@ import {
   OrganizationDetails as AdminOrganizationDetails,
   News as AdminNews,
   DatasetDetails as AdminDatasetDetails,
+  AdminDevelopers,
 } from "./pages/admin";
 import Profile from "./pages/account/profile";
 import EditOrganization from "./pages/account/edit-organization";
@@ -61,6 +62,7 @@ import PublicProfile from "./pages/public-profile";
 import AppLayoutWrapper from "./layouts/app-wrapper";
 import EditDataset from "./pages/account/edit-dataset";
 import CheckLocationPermission from "./layouts/check-location-permission";
+import Paginated from "./layouts/paginated";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -203,6 +205,9 @@ const router = createBrowserRouter(
                     </Suspense>
                   }
                 />
+                <Route element={<Paginated />}>
+                  <Route path="/admin/developers" element={<AdminDevelopers />} />
+                </Route>
                 <Route
                   path="/admin/organizations"
                   element={
