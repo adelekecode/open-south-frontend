@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { MenuItem, OutlinedInput, Select } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { MdOutlineBlock } from "react-icons/md";
+import { CgUnblock } from "react-icons/cg";
 import Container from "~/components/dashboards/container";
 import Heading from "~/components/dashboards/heading";
 import DataGrid from "~/components/data-grid";
@@ -18,7 +19,7 @@ import {
   createRenderCell,
 } from "~/utils/table-helpers";
 import usePrompt from "~/hooks/usePrompt";
-import { useBlockDeveloper } from "~/mutations/developer";
+import { useBlockDeveloper, useUnblockDeveloper } from "~/mutations/developer";
 
 export default function Developers() {
   const { paginationModel, onPaginationModelChange, queryParams } =
@@ -37,6 +38,7 @@ export default function Developers() {
   });
 
   const { mutateAsync: blockDeveloper } = useBlockDeveloper();
+  const { mutateAsync: unblockDeveloper } = useUnblockDeveloper();
 
   const prompt = usePrompt();
 
@@ -55,18 +57,40 @@ export default function Developers() {
     [blockDeveloper, prompt]
   );
 
+  const handleUnblock = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description:
+          "When this action is triggered, the user's access to the developer features will be reactivated.",
+      });
+
+      if (confirmed) {
+        await unblockDeveloper(id);
+      }
+    },
+    [unblockDeveloper, prompt]
+  );
+
   const PaperContent = useCallback(
     ({ row }: { row: CurrentUser }) => {
       return (
         <>
-          <button onClick={async () => await handleBlock(row.id)}>
-            <MdOutlineBlock />
-            <span>Block</span>
-          </button>
+          {row.api_?.is_active ? (
+            <button onClick={async () => await handleUnblock(row.id)}>
+              <CgUnblock />
+              <span>Unblock</span>
+            </button>
+          ) : (
+            <button onClick={async () => await handleBlock(row.id)}>
+              <MdOutlineBlock />
+              <span>Block</span>
+            </button>
+          )}
         </>
       );
     },
-    [handleBlock]
+    [handleBlock, handleUnblock]
   );
 
   const columns: GridColDef[] = useMemo(() => {

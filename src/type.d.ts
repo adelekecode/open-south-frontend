@@ -20,6 +20,9 @@ type CurrentUser = {
   meta: {
     developer_enabled: boolean;
   } | null;
+  api_: {
+    is_active: boolean;
+  } | null;
 };
 
 type Dataset = {

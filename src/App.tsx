@@ -61,6 +61,7 @@ import AppLayoutWrapper from "./layouts/app-wrapper";
 import EditDataset from "./pages/account/edit-dataset";
 import CheckLocationPermission from "./layouts/check-location-permission";
 import Paginated from "./layouts/paginated";
+import DeveloperPermission from "./layouts/developer-permission";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -89,7 +90,9 @@ const router = createBrowserRouter(
                 </Route>
                 <Route path="/account/organizations/new" element={<CreateOrganization />} />
                 <Route path="/account/profile" element={<Profile />} />
-                <Route path="/account/developer" element={<AccountDeveloper />} />
+                <Route element={<DeveloperPermission />}>
+                  <Route path="/account/developer" element={<AccountDeveloper />} />
+                </Route>
               </Route>
               <Route element={<AdminRestricted />}>
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
