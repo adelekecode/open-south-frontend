@@ -22,7 +22,7 @@ export function useBlockDeveloper() {
     },
     {
       onSuccess() {
-        queryClient.invalidateQueries([`/admin/api/users/${params.toString()}`]);
+        queryClient.invalidateQueries([`/admin/api/users/?${params.toString()}`]);
         notifySuccess("Developer successfully blocked");
       },
       onError(error) {

@@ -197,16 +197,9 @@ const router = createBrowserRouter(
                     </Suspense>
                   }
                 />
-                <Route
-                  path="/admin/news"
-                  element={
-                    <Suspense fallback={<DashboardLoader />}>
-                      <AdminNews />
-                    </Suspense>
-                  }
-                />
                 <Route element={<Paginated />}>
                   <Route path="/admin/developers" element={<AdminDevelopers />} />
+                  <Route path="/admin/news" element={<AdminNews />} />
                 </Route>
                 <Route
                   path="/admin/organizations"

@@ -1,23 +1,23 @@
-import { isAxiosError } from "axios";
+import { useSearchParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
 
-type QueryParams = {
-  search: string;
-  filter: {
-    status: string;
-  };
+const generateParams = (searchParams: URLSearchParams): URLSearchParams => {
+  return new URLSearchParams({
+    search: searchParams.get("search") || "",
+    status: searchParams.get("status") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 };
 
-export function useCreateNews(pagination: Pagination, queryParams: QueryParams) {
+export function useCreateNews() {
   const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
 
-  const { pageSize, page } = pagination;
-  const {
-    search,
-    filter: { status },
-  } = queryParams;
+  const params = generateParams(searchParams);
 
   return useMutation(
     async (data: Record<"title" | "body", string> & { image: File }) => {
@@ -29,9 +29,7 @@ export function useCreateNews(pagination: Pagination, queryParams: QueryParams) 
       onSuccess() {
         notifySuccess("News successfully created");
 
-        return queryClient.invalidateQueries([
-          `/admin/news/list/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
+        return queryClient.invalidateQueries([`/admin/news/list/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {
@@ -53,13 +51,11 @@ export function useCreateNews(pagination: Pagination, queryParams: QueryParams) 
   );
 }
 
-export function useEditNews(pagination: Pagination, queryParams: QueryParams) {
+export function useEditNews() {
   const queryClient = useQueryClient();
-  const { pageSize, page } = pagination;
-  const {
-    search,
-    filter: { status },
-  } = queryParams;
+  const [searchParams] = useSearchParams();
+
+  const params = generateParams(searchParams);
 
   return useMutation(
     async ({
@@ -77,9 +73,7 @@ export function useEditNews(pagination: Pagination, queryParams: QueryParams) {
       onSuccess() {
         notifySuccess("News successfully updated");
 
-        return queryClient.invalidateQueries([
-          `/admin/news/list/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
+        return queryClient.invalidateQueries([`/admin/news/list/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {
@@ -101,14 +95,11 @@ export function useEditNews(pagination: Pagination, queryParams: QueryParams) {
   );
 }
 
-export function useDeleteNews(pagination: Pagination, queryParams: QueryParams) {
+export function useDeleteNews() {
   const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
 
-  const { pageSize, page } = pagination;
-  const {
-    search,
-    filter: { status },
-  } = queryParams;
+  const params = generateParams(searchParams);
 
   return useMutation(
     async (id: string) => {
@@ -120,9 +111,7 @@ export function useDeleteNews(pagination: Pagination, queryParams: QueryParams) 
       onSuccess() {
         notifySuccess("News successfully deleted");
 
-        return queryClient.invalidateQueries([
-          `/admin/news/list/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
+        return queryClient.invalidateQueries([`/admin/news/list/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {
@@ -139,14 +128,11 @@ export function useDeleteNews(pagination: Pagination, queryParams: QueryParams) 
   );
 }
 
-export function useChangeNewsStatus(pagination: Pagination, queryParams: QueryParams) {
+export function useChangeNewsStatus() {
   const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
 
-  const { pageSize, page } = pagination;
-  const {
-    search,
-    filter: { status },
-  } = queryParams;
+  const params = generateParams(searchParams);
 
   return useMutation(
     async ({ id, action }: { id: string; action: "publish" | "unpublish" }) => {
@@ -158,9 +144,7 @@ export function useChangeNewsStatus(pagination: Pagination, queryParams: QueryPa
       onSuccess() {
         notifySuccess("Successfully changed news status");
 
-        return queryClient.invalidateQueries([
-          `/admin/news/list/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
+        return queryClient.invalidateQueries([`/admin/news/list/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {
