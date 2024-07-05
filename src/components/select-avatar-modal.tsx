@@ -61,7 +61,7 @@ export default function SelectAvatarModal() {
   const [randomAvatar, setRandomAvatar] = useState(getRandomAvatar());
   const [loading, setLoading] = useState(false);
 
-  const uploadProfileImage = useImageUpload();
+  const { mutateAsync: uploadProfileImage } = useImageUpload();
 
   const { data: currentUser } = useCurrentUser(undefined, {
     enabled: false,
@@ -79,30 +79,28 @@ export default function SelectAvatarModal() {
     setOpen(false);
   }, [setOpen]);
 
-  const handleSave = useCallback(() => {
-    async () => {
-      try {
-        setLoading(true);
-        const { data } = await axios.get(`${baseURL}${randomAvatar}`, {
-          responseType: "blob",
-        });
-        const blob = new Blob([data], { type: "image/png" });
-        const file = new File([blob], `avatar-${Date.now()}.png`, {
-          lastModified: Date.now(),
-        });
+  const handleSave = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${baseURL}${randomAvatar}`, {
+        responseType: "blob",
+      });
+      const blob = new Blob([data], { type: "image/png" });
+      const file = new File([blob], `avatar-${Date.now()}.png`, {
+        lastModified: Date.now(),
+      });
 
-        const response = await uploadProfileImage.mutateAsync({ image: file });
+      const response = await uploadProfileImage({ image: file });
 
-        if (response) {
-          notifySuccess("Avatar successfully created");
-          onClose();
-        }
-      } catch (error) {
-        notifyError("Error uploading profile image");
-      } finally {
-        setLoading(false);
+      if (response) {
+        notifySuccess("Avatar successfully created");
+        onClose();
       }
-    };
+    } catch (error) {
+      notifyError("Error uploading profile image");
+    } finally {
+      setLoading(false);
+    }
   }, [baseURL, onClose, randomAvatar, uploadProfileImage]);
 
   return (
