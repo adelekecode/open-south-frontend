@@ -95,17 +95,17 @@ const router = createBrowserRouter(
                 </Route>
               </Route>
               <Route element={<AdminRestricted />}>
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                <Route path="/admin/datasets" element={<AdminDataset />} />
-                <Route path="/admin/datasets/:id" element={<AdminDatasetDetails />} />
-                <Route path="/admin/categories" element={<AdminCategory />} />
-                <Route path="/admin/users" element={<User />} />
-                <Route path="/admin/profile" element={<Profile />} />
                 <Route element={<Paginated />}>
+                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                  <Route path="/admin/datasets" element={<AdminDataset />} />
+                  <Route path="/admin/categories" element={<AdminCategory />} />
+                  <Route path="/admin/users" element={<User />} />
+                  <Route path="/admin/profile" element={<Profile />} />
                   <Route path="/admin/developers" element={<AdminDevelopers />} />
                   <Route path="/admin/news" element={<AdminNews />} />
+                  <Route path="/admin/organizations" element={<AdminOrganization />} />
                 </Route>
-                <Route path="/admin/organizations" element={<AdminOrganization />} />
+                <Route path="/admin/datasets/:id" element={<AdminDatasetDetails />} />
                 <Route path="/admin/organizations/:id" element={<AdminOrganizationDetails />} />
               </Route>
             </Route>

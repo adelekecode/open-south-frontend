@@ -1,146 +1,127 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { IconButton, OutlinedInput } from "@mui/material";
+import { OutlinedInput } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { IoEyeOutline } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDelete } from "react-icons/md";
 import { FiPlus } from "react-icons/fi";
-import moment from "moment";
 import { useAdminCategories } from "~/queries/category";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import CreateModal from "./modals/create";
 import ViewModal from "./modals/view";
-import DeleteConfirmation from "./modals/delete-confimation";
 import useDebounce from "~/hooks/debounce";
+import {
+  createColumn,
+  createDateColumn,
+  createIdColumn,
+  createMenuColumn,
+  createRenderCell,
+} from "~/utils/table-helpers";
+import { OutletContext } from "~/layouts/paginated";
+import usePrompt from "~/hooks/usePrompt";
+import { useDeleteCategory } from "~/mutations/category";
 
 export default function Category() {
   const { t } = useTranslation("dashboard-layout/admin/categories");
+  const { paginationModel, onPaginationModelChange, queryParams } =
+    useOutletContext<OutletContext>();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const search = searchParams.get("q") || "";
+  const search = queryParams.get("q");
+
+  const [menuObj, setMenuObj] = useState<{
+    [key: string]: HTMLButtonElement | null;
+  }>({});
 
   const [modal, setModal] = useState<CategoyModal>({
     state: null,
     data: null,
   });
-  const [pagination, setPagination] = useState({
-    page: 0,
-    pageSize: 10,
-  });
 
-  const { isLoading, data } = useAdminCategories(useDebounce(search).trim(), {
-    ...pagination,
-  });
+  const { isLoading, data } = useAdminCategories(useDebounce(search).trim());
+
+  const { mutateAsync: deleteCategory } = useDeleteCategory(searchParams);
+
+  const prompt = usePrompt();
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: t("delete-category-modal.body-text"),
+      });
+
+      if (confirmed) {
+        await deleteCategory(id);
+      }
+    },
+    [deleteCategory, prompt, t]
+  );
+
+  const PaperContent = useCallback(
+    ({ row }: { row: Category }) => {
+      return (
+        <>
+          <button
+            onClick={() => {
+              setModal({
+                state: "view",
+                data: row,
+              });
+            }}
+          >
+            <IoEyeOutline />
+            <span>View</span>
+          </button>
+          <button
+            onClick={() => {
+              setModal({
+                state: "edit",
+                data: row,
+              });
+            }}
+          >
+            <FiEdit />
+            <span>Edit</span>
+          </button>
+          <button onClick={async () => await handleDelete(row.id)}>
+            <MdOutlineDelete />
+            <span>Delete</span>
+          </button>
+        </>
+      );
+    },
+    [handleDelete]
+  );
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
+    createIdColumn(paginationModel, {
       headerName: t("table.header.no"),
-      minWidth: 10,
-      renderCell: ({ api, row }) => {
-        const { page, pageSize } = pagination;
-        const { getAllRowIds } = api;
-
-        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
-      },
-    },
-    {
+    }),
+    createColumn({
       field: "name",
       headerName: t("table.header.title"),
-      minWidth: 250,
-      flex: 1,
-    },
-    {
+    }),
+    createColumn({
       field: "data_count",
       headerName: t("table.header.datasets"),
-      minWidth: 100,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
+    }),
+    createDateColumn({
       field: "created_at",
       headerName: t("table.header.created-at"),
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return <p>{moment(params.value).format("MMMM D, YYYY")}</p>;
-      },
-    },
-    {
+    }),
+    createDateColumn({
       field: "updated_at",
       headerName: t("table.header.updated-at"),
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      valueFormatter: ({ value }) => {
-        const result = moment(value).fromNow();
-
-        if (result === "a day ago") {
-          return "Yesterday";
-        }
-
-        return result.charAt(0).toUpperCase() + result.slice(1);
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-    },
-    {
-      field: "_",
-      headerName: t("table.header.action"),
-      minWidth: 160,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return (
-          <div className="w-full items-center justify-center flex">
-            <IconButton
-              size="medium"
-              onClick={() => {
-                setModal({
-                  state: "view",
-                  data: params.row,
-                });
-              }}
-            >
-              <IoEyeOutline className="text-lg" />
-            </IconButton>
-            <IconButton
-              size="medium"
-              onClick={() => {
-                setModal({
-                  state: "edit",
-                  data: params.row,
-                });
-              }}
-            >
-              <FiEdit className="text-sm" />
-            </IconButton>
-            <IconButton
-              size="medium"
-              onClick={() => {
-                setModal({
-                  state: "delete",
-                  data: params.row,
-                });
-              }}
-            >
-              <MdOutlineDelete className="text-lg" />
-            </IconButton>
-          </div>
-        );
-      },
-      sortable: false,
-    },
+      dateFormat: "fromNow",
+    }),
+    createMenuColumn({
+      renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
+    }),
   ];
 
   useEffect(() => {
@@ -164,23 +145,10 @@ export default function Category() {
                   const value = e.target.value;
 
                   if (!value) {
-                    return setSearchParams((params) => {
-                      params.delete("q");
-
-                      return params;
-                    });
+                    return queryParams.delete("q");
                   }
 
-                  setSearchParams(
-                    (params) => {
-                      params.set("q", value);
-
-                      return params;
-                    },
-                    {
-                      replace: true,
-                    }
-                  );
+                  queryParams.set("q", value);
                 }}
               />
               <div>
@@ -206,31 +174,15 @@ export default function Category() {
               rows={data?.results ? data.results : []}
               columns={columns}
               rowCount={data?.count || 0}
-              paginationModel={pagination}
-              onPaginationModelChange={({ page, pageSize }, { reason }) => {
-                if (!reason) return;
-
-                setPagination({
-                  page,
-                  pageSize,
-                });
-              }}
+              paginationModel={paginationModel}
+              onPaginationModelChange={onPaginationModelChange}
               paginationMode="server"
             />
           </div>
         </div>
       </main>
-      <CreateModal
-        modal={modal}
-        setModal={(obj: typeof modal) => setModal(obj)}
-        pagination={pagination}
-      />
+      <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
       <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
-      <DeleteConfirmation
-        modal={modal}
-        setModal={(obj: typeof modal) => setModal(obj)}
-        pagination={pagination}
-      />
     </>
   );
 }
