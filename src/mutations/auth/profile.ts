@@ -1,12 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosPrivate } from "~/utils/api";
-import { notifySuccess } from "~/utils/toast";
 
 export function useEditProfile() {
   const queryClient = useQueryClient();
 
   return useMutation(
-    async (data: Record<"first_name" | "last_name" | "email", string>) => {
+    async (data: {
+      first_name?: string;
+      last_name?: string;
+      email?: string;
+      meta?: {
+        developer_enabled?: boolean;
+      };
+    }) => {
       const { data: response } = await axiosPrivate.patch("/auth/users/me/", data);
 
       return response;
@@ -14,7 +20,6 @@ export function useEditProfile() {
     {
       onSuccess() {
         queryClient.invalidateQueries(["/auth/users/me/"]);
-        notifySuccess("Profile updated successfully");
       },
     }
   );

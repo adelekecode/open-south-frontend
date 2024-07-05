@@ -17,6 +17,12 @@ type CurrentUser = {
     name: string;
     slug: string;
   }[];
+  meta: {
+    developer_enabled: boolean;
+  } | null;
+  api_: {
+    is_active: boolean;
+  } | null;
 };
 
 type Dataset = {

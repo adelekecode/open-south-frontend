@@ -1,3 +1,4 @@
+import { DialogContent, DialogTitle } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import Modal from "~/components/modal";
 
@@ -13,23 +14,19 @@ export default function View({ modal, setModal }: ViewProps) {
 
   return (
     <Modal
-      muiModal={{
-        open: state === "view",
-        onClose: () => {
-          setModal({
-            state: null,
-            data: null,
-          });
-        },
+      open={state === "view"}
+      onClose={() => {
+        setModal({
+          state: null,
+          data: null,
+        });
       }}
-      innerContainer={{
-        className: "pt-[2rem] !px-0",
+      exitIcon={{
+        display: true,
       }}
     >
-      <div className="flex flex-col gap-4 w-full">
-        <h1 className="text-xl font-semibold largeMobile:text-base px-8 [@media(max-width:500px)]:px-4">
-          {t("view-category-modal.title")}
-        </h1>
+      <DialogTitle>{t("view-category-modal.title")}</DialogTitle>
+      <DialogContent>
         <div className="flex flex-col gap-4">
           <div className="w-full bg-primary-50">
             <figure className="flex justify-center items-center mx-auto w-full aspect-video max-h-[16rem] largeMobile:w-[80%]">
@@ -49,7 +46,7 @@ export default function View({ modal, setModal }: ViewProps) {
             </p>
           </div>
         </div>
-      </div>
+      </DialogContent>
     </Modal>
   );
 }

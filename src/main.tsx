@@ -10,6 +10,7 @@ import Toast from "./components/toast.tsx";
 import AppLoader from "./components/loader/app-loader.tsx";
 import { GoogleProvider } from "./providers/google.tsx";
 import i18n from "./i18n.ts";
+import { DialogProvider } from "./providers/dialog.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -17,9 +18,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <GoogleProvider>
         <ThemeProvider theme={theme}>
           <I18nextProvider i18n={i18n} defaultNS={"translation"}>
-            <Suspense fallback={<AppLoader />}>
-              <App />
-            </Suspense>
+            <DialogProvider>
+              <Suspense fallback={<AppLoader />}>
+                <App />
+              </Suspense>
+            </DialogProvider>
           </I18nextProvider>
         </ThemeProvider>
       </GoogleProvider>

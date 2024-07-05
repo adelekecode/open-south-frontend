@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <MobileSidebar open={showDrawer} closeDrawer={() => setShowDrawer(false)} />
       <main className="min-h-screen flex flex-col w-[calc(100%-230px)] tabletAndBelow:w-full">
         <Header showDrawerHandler={() => setShowDrawer((prev) => !prev)} />
-        {children}
+        <div className="max-w-[1250px] mx-auto w-full">{children}</div>
       </main>
     </div>
   );

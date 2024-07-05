@@ -1,145 +1,126 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import { IconButton, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { MenuItem, OutlinedInput, Select } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { IoEyeOutline } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
 import { MdOutlineDelete } from "react-icons/md";
-import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import CreateModal from "./modals/create";
 import ViewModal from "./modals/view";
-import DeleteConfirmationModal from "./confirmation-modals/delete";
-import PublishConfirmationModal from "./confirmation-modals/publish";
-import UnpublishConfirmationModal from "./confirmation-modals/unpublish";
 import { useAdminNews } from "~/queries/news";
 import useDebounce from "~/hooks/debounce";
-
-type Modal = {
-  open: boolean;
-  data: News | null;
-};
-
-type QueryKey = "q" | "status";
+import Container from "~/components/dashboards/container";
+import Heading from "~/components/dashboards/heading";
+import {
+  createColumn,
+  createDateColumn,
+  createIdColumn,
+  createMenuColumn,
+  createRenderCell,
+} from "~/utils/table-helpers";
+import { OutletContext } from "~/layouts/paginated";
+import { useChangeNewsStatus, useDeleteNews } from "~/mutations/news";
+import usePrompt from "~/hooks/usePrompt";
 
 export default function News() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { paginationModel, onPaginationModelChange, queryParams } =
+    useOutletContext<OutletContext>();
 
-  const queryParams = {
-    get: (key: QueryKey) => searchParams.get(key) || "",
-    delete: (key: QueryKey) => {
-      setSearchParams((params) => {
-        params.delete(key);
-
-        return params;
-      });
-    },
-    set: (key: QueryKey, value: string) => {
-      setSearchParams(
-        (params) => {
-          params.set(key, value);
-
-          return params;
-        },
-        {
-          replace: true,
-        }
-      );
-    },
-  };
+  const [menuObj, setMenuObj] = useState<{
+    [key: string]: HTMLButtonElement | null;
+  }>({});
 
   const [modal, setModal] = useState<NewsModal>({
     state: null,
     data: null,
   });
-  const [statusObj, setStatusObj] = useState<{ [key: string]: string }>({});
-  const [publishModal, setPublishModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
-  const [unpublishModal, setUnpublishModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
-  const [deleteModal, setDeleteModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
+  const [statusObj, setStatusObj] = useState<{ [key: string]: "published" | "unpublished" }>({});
 
-  const [pagination, setPagination] = useState({
-    page: 0,
-    pageSize: 10,
-  });
+  const prompt = usePrompt();
 
-  const { isLoading, data } = useAdminNews(
-    useDebounce(queryParams.get("q")).trim(),
-    {
+  const { isLoading, data } = useAdminNews({
+    search: useDebounce(queryParams.get("q")).trim(),
+    filterBy: {
       status: queryParams.get("status"),
     },
-    {
-      ...pagination,
-    }
+    pagination: paginationModel,
+  });
+
+  const { mutateAsync: changeNewsStatus } = useChangeNewsStatus();
+  const { mutateAsync: deleteNews } = useDeleteNews();
+
+  const handlePublish = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want publish this news?",
+      });
+
+      if (confirmed) {
+        setStatusObj((prevStatusObj) => ({
+          ...prevStatusObj,
+          [id]: "published",
+        }));
+        await changeNewsStatus({ id, action: "publish" });
+      }
+    },
+    [changeNewsStatus, prompt]
+  );
+
+  const handleUnpublish = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want unpublish this news?",
+      });
+
+      if (confirmed) {
+        setStatusObj((prevStatusObj) => ({
+          ...prevStatusObj,
+          [id]: "unpublished",
+        }));
+        await changeNewsStatus({ id, action: "unpublish" });
+      }
+    },
+    [changeNewsStatus, prompt]
+  );
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want to delete this news?",
+      });
+
+      if (confirmed) {
+        await deleteNews(id);
+      }
+    },
+    [deleteNews, prompt]
   );
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "NO.",
-      minWidth: 100,
-      renderCell: ({ api, row }) => {
-        const { page, pageSize } = pagination;
-        const { getAllRowIds } = api;
-
-        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
-      },
-    },
-    {
+    createIdColumn(paginationModel),
+    createColumn({
       field: "title",
       headerName: "Title",
-      minWidth: 250,
-      flex: 1,
-    },
-    {
+    }),
+    createColumn({
       field: "views",
       headerName: "Views",
       minWidth: 150,
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-    },
-    {
+    }),
+    createDateColumn({
       field: "created_at",
       headerName: "Created At",
-      minWidth: 180,
-      type: "string",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: (params) => {
-        return <p>{moment(params.value).format("MMMM D, YYYY")}</p>;
-      },
-    },
-    {
+    }),
+    createDateColumn({
       field: "updated_at",
-      headerName: "UPDATED AT",
-      minWidth: 180,
-      flex: 1,
-      valueFormatter: ({ value }) => {
-        const result = moment(value).fromNow();
-
-        if (result === "a day ago") {
-          return "Yesterday";
-        }
-
-        return result.charAt(0).toUpperCase() + result.slice(1);
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      align: "center",
-      headerAlign: "center",
-    },
+      headerName: "Updated At",
+      dateFormat: "fromNow",
+    }),
     {
       field: "status",
       headerName: "STATUS",
@@ -148,108 +129,72 @@ export default function News() {
       headerAlign: "center",
       align: "center",
       renderCell: ({ row, value }) => {
-        const val =
-          value === "published" ? "publish" : value === "unpublished" ? "unpublish" : value;
-        const newValue = statusObj[row.id] || val;
+        // const val =
+        // value === "published" ? "publish" : value === "unpublished" ? "unpublish" : value;
+        const newValue = statusObj[row.id] || value;
 
         return (
           <Select
             className="w-[180px] !text-[0.85rem] !py-0 !px-0"
             value={newValue}
             onChange={async (e) => {
-              const chosenValue = e.target.value;
+              const value = e.target.value as "draft" | "unpublished" | "published";
 
-              if (chosenValue === "draft") {
-                return;
+              if (value === "published") {
+                return await handlePublish(row.id);
               }
 
-              if (chosenValue && chosenValue !== statusObj[row.id]) {
-                setStatusObj((prevStatusObj) => ({
-                  ...prevStatusObj,
-                  [row.id]: chosenValue,
-                }));
+              if (value === "unpublished") {
+                return await handleUnpublish(row.id);
               }
             }}
           >
             <MenuItem value="draft" className="!hidden">
               Draft
             </MenuItem>
-            <MenuItem
-              value="publish"
-              onClick={() => {
-                setPublishModal({
-                  open: true,
-                  data: row,
-                });
-              }}
-            >
-              Published
-            </MenuItem>
-            <MenuItem
-              value="unpublish"
-              onClick={() => {
-                setUnpublishModal({
-                  open: true,
-                  data: row,
-                });
-              }}
-            >
-              Unpublished
-            </MenuItem>
+            <MenuItem value="published">Published</MenuItem>
+            <MenuItem value="unpublished">Unpublished</MenuItem>
           </Select>
         );
       },
     },
-    {
-      field: "_",
-      headerName: "Action",
-      minWidth: 160,
-      headerAlign: "center",
-      align: "center",
-      renderCell: ({ row }) => {
-        return (
-          <div className="w-full flex items-center justify-center gap-1">
-            <IconButton
-              size="medium"
-              // color="success"
-              onClick={() => {
-                setModal({
-                  state: "view",
-                  data: row,
-                });
-              }}
-            >
-              <IoEyeOutline className="text-lg" />
-            </IconButton>
-            <IconButton
-              // color="warning"
-              onClick={() => {
-                setModal({
-                  state: "edit",
-                  data: row,
-                });
-              }}
-            >
-              <FiEdit className="text-sm" />
-            </IconButton>
-            <IconButton
-              size="medium"
-              // color="error"
-              onClick={() => {
-                setDeleteModal({
-                  open: true,
-                  data: row,
-                });
-              }}
-            >
-              <MdOutlineDelete className="text-lg" />
-            </IconButton>
-          </div>
-        );
-      },
-      sortable: false,
-    },
+    createMenuColumn({
+      renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
+    }),
   ];
+
+  function PaperContent({ row }: { row: News }) {
+    return (
+      <>
+        <button
+          onClick={() => {
+            setModal({
+              state: "view",
+              data: row,
+            });
+          }}
+        >
+          <IoEyeOutline />
+          <span>View</span>
+        </button>
+        <button
+          onClick={() => {
+            setModal({
+              state: "edit",
+              data: row,
+            });
+          }}
+        >
+          <FiEdit />
+          <span>Edit</span>
+        </button>
+        <button onClick={async () => await handleDelete(row.id)}>
+          <MdOutlineDelete />
+          <span>Delete</span>
+        </button>
+      </>
+    );
+  }
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -257,149 +202,77 @@ export default function News() {
 
   return (
     <>
-      <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-semibold largeMobile:text-xl">News</h1>
-        </div>
-        <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
-          <div className="flex items-center border-b p-4 py-4 border-info-100">
-            <div className="w-full flex items-center gap-4 h-10 justify-between">
-              <div className="flex items-center gap-4">
-                <OutlinedInput
-                  placeholder="Search for title..."
-                  value={queryParams.get("q")}
-                  onChange={(e) => {
-                    const value = e.target.value;
+      <Container header={<Heading>News</Heading>}>
+        <div className="flex items-center border-b p-4 py-4 border-info-100">
+          <div className="w-full flex items-center gap-4 h-10 justify-between">
+            <div className="flex items-center gap-4">
+              <OutlinedInput
+                placeholder="Search for title..."
+                value={queryParams.get("q")}
+                onChange={(e) => {
+                  const value = e.target.value;
 
-                    if (!value) {
-                      return queryParams.delete("q");
-                    }
+                  if (!value) {
+                    return queryParams.delete("q");
+                  }
 
-                    queryParams.set("q", value);
-                  }}
-                  className="w-[300px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
-                />
-                <Select
-                  className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                  value={queryParams.get("status")}
-                  onChange={async (e) => {
-                    const chosenValue = e.target.value;
-
-                    if (!chosenValue) {
-                      return queryParams.delete("status");
-                    }
-
-                    queryParams.set("status", chosenValue);
-                  }}
-                  displayEmpty
-                >
-                  <MenuItem value="" className="placeholder">
-                    <span className="text-info-600">Select status</span>
-                  </MenuItem>
-                  <MenuItem value="draft">Draft</MenuItem>
-                  <MenuItem value="published">Published</MenuItem>
-                  <MenuItem value="unpublished">Unpublished</MenuItem>
-                </Select>
-              </div>
-              <Button
-                onClick={() => {
-                  setModal({
-                    state: "create",
-                    data: null,
-                  });
+                  queryParams.set("q", value);
                 }}
-                className="!py-2 !h-full"
-              >
-                Add News
-              </Button>
-            </div>
-          </div>
-          <div className="min-h-[500px] p-4">
-            <DataGrid
-              className="!border-info-150"
-              rows={data ? data.results : []}
-              loading={isLoading}
-              columns={columns}
-              rowCount={data?.count || 0}
-              paginationModel={pagination}
-              onPaginationModelChange={({ page, pageSize }, { reason }) => {
-                if (!reason) return;
+                className="w-[300px] tablet:w-[80%] [@media(max-width:500px)]:!w-full !h-full !text-sm"
+              />
+              <Select
+                className="w-[200px] !text-sm !py-0 !px-0 !h-full"
+                value={queryParams.get("status")}
+                onChange={async (e) => {
+                  const value = e.target.value;
 
-                setPagination({
-                  page,
-                  pageSize,
+                  if (!value) {
+                    return queryParams.delete("status");
+                  }
+
+                  queryParams.set("status", value);
+                }}
+                displayEmpty
+              >
+                <MenuItem value="" className="placeholder">
+                  <span className="text-info-600">Select status</span>
+                </MenuItem>
+                <MenuItem value="draft">Draft</MenuItem>
+                <MenuItem value="published">Published</MenuItem>
+                <MenuItem value="unpublished">Unpublished</MenuItem>
+              </Select>
+            </div>
+            <Button
+              onClick={() => {
+                setModal({
+                  state: "create",
+                  data: null,
                 });
               }}
-              paginationMode="server"
-            />
+              className="whitespace-nowrap"
+            >
+              Add News
+            </Button>
           </div>
         </div>
-      </main>
-      <CreateModal
-        modal={modal}
-        setModal={(obj: typeof modal) => setModal(obj)}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
+        <div className="p-4">
+          <DataGrid
+            rows={data?.results || []}
+            loading={isLoading}
+            columns={columns}
+            rowCount={data?.count || 0}
+            paginationModel={paginationModel}
+            onPaginationModelChange={onPaginationModelChange}
+            paginationMode="server"
+          />
+        </div>
+      </Container>
+      {(modal.state === "create" || modal.state === "edit") && (
+        <CreateModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
+      )}
       {modal.state === "view" && (
         <ViewModal modal={modal} setModal={(obj: typeof modal) => setModal(obj)} />
       )}
-      <DeleteConfirmationModal
-        open={deleteModal.open}
-        onClose={() => {
-          setDeleteModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={deleteModal.data as News}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
-      <PublishConfirmationModal
-        open={publishModal.open}
-        onClose={() => {
-          setPublishModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={publishModal.data as News}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
-      <UnpublishConfirmationModal
-        open={unpublishModal.open}
-        onClose={() => {
-          setUnpublishModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={unpublishModal.data as News}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            status: queryParams.get("status"),
-          },
-        }}
-      />
     </>
   );
 }

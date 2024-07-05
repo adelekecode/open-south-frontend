@@ -1,4 +1,4 @@
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export function useCurrentUser(
   queryKey = ["/auth/users/me/"],
@@ -53,4 +53,14 @@ export function usePublicProfile(
       };
     }
   >([`/public/user/pk/${id}/detail/?key=public`], options);
+}
+
+export function useGetAPIKey({
+  queryKey = ["/user/token/manager/"],
+  options,
+}: {
+  queryKey?: QueryKey;
+  options?: UseQueryOptions<{ token?: string }>;
+}) {
+  return useQuery<{ token?: string }>(queryKey, options);
 }

@@ -48,7 +48,7 @@ export default function ChangeLang() {
   return (
     <>
       {loading ? (
-        <Button loading={loading} variant="text" color="info">
+        <Button loading={loading} variant="text" color="primary">
           loading
         </Button>
       ) : (
@@ -66,6 +66,7 @@ export default function ChangeLang() {
               i18n.changeLanguage(value);
               setLang(value);
               setLangId(response.instance.id);
+              window.history.replaceState({}, "");
               window.location.reload();
               setLoading(false);
             }

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { DataGrid as MuiDataGrid, DataGridProps as MuiDataGridProps } from "@mui/x-data-grid";
 import { twMerge } from "tailwind-merge";
 import NoData from "~/assets/illustrations/no-data.png";
@@ -14,11 +15,14 @@ export default function DataGrid({
   className,
   ...props
 }: DataGridProps) {
+  const { t } = useTranslation("components/table");
+
   return (
     <MuiDataGrid
       {...props}
       sx={{
         overflowX: "auto",
+        flex: 1,
         "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
           outline: "none !important",
         },
@@ -30,9 +34,13 @@ export default function DataGrid({
             textTransform: "uppercase",
           },
         },
+        "& .MuiDataGrid-overlayWrapper": {
+          // height: "500px",
+          minHeight: "500px",
+        },
         ...sx,
       }}
-      className={twMerge(`!shadow-none`, className)}
+      className={twMerge(`!shadow-none !min-h-[500px]`, className)}
       slots={{
         noRowsOverlay: () => {
           return (
@@ -41,7 +49,7 @@ export default function DataGrid({
                 <img
                   src={NoData}
                   className="object-cover w-full h-full"
-                  alt="no data illustration"
+                  alt={t("empty-state.alt")}
                 />
               </figure>
             </div>

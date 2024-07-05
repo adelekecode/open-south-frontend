@@ -1,0 +1,30 @@
+{
+  "title": "Hariri Wasifu",
+  "view-public-profile": "Tazama Wasifu wa Umma",
+  "form": {
+    "photo": {
+      "label": "Picha ya Wasifu",
+      "info": {
+        "title": "Pakia picha yako",
+        "body": "Picha yako inapaswa kuwa katika muundo wa PNG, JPG au JPEG",
+        "cta": {
+          "choose": "Chagua picha",
+          "remove": "Ondoa"
+        }
+      }
+    },
+    "first-name": {
+      "label": "Jina la Kwanza"
+    },
+    "last-name": {
+      "label": "Jina la Mwisho"
+    },
+    "email": {
+      "label": "Barua pepe"
+    },
+    "bio": {
+      "label": "Wasifu"
+    },
+    "button": "Hifadhi"
+  }
+}
