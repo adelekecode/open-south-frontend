@@ -1,18 +1,17 @@
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-export function useGetDevelopers({
-  search,
-  filterBy: { status },
-  pagination: { page, pageSize },
-}: {
-  search: string;
-  filterBy: {
-    status: string;
-  };
-  pagination: Pagination;
-}) {
+export function useGetDevelopers(search = "") {
+  const [searchParams] = useSearchParams();
+
+  const params = new URLSearchParams({
+    is_active: searchParams.get("is_active") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
+
   return useQuery<PaginatedResponse<News[]>>([
-    `/admin/api/users/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+    `/admin/api/users/?search=${search}&${params.toString()}`,
   ]);
 }
 

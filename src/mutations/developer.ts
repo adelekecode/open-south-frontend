@@ -21,7 +21,9 @@ export function useBlockDeveloper() {
 
   return useMutation(
     async (id: string) => {
-      const { data: response } = await axiosPrivate.delete(`/delete/${id}/`);
+      const { data: response } = await axiosPrivate.post(
+        `/admin/api/users/pk/${id}/actions/block/`
+      );
 
       return response;
     },
@@ -53,14 +55,16 @@ export function useUnblockDeveloper() {
 
   return useMutation(
     async (id: string) => {
-      const { data: response } = await axiosPrivate.post(`/delete/${id}/`);
+      const { data: response } = await axiosPrivate.post(
+        `/admin/api/users/pk/${id}/actions/unblock/`
+      );
 
       return response;
     },
     {
       onSuccess() {
         queryClient.invalidateQueries([`/admin/api/users/?${params.toString()}`]);
-        notifySuccess("Developer successfully blocked");
+        notifySuccess("Developer successfully unblocked");
       },
       onError(error) {
         if (isAxiosError(error)) {

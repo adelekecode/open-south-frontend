@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { MenuItem, OutlinedInput, Select } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
+import { twMerge } from "tailwind-merge";
 import { MdOutlineBlock } from "react-icons/md";
 import { CgUnblock } from "react-icons/cg";
 import Container from "~/components/dashboards/container";
@@ -29,13 +30,9 @@ export default function Developers() {
     [key: string]: HTMLButtonElement | null;
   }>({});
 
-  const { data: developers, isLoading } = useGetDevelopers({
-    search: useDebounce(queryParams.get("q")).trim(),
-    filterBy: {
-      status: queryParams.get("status"),
-    },
-    pagination: paginationModel,
-  });
+  const { data: developers, isLoading } = useGetDevelopers(
+    useDebounce(queryParams.get("q")).trim()
+  );
 
   const { mutateAsync: blockDeveloper } = useBlockDeveloper();
   const { mutateAsync: unblockDeveloper } = useUnblockDeveloper();
@@ -73,18 +70,18 @@ export default function Developers() {
   );
 
   const PaperContent = useCallback(
-    ({ row }: { row: CurrentUser }) => {
+    ({ row }: { row: { is_active: boolean; id: string } }) => {
       return (
         <>
-          {row.api_?.is_active ? (
-            <button onClick={async () => await handleUnblock(row.id)}>
-              <CgUnblock />
-              <span>Unblock</span>
-            </button>
-          ) : (
+          {row.is_active ? (
             <button onClick={async () => await handleBlock(row.id)}>
               <MdOutlineBlock />
               <span>Block</span>
+            </button>
+          ) : (
+            <button onClick={async () => await handleUnblock(row.id)}>
+              <CgUnblock />
+              <span>Unblock</span>
             </button>
           )}
         </>
@@ -115,6 +112,36 @@ export default function Developers() {
           return row.user_.email;
         },
       }),
+      {
+        field: "is_active",
+        headerName: "ACTIVE",
+        minWidth: 100,
+        flex: 1,
+        renderCell: ({ value }) => {
+          const obj: {
+            element: any;
+            styles: string;
+          } = {
+            element: "-------",
+            styles: "py-1 px-2 rounded-full text-xs",
+          };
+
+          if (value === true) {
+            obj.element = (
+              <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>True</p>
+            );
+          } else if (value === false) {
+            obj.element = (
+              <p className={twMerge(obj.styles, `text-amber-500 border border-amber-500`)}>False</p>
+            );
+          }
+
+          return obj.element;
+        },
+        sortable: false,
+        align: "center",
+        headerAlign: "center",
+      },
       createDateColumn({
         field: "created_at",
         headerName: "Created At",
@@ -147,23 +174,23 @@ export default function Developers() {
               />
               <Select
                 className="w-[200px] !text-sm"
-                value={queryParams.get("status")}
+                value={queryParams.get("is-active")}
                 onChange={async (e) => {
                   const chosenValue = e.target.value;
 
                   if (!chosenValue) {
-                    return queryParams.delete("status");
+                    return queryParams.delete("is-active");
                   }
 
-                  queryParams.set("status", chosenValue);
+                  queryParams.set("is-active", chosenValue);
                 }}
                 displayEmpty
               >
                 <MenuItem value="" className="placeholder">
-                  <span className="text-info-600">Select status</span>
+                  <span className="text-info-600">Filter by active</span>
                 </MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="blocked">Blocked</MenuItem>
+                <MenuItem value="true">True</MenuItem>
+                <MenuItem value="false">False</MenuItem>
               </Select>
             </div>
           </div>
