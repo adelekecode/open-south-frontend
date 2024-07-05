@@ -2,18 +2,19 @@ import { useTranslation } from "react-i18next";
 import AgreementModal from "./agreement-modal";
 import Button from "~/components/button";
 import { notifySuccess } from "~/utils/toast";
-import useAppStore from "~/store/app";
-import { useGetAPIKey } from "~/queries/user";
+import { useCurrentUser, useGetAPIKey } from "~/queries/user";
 import { useGenerateAPIKey } from "~/mutations/user";
 
 export default function Developer() {
   const { t } = useTranslation("dashboard-layout/account/developer");
 
-  const { developerUseAgreed } = useAppStore();
+  const { data: currentUser } = useCurrentUser(undefined, {
+    enabled: false,
+  });
 
   const { data: apiKey } = useGetAPIKey({
     options: {
-      enabled: !!developerUseAgreed,
+      enabled: !!currentUser?.meta?.developer_enabled,
     },
   });
   const { mutateAsync: generateAPIKey, isLoading } = useGenerateAPIKey();
@@ -21,9 +22,9 @@ export default function Developer() {
   async function copyToClip() {
     const copyData = `${apiKey?.token}`;
 
-    navigator.clipboard.writeText(copyData).then(() => {
-      notifySuccess("API key copied");
-    });
+    await navigator.clipboard.writeText(copyData);
+
+    notifySuccess("API key copied");
   }
 
   return (
@@ -44,7 +45,7 @@ export default function Developer() {
               </header>
               <div className="p-1 pl-4 rounded border flex items-center max-w-[80%] tablet:w-full tablet:max-w-[initial]">
                 <p className="w-fit text-sm">
-                  {developerUseAgreed ? apiKey?.token : "********************"}
+                  {currentUser?.meta?.developer_enabled ? apiKey?.token : "********************"}
                 </p>
                 <Button
                   size="small"
@@ -63,7 +64,7 @@ export default function Developer() {
               size="medium"
               className="!w-fit !ml-auto"
             >
-              Generate New API Key
+              Regenerate API Key
             </Button>
           </section>
           <section className="flex flex-col gap-6 pt-8">
@@ -78,7 +79,7 @@ export default function Developer() {
           </section>
         </div>
       </main>
-      {!developerUseAgreed && <AgreementModal />}
+      {!currentUser?.meta?.developer_enabled && <AgreementModal />}
     </>
   );
 }

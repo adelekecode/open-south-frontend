@@ -1,8 +1,10 @@
 import { DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { useState } from "react";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import { useGenerateAPIKey } from "~/mutations/user";
-import useAppStore from "~/store/app";
+import { useEditProfile } from "~/mutations/auth/profile";
+import { useEnableDeveloperFeature, useGenerateAPIKey } from "~/mutations/user";
+import { notifyError } from "~/utils/toast";
 
 const agreement = `This Agreement ("Agreement") is entered into as of [Date], by and between [Your Company Name], located at [Your Company Address] ("Provider"), and [User's Name], residing at [User's Address] ("User").
 
@@ -40,17 +42,23 @@ This Agreement shall be governed by and construed in accordance with the laws of
 This Agreement constitutes the entire agreement between the parties regarding the subject matter hereof and supersedes all prior agreements and understandings, whether written or oral, relating to such subject matter.`;
 
 export default function AgreementModal() {
-  const { setDeveloperUseAgreed } = useAppStore();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { mutateAsync: generateAPIKey, isLoading } = useGenerateAPIKey();
+  const { mutateAsync: generateAPIKey } = useGenerateAPIKey();
+  const { mutateAsync: editProfile } = useEditProfile();
+  const { mutateAsync: enableDeveloperFeature } = useEnableDeveloperFeature();
 
   return (
     <Modal open>
-      <header>
+      <header className="pb-3">
         <DialogTitle>Developer Use Agreement</DialogTitle>
         <small>Please read the details below before using our API</small>
       </header>
-      <DialogContent>
+      <DialogContent
+        sx={{
+          paddingTop: "0px !important",
+        }}
+      >
         <DialogContentText>
           <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{agreement}</pre>
         </DialogContentText>
@@ -60,8 +68,18 @@ export default function AgreementModal() {
           size="small"
           loading={isLoading}
           onClick={async () => {
-            await generateAPIKey();
-            setDeveloperUseAgreed(true);
+            try {
+              setIsLoading(true);
+              await enableDeveloperFeature();
+              await generateAPIKey();
+              await editProfile({
+                meta: {
+                  developer_enabled: true,
+                },
+              });
+            } catch (error) {
+              notifyError("An error occured");
+            }
           }}
         >
           I agree
