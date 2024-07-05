@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -53,18 +54,17 @@ export function useAdminDatasetDetails(id: string) {
   return useQuery<Dataset>([`/admin/dataset/${id}/`]);
 }
 
-export function useAdminDatasets(
-  search = "",
-  filterBy: {
-    status: string;
-  },
-  pagination: Pagination
-) {
-  const { pageSize, page } = pagination;
-  const { status } = filterBy;
+export function useAdminDatasets(search = "") {
+  const [searchParams] = useSearchParams();
+
+  const params = new URLSearchParams({
+    is_active: searchParams.get("is_active") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   return useQuery<PaginatedResponse<Dataset[]>>([
-    `/admin/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+    `/admin/datasets/?search=${search}&${params.toString()}`,
   ]);
 }
 
