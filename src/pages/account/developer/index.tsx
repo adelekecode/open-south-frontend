@@ -9,6 +9,7 @@ import Container from "~/components/dashboards/container";
 import Heading from "~/components/dashboards/heading";
 import { useGetDeveloperLogs } from "~/queries/developers";
 import NoData from "~/assets/illustrations/no-data.png";
+import DashboardLoader from "~/components/loader/dashboard-loader";
 
 export default function Developer() {
   const { t } = useTranslation("dashboard-layout/account/developer");
@@ -17,13 +18,17 @@ export default function Developer() {
     enabled: false,
   });
 
-  const { data: apiKey } = useGetAPIKey({
+  const { data: apiKey, isLoading: APIKeyisLoading } = useGetAPIKey({
     options: {
       enabled: !!currentUser?.meta?.developer_enabled,
     },
   });
   const { data: logs } = useGetDeveloperLogs();
   const { mutateAsync: generateAPIKey, isLoading } = useGenerateAPIKey();
+
+  if (APIKeyisLoading) {
+    return <DashboardLoader />;
+  }
 
   async function copyToClip() {
     const copyData = `${apiKey?.token}`;
@@ -39,7 +44,13 @@ export default function Developer() {
         header={
           <header className="flex items-center gap-8 justify-between">
             <Heading>{t("title")}</Heading>
-            <Button variant="outlined" size="small">
+            <Button
+              variant="outlined"
+              size="small"
+              href={import.meta.env.VITE_OPEN_SOUTH_DEVELOPER_DOCS}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {t("go-to-docs")}
             </Button>
           </header>

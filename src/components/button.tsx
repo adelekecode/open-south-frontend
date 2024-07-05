@@ -1,6 +1,10 @@
 import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import { twMerge } from "tailwind-merge";
 
+type Props = LoadingButtonProps & {
+  target?: string;
+};
+
 export default function Button({
   loading,
   variant = "contained",
@@ -9,7 +13,7 @@ export default function Button({
   sx,
   children,
   ...props
-}: LoadingButtonProps) {
+}: Props) {
   return (
     <LoadingButton
       variant={variant}
