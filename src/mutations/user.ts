@@ -127,3 +127,20 @@ export function useGenerateAPIKey() {
     }
   );
 }
+
+export function useEnableDeveloperFeature() {
+  return useMutation(
+    async () => {
+      const { data: response } = await axiosPrivate.post("/user/api/agreement/");
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          notifyError(String(error.toJSON()));
+        }
+      },
+    }
+  );
+}
