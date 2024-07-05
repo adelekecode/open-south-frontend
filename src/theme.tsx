@@ -99,6 +99,37 @@ const theme = createTheme({
         placement: "bottom-end",
         className: "!mt-2",
       },
+      styleOverrides: {
+        root: {
+          "& .MuiPaper-root": {
+            padding: "6px",
+            borderRadius: "4px",
+            "& > button": {
+              width: "100%",
+              display: "flex",
+              gap: "0.5rem",
+              padding: "1rem",
+              paddingTop: "0.5rem",
+              paddingBottom: "0.5rem",
+              borderRadius: "0.125rem",
+              alignItems: "center",
+              transition: "background-color 0.2s",
+              "&:hover": {
+                backgroundColor: "rgba(0, 0, 0, 0.05)",
+              },
+              "& > svg": {
+                color: "#3f3f46",
+                fontSize: "1rem",
+              },
+              "& > span": {
+                fontSize: "0.75rem",
+                fontWeight: 600,
+                color: "#3f3f46",
+              },
+            },
+          },
+        },
+      },
     },
     MuiAutocomplete: {
       styleOverrides: {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { MenuItem, OutlinedInput, Select } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
@@ -17,6 +17,8 @@ import {
   createMenuColumn,
   createRenderCell,
 } from "~/utils/table-helpers";
+import usePrompt from "~/hooks/usePrompt";
+import { useBlockDeveloper } from "~/mutations/developer";
 
 export default function Developers() {
   const { paginationModel, onPaginationModelChange, queryParams } =
@@ -33,6 +35,39 @@ export default function Developers() {
     },
     pagination: paginationModel,
   });
+
+  const { mutateAsync: blockDeveloper } = useBlockDeveloper();
+
+  const prompt = usePrompt();
+
+  const handleBlock = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description:
+          "When this action is triggered, the user's access to the developer features will be revoked.",
+      });
+
+      if (confirmed) {
+        await blockDeveloper(id);
+      }
+    },
+    [blockDeveloper, prompt]
+  );
+
+  const PaperContent = useCallback(
+    ({ row }: { row: CurrentUser }) => {
+      return (
+        <>
+          <button onClick={async () => await handleBlock(row.id)}>
+            <MdOutlineBlock />
+            <span>Block</span>
+          </button>
+        </>
+      );
+    },
+    [handleBlock]
+  );
 
   const columns: GridColDef[] = useMemo(() => {
     return [
@@ -59,18 +94,7 @@ export default function Developers() {
         renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
       }),
     ];
-  }, [menuObj, paginationModel]);
-
-  function PaperContent({ row: _ }: { row: CurrentUser }) {
-    return (
-      <>
-        <button>
-          <MdOutlineBlock />
-          <span>Block</span>
-        </button>
-      </>
-    );
-  }
+  }, [PaperContent, menuObj, paginationModel]);
 
   return (
     <>
