@@ -128,7 +128,7 @@ export default function Developers() {
   return (
     <>
       <Container header={<Heading>Developers</Heading>}>
-        <div className="flex items-center border-b p-4 py-4 border-info-100">
+        <div className="flex items-center border-b p-4 border-info-100">
           <div className="w-full flex items-center gap-4 h-10 justify-between">
             <div className="flex items-center gap-4">
               <OutlinedInput
