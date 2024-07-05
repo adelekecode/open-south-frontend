@@ -75,20 +75,25 @@ export default function Developers() {
       createColumn({
         field: "first_name",
         headerName: "First Name",
+        valueGetter: ({ row }) => {
+          return row.user_.first_name;
+        },
       }),
       createColumn({
         field: "last_name",
         headerName: "Last Name",
+        valueGetter: ({ row }) => {
+          return row.user_.last_name;
+        },
       }),
-      createEmailColumn(),
+      createEmailColumn({
+        valueGetter: ({ row }) => {
+          return row.user_.email;
+        },
+      }),
       createDateColumn({
         field: "created_at",
         headerName: "Created At",
-      }),
-      createDateColumn({
-        field: "updated_at",
-        headerName: "Updated At",
-        dateFormat: "fromNow",
       }),
       createMenuColumn({
         renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
