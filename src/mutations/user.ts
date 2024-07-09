@@ -131,13 +131,19 @@ export function useGenerateAPIKey() {
 export function useEnableDeveloperFeature() {
   return useMutation(
     async () => {
-      const { data: response } = await axiosPrivate.post("/user/api/agreement/");
+      const response = await axiosPrivate.post("/user/api/agreement/");
 
       return response;
     },
     {
       onError(error) {
         if (isAxiosError(error)) {
+          const data = error.response?.data;
+
+          if (data.error === "You have already accepted the agreement") {
+            throw new Error(data.error);
+          }
+
           notifyError(String(error.toJSON()));
         }
       },
