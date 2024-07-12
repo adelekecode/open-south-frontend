@@ -1,38 +1,25 @@
 import { useParams } from "react-router-dom";
+import { DialogContent, DialogTitle } from "@mui/material";
 import Modal from "~/components/modal";
 import { useAdminOrganizationRequests } from "~/queries/organizations";
 import NoData from "~/assets/illustrations/no-data.png";
 import Request from "./request";
 
 type RequestModalProps = {
-  open: boolean;
-  setOpen: (bool: boolean) => void;
-  pagination: Pagination;
+  onClose: () => void;
 };
 
-export default function RequestModal({ open, setOpen, pagination }: RequestModalProps) {
+export default function RequestModal({ onClose }: RequestModalProps) {
   const { id } = useParams();
 
   const { data, isLoading } = useAdminOrganizationRequests(id || "", {
     enabled: !!id,
   });
 
-  function onClose() {
-    setOpen(false);
-  }
-
   return (
-    <Modal
-      muiModal={{
-        open,
-        onClose,
-      }}
-      innerContainer={{
-        className: "pt-[2rem] min-h-[60%]",
-      }}
-    >
-      <div className="flex flex-col gap-4 w-full">
-        <h1 className="text-xl font-semibold">Requests</h1>
+    <Modal open onClose={onClose}>
+      <DialogTitle>Requests</DialogTitle>
+      <DialogContent className="flex flex-col gap-4 w-full">
         {isLoading ? (
           <div className="flex flex-col divide-y">
             {Array.from({ length: 5 }).map((_, index) => (
@@ -55,7 +42,6 @@ export default function RequestModal({ open, setOpen, pagination }: RequestModal
                   userId: item.user,
                 }}
                 key={index + 1}
-                pagination={pagination}
               />
             ))}
           </div>
@@ -66,7 +52,7 @@ export default function RequestModal({ open, setOpen, pagination }: RequestModal
             </figure>
           </div>
         )}
-      </div>
+      </DialogContent>
     </Modal>
   );
 }

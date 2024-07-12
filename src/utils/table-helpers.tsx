@@ -2,9 +2,7 @@ import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { ClickAwayListener, Fade, IconButton, Paper, Popper } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import moment from "moment";
-import { FaXmark } from "react-icons/fa6";
 import { GoKebabHorizontal } from "react-icons/go";
-import { IoCheckmark } from "react-icons/io5";
 
 type DateColumnParams = Partial<GridColDef> & {
   field: string;
@@ -119,22 +117,22 @@ export const createIdColumn = (
   };
 };
 
-export const createActiveColumn = ({ ...rest }: Partial<GridColDef> = {}): GridColDef => {
+export const createStateColumn = ({ field, headerName, ...rest }: GridColDef): GridColDef => {
   return {
-    field: "is_active",
-    headerName: "Active",
+    field,
+    headerName,
     minWidth: 100,
     flex: 1,
+    cellClassName: "[&_p]:py-1 [&_p]:px-2 [&_p]:!rounded-full [&_p]:text-xs",
+    sortable: false,
+    align: "center",
+    headerAlign: "center",
     renderCell: ({ value }) => {
-      return (
-        <div className="flex items-center h-full">
-          {value ? (
-            <IoCheckmark className="text-green-700" />
-          ) : (
-            <FaXmark className="text-red-700" />
-          )}
-        </div>
-      );
+      if (value) {
+        return <p className={`text-green-500 border border-green-500`}>True</p>;
+      }
+
+      return <p className={`text-amber-500 border border-amber-500`}>False</p>;
     },
     ...rest,
   };
@@ -161,24 +159,32 @@ export const createRenderCell =
     const anchorEl = menuObj[row.id];
 
     function handleClick(target: HTMLButtonElement) {
-      setMenuObj((prevMenuObj) => ({
-        ...prevMenuObj,
+      setMenuObj({
         [row.id]: target,
-      }));
+      });
     }
 
     function handleClose() {
-      setMenuObj((prevMenuObj) => ({
-        ...prevMenuObj,
+      setMenuObj({
         [row.id]: null,
-      }));
+      });
     }
 
     const open = Boolean(anchorEl);
 
     return (
       <>
-        <IconButton size="small" onClick={(e) => handleClick(e.currentTarget)}>
+        <IconButton
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (menuObj[row.id]) {
+              return handleClose();
+            }
+
+            handleClick(e.currentTarget);
+          }}
+        >
           <GoKebabHorizontal className="rotate-180" />
         </IconButton>
         <ClickAwayListener onClickAway={handleClose}>

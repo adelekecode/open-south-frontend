@@ -1,17 +1,15 @@
-import { Avatar } from "@mui/material";
 import { useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Avatar } from "@mui/material";
 import Button from "~/components/button";
 import { useOrganizationRequestAction } from "~/mutations/organization";
 
 type RequestProps = {
   data: OrganizationRequest["user_data"] & { userId: string; id: string };
-  pagination: Pagination;
 };
 
 export default function Request({
   data: { userId, id, first_name, last_name, image_url },
-  pagination,
 }: RequestProps) {
   const { orgId } = useParams();
 
@@ -19,11 +17,12 @@ export default function Request({
 
   const [searchParams] = useSearchParams();
 
-  const search = searchParams.get("q") || "";
-
   const [choice, setChoice] = useState<"grant" | "deny" | null>(null);
 
-  const organizationRequestAction = useOrganizationRequestAction(orgId || "", search, pagination);
+  const { mutateAsync: organizationRequestAction, isLoading } = useOrganizationRequestAction(
+    orgId || "",
+    searchParams
+  );
 
   return (
     <div
@@ -53,13 +52,13 @@ export default function Request({
             e.stopPropagation();
             setChoice("grant");
 
-            await organizationRequestAction.mutateAsync({
+            await organizationRequestAction({
               id,
               actions: "approve",
             });
           }}
-          disabled={organizationRequestAction.isLoading}
-          loading={choice === "grant" && organizationRequestAction.isLoading}
+          disabled={isLoading}
+          loading={choice === "grant" && isLoading}
         >
           Grant
         </Button>
@@ -67,17 +66,17 @@ export default function Request({
           className="!text-xs !py-2 !px-3"
           color="error"
           variant="outlined"
-          loading={choice === "deny" && organizationRequestAction.isLoading}
+          loading={choice === "deny" && isLoading}
           onClick={async (e) => {
             e.stopPropagation();
             setChoice("deny");
 
-            await organizationRequestAction.mutateAsync({
+            await organizationRequestAction({
               id,
               actions: "reject",
             });
           }}
-          disabled={organizationRequestAction.isLoading}
+          disabled={isLoading}
         >
           Deny
         </Button>

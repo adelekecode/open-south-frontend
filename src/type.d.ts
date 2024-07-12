@@ -157,7 +157,6 @@ type OrganizationRequest = {
 type Pagination = { pageSize: number; page: number };
 
 type OrganizationModalProps = {
-  open: boolean;
   onClose: () => void;
   data: Organization;
   pagination: Pagination;

@@ -15,10 +15,6 @@ export default function OrganizationDetails() {
   const navigate = useNavigate();
 
   const [displayRequestModal, setDisplayRequestModal] = useState(false);
-  const [pagination, setPagination] = useState({
-    pageSize: 10,
-    page: 0,
-  });
 
   const { data, isLoading } = useAdminOrganizationDetails(id || "");
 
@@ -83,10 +79,7 @@ export default function OrganizationDetails() {
               <h2 className="font-semibold text-xs text-info-950">Description</h2>
               <p ref={descriptionRef}></p>
             </div>
-            <UserTable
-              pagination={pagination}
-              setPagination={(obj: typeof pagination) => setPagination(obj)}
-            />
+            <UserTable />
             <div className="flex flex-col gap-3"></div>
             <div className="flex flex-col gap-3">
               <h2 className="font-semibold text-xs text-info-950">General Statistics</h2>
@@ -129,13 +122,7 @@ export default function OrganizationDetails() {
           </div>
         </div>
       </main>
-      {displayRequestModal && (
-        <RequestModal
-          setOpen={(bool: boolean) => setDisplayRequestModal(bool)}
-          open={displayRequestModal}
-          pagination={pagination}
-        />
-      )}
+      {displayRequestModal && <RequestModal onClose={() => setDisplayRequestModal(false)} />}
     </>
   );
 }
