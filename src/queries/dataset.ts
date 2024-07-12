@@ -33,7 +33,7 @@ export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<
 }
 
 export function useDatasetFilePreview(url: string, type: string, options?: UseQueryOptions<any>) {
-  return useQuery<DatasetFile>([`${url}`], {
+  return useQuery<BlobPart>([`${url}`], {
     queryFn: async () => {
       const { data: response } = await axios.get(
         url,

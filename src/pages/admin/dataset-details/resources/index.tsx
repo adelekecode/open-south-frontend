@@ -136,11 +136,15 @@ export default function Resources() {
           />
         </div>
       </div>
-      <FilePreview
-        open={previewFile.open}
-        setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
-        file={previewFile.data}
-      />
+      {previewFile.open && previewFile.data && (
+        <FilePreview
+          open={previewFile.open}
+          setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) =>
+            setPreviewFile(obj)
+          }
+          file={previewFile.data}
+        />
+      )}
     </>
   );
 }

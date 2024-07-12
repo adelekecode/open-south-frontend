@@ -185,11 +185,15 @@ export default function Resources() {
         }
       />
       <FileUpload open={openFileUpload} setOpen={(bool: boolean) => setOpenFileUpload(bool)} />
-      <FilePreview
-        open={previewFile.open}
-        setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
-        file={previewFile.data}
-      />
+      {previewFile.open && previewFile.data && (
+        <FilePreview
+          open={true}
+          setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) =>
+            setPreviewFile(obj)
+          }
+          file={previewFile.data}
+        />
+      )}
     </>
   );
 }
