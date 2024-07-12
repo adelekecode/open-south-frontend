@@ -153,12 +153,8 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
         </div>
       ) : data ? (
         <>
-          <DialogTitle className="self-start">
-            <h1 className="text-base largeMobile:text-sm break-all font-medium largeMobile:self-start">
-              {file.file_name
-                ? file.file_name[0].toUpperCase() + file.file_name.slice(1)
-                : "-------"}
-            </h1>
+          <DialogTitle className="text-base largeMobile:text-sm break-all font-medium largeMobile:self-start">
+            {file.file_name ? file.file_name[0].toUpperCase() + file.file_name.slice(1) : "-------"}
           </DialogTitle>
           {/* <header className="flex items-center justify-between gap-1 largeMobile:flex-col flex-wrap pb-4 mt-8"> */}
           <Button
