@@ -17,7 +17,13 @@ export default function RequestModal({ onClose }: RequestModalProps) {
   });
 
   return (
-    <Modal open onClose={onClose}>
+    <Modal
+      open
+      onClose={onClose}
+      exitIcon={{
+        display: true,
+      }}
+    >
       <DialogTitle>Requests</DialogTitle>
       <DialogContent className="flex flex-col gap-4 w-full">
         {isLoading ? (
