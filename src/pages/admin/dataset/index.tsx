@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
 import { MenuItem, OutlinedInput, Select } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { twMerge } from "tailwind-merge";
 import { MdOutlineDelete } from "react-icons/md";
 import DataGrid from "~/components/data-grid";
-import PublishConfirmationModal from "./status-confirmation-modals/publish";
-import UnpublishConfirmationModal from "./status-confirmation-modals/unpublish";
-import FurtherReviewConfirmationModal from "./status-confirmation-modals/further-review";
+import RejectConfirmationModal from "./reject-modal";
 import useDebounce from "~/hooks/debounce";
 import {
   createColumn,
@@ -32,37 +30,22 @@ export default function Dataset() {
   const { paginationModel, onPaginationModelChange, queryParams } =
     useOutletContext<OutletContext>();
 
-  const search = queryParams.get("q") || "";
-  const status = queryParams.get("status") || "";
+  const [searchParams] = useSearchParams();
 
-  const [publishModal, setPublishModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
+  const search = queryParams.get("q");
+
   const [menuObj, setMenuObj] = useState<{
     [key: string]: HTMLButtonElement | null;
-  }>({});
-
-  const [statusObj, setStatusObj] = useState<{
-    [key: string]: "delete" | "published" | "unpublished";
   }>({});
 
   const [rejectModal, setRejectModal] = useState<Modal>({
     open: false,
     data: null,
   });
-  const [unpublishModal, setUnpublishModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
-  const [furtherReviewModal, setFurtherReviewModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
 
   const { data, isLoading } = useAdminDatasets(useDebounce(search).trim());
 
-  const { mutateAsync: changeDatasetStatus } = useChangeDatasetStatus();
+  const { mutateAsync: changeDatasetStatus } = useChangeDatasetStatus(searchParams);
 
   const prompt = usePrompt();
 
@@ -74,11 +57,49 @@ export default function Dataset() {
       });
 
       if (confirmed) {
-        setStatusObj((prevStatusObj) => ({
-          ...prevStatusObj,
-          [id]: "unpublished",
-        }));
         await changeDatasetStatus({ id, action: "delete" });
+      }
+    },
+    [changeDatasetStatus, prompt]
+  );
+
+  const handleUnpublished = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want unpublish this dataset?",
+      });
+
+      if (confirmed) {
+        await changeDatasetStatus({ id, action: "unpublished" });
+      }
+    },
+    [changeDatasetStatus, prompt]
+  );
+
+  const handlePublished = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want publish this dataset?",
+      });
+
+      if (confirmed) {
+        await changeDatasetStatus({ id, action: "published" });
+      }
+    },
+    [changeDatasetStatus, prompt]
+  );
+
+  const handleFurtherReview = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want change this dataset status to further review?",
+      });
+
+      if (confirmed) {
+        await changeDatasetStatus({ id, action: "further_review" });
       }
     },
     [changeDatasetStatus, prompt]
@@ -159,10 +180,9 @@ export default function Dataset() {
       flex: 1,
       renderCell: ({ value, row }) => {
         const modals = {
-          unpublished: setUnpublishModal,
-          published: setPublishModal,
-          rejected: setRejectModal,
-          further_review: setFurtherReviewModal,
+          unpublished: handleUnpublished,
+          published: handlePublished,
+          further_review: handleFurtherReview,
         };
 
         const options = [
@@ -187,14 +207,18 @@ export default function Dataset() {
             onChange={async (e) => {
               const chosenValue = e.target.value;
 
+              if (chosenValue === "further_review") {
+                return setRejectModal({
+                  data: row,
+                  open: true,
+                });
+              }
+
               if (chosenValue !== "pending") {
                 const modalSetter = modals[chosenValue as keyof typeof modals];
 
                 if (modalSetter) {
-                  modalSetter({
-                    open: true,
-                    data: row,
-                  });
+                  await modalSetter(row.id);
                 }
               }
             }}
@@ -258,7 +282,7 @@ export default function Dataset() {
               />
               <Select
                 className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                value={status}
+                value={queryParams.get("status")}
                 onChange={async (e) => {
                   const chosenValue = e.target.value;
 
@@ -298,28 +322,8 @@ export default function Dataset() {
           </div>
         </div>
       </main>
-      {publishModal.open && (
-        <PublishConfirmationModal
-          open={publishModal.open}
-          onClose={() => {
-            setPublishModal({
-              open: false,
-              data: null,
-            });
-          }}
-          data={publishModal.data as Dataset}
-          pagination={paginationModel}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
-        />
-      )}
-      {/* {rejectModal.open && (
+      {rejectModal.open && (
         <RejectConfirmationModal
-          open={rejectModal.open}
           onClose={() => {
             setRejectModal({
               open: false,
@@ -327,51 +331,6 @@ export default function Dataset() {
             });
           }}
           data={rejectModal.data as Dataset}
-          pagination={paginationModel}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
-        />
-      )} */}
-      {unpublishModal.open && (
-        <UnpublishConfirmationModal
-          open={unpublishModal.open}
-          onClose={() => {
-            setUnpublishModal({
-              open: false,
-              data: null,
-            });
-          }}
-          data={unpublishModal.data as Dataset}
-          pagination={paginationModel}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
-        />
-      )}
-      {furtherReviewModal.open && (
-        <FurtherReviewConfirmationModal
-          open={furtherReviewModal.open}
-          onClose={() => {
-            setFurtherReviewModal({
-              open: false,
-              data: null,
-            });
-          }}
-          data={furtherReviewModal.data as Dataset}
-          pagination={paginationModel}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
         />
       )}
     </>

@@ -56,14 +56,16 @@ export function useDeleteUser(pagination: Pagination, queryParams: QueryParams) 
   );
 }
 
-export function useChangeUserStatus(pagination: Pagination, queryParams: QueryParams) {
+export function useChangeUserStatus(searchParams: URLSearchParams) {
   const queryClient = useQueryClient();
 
-  const { pageSize, page } = pagination;
-  const {
-    search,
-    filter: { isActive },
-  } = queryParams;
+  const isActive = searchParams.get("is-active") || "";
+
+  const params = new URLSearchParams({
+    search: searchParams.get("q") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   let status = "";
 
@@ -83,13 +85,14 @@ export function useChangeUserStatus(pagination: Pagination, queryParams: QueryPa
     },
     {
       onSuccess(data) {
-        queryClient.invalidateQueries([
-          `/admin/users/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
-
         if (typeof data.message === "string") {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
+      },
+      async onSettled() {
+        await queryClient.invalidateQueries([
+          `/admin/users/?status=${status}&${params.toString()}`,
+        ]);
       },
       onError(error) {
         if (isAxiosError(error)) {

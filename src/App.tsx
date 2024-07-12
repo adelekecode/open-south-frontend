@@ -105,8 +105,8 @@ const router = createBrowserRouter(
                   <Route path="/admin/news" element={<AdminNews />} />
                   <Route path="/admin/organizations" element={<AdminOrganization />} />
                   <Route path="/admin/organizations/:id" element={<AdminOrganizationDetails />} />
+                  <Route path="/admin/datasets/:id" element={<AdminDatasetDetails />} />
                 </Route>
-                <Route path="/admin/datasets/:id" element={<AdminDatasetDetails />} />
               </Route>
             </Route>
           </Route>

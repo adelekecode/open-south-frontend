@@ -5,6 +5,7 @@ type CurrentUser = {
   first_name?: string;
   last_name?: string;
   role: "user" | "admin";
+  is_active: boolean;
   profile_data: {
     first_name: string;
     last_name: string;

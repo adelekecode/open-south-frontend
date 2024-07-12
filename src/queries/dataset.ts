@@ -58,7 +58,8 @@ export function useAdminDatasets(search = "") {
   const [searchParams] = useSearchParams();
 
   const params = new URLSearchParams({
-    is_active: searchParams.get("is_active") || "",
+    search: searchParams.get("search") || "",
+    status: searchParams.get("status") || "",
     limit: searchParams.get("limit") || "10",
     offset: searchParams.get("offset") || "0",
   });
@@ -130,16 +131,16 @@ export function useUserOrganizationDatasets(
 
 export function useUserDatasetFiles(
   id: string,
-  pagination: {
-    pageSize: number;
-    page: number;
-  },
+  searchParams: URLSearchParams,
   options?: UseQueryOptions<PaginatedResponse<Dataset["files"][]>>
 ) {
-  const { pageSize, page } = pagination;
+  const params = new URLSearchParams({
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   return useQuery<PaginatedResponse<Dataset["files"][]>>(
-    [`/user/dataset/pk/${id}/files/?limit=${pageSize}&offset=${page * pageSize}`],
+    [`/user/dataset/pk/${id}/files/?${params.toString()}`],
     options
   );
 }
