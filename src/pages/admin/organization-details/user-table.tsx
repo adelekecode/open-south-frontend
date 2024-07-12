@@ -1,71 +1,75 @@
-import { useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import {
-  Avatar,
-  ClickAwayListener,
-  Fade,
-  IconButton,
-  OutlinedInput,
-  Paper,
-  Popper,
-} from "@mui/material";
+import { useCallback, useState } from "react";
+import { useOutletContext, useParams, useSearchParams } from "react-router-dom";
+import { Avatar, OutlinedInput } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import moment from "moment";
-import { GoKebabHorizontal } from "react-icons/go";
-import { IoPerson } from "react-icons/io5";
+import { IoPerson, IoRemoveCircleOutline } from "react-icons/io5";
 import DataGrid from "~/components/data-grid";
 import { useAdminOrganizationUsers } from "~/queries/organizations";
-import useDebounce from "~/hooks/debounce";
-import RemoveModal from "./confirmation-modal/remove";
+import {
+  createColumn,
+  createDateColumn,
+  createEmailColumn,
+  createIdColumn,
+  createMenuColumn,
+  createRenderCell,
+} from "~/utils/table-helpers";
+import { OutletContext } from "~/layouts/paginated";
+import usePrompt from "~/hooks/usePrompt";
+import { useRemoveUserFromOrganization } from "~/mutations/organization";
 
-type UserTableProps<T> = {
-  pagination: T;
-  setPagination: (obj: T) => void;
-};
-
-export default function UserTable({
-  pagination,
-  setPagination,
-}: UserTableProps<{
-  page: number;
-  pageSize: number;
-}>) {
+export default function UserTable() {
   const { id } = useParams();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const search = searchParams.get("q") || "";
+  const { paginationModel, onPaginationModelChange, queryParams } =
+    useOutletContext<OutletContext>();
 
-  const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
-  const [removeModal, setRemoveModal] = useState<{
-    open: boolean;
-    data: CurrentUser | null;
-  }>({
-    open: false,
-    data: null,
-  });
+  const search = queryParams.get("q");
 
-  const { data, isLoading } = useAdminOrganizationUsers(
+  const [menuObj, setMenuObj] = useState<{
+    [key: string]: HTMLButtonElement | null;
+  }>({});
+
+  const { data, isLoading } = useAdminOrganizationUsers(id || "", searchParams);
+
+  const { mutateAsync: removeUserFromOrganization } = useRemoveUserFromOrganization(
     id || "",
-    useDebounce(search).trim(),
-    pagination
+    searchParams
   );
 
-  function dropdownDisplay(id: string) {
-    return Boolean(anchorElObj[id]);
-  }
+  const prompt = usePrompt();
+
+  const handleRemove = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want to remove this user from this organization?",
+      });
+
+      if (confirmed) {
+        await removeUserFromOrganization(id);
+      }
+    },
+    [removeUserFromOrganization, prompt]
+  );
+
+  const PaperContent = useCallback(
+    ({ row }: { row: Organization }) => {
+      return (
+        <>
+          <button onClick={async () => await handleRemove(row.id)}>
+            <IoRemoveCircleOutline />
+            <span>Remove</span>
+          </button>
+        </>
+      );
+    },
+    [handleRemove]
+  );
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "NO.",
-      minWidth: 100,
-      renderCell: ({ api, row }) => {
-        const { getAllRowIds } = api;
-
-        return getAllRowIds().indexOf(row.id) + 1;
-      },
-    },
+    createIdColumn(paginationModel),
     {
       field: "image_url",
       headerName: "",
@@ -90,121 +94,22 @@ export default function UserTable({
       filterable: false,
       sortable: false,
     },
-    {
+    createColumn({
       field: "first_name",
       headerName: "First Name",
-      minWidth: 200,
-      type: "string",
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
+    }),
+    createColumn({
       field: "last_name",
       headerName: "Last Name",
-      minWidth: 200,
-      type: "string",
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      minWidth: 300,
-      type: "string",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      renderCell: (params) => {
-        return (
-          <a
-            className="hover:underline hover:text-primary-600 text-center whitespace-nowrap"
-            href={`mailto:${params.value}`}
-          >
-            {params.value}
-          </a>
-        );
-      },
-    },
-    {
+    }),
+    createEmailColumn(),
+    createDateColumn({
       field: "date_joined",
       headerName: "Date Joined",
-      minWidth: 200,
-      type: "string",
-      flex: 1,
-      renderCell: (params) => {
-        return <p>{moment(params.value).format("MMMM D, YYYY")}</p>;
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "_",
-      headerName: "Action",
-      minWidth: 150,
-      flex: 1,
-      align: "center",
-      headerAlign: "center",
-      renderCell: ({ row }) => {
-        return (
-          <>
-            <ClickAwayListener
-              onClickAway={() =>
-                setAnchorElObj((prev) => ({
-                  ...prev,
-                  [row.id]: null,
-                }))
-              }
-            >
-              <div>
-                <IconButton
-                  size="small"
-                  onClick={(e) =>
-                    setAnchorElObj((prev) => ({
-                      ...prev,
-                      [row.id]: anchorElObj[row.id] ? null : e.currentTarget,
-                    }))
-                  }
-                >
-                  <GoKebabHorizontal className="rotate-90" />
-                </IconButton>
-                <Popper
-                  transition
-                  open={dropdownDisplay(row.id)}
-                  anchorEl={anchorElObj[row.id]}
-                  className="!mt-2"
-                >
-                  {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={200}>
-                      <Paper className="flex flex-col [&>button]:p-4 [&>button]:text-sm [&>button]:py-3 overflow-hidden relative divide-y !shadow">
-                        <button
-                          className="hover:bg-info-100"
-                          onClick={() => {
-                            setRemoveModal({
-                              open: true,
-                              data: row,
-                            });
-
-                            setAnchorElObj((prev) => ({
-                              ...prev,
-                              [row.id]: null,
-                            }));
-                          }}
-                        >
-                          Remove
-                        </button>
-                      </Paper>
-                    </Fade>
-                  )}
-                </Popper>
-              </div>
-            </ClickAwayListener>
-          </>
-        );
-      },
-      sortable: false,
-    },
+    }),
+    createMenuColumn({
+      renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
+    }),
   ];
 
   return (
@@ -220,23 +125,10 @@ export default function UserTable({
               const value = e.target.value;
 
               if (!value) {
-                return setSearchParams((params) => {
-                  params.delete("q");
-
-                  return params;
-                });
+                return queryParams.delete("q");
               }
 
-              setSearchParams(
-                (params) => {
-                  params.set("q", value);
-
-                  return params;
-                },
-                {
-                  replace: true,
-                }
-              );
+              queryParams.set("q", value);
             }}
           />
           <div className="min-h-[500px]">
@@ -245,31 +137,13 @@ export default function UserTable({
               loading={isLoading}
               columns={columns}
               rowCount={data?.count || 0}
-              paginationModel={pagination}
-              onPaginationModelChange={({ page, pageSize }, { reason }) => {
-                if (!reason) return;
-
-                setPagination({
-                  page,
-                  pageSize,
-                });
-              }}
+              paginationModel={paginationModel}
+              onPaginationModelChange={onPaginationModelChange}
               paginationMode="server"
             />
           </div>
         </div>
       </div>
-      <RemoveModal
-        open={removeModal.open}
-        onClose={() => {
-          setRemoveModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={removeModal.data as CurrentUser}
-        pagination={pagination}
-      />
     </>
   );
 }

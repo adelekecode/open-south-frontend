@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Collapse } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
-import { IoGridOutline, IoPersonOutline, IoNewspaperOutline } from "react-icons/io5";
+import { IoGridOutline, IoPersonOutline, IoNewspaperOutline, IoCode } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa6";
 import { GoDatabase, GoOrganization } from "react-icons/go";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -56,6 +56,12 @@ const sideBarData = [
     allowedUserType: ["admin"],
   },
   {
+    name: "developer",
+    to: "/account/developer",
+    icon: IoCode,
+    allowedUserType: ["user"],
+  },
+  {
     name: "profile",
     to: "/account/profile",
     icon: IoPersonOutline,
@@ -65,6 +71,12 @@ const sideBarData = [
     name: "news",
     to: "/admin/news",
     icon: IoNewspaperOutline,
+    allowedUserType: ["admin"],
+  },
+  {
+    name: "developers",
+    to: "/admin/developers",
+    icon: IoCode,
     allowedUserType: ["admin"],
   },
   {

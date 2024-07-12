@@ -10,7 +10,7 @@ import Button from "~/components/button";
 import FormField from "~/components/fields/form-field";
 import TextEditorField from "~/components/fields/text-editor-field";
 import { useEditProfile, useImageUpload } from "~/mutations/auth/profile";
-import { notifyError } from "~/utils/toast";
+import { notifyError, notifySuccess } from "~/utils/toast";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().trim().required("First name is required"),
@@ -84,6 +84,7 @@ export default function Profile() {
             }
 
             await editProfile.mutateAsync(obj);
+            notifySuccess("Profile updated successfully");
           }}
         >
           {({ handleSubmit, isSubmitting }) => (

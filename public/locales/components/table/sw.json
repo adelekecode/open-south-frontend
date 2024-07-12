@@ -1,0 +1,9 @@
+{
+  "footer": {
+    "rows-per-page": "Mistari kwa ukurasa",
+    "of": "ya"
+  },
+  "empty-state": {
+    "alt": "mchoro usio na data"
+  }
+}

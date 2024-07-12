@@ -263,12 +263,16 @@ export default function DatasetDetails() {
           </div>
         </div>
       </main>
-      <FilePreview
-        open={previewFile.open}
-        setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
-        file={previewFile.data}
-        onDownload={(id: string) => fileDownload.mutateAsync(id)}
-      />
+      {previewFile.open && previewFile.data && (
+        <FilePreview
+          open={true}
+          setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) =>
+            setPreviewFile(obj)
+          }
+          file={previewFile.data}
+          onDownload={(id: string) => fileDownload.mutateAsync(id)}
+        />
+      )}
     </>
   );
 }

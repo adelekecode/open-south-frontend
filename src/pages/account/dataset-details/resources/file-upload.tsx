@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
-import { IconButton } from "@mui/material";
+import { DialogActions, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import { IoClose } from "react-icons/io5";
 import { v4 as uuidv4 } from "uuid";
@@ -12,7 +12,6 @@ import Button from "~/components/button";
 import { useUploadDatasetFile } from "~/mutations/dataset";
 
 type FileUploadProps = {
-  open: boolean;
   setOpen: (bool: boolean) => void;
 };
 
@@ -24,7 +23,7 @@ type FileObj = {
   file: File;
 };
 
-export default function FileUpload({ open, setOpen }: FileUploadProps) {
+export default function FileUpload({ setOpen }: FileUploadProps) {
   const { t } = useTranslation("dashboard-layout/account/dataset/id");
 
   const { id } = useParams();
@@ -88,18 +87,50 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
     setFiles([]);
   }
 
+  const uploadHandler = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await Promise.all(
+        files.map(async (item) => {
+          try {
+            await uploadDatasetFile.mutateAsync({
+              datasetId: id || "",
+              file: item.file,
+              format: item.fileType,
+              size: item.fileSize,
+            });
+
+            setFilesUploaded((prev) => ({ ...prev, success: [...prev.success, item] }));
+            setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
+          } catch (error: any) {
+            const errMsg = error.response?.data?.error || "";
+
+            setFilesUploaded((prev) => ({
+              ...prev,
+              failed: [
+                ...prev.failed,
+                {
+                  ...item,
+                  reason: errMsg,
+                },
+              ],
+            }));
+            setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
+          }
+        })
+      );
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [files, id, uploadDatasetFile]);
+
   return (
-    <Modal
-      muiModal={{
-        open,
-        onClose,
-      }}
-      innerContainer={{
-        className: "pt-[2rem] w-[550px]",
-      }}
-    >
-      <div className="w-full flex flex-col gap-4 mediumMobile:gap-1">
-        <h1 className="text-xl font-semibold">{t("resources.upload-file.title")}</h1>
+    <Modal open onClose={onClose}>
+      <DialogTitle>{t("resources.upload-file.title")}</DialogTitle>
+      <DialogContent>
         <div
           className="border border-info-300 rounded-md flex flex-col items-center justify-center w-full p-8 cursor-pointer outline-0 gap-4"
           {...getRootProps()}
@@ -186,53 +217,18 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
             </div>
           )
         )}
+      </DialogContent>
+      <DialogActions>
         <Button
           className="!py-2 !mt-4"
           loading={isLoading}
-          onClick={async () => {
-            setIsLoading(true);
-            try {
-              await Promise.all(
-                files.map(async (item) => {
-                  try {
-                    await uploadDatasetFile.mutateAsync({
-                      datasetId: id || "",
-                      file: item.file,
-                      format: item.fileType,
-                      size: item.fileSize,
-                    });
-
-                    setFilesUploaded((prev) => ({ ...prev, success: [...prev.success, item] }));
-                    setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
-                  } catch (error: any) {
-                    const errMsg = error.response?.data?.error || "";
-
-                    setFilesUploaded((prev) => ({
-                      ...prev,
-                      failed: [
-                        ...prev.failed,
-                        {
-                          ...item,
-                          reason: errMsg,
-                        },
-                      ],
-                    }));
-                    setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
-                  }
-                })
-              );
-            } catch (error) {
-              console.error(error);
-              throw error;
-            } finally {
-              setIsLoading(false);
-            }
-          }}
+          onClick={uploadHandler}
           disabled={!(files.length > 0)}
+          size="small"
         >
           {t("resources.upload-file.upload-btn")}
         </Button>
-      </div>
+      </DialogActions>
     </Modal>
   );
 }

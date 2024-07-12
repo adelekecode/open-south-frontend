@@ -1,126 +1,130 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import {
-  ClickAwayListener,
-  Fade,
-  IconButton,
-  MenuItem,
-  OutlinedInput,
-  Paper,
-  Popper,
-  Select,
-} from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
+import { MenuItem, OutlinedInput, Select } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { twMerge } from "tailwind-merge";
-import { GoKebabHorizontal } from "react-icons/go";
-import moment from "moment";
+import { MdOutlineDelete } from "react-icons/md";
 import DataGrid from "~/components/data-grid";
-import { useAdminDatasets } from "~/queries/dataset";
-import DeleteConfirmationModal from "./delete-confirmation";
-import PublishConfirmationModal from "./status-confirmation-modals/publish";
-import RejectConfirmationModal from "./status-confirmation-modals/reject";
-import UnpublishConfirmationModal from "./status-confirmation-modals/unpublish";
-import FurtherReviewConfirmationModal from "./status-confirmation-modals/further-review";
+import RejectConfirmationModal from "./reject-modal";
 import useDebounce from "~/hooks/debounce";
+import {
+  createColumn,
+  createDateColumn,
+  createIdColumn,
+  createMenuColumn,
+  createRenderCell,
+} from "~/utils/table-helpers";
+import { OutletContext } from "~/layouts/paginated";
+import { useChangeDatasetStatus } from "~/mutations/dataset";
+import usePrompt from "~/hooks/usePrompt";
+import { useAdminDatasets } from "~/queries/dataset";
 
 type Modal = {
   open: boolean;
   data: Dataset | null;
 };
 
-type QueryKey = "q" | "status";
-
 export default function Dataset() {
   const navigate = useNavigate();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { paginationModel, onPaginationModelChange, queryParams } =
+    useOutletContext<OutletContext>();
 
-  const queryParams = {
-    get: (key: QueryKey) => searchParams.get(key) || "",
-    delete: (key: QueryKey) => {
-      setSearchParams((params) => {
-        params.delete(key);
+  const [searchParams] = useSearchParams();
 
-        return params;
-      });
-    },
-    set: (key: QueryKey, value: string) => {
-      setSearchParams(
-        (params) => {
-          params.set(key, value);
+  const search = queryParams.get("q");
 
-          return params;
-        },
-        {
-          replace: true,
-        }
-      );
-    },
-  };
+  const [menuObj, setMenuObj] = useState<{
+    [key: string]: HTMLButtonElement | null;
+  }>({});
 
-  const search = queryParams.get("q") || "";
-  const status = queryParams.get("status") || "";
-
-  const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
-  const [publishModal, setPublishModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
   const [rejectModal, setRejectModal] = useState<Modal>({
     open: false,
     data: null,
   });
-  const [unpublishModal, setUnpublishModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
-  const [furtherReviewModal, setFurtherReviewModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
-  const [deleteModal, setDeleteModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
 
-  const [pagination, setPagination] = useState({
-    page: 0,
-    pageSize: 10,
-  });
+  const { data, isLoading } = useAdminDatasets(useDebounce(search).trim());
 
-  function dropdownDisplay(id: string) {
-    return Boolean(anchorElObj[id]);
-  }
+  const { mutateAsync: changeDatasetStatus } = useChangeDatasetStatus(searchParams);
 
-  const { data, isLoading } = useAdminDatasets(
-    useDebounce(search).trim(),
-    {
-      status,
+  const prompt = usePrompt();
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want to delete this dataset?",
+      });
+
+      if (confirmed) {
+        await changeDatasetStatus({ id, action: "delete" });
+      }
     },
-    {
-      ...pagination,
-    }
+    [changeDatasetStatus, prompt]
+  );
+
+  const handleUnpublished = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want unpublish this dataset?",
+      });
+
+      if (confirmed) {
+        await changeDatasetStatus({ id, action: "unpublished" });
+      }
+    },
+    [changeDatasetStatus, prompt]
+  );
+
+  const handlePublished = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want publish this dataset?",
+      });
+
+      if (confirmed) {
+        await changeDatasetStatus({ id, action: "published" });
+      }
+    },
+    [changeDatasetStatus, prompt]
+  );
+
+  const handleFurtherReview = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want change this dataset status to further review?",
+      });
+
+      if (confirmed) {
+        await changeDatasetStatus({ id, action: "further_review" });
+      }
+    },
+    [changeDatasetStatus, prompt]
+  );
+
+  const PaperContent = useCallback(
+    ({ row }: { row: News }) => {
+      return (
+        <>
+          <button onClick={async () => await handleDelete(row.id)}>
+            <MdOutlineDelete />
+            <span>Delete</span>
+          </button>
+        </>
+      );
+    },
+    [handleDelete]
   );
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "NO.",
-      minWidth: 10,
-      renderCell: ({ api, row }) => {
-        const { page, pageSize } = pagination;
-        const { getAllRowIds } = api;
-
-        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
-      },
-    },
-    {
+    createIdColumn(paginationModel),
+    createColumn({
       field: "title",
-      headerName: "TITLE",
-      minWidth: 300,
-      headerClassName: "font-bold",
-      flex: 1,
-    },
+      headerName: "Title",
+    }),
     {
       field: "publisher_data",
       headerName: "CREATED BY",
@@ -157,34 +161,16 @@ export default function Dataset() {
       flex: 1,
       type: "string",
     },
-    {
+    createColumn({
       field: "views",
-      headerName: "VIEWS",
-      flex: 1,
+      headerName: "Views",
       minWidth: 100,
-      headerAlign: "center",
-      align: "center",
-      valueFormatter: ({ value }) => {
-        return value.count;
-      },
-      sortComparator: (v1, v2) => {
-        return v1 - v2.count;
-      },
-    },
-    {
+    }),
+    createColumn({
       field: "files_count",
-      headerName: "FILES",
+      headerName: "Files",
       minWidth: 100,
-      headerAlign: "center",
-      align: "center",
-      valueFormatter: ({ value }) => {
-        return value;
-      },
-      sortComparator: (v1, v2) => {
-        return v1 - v2;
-      },
-      flex: 1,
-    },
+    }),
     {
       field: "status",
       headerName: "STATUS",
@@ -194,10 +180,9 @@ export default function Dataset() {
       flex: 1,
       renderCell: ({ value, row }) => {
         const modals = {
-          unpublished: setUnpublishModal,
-          published: setPublishModal,
-          rejected: setRejectModal,
-          further_review: setFurtherReviewModal,
+          unpublished: handleUnpublished,
+          published: handlePublished,
+          further_review: handleFurtherReview,
         };
 
         const options = [
@@ -222,14 +207,18 @@ export default function Dataset() {
             onChange={async (e) => {
               const chosenValue = e.target.value;
 
+              if (chosenValue === "further_review") {
+                return setRejectModal({
+                  data: row,
+                  open: true,
+                });
+              }
+
               if (chosenValue !== "pending") {
                 const modalSetter = modals[chosenValue as keyof typeof modals];
 
                 if (modalSetter) {
-                  modalSetter({
-                    open: true,
-                    data: row,
-                  });
+                  await modalSetter(row.id);
                 }
               }
             }}
@@ -251,100 +240,17 @@ export default function Dataset() {
       },
       sortable: false,
     },
-    {
+    createDateColumn({
       field: "created_at",
-      headerName: "CREATED AT",
-      minWidth: 180,
-      headerAlign: "center",
-      align: "center",
-      valueFormatter: ({ value }) => {
-        return moment(value).format("Do MMM, YYYY");
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      flex: 1,
-      type: "string",
-    },
-    {
+      headerName: "Created At",
+    }),
+    createDateColumn({
       field: "updated_at",
-      headerName: "UPDATED AT",
-      minWidth: 180,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      valueFormatter: ({ value }) => {
-        const date = moment(value).fromNow();
-
-        return date.charAt(0).toUpperCase() + date.slice(1);
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      type: "string",
-    },
-    {
-      field: "_",
-      headerName: "ACTION",
-      minWidth: 100,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      sortable: false,
-      renderCell: ({ row }) => {
-        const obj = anchorElObj[row.id];
-
-        return (
-          <ClickAwayListener
-            onClickAway={() =>
-              setAnchorElObj((prev) => ({
-                ...prev,
-                [row.id]: null,
-              }))
-            }
-          >
-            <div>
-              <IconButton
-                size="small"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAnchorElObj((prev) => ({
-                    ...prev,
-                    [row.id]: obj ? null : e.currentTarget,
-                  }));
-                }}
-              >
-                <GoKebabHorizontal className="rotate-90" />
-              </IconButton>
-              <Popper transition open={dropdownDisplay(row.id)} anchorEl={obj} className="!mt-2">
-                {({ TransitionProps }) => (
-                  <Fade {...TransitionProps} timeout={200}>
-                    <Paper className="flex flex-col [&>button]:p-4 [&>button]:text-xs [&>button]:py-3 overflow-hidden relative divide-y !shadow">
-                      <button
-                        className="hover:bg-info-100"
-                        onClick={() => {
-                          setDeleteModal({
-                            open: true,
-                            data: row,
-                          });
-
-                          setAnchorElObj((prev) => ({
-                            ...prev,
-                            [row.id]: null,
-                          }));
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </Paper>
-                  </Fade>
-                )}
-              </Popper>
-            </div>
-          </ClickAwayListener>
-        );
-      },
-    },
+      headerName: "Updated AT",
+    }),
+    createMenuColumn({
+      renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
+    }),
   ];
 
   useEffect(() => {
@@ -376,7 +282,7 @@ export default function Dataset() {
               />
               <Select
                 className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                value={status}
+                value={queryParams.get("status")}
                 onChange={async (e) => {
                   const chosenValue = e.target.value;
 
@@ -409,42 +315,15 @@ export default function Dataset() {
               getRowClassName={() => `cursor-pointer`}
               columns={columns}
               rowCount={data?.count || 0}
-              paginationModel={pagination}
-              onPaginationModelChange={({ page, pageSize }, { reason }) => {
-                if (!reason) return;
-
-                setPagination({
-                  page,
-                  pageSize,
-                });
-              }}
+              paginationModel={paginationModel}
+              onPaginationModelChange={onPaginationModelChange}
               paginationMode="server"
             />
           </div>
         </div>
       </main>
-      {publishModal.open && (
-        <PublishConfirmationModal
-          open={publishModal.open}
-          onClose={() => {
-            setPublishModal({
-              open: false,
-              data: null,
-            });
-          }}
-          data={publishModal.data as Dataset}
-          pagination={pagination}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
-        />
-      )}
       {rejectModal.open && (
         <RejectConfirmationModal
-          open={rejectModal.open}
           onClose={() => {
             setRejectModal({
               open: false,
@@ -452,70 +331,6 @@ export default function Dataset() {
             });
           }}
           data={rejectModal.data as Dataset}
-          pagination={pagination}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
-        />
-      )}
-      {unpublishModal.open && (
-        <UnpublishConfirmationModal
-          open={unpublishModal.open}
-          onClose={() => {
-            setUnpublishModal({
-              open: false,
-              data: null,
-            });
-          }}
-          data={unpublishModal.data as Dataset}
-          pagination={pagination}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
-        />
-      )}
-      {furtherReviewModal.open && (
-        <FurtherReviewConfirmationModal
-          open={furtherReviewModal.open}
-          onClose={() => {
-            setFurtherReviewModal({
-              open: false,
-              data: null,
-            });
-          }}
-          data={furtherReviewModal.data as Dataset}
-          pagination={pagination}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
-        />
-      )}
-      {deleteModal.open && (
-        <DeleteConfirmationModal
-          open={deleteModal.open}
-          onClose={() => {
-            setDeleteModal({
-              open: false,
-              data: null,
-            });
-          }}
-          data={deleteModal.data as Dataset}
-          pagination={pagination}
-          queryParams={{
-            search,
-            filter: {
-              status,
-            },
-          }}
         />
       )}
     </>

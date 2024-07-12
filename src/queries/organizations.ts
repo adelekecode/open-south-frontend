@@ -1,5 +1,16 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
+const generateParams = (searchParams: URLSearchParams): URLSearchParams => {
+  return new URLSearchParams({
+    search: searchParams.get("search") || "",
+    verified: searchParams.get("verified") || "",
+    active: searchParams.get("active") || "",
+    status: searchParams.get("status") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
+};
+
 export function useUserOrganizations(options?: UseQueryOptions<Organization[]>) {
   return useQuery<Organization[]>([`/user/organisations/`], options);
 }
@@ -9,22 +20,13 @@ export function useUserOrganizationDetails(slug: string, options?: UseQueryOptio
 }
 
 export function useAdminOrganizations(
-  search = "",
-  filterBy: {
-    status: string;
-    isVerified: string;
-    isActive: string;
-  },
-  pagination: Pagination,
+  searchParams: URLSearchParams,
   options?: UseQueryOptions<PaginatedResponse<Organization[]>>
 ) {
-  const { status, isVerified, isActive } = filterBy;
-  const { page, pageSize } = pagination;
+  const params = generateParams(searchParams);
 
   return useQuery<PaginatedResponse<Organization[]>>(
-    [
-      `/admin/organisations/?search=${search}&status=${status || ""}&verified=${isVerified || ""}&active=${isActive ? isActive.charAt(0).toUpperCase() + isActive.slice(1) : ""}&limit=${pageSize}&offset=${page * pageSize}`,
-    ],
+    [`/admin/organisations/?${params.toString()}`],
     options
   );
 }
@@ -35,14 +37,17 @@ export function useAdminOrganizationDetails(id: string, options?: UseQueryOption
 
 export function useAdminOrganizationUsers(
   orgId: string,
-  search = "",
-  pagination: Pagination,
+  searchParams: URLSearchParams,
   options?: UseQueryOptions<PaginatedResponse<CurrentUser[]>>
 ) {
-  const { page, pageSize } = pagination;
+  const params = new URLSearchParams({
+    search: searchParams.get("search") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   return useQuery<PaginatedResponse<CurrentUser[]>>(
-    [`/organisations/users/${orgId}/?search=${search}&limit=${pageSize}&offset=${page * pageSize}`],
+    [`/organisations/users/${orgId}/?${params.toString()}`],
     options
   );
 }

@@ -1,34 +1,33 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
-import { IconButton } from "@mui/material";
+import { useCallback, useState } from "react";
+import { useOutletContext, useParams, useSearchParams } from "react-router-dom";
 import { GridColDef } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
 import { MdOutlineDelete } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
-import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import { useUserDatasetFiles } from "~/queries/dataset";
-import DeleteConfirmation from "./delete-confirmation";
 import Button from "~/components/button";
 import FileUpload from "./file-upload";
 import FilePreview from "~/components/file/preview";
+import { OutletContext } from "~/layouts/paginated";
+import {
+  createColumn,
+  createDateColumn,
+  createIdColumn,
+  createMenuColumn,
+  createRenderCell,
+} from "~/utils/table-helpers";
+import usePrompt from "~/hooks/usePrompt";
+import { useDeleteDatasetFile } from "~/mutations/dataset";
 
 export default function Resources() {
   const { t } = useTranslation("dashboard-layout/account/dataset/id");
 
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
 
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: 10,
-    page: 0,
-  });
-  const [deleteModal, setDeleteModal] = useState<{
-    open: boolean;
-    data: Dataset["files"][0] | null;
-  }>({
-    open: false,
-    data: null,
-  });
+  const { paginationModel, onPaginationModelChange } = useOutletContext<OutletContext>();
+
   const [openFileUpload, setOpenFileUpload] = useState(false);
   const [previewFile, setPreviewFile] = useState<{
     open: boolean;
@@ -37,104 +36,94 @@ export default function Resources() {
     open: false,
     data: null,
   });
+  const [menuObj, setMenuObj] = useState<{
+    [key: string]: HTMLButtonElement | null;
+  }>({});
 
-  const { isLoading, data } = useUserDatasetFiles(
-    id || "",
-    {
-      ...paginationModel,
+  const { isLoading, data } = useUserDatasetFiles(id || "", searchParams, {
+    enabled: !!id,
+  });
+
+  const { mutateAsync: deleteDatasetFile } = useDeleteDatasetFile();
+
+  const prompt = usePrompt();
+
+  const handleDelete = useCallback(
+    async (data: { fileId: string; datasetId: string }) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: t("resources.delete-confirmation-modal.contents"),
+      });
+
+      if (confirmed) {
+        await deleteDatasetFile(data);
+      }
     },
-    {
-      enabled: !!id,
-    }
+    [deleteDatasetFile, prompt, t]
+  );
+
+  const PaperContent = useCallback(
+    ({ row }: { row: Dataset["files"][number] }) => {
+      const avaliableFormat = row.format === "xlsx" || row.format === "text/csv";
+
+      return (
+        <>
+          <button
+            onClick={() => {
+              setPreviewFile({
+                open: true,
+                data: row,
+              });
+            }}
+            disabled={!avaliableFormat}
+          >
+            <IoEyeOutline />
+            <span>View</span>
+          </button>
+          <button
+            onClick={async () => {
+              await handleDelete({
+                fileId: row.id,
+                datasetId: id || "",
+              });
+            }}
+          >
+            <MdOutlineDelete />
+            <span>Delete</span>
+          </button>
+        </>
+      );
+    },
+    [handleDelete, id]
   );
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
+    createIdColumn(paginationModel, {
       headerName: t("resources.table.header.no"),
-      minWidth: 10,
-      renderCell: ({ api, row }) => {
-        const { page, pageSize } = paginationModel;
-        const { getAllRowIds } = api;
-
-        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
-      },
-    },
-    { field: "file_name", headerName: t("resources.table.header.name"), minWidth: 250 },
-    {
+    }),
+    createColumn({
+      field: "file_name",
+      headerName: t("resources.table.header.name"),
+    }),
+    createColumn({
       field: "format",
       headerName: t("resources.table.header.format"),
-      align: "center",
-      headerAlign: "center",
-      minWidth: 200,
-    },
-    {
+    }),
+    createColumn({
       field: "size",
       headerName: t("resources.table.header.size"),
-      align: "center",
-      headerAlign: "center",
-      minWidth: 150,
-    },
-    {
+    }),
+    createColumn({
       field: "download_count",
       headerName: t("resources.table.header.downloads"),
-      align: "center",
-      headerAlign: "center",
-      minWidth: 200,
-    },
-    {
+    }),
+    createDateColumn({
       field: "created_at",
       headerName: t("resources.table.header.created-at"),
-      flex: 1,
-      minWidth: 200,
-      valueFormatter: ({ value }) => {
-        return moment(value).format("Do MMM, YYYY");
-      },
-      sortComparator: (v1, v2) => {
-        return new Date(v1).getTime() - new Date(v2).getTime();
-      },
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "_",
-      headerName: t("resources.table.header.action"),
-      align: "center",
-      headerAlign: "center",
-      minWidth: 100,
-      sortable: false,
-      renderCell: ({ row }) => {
-        const avaliableFormat = row.format === "xlsx" || row.format === "text/csv";
-
-        return (
-          <div className="w-full flex items-center justify-center gap-1">
-            <IconButton
-              size="medium"
-              onClick={() => {
-                setPreviewFile({
-                  open: true,
-                  data: row,
-                });
-              }}
-              disabled={!avaliableFormat}
-            >
-              <IoEyeOutline className="text-lg" />
-            </IconButton>
-            <IconButton
-              size="medium"
-              onClick={() => {
-                setDeleteModal({
-                  open: true,
-                  data: row,
-                });
-              }}
-            >
-              <MdOutlineDelete className="text-lg" />
-            </IconButton>
-          </div>
-        );
-      },
-    },
+    }),
+    createMenuColumn({
+      renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
+    }),
   ];
 
   return (
@@ -158,38 +147,21 @@ export default function Resources() {
             columns={columns}
             rowCount={data?.count || 0}
             paginationModel={paginationModel}
-            onPaginationModelChange={({ page, pageSize }, { reason }) => {
-              if (!reason) return;
-
-              setPaginationModel({
-                page,
-                pageSize,
-              });
-            }}
+            onPaginationModelChange={onPaginationModelChange}
             paginationMode="server"
           />
         </div>
       </div>
-      <DeleteConfirmation
-        open={deleteModal.open}
-        onClose={() => {
-          setDeleteModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={
-          deleteModal.data as Dataset["files"][0] & {
-            dataset: string;
+      {openFileUpload && <FileUpload setOpen={(bool: boolean) => setOpenFileUpload(bool)} />}
+      {previewFile.open && previewFile.data && (
+        <FilePreview
+          open={true}
+          setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) =>
+            setPreviewFile(obj)
           }
-        }
-      />
-      <FileUpload open={openFileUpload} setOpen={(bool: boolean) => setOpenFileUpload(bool)} />
-      <FilePreview
-        open={previewFile.open}
-        setOpen={(obj: { open: boolean; data: Dataset["files"][0] | null }) => setPreviewFile(obj)}
-        file={previewFile.data}
-      />
+          file={previewFile.data}
+        />
+      )}
     </>
   );
 }

@@ -9,6 +9,7 @@ import { downloadFileHandler } from "~/utils/helper";
 import { useDatasetFilePreview } from "~/queries/dataset";
 import { useDatasetFileDownload } from "~/mutations/dataset";
 import { useTranslation } from "react-i18next";
+import { notifyError } from "~/utils/toast";
 
 type Props = DatasetFile & {
   setPreviewFile: (obj: { open: boolean; data: DatasetFile | null }) => void;
@@ -121,9 +122,9 @@ export default function File({
 
                 const { data } = await refetch();
 
-                const newData = { ...data } as BlobPart;
+                if (!data) return notifyError("File returned nothing");
 
-                const blob = new Blob([newData], {
+                const blob = new Blob([data], {
                   type:
                     format === "xlsx"
                       ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -143,11 +144,9 @@ export default function File({
                   format === "text/csv" ? ".csv" : `.${format}`
                 );
 
-                const response = await fileDownload.mutateAsync(rest.id);
+                await fileDownload.mutateAsync(rest.id);
 
-                if (response) {
-                  setIsloading(false);
-                }
+                setIsloading(false);
               }}
               loading={isLoading}
             >

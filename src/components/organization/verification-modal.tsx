@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import OtpInput from "~/components/inputs/otp-input";
@@ -20,42 +21,42 @@ export default function VerificationModal() {
 
   return (
     <Modal
-      muiModal={{
-        open,
-        onClose: () => {
-          setShowVerificationForm(false);
-          setCode("");
-          setIsComplete(false);
-          setVerificationModal({
-            open: false,
-            data: null,
-          });
-        },
+      open={open}
+      onClose={() => {
+        setShowVerificationForm(false);
+        setCode("");
+        setIsComplete(false);
+        setVerificationModal({
+          open: false,
+          data: null,
+        });
       }}
     >
       {showVerificationForm ? (
-        <div className="flex flex-col gap-8">
+        <>
           <header className="flex flex-col items-center gap-2">
-            <h1 className="text-xl font-semibold">Verify Organization</h1>
+            <DialogTitle>Verify Organization</DialogTitle>
             <small className="text-center">
               A verification code has been sent to the organization email
             </small>
           </header>
-          <OtpInput
-            value={code}
-            onChange={(value) => {
-              setCode(value);
-              if (value.length === 6) {
-                setIsComplete(true);
-              } else {
-                setIsComplete(false);
-              }
-            }}
-            TextFieldsProps={{
-              className: "w-[2.5rem]",
-            }}
-          />
-          <div className="flex flex-col gap-2 items-center">
+          <DialogContent>
+            <OtpInput
+              value={code}
+              onChange={(value) => {
+                setCode(value);
+                if (value.length === 6) {
+                  setIsComplete(true);
+                } else {
+                  setIsComplete(false);
+                }
+              }}
+              TextFieldsProps={{
+                className: "w-[2.5rem]",
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
             <Button
               disabled={!isComplete}
               className="!py-3 self-stretch"
@@ -89,18 +90,17 @@ export default function VerificationModal() {
                 Resend
               </button>
             </p>
-          </div>
-        </div>
+          </DialogActions>
+        </>
       ) : (
-        <div className="flex flex-col gap-8">
-          <header className="flex flex-col items-center gap-2">
-            <h1 className="text-xl font-semibold">Access Denied</h1>
+        <>
+          <header className="flex flex-col items-center gap-2 mb-8">
+            <DialogTitle>Access Denied</DialogTitle>
             <small className="text-center">
               You need to verify this organization to access it.
             </small>
           </header>
           <Button
-            className="!py-3"
             onClick={async () => {
               const response = await resendCode.mutateAsync(orgData?.id || "");
 
@@ -113,7 +113,7 @@ export default function VerificationModal() {
           >
             Verify Organization
           </Button>
-        </div>
+        </>
       )}
     </Modal>
   );
