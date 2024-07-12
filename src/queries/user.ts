@@ -8,15 +8,16 @@ export function useCurrentUser(
 }
 
 export function useGetAllUsers(
-  search = "",
-  filterBy: {
-    isActive: string;
-  },
-  pagination: Pagination,
+  searchParams: URLSearchParams,
   options?: UseQueryOptions<PaginatedResponse<CurrentUser[]>>
 ) {
-  const { isActive } = filterBy;
-  const { page, pageSize } = pagination;
+  const isActive = searchParams.get("is-active") || "";
+
+  const params = new URLSearchParams({
+    search: searchParams.get("q") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   let status = "";
 
@@ -27,7 +28,7 @@ export function useGetAllUsers(
   }
 
   return useQuery<PaginatedResponse<CurrentUser[]>>(
-    [`/admin/users/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`],
+    [`/admin/users/?status=${status}&${params.toString()}`],
     options
   );
 }

@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { notifyError, notifySuccess } from "~/utils/toast";
@@ -288,9 +287,8 @@ export function useDatasetView() {
 }
 
 //? separate these
-export function useChangeDatasetStatus() {
+export function useChangeDatasetStatus(searchParams: URLSearchParams) {
   const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
 
   const params = generateParams(searchParams);
 
@@ -310,8 +308,10 @@ export function useChangeDatasetStatus() {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([`/admin/datasets/?${params.toString()}`]);
         notifySuccess("Successfully changed dataset status");
+      },
+      async onSettled() {
+        return await queryClient.invalidateQueries([`/admin/datasets/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {

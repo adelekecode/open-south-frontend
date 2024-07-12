@@ -1,105 +1,132 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import {
-  Avatar,
-  ClickAwayListener,
-  Fade,
-  IconButton,
-  MenuItem,
-  OutlinedInput,
-  Paper,
-  Popper,
-  Select,
-} from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
+import { Avatar, MenuItem, OutlinedInput, Select } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { IoPerson } from "react-icons/io5";
-import { GoKebabHorizontal } from "react-icons/go";
-import moment from "moment";
-import { twMerge } from "tailwind-merge";
+import { IoEyeOutline, IoPerson } from "react-icons/io5";
+import { MdBlock, MdOutlineDelete } from "react-icons/md";
+import { CgUnblock } from "react-icons/cg";
 import DataGrid from "~/components/data-grid";
 import { useGetAllUsers } from "~/queries/user";
-import BlockConfirmationModal from "./confirmation-modals/block";
-import DeleteConfirmationModal from "./confirmation-modals/delete";
-import UnblockConfirmationModal from "./confirmation-modals/unblock";
-import useDebounce from "~/hooks/debounce";
-
-type Modal = {
-  open: boolean;
-  data: CurrentUser | null;
-};
-
-type QueryKey = "q" | "is-active";
+import {
+  createColumn,
+  createDateColumn,
+  createEmailColumn,
+  createIdColumn,
+  createMenuColumn,
+  createRenderCell,
+  createStateColumn,
+} from "~/utils/table-helpers";
+import usePrompt from "~/hooks/usePrompt";
+import { OutletContext } from "~/layouts/paginated";
+import { useChangeUserStatus } from "~/mutations/user";
 
 export default function User() {
   const navigate = useNavigate();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
-  const queryParams = {
-    get: (key: QueryKey) => searchParams.get(key) || "",
-    delete: (key: QueryKey) => {
-      setSearchParams((params) => {
-        params.delete(key);
+  const { paginationModel, onPaginationModelChange, queryParams } =
+    useOutletContext<OutletContext>();
 
-        return params;
+  const [menuObj, setMenuObj] = useState<{
+    [key: string]: HTMLButtonElement | null;
+  }>({});
+
+  const { isLoading, data } = useGetAllUsers(searchParams);
+  const { mutateAsync: changeUserStatus } = useChangeUserStatus(searchParams);
+
+  const prompt = usePrompt();
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want to delete this user?",
       });
-    },
-    set: (key: QueryKey, value: string) => {
-      setSearchParams(
-        (params) => {
-          params.set(key, value);
 
-          return params;
-        },
-        {
-          replace: true,
-        }
+      if (confirmed) {
+        await changeUserStatus({
+          action: "delete",
+          id,
+        });
+      }
+    },
+    [changeUserStatus, prompt]
+  );
+
+  const handleBlock = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want block this user?",
+      });
+
+      if (confirmed) {
+        await changeUserStatus({
+          action: "block",
+          id,
+        });
+      }
+    },
+    [changeUserStatus, prompt]
+  );
+
+  const handleUnblock = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want unblock this user?",
+      });
+
+      if (confirmed) {
+        await changeUserStatus({
+          action: "unblock",
+          id,
+        });
+      }
+    },
+    [changeUserStatus, prompt]
+  );
+
+  const PaperContent = useCallback(
+    ({ row }: { row: CurrentUser }) => {
+      return (
+        <>
+          <button
+            onClick={() => {
+              navigate(`/users/${row.id}`);
+            }}
+          >
+            <IoEyeOutline />
+            <span>View</span>
+          </button>
+          {row.is_active ? (
+            <button onClick={async () => await handleUnblock(row.id)}>
+              <CgUnblock />
+              <span>Unblock</span>
+            </button>
+          ) : (
+            <button onClick={async () => await handleBlock(row.id)}>
+              <MdBlock />
+              <span>Block</span>
+            </button>
+          )}
+          <button
+            onClick={async () => {
+              await handleDelete(row.id);
+            }}
+          >
+            <MdOutlineDelete />
+            <span>Delete</span>
+          </button>
+        </>
       );
     },
-  };
-  const [anchorElObj, setAnchorElObj] = useState<{ [key: string]: HTMLButtonElement | null }>({});
-  const [blockModal, setBlockModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
-  const [deleteModal, setDeleteModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
-  const [unblockModal, setUnblockModal] = useState<Modal>({
-    open: false,
-    data: null,
-  });
-
-  const [pagination, setPagination] = useState({
-    page: 0,
-    pageSize: 10,
-  });
-
-  function dropdownDisplay(id: string) {
-    return Boolean(anchorElObj[id]);
-  }
-
-  const { isLoading, data } = useGetAllUsers(
-    useDebounce(queryParams.get("q")).trim(),
-    {
-      isActive: queryParams.get("is-active"),
-    },
-    pagination
+    [handleBlock, handleDelete, handleUnblock, navigate]
   );
 
   const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "NO.",
-      minWidth: 100,
-      renderCell: ({ api, row }) => {
-        const { page, pageSize } = pagination;
-        const { getAllRowIds } = api;
-
-        return getAllRowIds().indexOf(row.id) + 1 + page * pageSize;
-      },
-    },
+    createIdColumn(paginationModel),
     {
       field: "image_url",
       headerName: "",
@@ -123,177 +150,26 @@ export default function User() {
       filterable: false,
       sortable: false,
     },
-    {
+    createColumn({
       field: "first_name",
       headerName: "First Name",
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      cellClassName: "capitalize",
-    },
-    {
+    }),
+    createColumn({
       field: "last_name",
       headerName: "Last Name",
-      minWidth: 150,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      cellClassName: "capitalize",
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      minWidth: 300,
-      type: "string",
-      renderCell: (params) => {
-        return (
-          <a
-            className="hover:underline hover:text-primary-600 text-center whitespace-nowrap"
-            href={`mailto:${params.value}`}
-          >
-            {params.value}
-          </a>
-        );
-      },
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
+    }),
+    createEmailColumn(),
+    createDateColumn({
       field: "date_joined",
       headerName: "Date Joined",
-      minWidth: 150,
-      type: "string",
-      renderCell: (params) => {
-        return <p>{moment(params.value).format("MMMM D, YYYY")}</p>;
-      },
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
+    }),
+    createStateColumn({
       field: "is_active",
-      headerName: "ACTIVE",
-      minWidth: 100,
-      flex: 1,
-      renderCell: ({ value }) => {
-        const obj: {
-          element: any;
-          styles: string;
-        } = {
-          element: "-------",
-          styles: "py-1 px-2 rounded-full text-xs",
-        };
-
-        if (value === true) {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>True</p>
-          );
-        } else if (value === false) {
-          obj.element = (
-            <p className={twMerge(obj.styles, `text-amber-500 border border-amber-500`)}>False</p>
-          );
-        }
-
-        return obj.element;
-      },
-      sortable: false,
-      align: "center",
-      headerAlign: "center",
-    },
-    {
-      field: "_",
-      headerName: "Action",
-      minWidth: 100,
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      renderCell: ({ row }) => {
-        const obj = anchorElObj[row.id];
-
-        return (
-          <ClickAwayListener
-            onClickAway={() =>
-              setAnchorElObj((prev) => ({
-                ...prev,
-                [row.id]: null,
-              }))
-            }
-          >
-            <div>
-              <IconButton
-                size="small"
-                onClick={(e) =>
-                  setAnchorElObj((prev) => ({
-                    ...prev,
-                    [row.id]: obj ? null : e.currentTarget,
-                  }))
-                }
-              >
-                <GoKebabHorizontal className="rotate-90" />
-              </IconButton>
-              <Popper transition open={dropdownDisplay(row.id)} anchorEl={obj} className="!mt-2">
-                {({ TransitionProps }) => (
-                  <Fade {...TransitionProps} timeout={200}>
-                    <Paper className="flex flex-col [&>button]:p-4 [&>button]:text-sm [&>button]:py-3 overflow-hidden relative divide-y !shadow">
-                      <button
-                        className="hover:bg-info-100"
-                        onClick={() => {
-                          navigate(`/users/${row.id}`);
-                        }}
-                      >
-                        View
-                      </button>
-                      <button
-                        className="hover:bg-info-100"
-                        onClick={(e) => {
-                          if (row.is_active) {
-                            setBlockModal({
-                              open: true,
-                              data: row,
-                            });
-                          } else {
-                            setUnblockModal({
-                              open: true,
-                              data: row,
-                            });
-                          }
-
-                          setAnchorElObj((prev) => ({
-                            ...prev,
-                            [row.id]: obj ? null : e.currentTarget,
-                          }));
-                        }}
-                      >
-                        Block
-                      </button>
-                      <button
-                        className="hover:bg-info-100"
-                        onClick={async () => {
-                          setDeleteModal({
-                            open: true,
-                            data: row,
-                          });
-
-                          setAnchorElObj((prev) => ({
-                            ...prev,
-                            [row.id]: null,
-                          }));
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </Paper>
-                  </Fade>
-                )}
-              </Popper>
-            </div>
-          </ClickAwayListener>
-        );
-      },
-      sortable: false,
-    },
+      headerName: "Active",
+    }),
+    createMenuColumn({
+      renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
+    }),
   ];
 
   useEffect(() => {
@@ -353,71 +229,13 @@ export default function User() {
               rows={data ? data.results : []}
               columns={columns}
               rowCount={data?.count || 0}
-              paginationModel={pagination}
-              onPaginationModelChange={({ page, pageSize }, { reason }) => {
-                if (!reason) return;
-
-                setPagination({
-                  page,
-                  pageSize,
-                });
-              }}
+              paginationModel={paginationModel}
+              onPaginationModelChange={onPaginationModelChange}
               paginationMode="server"
             />
           </div>
         </div>
       </main>
-      <BlockConfirmationModal
-        open={blockModal.open}
-        onClose={() => {
-          setBlockModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={blockModal.data as CurrentUser}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            isActive: queryParams.get("is-active"),
-          },
-        }}
-      />
-      <DeleteConfirmationModal
-        open={deleteModal.open}
-        onClose={() => {
-          setDeleteModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={deleteModal.data as CurrentUser}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            isActive: queryParams.get("is-active"),
-          },
-        }}
-      />
-      <UnblockConfirmationModal
-        open={unblockModal.open}
-        onClose={() => {
-          setUnblockModal({
-            open: false,
-            data: null,
-          });
-        }}
-        data={unblockModal.data as CurrentUser}
-        pagination={pagination}
-        queryParams={{
-          search: queryParams.get("q"),
-          filter: {
-            isActive: queryParams.get("is-active"),
-          },
-        }}
-      />
     </>
   );
 }

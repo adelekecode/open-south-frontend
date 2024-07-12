@@ -12,7 +12,6 @@ import Button from "~/components/button";
 import { useUploadDatasetFile } from "~/mutations/dataset";
 
 type FileUploadProps = {
-  open: boolean;
   setOpen: (bool: boolean) => void;
 };
 
@@ -24,7 +23,7 @@ type FileObj = {
   file: File;
 };
 
-export default function FileUpload({ open, setOpen }: FileUploadProps) {
+export default function FileUpload({ setOpen }: FileUploadProps) {
   const { t } = useTranslation("dashboard-layout/account/dataset/id");
 
   const { id } = useParams();
@@ -129,7 +128,7 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
   }, [files, id, uploadDatasetFile]);
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open onClose={onClose}>
       <DialogTitle>{t("resources.upload-file.title")}</DialogTitle>
       <DialogContent>
         <div
@@ -225,6 +224,7 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
           loading={isLoading}
           onClick={uploadHandler}
           disabled={!(files.length > 0)}
+          size="small"
         >
           {t("resources.upload-file.upload-btn")}
         </Button>

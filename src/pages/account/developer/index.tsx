@@ -23,10 +23,11 @@ export default function Developer() {
       enabled: !!currentUser?.meta?.developer_enabled,
     },
   });
+
   const { data: logs } = useGetDeveloperLogs();
   const { mutateAsync: generateAPIKey, isLoading } = useGenerateAPIKey();
 
-  if (APIKeyisLoading) {
+  if (currentUser?.meta?.developer_enabled && APIKeyisLoading) {
     return <DashboardLoader />;
   }
 

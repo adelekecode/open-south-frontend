@@ -101,6 +101,42 @@ export default function News() {
     [deleteNews, prompt]
   );
 
+  const PaperContent = useCallback(
+    ({ row }: { row: News }) => {
+      return (
+        <>
+          <button
+            onClick={() => {
+              setModal({
+                state: "view",
+                data: row,
+              });
+            }}
+          >
+            <IoEyeOutline />
+            <span>View</span>
+          </button>
+          <button
+            onClick={() => {
+              setModal({
+                state: "edit",
+                data: row,
+              });
+            }}
+          >
+            <FiEdit />
+            <span>Edit</span>
+          </button>
+          <button onClick={async () => await handleDelete(row.id)}>
+            <MdOutlineDelete />
+            <span>Delete</span>
+          </button>
+        </>
+      );
+    },
+    [handleDelete]
+  );
+
   const columns: GridColDef[] = [
     createIdColumn(paginationModel),
     createColumn({
@@ -162,39 +198,6 @@ export default function News() {
       renderCell: createRenderCell(menuObj, setMenuObj, PaperContent),
     }),
   ];
-
-  function PaperContent({ row }: { row: News }) {
-    return (
-      <>
-        <button
-          onClick={() => {
-            setModal({
-              state: "view",
-              data: row,
-            });
-          }}
-        >
-          <IoEyeOutline />
-          <span>View</span>
-        </button>
-        <button
-          onClick={() => {
-            setModal({
-              state: "edit",
-              data: row,
-            });
-          }}
-        >
-          <FiEdit />
-          <span>Edit</span>
-        </button>
-        <button onClick={async () => await handleDelete(row.id)}>
-          <MdOutlineDelete />
-          <span>Delete</span>
-        </button>
-      </>
-    );
-  }
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });

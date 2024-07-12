@@ -5,6 +5,7 @@ type CurrentUser = {
   first_name?: string;
   last_name?: string;
   role: "user" | "admin";
+  is_active: boolean;
   profile_data: {
     first_name: string;
     last_name: string;
@@ -157,7 +158,6 @@ type OrganizationRequest = {
 type Pagination = { pageSize: number; page: number };
 
 type OrganizationModalProps = {
-  open: boolean;
   onClose: () => void;
   data: Organization;
   pagination: Pagination;

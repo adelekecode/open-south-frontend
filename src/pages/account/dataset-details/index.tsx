@@ -1,14 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import Button from "~/components/button";
 import Resources from "./resources";
-import DeleteConfirmation from "./delete-confirmation";
 import { useUserDatasetDetails } from "~/queries/dataset";
 import DashboardLoader from "~/components/loader/dashboard-loader";
 import NotFound from "~/pages/404";
+import usePrompt from "~/hooks/usePrompt";
+import { useDeleteDataset } from "~/mutations/dataset";
 
 export default function DatasetDetails() {
   const { t } = useTranslation("dashboard-layout/account/dataset/id");
@@ -17,9 +18,8 @@ export default function DatasetDetails() {
   const { id } = useParams();
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
-  const [displayDeleteConfirmationModal, setDisplayDeleteConfirmationModal] = useState(false);
-
   const { data, isLoading } = useUserDatasetDetails(id || "");
+  const { mutateAsync: deleteDataset } = useDeleteDataset();
 
   useEffect(() => {
     if (!descriptionRef.current) return;
@@ -33,6 +33,22 @@ export default function DatasetDetails() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
+
+  const prompt = usePrompt();
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: t("resources.delete-confirmation-modal.contents"),
+      });
+
+      if (confirmed) {
+        await deleteDataset(id);
+      }
+    },
+    [deleteDataset, prompt, t]
+  );
 
   if (isLoading) {
     return <DashboardLoader />;
@@ -70,8 +86,8 @@ export default function DatasetDetails() {
               color="error"
               className="!py-2 !px-3 !text-xs"
               variant="outlined"
-              onClick={() => {
-                setDisplayDeleteConfirmationModal(true);
+              onClick={async () => {
+                await handleDelete(id || "");
               }}
             >
               {t("cta-btn.delete")}
@@ -147,10 +163,6 @@ export default function DatasetDetails() {
           </div>
         </div>
       </main>
-      <DeleteConfirmation
-        open={displayDeleteConfirmationModal}
-        setOpen={(bool: boolean) => setDisplayDeleteConfirmationModal(bool)}
-      />
     </>
   );
 }

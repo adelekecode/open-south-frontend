@@ -1,12 +1,16 @@
+import { useSearchParams } from "react-router-dom";
+import { DialogActions, DialogTitle } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { TiInfo } from "react-icons/ti";
 import Button from "~/components/button";
 import TextEditorField from "~/components/fields/text-editor-field";
 import Modal from "~/components/modal";
 import { useChangeOrganizationStatus } from "~/mutations/organization";
 
-type RejectModalProps = OrganizationModalProps;
+type Props = {
+  onClose: () => void;
+  data: Organization;
+};
 
 const validationSchema = Yup.object({
   remark: Yup.string()
@@ -15,25 +19,19 @@ const validationSchema = Yup.object({
     .min(3, "This field must contain atleast 3 characters"),
 });
 
-export default function RejectModal({
-  open,
-  onClose,
-  data,
-  queryParams,
-  pagination,
-}: RejectModalProps) {
-  const changeOrganizationStatus = useChangeOrganizationStatus(pagination, queryParams);
+export default function RejectModal({ onClose, data }: Props) {
+  const [searchParams] = useSearchParams();
+  const { mutateAsync: changeOrganizationStatus } = useChangeOrganizationStatus(searchParams);
 
   return (
-    <Modal
-      muiModal={{
-        open,
-        onClose,
-      }}
-      innerContainer={{
-        className: "w-[550px]",
-      }}
-    >
+    <Modal open onClose={onClose} scroll="body">
+      <header className="flex flex-col gap-1 pb-8">
+        <DialogTitle>Please confirm</DialogTitle>
+        <p className="text-xs">
+          Are you sure you want to reject this organization? Please provide a reason for rejecting
+          the organization.
+        </p>
+      </header>
       <Formik
         initialValues={{
           remark: "",
@@ -41,7 +39,7 @@ export default function RejectModal({
         validateOnBlur={false}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          const response = await changeOrganizationStatus.mutateAsync({
+          const response = await changeOrganizationStatus({
             id: data?.id || "",
             action: "rejected",
             data: values,
@@ -54,15 +52,6 @@ export default function RejectModal({
       >
         {({ handleSubmit, isSubmitting }) => (
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2 mediumMobile:gap-1 py-2">
-              <span className="bg-red-100 mb-3 w-fit rounded-md p-4 mx-auto">
-                <TiInfo className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3.5rem] !font-extralight" />
-              </span>
-              <p className="text-sm largeMobile:!text-xs text-center font-medium">
-                Are you sure you want to reject this organization? Please provide a reason for
-                rejecting the organization.
-              </p>
-            </div>
             <TextEditorField
               required
               name="remark"
@@ -70,14 +59,14 @@ export default function RejectModal({
                 className: "!font-medium",
               }}
             />
-            <div className="mt-6 flex gap-6 justify-between">
-              <Button variant="outlined" onClick={onClose}>
+            <DialogActions>
+              <Button variant="outlined" size="small" onClick={onClose}>
                 Cancel
               </Button>
-              <Button loading={isSubmitting} type="submit">
+              <Button loading={isSubmitting} type="submit" size="small">
                 Confirm
               </Button>
-            </div>
+            </DialogActions>
           </form>
         )}
       </Formik>

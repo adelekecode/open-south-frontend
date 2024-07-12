@@ -78,6 +78,15 @@ export default function AgreementModal() {
                 },
               });
             } catch (error) {
+              if (error instanceof Error) {
+                if (error.message === "You have already accepted the agreement") {
+                  await editProfile({
+                    meta: {
+                      developer_enabled: true,
+                    },
+                  });
+                }
+              }
               notifyError("An error occured");
             }
           }}
