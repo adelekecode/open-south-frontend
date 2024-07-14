@@ -1,0 +1,29 @@
+{
+  "title": "Seti za Takwimu",
+  "search": {
+    "placeholder": "Tafuta kwa jina..."
+  },
+  "filter": {
+    "by-active": {
+      "placeholder": "Chuja kwa hali",
+      "dropdown": {
+        "pending": "Inasubiri",
+        "rejected": "Imekataliwa",
+        "published": "Imechapishwa",
+        "unpublished": "Haijachapishwa",
+        "further-review": "Mapitio Zaidi"
+      }
+    }
+  },
+  "table": {
+    "header": {
+      "no": "namba",
+      "first-name": "Jina la Kwanza",
+      "last-name": "Jina la Mwisho",
+      "email": "Barua pepe",
+      "date-joined": "Imejiunga Tarehe",
+      "active": "Active",
+      "action": "Tendo"
+    }
+  }
+}

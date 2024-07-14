@@ -1,0 +1,55 @@
+{
+  "title": "Categorías",
+  "search": {
+    "placeholder": "Buscar por título..."
+  },
+  "button": "Agregar Categoría",
+  "table": {
+    "header": {
+      "no": "nº",
+      "title": "Título",
+      "datasets": "Conjuntos de datos",
+      "created-at": "Creado en",
+      "updated-at": "Actualizado en",
+      "action": "Acción"
+    }
+  },
+  "add-category-modal": {
+    "title": "Nueva Categoría",
+    "form": {
+      "image": {
+        "label": "Imagen",
+        "info": {
+          "title": "Subir una imagen",
+          "body": "La imagen debe estar en formato PNG, JPG o JPEG",
+          "cta": {
+            "choose": "Elegir imagen",
+            "remove": "Quitar"
+          }
+        }
+      },
+      "title": {
+        "label": "Título"
+      },
+      "description": {
+        "label": "Descripción"
+      },
+      "button": "Enviar"
+    },
+    "success": "Ha creado una categoría exitosamente"
+  },
+  "view-category-modal": {
+    "title": "Ver Categoría"
+  },
+  "edit-category-modal": {
+    "title": "Editar Categoría",
+    "button": "Guardar"
+  },
+  "delete-category-modal": {
+    "body-text": "¿Estás seguro de que quieres eliminar esta categoría?",
+    "cta": {
+      "cancel": "Cancelar",
+      "confirm": "Confirmar"
+    }
+  }
+}
