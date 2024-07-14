@@ -121,10 +121,17 @@ export default function Preview({ open, setOpen, file, onDownload }: PreviewProp
       }
       sx={{
         ".MuiPaper-root": {
-          // minWidth: "auto",
           maxWidth: "900px",
+          "@media (min-width: 1444px)": {
+            width: "1200px !important",
+            maxWidth: "none",
+          },
+          "@media (min-width: 1024px)": {
+            width: "950px",
+            maxWidth: "none",
+          },
           "@media (max-width: 1024px)": {
-            maxWidth: "600px",
+            maxWidth: "900px",
           },
           "@media (max-width: 724px)": {
             maxWidth: "none",
