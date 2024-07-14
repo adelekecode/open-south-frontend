@@ -65,9 +65,14 @@ export default function Footer() {
           <div>
             <h3>{t("footer.links.developer.title")}</h3>
             <div>
-              <Link className="hover:underline" to="">
+              <a
+                className="hover:underline"
+                href={import.meta.env.VITE_OPEN_SOUTH_DEVELOPER_DOCS}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {t("footer.links.developer.body.portal-api")}
-              </Link>
+              </a>
             </div>
           </div>
         </div>
