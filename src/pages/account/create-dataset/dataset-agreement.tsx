@@ -67,7 +67,7 @@ export default function DatasetAgreement({ onClose }: Props) {
           </p>
           <div className="flex flex-col gap-3">
             <p className="font-semibold">DATA TO BE PROVIDED</p>
-            <ol className="list-decimal list-inside">
+            <ol className="list-decimal list-inside space-y-1">
               <li>
                 <span>
                   Data Provider agrees to provide to the Repository a dataset described in the
@@ -94,8 +94,8 @@ export default function DatasetAgreement({ onClose }: Props) {
           </div>
           <div className="flex flex-col gap-3">
             <p className="font-semibold">THE DATA LICENCE</p>
-            <ol className="list-decimal list-inside" start={4}>
-              <li>
+            <ol className="list-decimal list-inside space-y-1" start={4}>
+              <li className="space-x-4">
                 <span>
                   The Data Provider grants to each Data Accessor a non-exclusive, worldwide, and
                   free license to the Data to:
@@ -136,7 +136,7 @@ export default function DatasetAgreement({ onClose }: Props) {
           </div>
           <div className="flex flex-col gap-3">
             <p className="font-semibold">DATA PROVIDER RIGHTS AND UNDERTAKINGS</p>
-            <ol className="list-decimal list-inside">
+            <ol className="list-decimal list-inside space-y-1" start={6}>
               <li>
                 <span>
                   The Data Provider is free to make available, use, or publish the Data elsewhere.
@@ -187,7 +187,7 @@ export default function DatasetAgreement({ onClose }: Props) {
           </div>
           <div className="flex flex-col gap-3">
             <p className="font-semibold">OPEN SOUTH RIGHTS AND UNDERTAKINGS</p>
-            <ol className="list-decimal list-inside">
+            <ol className="list-decimal list-inside space-y-1" start={13}>
               <li>
                 <span>
                   Data shall be made available in accordance with the terms of this Agreement and
@@ -230,7 +230,7 @@ export default function DatasetAgreement({ onClose }: Props) {
           </div>
           <div className="flex flex-col gap-3">
             <p className="font-semibold">LIMITATION OF LIABILITY</p>
-            <ol className="list-decimal list-inside">
+            <ol className="list-decimal list-inside space-y-1" start={16}>
               <li>
                 <span>
                   Data Provider agrees to defend, indemnify, and hold harmless Open South from and
@@ -275,10 +275,14 @@ export default function DatasetAgreement({ onClose }: Props) {
           </div>
           <div className="flex flex-col gap-3">
             <p className="font-semibold">GENERAL</p>
-            <ol className="list-decimal list-inside">
-              <li>
+            <ol className="list-decimal list-inside space-y-1" start={21}>
+              <li className="space-x-4">
                 <span>Either party may terminate this Agreement:</span>
-                <ul>
+                <ul
+                  style={{
+                    listStyleType: "lower-alpha",
+                  }}
+                >
                   <li>
                     <span>Either by giving 3 months' written notice to the other</span>
                   </li>
