@@ -16,12 +16,15 @@ export default function RejectedModal() {
           open: false,
         });
       }}
+      exitIcon={{
+        display: true,
+      }}
     >
       <DialogContent>
-        <span className="bg-red-100 mb-3 w-fit rounded-md p-4 mx-auto">
+        <div className="bg-red-100 rounded-md w-fit mx-auto p-4 mb-8">
           <TiCancel className="text-red-400 p-2 !text-[4rem] mediumMobile:!text-[3.5rem] !font-extralight" />
-        </span>
-        <p className="text-center text-sm">
+        </div>
+        <p className="text-center text-sm largeMobile:text-xs">
           Your application to create this organization has been rejected
         </p>
       </DialogContent>

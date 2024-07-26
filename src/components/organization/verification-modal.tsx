@@ -40,7 +40,7 @@ export default function VerificationModal() {
               A verification code has been sent to the organization email
             </small>
           </header>
-          <DialogContent>
+          <DialogContent className="flex justify-center">
             <OtpInput
               value={code}
               onChange={(value) => {
@@ -56,7 +56,7 @@ export default function VerificationModal() {
               }}
             />
           </DialogContent>
-          <DialogActions>
+          <DialogActions className="flex flex-col items-center gap-4 mt-2">
             <Button
               disabled={!isComplete}
               className="!py-3 self-stretch"
@@ -72,6 +72,7 @@ export default function VerificationModal() {
                   });
                 }
               }}
+              loading={verifyCode.isLoading}
             >
               Verify
             </Button>
@@ -79,6 +80,7 @@ export default function VerificationModal() {
               Didn't get a code?{" "}
               <button
                 className="text-primary-600 font-semibold"
+                disabled={resendCode.isLoading}
                 onClick={async () => {
                   const response = await resendCode.mutateAsync(orgData?.id || "");
 
@@ -87,7 +89,7 @@ export default function VerificationModal() {
                   }
                 }}
               >
-                Resend
+                {resendCode.isLoading ? "Loading..." : "Resend"}
               </button>
             </p>
           </DialogActions>
