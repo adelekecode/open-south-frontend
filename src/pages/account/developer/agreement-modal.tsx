@@ -49,7 +49,12 @@ export default function AgreementModal() {
   const { mutateAsync: enableDeveloperFeature } = useEnableDeveloperFeature();
 
   return (
-    <Modal open>
+    <Modal
+      open
+      PaperProps={{
+        className: "!max-w-[600px]",
+      }}
+    >
       <header className="pb-3">
         <DialogTitle>Developer Use Agreement</DialogTitle>
         <small>Please read the details below before using our API</small>
@@ -60,7 +65,7 @@ export default function AgreementModal() {
         }}
       >
         <DialogContentText>
-          <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>{agreement}</pre>
+          <pre className="whitespace-pre-wrap break-words text-sm text-black/70">{agreement}</pre>
         </DialogContentText>
       </DialogContent>
       <DialogActions className="!flex !justify-end">
