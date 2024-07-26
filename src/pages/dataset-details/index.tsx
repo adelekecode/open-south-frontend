@@ -14,6 +14,7 @@ import NotFound from "../404";
 import FilePreview from "~/components/file/preview";
 import { useDatasetFileDownload } from "~/mutations/dataset";
 import useAppStore from "~/store/app";
+import DatasetAgreement from "./dataset-agreement";
 
 const filesPerPage = 3;
 
@@ -25,7 +26,7 @@ export default function DatasetDetails() {
   const descriptionRef = useRef<HTMLDivElement>(null);
   const effectHasRun = useRef(false);
 
-  const { userLocation } = useAppStore();
+  const { userLocation, agreeTerms } = useAppStore();
 
   const [previewFile, setPreviewFile] = useState<{
     open: boolean;
@@ -273,6 +274,7 @@ export default function DatasetDetails() {
           onDownload={(id: string) => fileDownload.mutateAsync(id)}
         />
       )}
+      {!agreeTerms && <DatasetAgreement />}
     </>
   );
 }

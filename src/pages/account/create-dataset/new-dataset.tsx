@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Autocomplete, InputLabel, MenuItem, TextField } from "@mui/material";
+import { Autocomplete, Checkbox, InputLabel, MenuItem, TextField } from "@mui/material";
 import { SlInfo } from "react-icons/sl";
 import { ErrorMessage, Formik } from "formik";
 import * as Yup from "yup";
@@ -17,6 +17,7 @@ import TagsField from "~/components/fields/tags-field";
 import { usePublicCategories } from "~/queries/category";
 import useCreateDatasetStore from "~/store/create-dataset";
 import { getCountryCoordinates } from "~/utils/helper";
+import DatasetAgreement from "./dataset-agreement";
 
 const validationSchema = Yup.object({
   title: Yup.string()
@@ -42,6 +43,7 @@ type NewDatasetProps = {
 
 export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
   const [chosenCategoryObj, setChosenCategoryObj] = useState<Category | null>(null);
+  const [showAgreement, setShowAgreement] = useState(false);
 
   const { setDataset, organization } = useCreateDatasetStore();
 
@@ -51,234 +53,264 @@ export default function NewDataset({ setActiveIndex }: NewDatasetProps) {
   const addDatasetTags = useAddDatasetTags();
 
   return (
-    <Formik
-      initialValues={{
-        title: "",
-        description: "",
-        license: "",
-        tags: [],
-        updateFrequency: "Unknown",
-        start: "",
-        end: "",
-        category: "",
-        spatialCoverage: "",
-      }}
-      validateOnBlur={false}
-      validationSchema={validationSchema}
-      onSubmit={async (values) => {
-        if (!chosenCategoryObj) return;
+    <>
+      <Formik
+        initialValues={{
+          title: "",
+          description: "",
+          license: "",
+          tags: [],
+          updateFrequency: "Unknown",
+          start: "",
+          end: "",
+          category: "",
+          spatialCoverage: "",
+          agreeTerms: false,
+        }}
+        validateOnBlur={false}
+        validationSchema={validationSchema}
+        onSubmit={async ({ agreeTerms: _, ...values }) => {
+          if (!chosenCategoryObj) return;
 
-        const newValues: Omit<typeof values, "category"> & {
-          category?: string;
-        } = structuredClone(values);
+          const newValues: Omit<typeof values, "category"> & {
+            category?: string;
+          } = structuredClone(values);
 
-        delete newValues.category;
+          delete newValues.category;
 
-        const { tags, spatialCoverage, ...rest } = newValues;
+          const { tags, spatialCoverage, ...rest } = newValues;
 
-        const coordinates = await getCountryCoordinates(spatialCoverage);
+          const coordinates = await getCountryCoordinates(spatialCoverage);
 
-        const datasetResponse = await createDataset.mutateAsync({
-          ...rest,
-          spatialCoverage,
-          coordinates,
-          category: chosenCategoryObj,
-          organization,
-        });
-
-        if (datasetResponse) {
-          setDataset({ ...values, id: datasetResponse.id || "" });
-
-          const tagsResponse = await addDatasetTags.mutateAsync({
-            datasetId: datasetResponse.id,
-            tags,
+          const datasetResponse = await createDataset.mutateAsync({
+            ...rest,
+            spatialCoverage,
+            coordinates,
+            category: chosenCategoryObj,
+            organization,
           });
 
-          if (tagsResponse) {
-            setActiveIndex((prev) => prev + 1);
+          if (datasetResponse) {
+            setDataset({ ...values, id: datasetResponse.id || "" });
+
+            const tagsResponse = await addDatasetTags.mutateAsync({
+              datasetId: datasetResponse.id,
+              tags,
+            });
+
+            if (tagsResponse) {
+              setActiveIndex((prev) => prev + 1);
+            }
           }
-        }
-      }}
-    >
-      {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
-        <form className="pt-4 flex flex-col gap-10" onSubmit={handleSubmit}>
-          <div className="px-4 flex flex-col gap-6">
-            <h2 className="w-full text-center text-base font-semibold">
-              Fill the fields below to create a dataset
-            </h2>
-            <div className="flex flex-col gap-4">
-              <FormField
-                label="Title"
-                required
-                name="title"
-                className="[&_input]:!text-[0.9rem]"
-                labelProps={{
-                  className: "!font-medium",
-                }}
-              />
-              <TextEditorField
-                label="Description"
-                required
-                name="description"
-                labelProps={{
-                  className: "!font-medium",
-                }}
-              />
-              <div>
-                <SelectField
-                  label="License"
+        }}
+      >
+        {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
+          <form className="pt-4 flex flex-col gap-10" onSubmit={handleSubmit}>
+            <div className="px-4 flex flex-col gap-6">
+              <h2 className="w-full text-center text-base font-semibold">
+                Fill the fields below to create a dataset
+              </h2>
+              <div className="flex flex-col gap-4">
+                <FormField
+                  label="Title"
                   required
-                  name="license"
-                  value={values.license}
+                  name="title"
+                  className="[&_input]:!text-[0.9rem]"
+                  labelProps={{
+                    className: "!font-medium",
+                  }}
+                />
+                <TextEditorField
+                  label="Description"
+                  required
+                  name="description"
+                  labelProps={{
+                    className: "!font-medium",
+                  }}
+                />
+                <div>
+                  <SelectField
+                    label="License"
+                    required
+                    name="license"
+                    value={values.license}
+                    labelProps={{
+                      className: "!font-medium",
+                    }}
+                  >
+                    {LicenseData.map((item, index) => (
+                      <MenuItem key={index + 1} value={item.name}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </SelectField>
+                  <small className="text-info-900">
+                    Learn about licensing options for your dataset's use.{" "}
+                    <a
+                      href="https://creativecommons.org/share-your-work/cclicenses"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="!text-blue-900 underline"
+                    >
+                      Click here to read more.
+                    </a>
+                  </small>
+                </div>
+                <SelectField
+                  label="Update Frequency"
+                  required
+                  name="updateFrequency"
+                  value={values.updateFrequency}
                   labelProps={{
                     className: "!font-medium",
                   }}
                 >
-                  {LicenseData.map((item, index) => (
+                  {UpdateFrequencyData.map((item, index) => (
                     <MenuItem key={index + 1} value={item.name}>
                       {item.name}
                     </MenuItem>
                   ))}
                 </SelectField>
-                <small className="text-info-900">
-                  Learn about licensing options for your dataset's use.{" "}
-                  <a
-                    href="https://creativecommons.org/share-your-work/cclicenses"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="!text-blue-900 underline"
-                  >
-                    Click here to read more.
-                  </a>
-                </small>
-              </div>
-              <SelectField
-                label="Update Frequency"
-                required
-                name="updateFrequency"
-                value={values.updateFrequency}
-                labelProps={{
-                  className: "!font-medium",
-                }}
-              >
-                {UpdateFrequencyData.map((item, index) => (
-                  <MenuItem key={index + 1} value={item.name}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </SelectField>
-              <div className="flex flex-col gap-1">
-                <TagsField
-                  name="tags"
+                <div className="flex flex-col gap-1">
+                  <TagsField
+                    name="tags"
+                    required
+                    label="Tags"
+                    labelProps={{
+                      className: "!font-medium",
+                    }}
+                    onChange={(tags) => {
+                      setFieldValue("tags", Array.from(new Set(tags)));
+                    }}
+                  />
+                  <small className="flex items-center gap-2 text-info-900">
+                    <SlInfo /> Enter a tag name and press 'Enter' to add.
+                  </small>
+                </div>
+                <div className="w-full flex flex-col">
+                  <InputLabel className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}>
+                    Temporal Coverage
+                    <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
+                  </InputLabel>
+                  <div className="flex gap-4 items-center [@media(max-width:560px)]:flex-col [@media(max-width:560px)]:gap-2">
+                    <DatePickerField
+                      className="[&_input]:!text-[0.9rem]"
+                      name="start"
+                      format="DD-MM-YYYY"
+                      required
+                      disableFuture
+                    />
+                    <span>To</span>
+                    <DatePickerField
+                      className="[&_input]:!text-[0.9rem]"
+                      name="end"
+                      format="DD-MM-YYYY"
+                      required
+                      disableFuture
+                    />
+                  </div>
+                </div>
+                <SelectField
+                  label="Category"
                   required
-                  label="Tags"
+                  name="category"
                   labelProps={{
                     className: "!font-medium",
                   }}
-                  onChange={(tags) => {
-                    setFieldValue("tags", Array.from(new Set(tags)));
-                  }}
-                />
-                <small className="flex items-center gap-2 text-info-900">
-                  <SlInfo /> Enter a tag name and press 'Enter' to add.
-                </small>
-              </div>
-              <div className="w-full flex flex-col">
-                <InputLabel className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}>
-                  Temporal Coverage
-                  <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
-                </InputLabel>
-                <div className="flex gap-4 items-center [@media(max-width:560px)]:flex-col [@media(max-width:560px)]:gap-2">
-                  <DatePickerField
-                    className="[&_input]:!text-[0.9rem]"
-                    name="start"
-                    format="DD-MM-YYYY"
-                    required
-                    disableFuture
+                  value={values.category || ""}
+                >
+                  {!isLoadingCategories &&
+                    categories &&
+                    categories?.length > 0 &&
+                    categories.map((item, index) => (
+                      <MenuItem
+                        key={index + 1}
+                        value={item.name}
+                        onClick={() => {
+                          setChosenCategoryObj(item);
+                        }}
+                      >
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  {isLoadingCategories &&
+                    Array.from({ length: 5 }).map((_, index) => (
+                      <MenuItem
+                        key={index + 1}
+                        className="animate-pulse rounded-lg bg-gray-200 h-24"
+                      ></MenuItem>
+                    ))}
+                </SelectField>
+                <div>
+                  <InputLabel className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}>
+                    Spatial Coverage
+                    <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
+                  </InputLabel>
+                  <Autocomplete
+                    options={spatialCoverageData}
+                    onChange={(_, value) => setFieldValue("spatialCoverage", value?.label)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        required
+                        value={values.spatialCoverage || ""}
+                        name="spatialCoverage"
+                        className="[&_input]:!text-[0.9rem]"
+                      />
+                    )}
                   />
-                  <span>To</span>
-                  <DatePickerField
-                    className="[&_input]:!text-[0.9rem]"
-                    name="end"
-                    format="DD-MM-YYYY"
-                    required
-                    disableFuture
+                  <ErrorMessage
+                    name={"spatialCoverage"}
+                    className={`!text-red-600 !font-medium !text-xs pl-1`}
+                    component={"p"}
                   />
                 </div>
-              </div>
-              <SelectField
-                label="Category"
-                required
-                name="category"
-                labelProps={{
-                  className: "!font-medium",
-                }}
-                value={values.category || ""}
-              >
-                {!isLoadingCategories &&
-                  categories &&
-                  categories?.length > 0 &&
-                  categories.map((item, index) => (
-                    <MenuItem
-                      key={index + 1}
-                      value={item.name}
-                      onClick={() => {
-                        setChosenCategoryObj(item);
-                      }}
+                <div>
+                  <Checkbox
+                    onChange={() => {
+                      setFieldValue("agreeTerms", !values.agreeTerms);
+                    }}
+                    checked={values.agreeTerms}
+                    color="primary"
+                    name="agreeTerms"
+                    id="agree-terms"
+                  />
+                  <label htmlFor="agree-terms" className="text-sm">
+                    By continuing you are agreeing to Open South's{" "}
+                    <button
+                      type="button"
+                      className="text-primary-500 underline"
+                      onClick={() => setShowAgreement(true)}
                     >
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                {isLoadingCategories &&
-                  Array.from({ length: 5 }).map((_, index) => (
-                    <MenuItem
-                      key={index + 1}
-                      className="animate-pulse rounded-lg bg-gray-200 h-24"
-                    ></MenuItem>
-                  ))}
-              </SelectField>
-              <div>
-                <InputLabel className={`!text-sm mb-[0.35rem] !font-Work-Sans !font-medium`}>
-                  Spatial Coverage
-                  <span className="!text-red-600 !text-[0.9rem] pl-1">*</span>
-                </InputLabel>
-                <Autocomplete
-                  options={spatialCoverageData}
-                  onChange={(_, value) => setFieldValue("spatialCoverage", value?.label)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      required
-                      value={values.spatialCoverage || ""}
-                      name="spatialCoverage"
-                      className="[&_input]:!text-[0.9rem]"
-                    />
-                  )}
-                />
-                <ErrorMessage
-                  name={"spatialCoverage"}
-                  className={`!text-red-600 !font-medium !text-xs pl-1`}
-                  component={"p"}
-                />
+                      Data Provider Agreement
+                    </button>
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-          <footer className="border-t p-4 py-2 flex items-center justify-between">
-            <Button
-              color="info"
-              className="!py-2"
-              onClick={() => {
-                setActiveIndex((prev) => prev - 1);
-              }}
-            >
-              Previous
-            </Button>
-            <Button type="submit" className="!py-2" loading={isSubmitting}>
-              Next
-            </Button>
-          </footer>
-        </form>
-      )}
-    </Formik>
+            <footer className="border-t p-4 py-2 flex items-center justify-between">
+              <Button
+                color="info"
+                className="!py-2"
+                onClick={() => {
+                  setActiveIndex((prev) => prev - 1);
+                }}
+              >
+                Previous
+              </Button>
+              <Button
+                type="submit"
+                className="!py-2"
+                loading={isSubmitting}
+                disabled={!values.agreeTerms}
+              >
+                Next
+              </Button>
+            </footer>
+          </form>
+        )}
+      </Formik>
+      {showAgreement && <DatasetAgreement onClose={() => setShowAgreement(false)} />}
+    </>
   );
 }

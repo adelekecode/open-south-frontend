@@ -78,14 +78,20 @@ const router = createBrowserRouter(
             <Route element={<AppLayoutWrapper />}>
               <Route element={<UserRestricted />}>
                 <Route path="/account/dashboard" element={<Dashboard />} />
-                <Route path="/account/datasets" element={<AccountDataset />} />
+                <Route element={<Paginated />}>
+                  <Route path="/account/datasets" element={<AccountDataset />} />
+                </Route>
                 <Route path="/account/datasets/new" element={<CreateDataset />} />
-                <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
+                <Route element={<Paginated />}>
+                  <Route path="/account/datasets/:id" element={<AccountDatasetDetails />} />
+                </Route>
                 <Route path="/account/datasets/:id/edit" element={<EditDataset />} />
                 <Route element={<UserOrganization />}>
                   <Route path="/account/:slug/dashboard" element={<OrgDashboard />} />
-                  <Route path="/account/:slug/datasets" element={<OrgDataset />} />
-                  <Route path="/account/:slug/datasets/:id" element={<OrgDatasetDetails />} />
+                  <Route element={<Paginated />}>
+                    <Route path="/account/:slug/datasets" element={<OrgDataset />} />
+                    <Route path="/account/:slug/datasets/:id" element={<OrgDatasetDetails />} />
+                  </Route>
                   <Route path="/account/:slug/edit" element={<EditOrganization />} />
                 </Route>
                 <Route path="/account/organizations/new" element={<CreateOrganization />} />
@@ -95,18 +101,18 @@ const router = createBrowserRouter(
                 </Route>
               </Route>
               <Route element={<AdminRestricted />}>
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route element={<Paginated />}>
-                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
                   <Route path="/admin/datasets" element={<AdminDataset />} />
                   <Route path="/admin/categories" element={<AdminCategory />} />
                   <Route path="/admin/users" element={<User />} />
-                  <Route path="/admin/profile" element={<Profile />} />
                   <Route path="/admin/developers" element={<AdminDevelopers />} />
                   <Route path="/admin/news" element={<AdminNews />} />
                   <Route path="/admin/organizations" element={<AdminOrganization />} />
-                  <Route path="/admin/organizations/:id" element={<AdminOrganizationDetails />} />
                   <Route path="/admin/datasets/:id" element={<AdminDatasetDetails />} />
+                  <Route path="/admin/organizations/:id" element={<AdminOrganizationDetails />} />
                 </Route>
+                <Route path="/admin/profile" element={<Profile />} />
               </Route>
             </Route>
           </Route>
