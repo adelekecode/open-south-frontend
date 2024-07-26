@@ -140,7 +140,7 @@ export default function Resources() {
             {t("resources.add-btn")}
           </Button>
         </header>
-        <div className={`${(isLoading || (data && !data.results.length)) && "h-[500px]"}`}>
+        <div className={`${(isLoading || (data && !data.results.length)) && "min-h-[500px]"}`}>
           <DataGrid
             loading={isLoading}
             rows={data ? data.results : []}
