@@ -1,15 +1,24 @@
 {
   "header": {
     "admin": "Admin",
-    "profile": "Profile",
-    "logout": "Logout"
+    "profile-dropdown": {
+      "profile": "Profile",
+      "logout": "Logout"
+    },
+    "create-cta-dropdown": {
+      "dataset": "Add a dataset",
+      "organization": "Add an organization"
+    }
   },
   "sidebar": {
     "dashboard": "Dashboard",
     "datasets": "Datasets",
     "profile": "Profile",
+    "organizations": "Organizations",
+    "categories": "Categories",
+    "news": "News",
     "organization-dropdown": {
-      "title": "Organisations",
+      "title": "Organizations",
       "dashboard": "Dashboard",
       "datasets": "Datasets"
     }

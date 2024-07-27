@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { Collapse } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import { IoGridOutline, IoPersonOutline, IoNewspaperOutline } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa6";
@@ -10,10 +11,11 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { MdOutlineCategory } from "react-icons/md";
 import { useUserOrganizations } from "~/queries/organizations";
 import OrgDropdown from "./side-bar/org-dropdown";
+import { translate } from "~/utils/helper";
 
 const sideBarData = [
   {
-    name: "Dashboard",
+    name: translate("sidebar.dashboard", "dashboard-layout"),
     to: "/account/dashboard",
     icon: IoGridOutline,
     allowedUserType: ["user"],
@@ -25,7 +27,7 @@ const sideBarData = [
     allowedUserType: ["user"],
   },
   {
-    name: "Dashboard",
+    name: translate("sidebar.dashboard", "dashboard-layout"),
     to: "/admin/dashboard",
     icon: IoGridOutline,
     allowedUserType: ["admin"],
@@ -81,7 +83,9 @@ function navLinkClassNameHandler({ isActive }: { isActive: boolean; isPending: b
 }
 
 export default function SidebarLinks({ wrapperClassName }: { wrapperClassName?: string }) {
-  const [orgDropDownclicked, setOrgDropDownClicked] = useState(false);
+  const { t } = useTranslation("dashboard-layout");
+
+  const [orgDropdownClicked, setOrgDropdownClicked] = useState(false);
 
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
@@ -125,15 +129,17 @@ export default function SidebarLinks({ wrapperClassName }: { wrapperClassName?: 
                 <button
                   className={`w-full grid grid-cols-[1fr,10px] items-center transition-all p-1 px-3 justify-between gap-2`}
                   onClick={() => {
-                    setOrgDropDownClicked((prev) => !prev);
+                    setOrgDropdownClicked((prev) => !prev);
                   }}
                 >
-                  <p className="flex items-center py-2 text-[0.8rem] font-medium">Organizations</p>
+                  <p className="text-start py-2 text-[0.8rem] font-medium">
+                    {t("organization-dropdown.title")}
+                  </p>
                   <FaAngleDown
-                    className={`transition-all text-xs ${orgDropDownclicked && "rotate-180"}`}
+                    className={`transition-all text-xs ${orgDropdownClicked && "rotate-180"}`}
                   />
                 </button>
-                <Collapse in={orgDropDownclicked} timeout="auto" unmountOnExit>
+                <Collapse in={orgDropdownClicked} timeout="auto" unmountOnExit>
                   <div className="flex flex-col divide-y">
                     {organizationData.map((item, index) => (
                       <OrgDropdown
