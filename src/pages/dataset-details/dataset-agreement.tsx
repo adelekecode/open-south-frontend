@@ -10,7 +10,7 @@ export default function DatasetAgreement() {
     <Modal
       open
       PaperProps={{
-        className: "!max-w-[700px]",
+        className: "!max-w-[900px]",
         sx: {
           "li > span": {
             paddingLeft: "6px",

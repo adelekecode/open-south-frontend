@@ -11,7 +11,7 @@ export default function DatasetAgreement({ onClose }: Props) {
       open
       onClose={onClose}
       PaperProps={{
-        className: "!max-w-[700px]",
+        className: "!max-w-[900px]",
         sx: {
           "li > span": {
             paddingLeft: "6px",
@@ -159,7 +159,7 @@ export default function DatasetAgreement({ onClose }: Props) {
               <li>
                 <span>
                   The Data Provider will provide the Data to Open South in open source formats but
-                  preferably raw file formats. We prefer remain flexible to accommodate other
+                  preferably raw file formats. We prefer to remain flexible to accommodate other
                   formats as necessary.
                 </span>
               </li>
