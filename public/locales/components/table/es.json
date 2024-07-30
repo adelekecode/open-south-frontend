@@ -1,0 +1,9 @@
+{
+  "footer": {
+    "rows-per-page": "Filas por página",
+    "of": "de"
+  },
+  "empty-state": {
+    "alt": "ilustración sin datos"
+  }
+}

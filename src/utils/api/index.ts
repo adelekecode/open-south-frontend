@@ -67,6 +67,28 @@ axiosPrivate.interceptors.response.use(
         }
         // } else if (status && status.toString().includes("50")) {
       } else return Promise.reject(message);
+    } else if (status === 400) {
+      if (message?.[0] === "clientIP instance not found") {
+        const appStore = JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem("app-store"))));
+
+        try {
+          const { data } = await axios.get("/public/IP/");
+
+          localStorage.setItem(
+            "app-store",
+            JSON.stringify({
+              ...appStore,
+              state: {
+                lang: data.instance.lang,
+                langId: data.instance.id,
+              },
+            })
+          );
+        } catch (error) {
+          localStorage.removeItem("app-store");
+          window.location.reload();
+        }
+      }
     } else if (status === 500) {
       notifyError("Something went wrong. Please try again later.");
 

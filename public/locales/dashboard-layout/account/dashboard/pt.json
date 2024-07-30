@@ -1,0 +1,43 @@
+{
+  "title": "Painel de Controle",
+  "cards": {
+    "datasets": "Conjuntos de Dados",
+    "organizations": "Organizações",
+    "views": "Visualizações",
+    "downloads": "Downloads"
+  },
+  "chart": {
+    "most-accessed-datasets": {
+      "title": "Top 5 Conjuntos de Dados Mais Acessados",
+      "empty-state": "Nenhum conjunto de dados acessado no momento"
+    },
+    "traffic-locations": {
+      "title": "Top 5 Locais de Tráfego",
+      "empty-state": "Nenhum dado de tráfego disponível no momento"
+    }
+  },
+  "latest-dataset-created": {
+    "title": "Último Conjunto de Dados Criado",
+    "view-all": "Ver Todos",
+    "table": {
+      "header": {
+        "no": "Nº",
+        "title": "Título",
+        "created-at": "Criado em",
+        "updated-at": "Atualizado em",
+        "views": "Visualizações",
+        "files": "Arquivos",
+        "status": "Status"
+      },
+      "body": {
+        "status": {
+          "further-review": "Revisão Adicional",
+          "pending": "Pendente",
+          "unpublished": "Não Publicado",
+          "published": "Publicado",
+          "rejected": "Rejeitado"
+        }
+      }
+    }
+  }
+}

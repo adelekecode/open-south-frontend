@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import axios from "axios";
 import useAppStore from "~/store/app";
 import { useImageUpload } from "~/mutations/auth/profile";
@@ -60,7 +61,7 @@ export default function SelectAvatarModal() {
   const [randomAvatar, setRandomAvatar] = useState(getRandomAvatar());
   const [loading, setLoading] = useState(false);
 
-  const uploadProfileImage = useImageUpload();
+  const { mutateAsync: uploadProfileImage } = useImageUpload();
 
   const { data: currentUser } = useCurrentUser(undefined, {
     enabled: false,
@@ -74,26 +75,42 @@ export default function SelectAvatarModal() {
     }
   }, [currentUser, setOpen]);
 
-  function onClose() {
+  const onClose = useCallback(() => {
     setOpen(false);
-  }
+  }, [setOpen]);
+
+  const handleSave = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${baseURL}${randomAvatar}`, {
+        responseType: "blob",
+      });
+      const blob = new Blob([data], { type: "image/png" });
+      const file = new File([blob], `avatar-${Date.now()}.png`, {
+        lastModified: Date.now(),
+      });
+
+      const response = await uploadProfileImage({ image: file });
+
+      if (response) {
+        notifySuccess("Avatar successfully created");
+        onClose();
+      }
+    } catch (error) {
+      notifyError("Error uploading profile image");
+    } finally {
+      setLoading(false);
+    }
+  }, [baseURL, onClose, randomAvatar, uploadProfileImage]);
 
   return (
-    <Modal
-      muiModal={{
-        open,
-      }}
-      displayExitButton={false}
-      innerContainer={{
-        className: "pt-[2rem]",
-      }}
-    >
-      <div className="flex flex-col gap-6 w-full">
-        <h1 className="text-xl font-semibold">Select Avatar</h1>
+    <Modal open={open}>
+      <DialogTitle>Select Avatar</DialogTitle>
+      <DialogContent>
         <div className="flex flex-col gap-4 items-center">
           <figure
             id="picture"
-            className="w-36 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden p-1"
+            className="w-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden p-1"
           >
             <img
               src={randomAvatar}
@@ -101,7 +118,7 @@ export default function SelectAvatarModal() {
               className="w-full h-full object-contain"
             />
           </figure>
-          <div className="grid grid-cols-3 gap-4 p-4 border border-info-300 rounded w-full overflow-y-auto">
+          <div className="grid grid-cols-4 gap-4 p-4 border border-info-300 rounded w-full overflow-y-auto">
             {avatarArr.map((item, index) => (
               <button
                 key={index + 1}
@@ -118,36 +135,12 @@ export default function SelectAvatarModal() {
             ))}
           </div>
         </div>
-        <Button
-          className="!py-3"
-          onClick={async () => {
-            try {
-              setLoading(true);
-              const { data } = await axios.get(`${baseURL}${randomAvatar}`, {
-                responseType: "blob",
-              });
-              const blob = new Blob([data], { type: "image/png" });
-              const file = new File([blob], `avatar-${Date.now()}.png`, {
-                lastModified: Date.now(),
-              });
-
-              const response = await uploadProfileImage.mutateAsync({ image: file });
-
-              if (response) {
-                notifySuccess("Avatar successfully created");
-                onClose();
-              }
-            } catch (error) {
-              notifyError("Error uploading profile image");
-            } finally {
-              setLoading(false);
-            }
-          }}
-          loading={loading}
-        >
+      </DialogContent>
+      <DialogActions>
+        <Button className="!py-3" size="small" onClick={handleSave} loading={loading}>
           Save
         </Button>
-      </div>
+      </DialogActions>
     </Modal>
   );
 }

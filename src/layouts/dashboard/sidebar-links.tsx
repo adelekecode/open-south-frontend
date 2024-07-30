@@ -4,72 +4,83 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Collapse } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
-import { IoGridOutline, IoPersonOutline, IoNewspaperOutline } from "react-icons/io5";
+import { IoGridOutline, IoPersonOutline, IoNewspaperOutline, IoCode } from "react-icons/io5";
 import { FaAngleDown } from "react-icons/fa6";
 import { GoDatabase, GoOrganization } from "react-icons/go";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { MdOutlineCategory } from "react-icons/md";
 import { useUserOrganizations } from "~/queries/organizations";
 import OrgDropdown from "./side-bar/org-dropdown";
-import { translate } from "~/utils/helper";
 
 const sideBarData = [
   {
-    name: translate("sidebar.dashboard", "dashboard-layout"),
+    name: "dashboard",
     to: "/account/dashboard",
     icon: IoGridOutline,
     allowedUserType: ["user"],
   },
   {
-    name: "Datasets",
+    name: "datasets",
     to: "/account/datasets",
     icon: GoDatabase,
     allowedUserType: ["user"],
   },
   {
-    name: translate("sidebar.dashboard", "dashboard-layout"),
+    name: "dashboard",
     to: "/admin/dashboard",
     icon: IoGridOutline,
     allowedUserType: ["admin"],
   },
   {
-    name: "Users",
+    name: "users",
     to: "/admin/users",
     icon: HiOutlineUserGroup,
     allowedUserType: ["admin"],
   },
   {
-    name: "Datasets",
+    name: "datasets",
     to: "/admin/datasets",
     icon: GoDatabase,
     allowedUserType: ["admin"],
   },
   {
-    name: "Organizations",
+    name: "organizations",
     to: "/admin/organizations",
     icon: GoOrganization,
     allowedUserType: ["admin"],
   },
   {
-    name: "Categories",
+    name: "categories",
     to: "/admin/categories",
     icon: MdOutlineCategory,
     allowedUserType: ["admin"],
   },
   {
-    name: "Profile",
+    name: "developer",
+    to: "/account/developer",
+    icon: IoCode,
+    allowedUserType: ["user"],
+  },
+  {
+    name: "profile",
     to: "/account/profile",
     icon: IoPersonOutline,
     allowedUserType: ["user"],
   },
   {
-    name: "News",
+    name: "news",
     to: "/admin/news",
     icon: IoNewspaperOutline,
     allowedUserType: ["admin"],
   },
   {
-    name: "Profile",
+    name: "developers",
+    to: "/admin/developers",
+    icon: IoCode,
+    allowedUserType: ["admin"],
+  },
+  {
+    name: "profile",
     to: "/admin/profile",
     icon: IoPersonOutline,
     allowedUserType: ["admin"],
@@ -103,7 +114,7 @@ export default function SidebarLinks({ wrapperClassName }: { wrapperClassName?: 
               <NavLink to={item.to} key={index + 1} className={navLinkClassNameHandler}>
                 <>
                   <item.icon className={`text-base`} />
-                  <span>{item.name}</span>
+                  <span>{t(`sidebar.${item.name}`)}</span>
                 </>
               </NavLink>
             );
@@ -133,7 +144,7 @@ export default function SidebarLinks({ wrapperClassName }: { wrapperClassName?: 
                   }}
                 >
                   <p className="text-start py-2 text-[0.8rem] font-medium">
-                    {t("organization-dropdown.title")}
+                    {t("sidebar.organization-dropdown.title")}
                   </p>
                   <FaAngleDown
                     className={`transition-all text-xs ${orgDropdownClicked && "rotate-180"}`}

@@ -3,6 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { IoCloudDownloadOutline, IoGridOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import { GoOrganization } from "react-icons/go";
+import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import moment from "moment";
 import DataGrid from "~/components/data-grid";
@@ -139,6 +140,8 @@ const columns: GridColDef[] = [
 ];
 
 export default function Dashboard() {
+  const { t } = useTranslation("dashboard-layout/account/dashboard");
+
   const navigate = useNavigate();
 
   const paginationModel = {
@@ -156,13 +159,13 @@ export default function Dashboard() {
     <>
       <main className="p-6 px-8 pb-12 tablet:px-6 largeMobile:!px-4 gap-4 flex flex-col">
         <header className="flex items-center gap-8 justify-between">
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <h1 className="text-2xl font-semibold">{t("title")}</h1>
         </header>
         <div className="w-full border border-info-100 bg-white p-4 rounded-md">
           <div className="grid grid-cols-4 tabletAndBelow:grid-cols-3 [@media(max-width:900px)]:grid-cols-2 [@media(max-width:650px)]:!grid-cols-1 gap-4   [&>div]:w-full [&>div]:rounded-md [&>div]:p-4 [&>div]:flex [&>div]:justify-between [&>div]:min-h-[9rem]   [&>div>div]:flex [&>div>div]:flex-col [&>div>div]:mt-2 [&>div>div]:gap-3   [&>div>div>p]:font-semibold [&>div>div>p]:text-sm [&>div>div>h1]:text-4xl [&>div>div>h1]:font-semibold">
             <div className="bg-red-50">
               <div>
-                <p className="text-info-950">Datasets</p>
+                <p className="text-info-950">{t("cards.datasets")}</p>
                 <h1 className="text-neutral-800">{data?.datasets ?? "0"}</h1>
               </div>
               <span className="p-2 border border-red-500 h-fit rounded text-red-500 text-base">
@@ -171,7 +174,7 @@ export default function Dashboard() {
             </div>
             <div className="bg-blue-50">
               <div>
-                <p className="text-info-950">Organizations</p>
+                <p className="text-info-950">{t("cards.organizations")}</p>
                 <h1 className="text-neutral-800">{data?.organisations ?? "0"}</h1>
               </div>
               <span className="p-2 border border-blue-500 h-fit rounded text-blue-500 text-base">
@@ -180,7 +183,7 @@ export default function Dashboard() {
             </div>
             <div className="bg-purple-50">
               <div>
-                <p className="text-info-950">Views</p>
+                <p className="text-info-950">{t("cards.views")}</p>
                 <h1 className="text-neutral-800">{data?.views ?? "0"}</h1>
               </div>
               <span className="p-2 border border-purple-500 h-fit rounded text-purple-500 text-base">
@@ -189,7 +192,7 @@ export default function Dashboard() {
             </div>
             <div className="bg-lime-50">
               <div>
-                <p className="text-info-950">Downloads</p>
+                <p className="text-info-950">{t("cards.downloads")}</p>
                 <h1 className="text-neutral-800">{data?.downloads ?? "0"}</h1>
               </div>
               <span className="p-2 border border-lime-500 h-fit rounded text-lime-500 text-base">
@@ -205,7 +208,7 @@ export default function Dashboard() {
         <div className="w-full border border-info-100 bg-white p-4 rounded-md flex flex-col gap-4 py-5 pt-4">
           <div className="flex items-center justify-between">
             <h1 className="text-base font-semibold text-info-950 capitalize largeMobile:text-sm">
-              Latest dataset created
+              {t("latest-dataset-created.title")}
             </h1>
             <div>
               <Button
@@ -215,7 +218,7 @@ export default function Dashboard() {
                   navigate("/account/datasets");
                 }}
               >
-                View All
+                {t("latest-dataset-created.view-all")}
               </Button>
             </div>
           </div>

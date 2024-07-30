@@ -1,0 +1,19 @@
+{
+  "bio": {
+    "title": "السيرة الذاتية"
+  },
+  "datasets": {
+    "title": "مجموعات البيانات",
+    "empty-state": "لم يتم العثور على مجموعة بيانات"
+  },
+  "general-statistics": {
+    "title": "إحصائيات عامة",
+    "datasets": "مجموعات البيانات",
+    "views": "المشاهدات",
+    "downloads": "التنزيلات"
+  },
+  "technical-details": {
+    "title": "تفاصيل فنية",
+    "user-joined-date": "تاريخ انضمام المستخدم"
+  }
+}

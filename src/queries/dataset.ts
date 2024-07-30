@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -32,7 +33,7 @@ export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<
 }
 
 export function useDatasetFilePreview(url: string, type: string, options?: UseQueryOptions<any>) {
-  return useQuery<DatasetFile>([`${url}`], {
+  return useQuery<BlobPart>([`${url}`], {
     queryFn: async () => {
       const { data: response } = await axios.get(
         url,
@@ -53,18 +54,18 @@ export function useAdminDatasetDetails(id: string) {
   return useQuery<Dataset>([`/admin/dataset/${id}/`]);
 }
 
-export function useAdminDatasets(
-  search = "",
-  filterBy: {
-    status: string;
-  },
-  pagination: Pagination
-) {
-  const { pageSize, page } = pagination;
-  const { status } = filterBy;
+export function useAdminDatasets(search = "") {
+  const [searchParams] = useSearchParams();
+
+  const params = new URLSearchParams({
+    search: searchParams.get("search") || "",
+    status: searchParams.get("status") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   return useQuery<PaginatedResponse<Dataset[]>>([
-    `/admin/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
+    `/admin/datasets/?search=${search}&${params.toString()}`,
   ]);
 }
 
@@ -130,16 +131,16 @@ export function useUserOrganizationDatasets(
 
 export function useUserDatasetFiles(
   id: string,
-  pagination: {
-    pageSize: number;
-    page: number;
-  },
+  searchParams: URLSearchParams,
   options?: UseQueryOptions<PaginatedResponse<Dataset["files"][]>>
 ) {
-  const { pageSize, page } = pagination;
+  const params = new URLSearchParams({
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   return useQuery<PaginatedResponse<Dataset["files"][]>>(
-    [`/user/dataset/pk/${id}/files/?limit=${pageSize}&offset=${page * pageSize}`],
+    [`/user/dataset/pk/${id}/files/?${params.toString()}`],
     options
   );
 }

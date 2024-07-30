@@ -1,4 +1,5 @@
 import { CircularProgress } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -25,6 +26,8 @@ export default function ChartWrapper({
   isLoading,
   default: defaultChart,
 }: Props) {
+  const { t } = useTranslation("components/chart");
+
   return (
     <div
       className={twMerge(
@@ -41,7 +44,7 @@ export default function ChartWrapper({
       {isLoading ? (
         <div className="flex justify-center items-center min-h-56 flex-col gap-4">
           <CircularProgress />
-          <p className="text-info-600 text-sm">Loading...</p>
+          <p className="text-info-600 text-sm">{t("loader.text")}</p>
         </div>
       ) : defaultChart && !defaultChart.data ? (
         <div className="flex justify-center items-center min-h-56 flex-col">

@@ -1,0 +1,18 @@
+{
+  "title": "हमसे संपर्क करें",
+  "subtitle": "क्या आपके पास Open South के लिए कोई सवाल है? कृपया हमसे संपर्क करें।",
+  "form": {
+    "name": {
+      "label": "नाम"
+    },
+    "email": {
+      "label": "ईमेल",
+      "placeholder": "example@gmail.com"
+    },
+    "message": {
+      "label": "संदेश",
+      "placeholder": "यहाँ अपना संदेश लिखें..."
+    },
+    "submit-btn": "सबमिट करें"
+  }
+}

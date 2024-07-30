@@ -1,0 +1,34 @@
+{
+  "title": "شركاؤنا",
+  "show-form-btn": "كن شريكاً",
+  "form": {
+    "title": "كن شريكاً",
+    "subtitle": "يرجى ملء النموذج أدناه.",
+    "inputs": {
+      "organization-name": {
+        "label": "اسم المنظمة",
+        "placeholder": "مثال"
+      },
+      "contact-person": {
+        "label": "الشخص المسؤول",
+        "placeholder": "أدخل اسم الشخص المسؤول"
+      },
+      "email": {
+        "label": "البريد الإلكتروني",
+        "placeholder": "example@gmail.com"
+      },
+      "phone-number": {
+        "label": "رقم الهاتف"
+      },
+      "organization-type": {
+        "label": "نوع المنظمة",
+        "placeholder": "حدد ما إذا كنت شركة، منظمة غير ربحية، كيان حكومي، إلخ."
+      },
+      "purpose-of-partnership": {
+        "label": "غرض الشراكة",
+        "placeholder": "وصف بإيجاز لماذا تريد أن تكون شريكنا."
+      }
+    },
+    "submit-btn": "إرسال"
+  }
+}

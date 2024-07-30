@@ -1,0 +1,43 @@
+{
+  "title": "Tablero de Control",
+  "cards": {
+    "datasets": "Conjuntos de Datos",
+    "organizations": "Organizaciones",
+    "views": "Vistas",
+    "downloads": "Descargas"
+  },
+  "chart": {
+    "most-accessed-datasets": {
+      "title": "Top 5 Conjuntos de Datos Más Accedidos",
+      "empty-state": "No hay conjuntos de datos accedidos en este momento"
+    },
+    "traffic-locations": {
+      "title": "Top 5 Ubicaciones de Tráfico",
+      "empty-state": "No hay datos de tráfico disponibles en este momento"
+    }
+  },
+  "latest-dataset-created": {
+    "title": "Último Conjunto de Datos Creado",
+    "view-all": "Ver Todos",
+    "table": {
+      "header": {
+        "no": "Nº",
+        "title": "Título",
+        "created-at": "Creado en",
+        "updated-at": "Actualizado en",
+        "views": "Vistas",
+        "files": "Archivos",
+        "status": "Estado"
+      },
+      "body": {
+        "status": {
+          "further-review": "Revisión Adicional",
+          "pending": "Pendiente",
+          "unpublished": "No Publicado",
+          "published": "Publicado",
+          "rejected": "Rechazado"
+        }
+      }
+    }
+  }
+}

@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoPerson } from "react-icons/io5";
 import moment from "moment";
 import { stripHtml } from "string-strip-html";
+import { useTranslation } from "react-i18next";
 
 type CardProps = Dataset;
 
 export default function Card({ slug, title, updated_at, description, publisher_data }: CardProps) {
+  const { t } = useTranslation("layout/dataset");
   const navigate = useNavigate();
 
   const formattedTimestamp = moment(updated_at).fromNow();
@@ -44,7 +46,7 @@ export default function Card({ slug, title, updated_at, description, publisher_d
           {title ? title.charAt(0).toUpperCase() + title.slice(1) : "------"}
         </h1>
         <p className="flex items-center text-xs gap-1">
-          by
+          {t("main.card.by")}
           <Link
             className="text-primary-600 capitalize hover:underline relative z-10"
             to={
@@ -75,7 +77,7 @@ export default function Card({ slug, title, updated_at, description, publisher_d
             : stripedDescription}
         </p>
         <p className="text-xs text-end mt-4">
-          - Updated <span>{formattedTimestamp}</span>
+          - {t("main.card.updated")} <span>{formattedTimestamp}</span>
         </p>
       </div>
     </button>

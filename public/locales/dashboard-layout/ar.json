@@ -1,0 +1,27 @@
+{
+  "header": {
+    "admin": "المشرف",
+    "profile-dropdown": {
+      "profile": "الملف الشخصي",
+      "logout": "تسجيل الخروج"
+    },
+    "create-cta-dropdown": {
+      "dataset": "إضافة مجموعة بيانات",
+      "organization": "إضافة منظمة"
+    }
+  },
+  "sidebar": {
+    "dashboard": "لوحة القيادة",
+    "datasets": "مجموعات البيانات",
+    "users": "مجموعات البيانات",
+    "profile": "الملف الشخصي",
+    "organizations": "المؤسسات",
+    "categories": "الفئات",
+    "news": "أخبار",
+    "organization-dropdown": {
+      "title": "المؤسسات",
+      "dashboard": "لوحة القيادة",
+      "datasets": "مجموعات البيانات"
+    }
+  }
+}

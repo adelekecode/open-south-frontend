@@ -1,0 +1,36 @@
+{
+  "title": "Datasets",
+  "search": {
+    "placeholder": "Search for title..."
+  },
+  "filter": {
+    "placeholder": "Filter by status",
+    "options": {
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "published": "Published",
+      "unpublished": "Unpublished",
+      "further-review": "Further Review"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "NO.",
+      "title": "Title",
+      "created-at": "Created At",
+      "updated-at": "Updated At",
+      "views": "Views",
+      "files": "Files",
+      "status": "Status"
+    },
+    "body": {
+      "status": {
+        "further-review": "Further Review",
+        "pending": "Pending",
+        "unpublished": "Unpublished",
+        "published": "Published",
+        "rejected": "Rejected"
+      }
+    }
+  }
+}

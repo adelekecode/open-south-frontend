@@ -1,0 +1,18 @@
+{
+  "title": "اتصل بنا",
+  "subtitle": "هل لديك سؤال لفريق Open South؟ يرجى التواصل معنا.",
+  "form": {
+    "name": {
+      "label": "الاسم"
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "example@gmail.com"
+    },
+    "message": {
+      "label": "الرسالة",
+      "placeholder": "اكتب رسالتك هنا..."
+    },
+    "submit-btn": "إرسال"
+  }
+}

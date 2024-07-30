@@ -3,13 +3,14 @@ import { isAxiosError } from "axios";
 import { axiosPrivate } from "~/utils/api";
 import { notifyError, notifySuccess } from "~/utils/toast";
 
-type QueryParams = {
-  search: string;
-  filter: {
-    isActive: string;
-    isVerified: string;
-    status: string;
-  };
+const generateParams = (searchParams: URLSearchParams): URLSearchParams => {
+  return new URLSearchParams({
+    search: searchParams.get("search") || "",
+    verified: searchParams.get("verified") || "",
+    active: searchParams.get("active") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 };
 
 export function useCreateOrganization() {
@@ -123,14 +124,10 @@ export function useResendCode() {
   );
 }
 
-export function useChangeOrganizationStatus(pagination: Pagination, queryParams: QueryParams) {
+export function useChangeOrganizationStatus(searchParams: URLSearchParams) {
   const queryClient = useQueryClient();
 
-  const { page, pageSize } = pagination;
-  const {
-    search,
-    filter: { isActive, isVerified, status },
-  } = queryParams;
+  const params = generateParams(searchParams);
 
   return useMutation(
     async ({
@@ -151,13 +148,12 @@ export function useChangeOrganizationStatus(pagination: Pagination, queryParams:
     },
     {
       onSuccess(data) {
-        queryClient.invalidateQueries([
-          `/admin/organisations/?search=${search}&status=${status || ""}&verified=${isVerified || ""}&active=${isActive ? isActive.charAt(0).toUpperCase() + isActive.slice(1) : ""}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
-
         if (typeof data.message === "string") {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
+      },
+      onSettled() {
+        queryClient.invalidateQueries([`/admin/organisations/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {
@@ -206,17 +202,14 @@ export function useRequestToJoinOrganization() {
   );
 }
 
-export function useOrganizationRequestAction(
-  orgId: string,
-  search = "",
-  pagination: {
-    page: number;
-    pageSize: number;
-  }
-) {
+export function useOrganizationRequestAction(orgId: string, searchParams: URLSearchParams) {
   const queryClient = useQueryClient();
 
-  const { page, pageSize } = pagination;
+  const params = new URLSearchParams({
+    search: searchParams.get("search") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   return useMutation(
     async ({ id, actions }: { id: string; actions: "reject" | "approve" }) => {
@@ -231,10 +224,9 @@ export function useOrganizationRequestAction(
         if (typeof data.message === "string") {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
-
-        queryClient.invalidateQueries([
-          `/organisations/users/${orgId}/?search=${search}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
+      },
+      onSettled() {
+        queryClient.invalidateQueries([`/organisations/users/${orgId}/?${params.toString()}`]);
 
         return queryClient.invalidateQueries([`/admin/organisation_requests/?pk=${orgId}`]);
       },
@@ -253,17 +245,14 @@ export function useOrganizationRequestAction(
   );
 }
 
-export function useRemoveUserFromOrganization(
-  orgId: string,
-  search = "",
-  pagination: {
-    page: number;
-    pageSize: number;
-  }
-) {
+export function useRemoveUserFromOrganization(orgId: string, searchParams: URLSearchParams) {
   const queryClient = useQueryClient();
 
-  const { page, pageSize } = pagination;
+  const params = new URLSearchParams({
+    search: searchParams.get("search") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   return useMutation(
     async (userId: string) => {
@@ -278,10 +267,9 @@ export function useRemoveUserFromOrganization(
         if (typeof data.message === "string") {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
-
-        return queryClient.invalidateQueries([
-          `/organisations/users/${orgId}/?search=${search}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
+      },
+      onSettled() {
+        queryClient.invalidateQueries([`/organisations/users/${orgId}/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {

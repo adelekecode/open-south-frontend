@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { InputLabel } from "@mui/material";
+import { DialogContent, DialogTitle, InputLabel } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { ImFilePicture } from "react-icons/im";
@@ -15,10 +15,6 @@ import FormField from "~/components/fields/form-field";
 type CreateProps = {
   modal: CategoyModal;
   setModal: (obj: CategoyModal) => void;
-  pagination: {
-    page: number;
-    pageSize: number;
-  };
 };
 
 const validationSchema = Yup.object({
@@ -32,20 +28,18 @@ const validationSchema = Yup.object({
     .min(3, "Description must be atleast 3 characters"),
 });
 
-export default function Create({ modal, setModal, pagination }: CreateProps) {
+export default function Create({ modal, setModal }: CreateProps) {
   const { t } = useTranslation("dashboard-layout/admin/categories");
 
   const [searchParams] = useSearchParams();
-
-  const search = searchParams.get("q") || "";
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const [formCompleted, setFormCompleted] = useState(false);
   const [image, setImage] = useState<File | null>(null);
 
-  const createCategory = useCreateCategory(search, pagination);
-  const editCategory = useEditCategory(search, pagination);
+  const createCategory = useCreateCategory(searchParams);
+  const editCategory = useEditCategory(searchParams);
 
   function onClose() {
     setFormCompleted(false);
@@ -59,18 +53,16 @@ export default function Create({ modal, setModal, pagination }: CreateProps) {
 
   return (
     <Modal
-      muiModal={{
-        open: modal.state === "create" || isEditState,
-        onClose,
-      }}
-      innerContainer={{
-        className: "pt-[2rem]",
+      open={modal.state === "create" || isEditState}
+      onClose={onClose}
+      exitIcon={{
+        display: true,
       }}
     >
-      <div className="flex flex-col gap-2 w-full">
-        <h1 className="text-xl font-semibold">
-          {isEditState ? t("edit-category-modal.title") : t("add-category-modal.title")}
-        </h1>
+      <DialogTitle>
+        {isEditState ? t("edit-category-modal.title") : t("add-category-modal.title")}
+      </DialogTitle>
+      <DialogContent>
         {formCompleted ? (
           <div className="p-6 pt-4 w-full flex flex-col items-center gap-4">
             <figure className="max-w-[9rem]">
@@ -217,7 +209,7 @@ export default function Create({ modal, setModal, pagination }: CreateProps) {
             )}
           </Formik>
         )}
-      </div>
+      </DialogContent>
     </Modal>
   );
 }

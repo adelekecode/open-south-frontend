@@ -1,0 +1,19 @@
+{
+  "bio": {
+    "title": "Wasifu"
+  },
+  "datasets": {
+    "title": "Seti za Takwimu",
+    "empty-state": "Hakuna seti ya data iliyopatikana"
+  },
+  "general-statistics": {
+    "title": "Takwimu za Jumla",
+    "datasets": "Seti za Takwimu",
+    "views": "Mandhari",
+    "downloads": "Upakuzi"
+  },
+  "technical-details": {
+    "title": "Maelezo ya Kiufundi",
+    "user-joined-date": "Tarehe ya kujiunga kwa mtumiaji"
+  }
+}

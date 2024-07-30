@@ -4,7 +4,8 @@
   },
   "datasets": {
     "title": "Conjuntos de Dados",
-    "empty-state": "Nenhum conjunto de dados encontrado"
+    "empty-state": "Nenhum conjunto de dados encontrado",
+    "link": "Ver mais conjuntos de dados"
   },
   "general-statistics": {
     "title": "Estatísticas Gerais",

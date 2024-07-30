@@ -1,0 +1,62 @@
+{
+  "back-btn": {
+    "text": "Rudi kwenye seti za takwimu"
+  },
+  "cta-btn": {
+    "edit": "Hariri",
+    "delete": "Futa"
+  },
+  "processing-banner": {
+    "text": "Seti hii ya takwimu inakaguliwa na msimamizi."
+  },
+  "details": {
+    "license": "Leseni",
+    "creation": "Uundaji",
+    "update-frequency": "Mara ya mwisho kusasishwa",
+    "latest-update": "Sasisho la mwisho",
+    "temporal-coverage": "Muda wa chanjo",
+    "spatial-coverage": "Chanjo ya maeneo"
+  },
+  "delete-confirmation-modal": {
+    "contents": "Una uhakika unataka kufuta seti hii ya takwimu?",
+    "cta-btn": {
+      "cancel": "Ghairi",
+      "confirm": "Thibitisha"
+    }
+  },
+  "resourses": {
+    "title": "Rasilimali",
+    "add-btn": "Ongeza",
+    "table": {
+      "header": {
+        "no": "Na.",
+        "name": "Kichwa",
+        "format": "Muundo",
+        "size": "Ukubwa",
+        "downloads": "Upakuaji",
+        "created-at": "Imeundwa Tarehe",
+        "action": "Hatua"
+      }
+    },
+    "file-preview": {
+      "cta-btn": {
+        "download": "Pakua"
+      }
+    },
+    "delete-confirmation-modal": {
+      "contents": "Una uhakika unataka kufuta faili hii?",
+      "cta-btn": {
+        "cancel": "Ghairi",
+        "confirm": "Thibitisha"
+      }
+    },
+    "upload-file": {
+      "title": "Pakia Faili",
+      "dnd-box": {
+        "text": "Buruta na uachilie faili hapa kupakia. Aina za faili zinazokubalika: .csv, .json, .xlsx, .zip",
+        "alt": "mchoro wa kupakia faili"
+      },
+      "upload-btn": "Pakia"
+    }
+  }
+}

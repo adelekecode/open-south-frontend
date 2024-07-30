@@ -1,0 +1,25 @@
+{
+  "description": {
+    "title": "विवरण"
+  },
+  "datasets": {
+    "title": "डेटासेट",
+    "empty-state": "कोई डेटासेट नहीं मिला",
+    "link": "और अधिक डेटासेट देखें"
+  },
+  "general-statistics": {
+    "title": "सामान्य सांख्यिकी",
+    "datasets": "डेटासेट",
+    "views": "दृश्य",
+    "downloads": "डाउनलोड"
+  },
+  "technical-details": {
+    "title": "तकनीकी विवरण",
+    "organization-creation-date": "संगठन निर्माण की तारीख",
+    "id": "आईडी"
+  },
+  "request": {
+    "text": "यदि आप इस संगठन में रुचि रखते हैं",
+    "button": "शामिल होने का अनुरोध करें"
+  }
+}

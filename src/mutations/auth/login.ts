@@ -2,6 +2,7 @@ import axios, { isAxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { REFRESH_TOKEN_KEY } from "~/app-constants";
 import { notifyError, notifySuccess } from "~/utils/toast";
+import { axiosPrivate } from "~/utils/api";
 
 export default function useLogin() {
   const queryClient = useQueryClient();
@@ -20,11 +21,13 @@ export default function useLogin() {
     {
       onSuccess(data) {
         if (data.rememberMe) {
-          sessionStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
-        } else {
           localStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
+          sessionStorage.removeItem(REFRESH_TOKEN_KEY);
+        } else {
+          sessionStorage.setItem(REFRESH_TOKEN_KEY, JSON.stringify(data.refresh));
+          localStorage.removeItem(REFRESH_TOKEN_KEY);
         }
-        axios.defaults.headers.common["Authorization"] = "Bearer " + data.access;
+        axiosPrivate.defaults.headers.common["Authorization"] = "Bearer " + data.access;
         queryClient.setQueriesData(["/auth/users/me/"], data);
         notifySuccess("Login successful");
       },

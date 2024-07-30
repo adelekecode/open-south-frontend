@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Pagination } from "@mui/material";
 import moment from "moment";
 import Seo from "~/components/seo";
@@ -12,6 +13,8 @@ export default function PublicProfile() {
   const { id } = useParams();
 
   const navigate = useNavigate();
+
+  const { t } = useTranslation("layout/user/slug");
 
   // const [paginationModel, setPaginationModel] = useState({
   //   pageSize: 9,
@@ -96,13 +99,13 @@ export default function PublicProfile() {
         <main className="w-full max-w-maxAppWidth mx-auto flex flex-col gap-12 p-6 px-10 tablet:px-6 largeMobile:!px-4">
           {data.bio && (
             <div className="flex flex-col gap-3">
-              <h2 className="font-semibold text-base">Bio</h2>
+              <h2 className="font-semibold text-base">{t("bio.text")}</h2>
               <p className="text-sm [&_a]:text-blue-600 [&_a]:underline"></p>
             </div>
           )}
           <div className="w-full flex flex-col gap-3">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="font-semibold text-base">Datasets</h2>
+              <h2 className="font-semibold text-base">{t("datasets.title")}</h2>
             </div>
             {isLoadingDataset ? (
               <div className="grid grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 gap-6">
@@ -166,7 +169,7 @@ export default function PublicProfile() {
               </>
             ) : (
               <NoData
-                text="No dataset found"
+                text={t("datasets.empty-state")}
                 img={{
                   alt: "No dataset illustration",
                 }}
@@ -174,20 +177,20 @@ export default function PublicProfile() {
             )}
           </div>
           <div className="flex flex-col gap-3">
-            <h2 className="font-semibold text-base">General Statistics</h2>
+            <h2 className="font-semibold text-base">{t("general-statistics.title")}</h2>
             <div className="flex items-start gap-16 [&>div]:flex [&>div]:flex-col [&>div>p]:text-sm [&>div>p]:font-medium [&>div>h3]:text-4xl [&>div>h3]:font-bold">
               <div>
-                <p>Datasets</p>
+                <p>{t("general-statistics.datasets")}</p>
                 <h3>
                   {data.user_stats?.data_count !== undefined ? +data.user_stats.data_count : "---"}
                 </h3>
               </div>
               <div>
-                <p>Views</p>
+                <p>{t("general-statistics.views")}</p>
                 <h3>{data.user_stats?.views !== undefined ? +data.user_stats.views : "---"}</h3>
               </div>
               <div>
-                <p>Downloads</p>
+                <p>{t("general-statistics.downloads")}</p>
                 <h3>
                   {data.user_stats?.downloads !== undefined ? +data.user_stats.downloads : "---"}
                 </h3>
@@ -195,10 +198,10 @@ export default function PublicProfile() {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <h2 className="font-semibold text-base">Technical Details</h2>
+            <h2 className="font-semibold text-base">{t("technical-details.title")}</h2>
             <div className="grid gap-8 grid-cols-3 tabletAndBelow:grid-cols-2 tablet:!grid-cols-1 [&>div]:flex [&>div]:flex-col [&>div>h3]:font-semibold [&>div>h3]:text-sm">
               <div>
-                <h3>User joined date</h3>
+                <h3>{t("technical-details.user-joined-date")}</h3>
                 <p>
                   {data.date_joined ? moment(data.date_joined).format("MMMM DD, YYYY") : "-------"}
                 </p>

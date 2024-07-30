@@ -1,0 +1,36 @@
+{
+  "title": "مجموعات البيانات",
+  "search": {
+    "placeholder": "البحث عن العنوان..."
+  },
+  "filter": {
+    "placeholder": "تصفية حسب الحالة",
+    "options": {
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوض",
+      "published": "منشور",
+      "unpublished": "غير منشور",
+      "further-review": "مراجعة إضافية"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "رقم.",
+      "title": "العنوان",
+      "created-at": "أنشئت في",
+      "updated-at": "تم التحديث في",
+      "views": "المشاهدات",
+      "files": "الملفات",
+      "status": "الحالة"
+    },
+    "body": {
+      "status": {
+        "further-review": "مراجعة إضافية",
+        "pending": "قيد الانتظار",
+        "unpublished": "غير منشور",
+        "published": "منشور",
+        "rejected": "مرفوض"
+      }
+    }
+  }
+}

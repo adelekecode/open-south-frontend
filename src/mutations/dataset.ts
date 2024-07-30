@@ -1,13 +1,15 @@
-import { isAxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
 
-type QueryParams = {
-  search: string;
-  filter: {
-    status: string;
-  };
+const generateParams = (searchParams: URLSearchParams): URLSearchParams => {
+  return new URLSearchParams({
+    search: searchParams.get("search") || "",
+    status: searchParams.get("status") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 };
 
 export function useCreateDataset() {
@@ -284,14 +286,11 @@ export function useDatasetView() {
   });
 }
 
-export function useChangeDatasetStatus(pagination: Pagination, queryParams: QueryParams) {
+//? separate these
+export function useChangeDatasetStatus(searchParams: URLSearchParams) {
   const queryClient = useQueryClient();
 
-  const { pageSize, page } = pagination;
-  const {
-    search,
-    filter: { status },
-  } = queryParams;
+  const params = generateParams(searchParams);
 
   return useMutation(
     async ({
@@ -309,10 +308,10 @@ export function useChangeDatasetStatus(pagination: Pagination, queryParams: Quer
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([
-          `/admin/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
         notifySuccess("Successfully changed dataset status");
+      },
+      async onSettled() {
+        return await queryClient.invalidateQueries([`/admin/datasets/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {

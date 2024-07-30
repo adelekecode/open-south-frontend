@@ -1,15 +1,16 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-export function useAdminNews(
-  search = "",
+export function useAdminNews({
+  search,
+  filterBy: { status },
+  pagination: { page, pageSize },
+}: {
+  search: string;
   filterBy: {
     status: string;
-  },
-  pagination: Pagination
-) {
-  const { status } = filterBy;
-  const { page, pageSize } = pagination;
-
+  };
+  pagination: Pagination;
+}) {
   return useQuery<PaginatedResponse<News[]>>([
     `/admin/news/list/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
   ]);
