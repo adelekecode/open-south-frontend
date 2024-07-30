@@ -1,0 +1,29 @@
+{
+  "title": "Editar Perfil",
+  "form": {
+    "photo": {
+      "label": "Foto de Perfil",
+      "info": {
+        "title": "Sube tu foto",
+        "body": "Tu foto debe estar en formato PNG, JPG o JPEG",
+        "cta": {
+          "choose": "Elegir foto",
+          "remove": "Eliminar"
+        }
+      }
+    },
+    "first-name": {
+      "label": "Nombre"
+    },
+    "last-name": {
+      "label": "Apellido"
+    },
+    "email": {
+      "label": "Correo Electrónico"
+    },
+    "bio": {
+      "label": "Biografía"
+    },
+    "button": "Guardar"
+  }
+}
