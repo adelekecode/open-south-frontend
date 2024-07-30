@@ -1,3 +1,4 @@
+import { DialogContent } from "@mui/material";
 import { MdPendingActions } from "react-icons/md";
 import useUserOrganizationStore from "~/store/user-organization";
 import Modal from "../modal";
@@ -9,23 +10,24 @@ export default function PendingModal() {
 
   return (
     <Modal
-      muiModal={{
-        open,
-        onClose: () => {
-          setPendingModal({
-            open: false,
-          });
-        },
+      open={open}
+      onClose={() => {
+        setPendingModal({
+          open: false,
+        });
+      }}
+      exitIcon={{
+        display: true,
       }}
     >
-      <div className="flex flex-col gap-3 mediumMobile:gap-1 py-2">
-        <span className="bg-primary-100 mb-3 w-fit rounded-md p-4 mx-auto">
+      <DialogContent>
+        <div className="bg-primary-100 rounded-md w-fit mx-auto p-4 mb-8">
           <MdPendingActions className="text-primary-400 p-2 !text-[4rem] mediumMobile:!text-[3.5rem] !font-extralight" />
-        </span>
+        </div>
         <p className="text-center text-sm largeMobile:text-xs">
           Your organization is currently being reviewed
         </p>
-      </div>
+      </DialogContent>
     </Modal>
   );
 }

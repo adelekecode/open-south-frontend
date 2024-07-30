@@ -64,8 +64,14 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
         <p key="2">{route.name}</p>
       );
 
-      if (state) {
+      if (state?.name) {
         arr[1] = <p key="3">{state.name}</p>;
+      } else {
+        arr[1] = (
+          <p key="3">
+            {document.getElementsByTagName("title")[0].innerHTML.replace("Open South - ", "")}
+          </p>
+        );
       }
       setRoutePath(arr);
     }

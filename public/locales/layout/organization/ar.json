@@ -1,0 +1,19 @@
+{
+  "title": "المنظمة",
+  "subtitle": "البحث بين المنظمات على {{company_name}}.",
+  "search": {
+    "placeholder": "بحث...",
+    "button": "بحث"
+  },
+  "result": "{{value}} نتائج",
+  "sort-by": {
+    "text": "ترتيب حسب",
+    "dropdown": {
+      "relevance": "الأكثر صلة",
+      "most-recent": "الأحدث"
+    }
+  },
+  "org-card": {
+    "datasets": "مجموعات البيانات"
+  }
+}

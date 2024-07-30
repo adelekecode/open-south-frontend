@@ -1,0 +1,18 @@
+{
+  "title": "Wasiliana Nasi",
+  "subtitle": "Je, una swali kwa Open South? Tafadhali wasiliana nasi.",
+  "form": {
+    "name": {
+      "label": "Jina"
+    },
+    "email": {
+      "label": "Barua pepe",
+      "placeholder": "mfano@gmail.com"
+    },
+    "message": {
+      "label": "Ujumbe",
+      "placeholder": "Andika ujumbe wako hapa..."
+    },
+    "submit-btn": "Tuma"
+  }
+}

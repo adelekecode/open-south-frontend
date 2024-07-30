@@ -8,3 +8,4 @@ export const OrgDashboard = lazy(() => import("./organization/dashboard"));
 export const OrgDataset = lazy(() => import("./organization/dataset"));
 export const OrgDatasetDetails = lazy(() => import("./organization/dataset-details"));
 export const CreateOrganization = lazy(() => import("./create-organization"));
+export const Developer = lazy(() => import("./developer"));

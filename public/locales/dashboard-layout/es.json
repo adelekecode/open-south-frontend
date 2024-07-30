@@ -13,6 +13,7 @@
   "sidebar": {
     "dashboard": "Tablero",
     "datasets": "Conjuntos de datos",
+    "users": "usuarios",
     "profile": "Perfil",
     "organizations": "Organizaciones",
     "categories": "Categorías",

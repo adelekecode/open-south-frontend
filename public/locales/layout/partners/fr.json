@@ -25,7 +25,7 @@
         "placeholder": "Précisez si vous êtes une entreprise, une organisation à but non lucratif, une entité gouvernementale, etc."
       },
       "purpose-of-partnership": {
-        "label": "Objectif du partenariat",
+        "label": "But du partenariat",
         "placeholder": "Décrivez brièvement pourquoi vous souhaitez devenir notre partenaire."
       }
     },

@@ -4,7 +4,8 @@
   },
   "datasets": {
     "title": "Seti za Takwimu",
-    "empty-state": "Hakuna seti ya takwimu iliyopatikana"
+    "empty-state": "Hakuna seti ya takwimu iliyopatikana",
+    "link": "Angalia seti zaidi za data"
   },
   "general-statistics": {
     "title": "Takwimu za Jumla",

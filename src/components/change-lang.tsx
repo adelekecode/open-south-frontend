@@ -26,10 +26,18 @@ const langs = [
     value: "sw",
     text: "Swahili",
   },
+  {
+    value: "ar",
+    text: "Arabic",
+  },
+  {
+    value: "hi",
+    text: "Hindi",
+  },
 ];
 
 export default function ChangeLang() {
-  const { lang, setLang } = useAppStore();
+  const { lang, setLang, setLangId } = useAppStore();
 
   const { i18n } = useTranslation("layout");
 
@@ -40,7 +48,7 @@ export default function ChangeLang() {
   return (
     <>
       {loading ? (
-        <Button loading={loading} variant="text" color="info">
+        <Button loading={loading} variant="text" color="primary">
           loading
         </Button>
       ) : (
@@ -57,6 +65,8 @@ export default function ChangeLang() {
             if (response) {
               i18n.changeLanguage(value);
               setLang(value);
+              setLangId(response.instance.id);
+              window.history.replaceState({}, "");
               window.location.reload();
               setLoading(false);
             }

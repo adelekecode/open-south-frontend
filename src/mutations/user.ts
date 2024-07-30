@@ -56,14 +56,16 @@ export function useDeleteUser(pagination: Pagination, queryParams: QueryParams) 
   );
 }
 
-export function useChangeUserStatus(pagination: Pagination, queryParams: QueryParams) {
+export function useChangeUserStatus(searchParams: URLSearchParams) {
   const queryClient = useQueryClient();
 
-  const { pageSize, page } = pagination;
-  const {
-    search,
-    filter: { isActive },
-  } = queryParams;
+  const isActive = searchParams.get("is-active") || "";
+
+  const params = new URLSearchParams({
+    search: searchParams.get("q") || "",
+    limit: searchParams.get("limit") || "10",
+    offset: searchParams.get("offset") || "0",
+  });
 
   let status = "";
 
@@ -83,13 +85,14 @@ export function useChangeUserStatus(pagination: Pagination, queryParams: QueryPa
     },
     {
       onSuccess(data) {
-        queryClient.invalidateQueries([
-          `/admin/users/?search=${search}&status=${status}&limit=${pageSize}&offset=${page * pageSize}`,
-        ]);
-
         if (typeof data.message === "string") {
           notifySuccess(data.message.charAt(0).toUpperCase() + data.message.slice(1));
         }
+      },
+      async onSettled() {
+        await queryClient.invalidateQueries([
+          `/admin/users/?status=${status}&${params.toString()}`,
+        ]);
       },
       onError(error) {
         if (isAxiosError(error)) {
@@ -100,6 +103,51 @@ export function useChangeUserStatus(pagination: Pagination, queryParams: QueryPa
               notifyError(error);
             }
           }
+        }
+      },
+    }
+  );
+}
+
+export function useGenerateAPIKey() {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    async () => {
+      const { data: response } = await axiosPrivate.post("/user/token/manager/");
+
+      return response;
+    },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries(["/user/token/manager/"]);
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          notifyError(String(error.toJSON()));
+        }
+      },
+    }
+  );
+}
+
+export function useEnableDeveloperFeature() {
+  return useMutation(
+    async () => {
+      const response = await axiosPrivate.post("/user/api/agreement/");
+
+      return response;
+    },
+    {
+      onError(error) {
+        if (isAxiosError(error)) {
+          const data = error.response?.data;
+
+          if (data.error === "You have already accepted the agreement") {
+            throw new Error(data.error);
+          }
+
+          notifyError(String(error.toJSON()));
         }
       },
     }

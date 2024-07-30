@@ -35,7 +35,9 @@ export default function Header({ showDrawerHandler }: { showDrawerHandler: () =>
         <Link to={"/"} className="mr-auto laptopAndAbove:hidden">
           <Logo className="w-[8rem] mediumMobile:w-[7rem]" />
         </Link>
-        <ChangeLang />
+        <div className="tablet:hidden">
+          <ChangeLang />
+        </div>
         {currentUser?.role === "user" && (
           <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
             <div>

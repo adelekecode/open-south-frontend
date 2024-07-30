@@ -15,6 +15,7 @@ type State = {
   } | null;
   lang: string;
   langId: string | null;
+  agreeTerms: boolean;
 };
 
 type Action = {
@@ -24,6 +25,7 @@ type Action = {
   setUserLocation: (obj: { country: string; lat: number; lng: number }) => void;
   setLang: (lang: string) => void;
   setLangId: (langId: string) => void;
+  setAgreeTerms: (bool: boolean) => void;
 };
 
 const useAppStore = create<State & Action>()(
@@ -56,6 +58,8 @@ const useAppStore = create<State & Action>()(
       setLang: (lang) => set({ lang }),
       langId: null,
       setLangId: (langId) => set({ langId }),
+      agreeTerms: false,
+      setAgreeTerms: (agreeTerms) => set({ agreeTerms }),
     }),
     {
       name: "app-store",
@@ -63,6 +67,7 @@ const useAppStore = create<State & Action>()(
       partialize: (state) => ({
         lang: state.lang,
         langId: state.langId,
+        agreeTerms: state.agreeTerms,
       }),
     }
   )

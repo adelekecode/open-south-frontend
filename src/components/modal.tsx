@@ -1,57 +1,32 @@
-import {
-  IconButton,
-  IconButtonProps,
-  Modal as MuiModal,
-  ModalProps as MuiModalProps,
-} from "@mui/material";
-import { IoClose } from "react-icons/io5";
+import { Dialog, IconButton, IconButtonProps, DialogProps } from "@mui/material";
 import { twMerge } from "tailwind-merge";
+import { IoClose } from "react-icons/io5";
 
-type ModalProps = {
-  muiModal: Omit<MuiModalProps, "children">;
-  iconButton?: Omit<IconButtonProps, "children">;
-  displayExitButton?: boolean;
-  children: React.ReactNode;
-  innerContainer?: {
-    className?: string;
+type Props = DialogProps & {
+  exitIcon?: IconButtonProps & {
+    display?: boolean;
   };
 };
 
-export default function Modal({
-  muiModal,
-  iconButton,
-  displayExitButton = true,
-  children,
-  innerContainer,
-}: ModalProps) {
+export default function Modal({ children, exitIcon, ...props }: Props) {
+  const { display, ...iconButtonProps } = exitIcon || {};
+
   return (
-    <MuiModal
-      {...muiModal}
-      className={twMerge(
-        `flex items-center justify-center [@media(max-width:500px)]:px-4`,
-        muiModal.className
+    <Dialog {...props}>
+      {display && (
+        <IconButton
+          {...iconButtonProps}
+          className={twMerge(
+            `!absolute right-[16px] top-[12px] mediumMobile::right-2 mediumMobile::top-2`,
+            exitIcon?.className
+          )}
+          onClick={props.onClose as () => void}
+          size="small"
+        >
+          <IoClose />
+        </IconButton>
       )}
-    >
-      <div
-        className={twMerge(
-          `w-[500px] largeLaptop:w-[600px] bg-white flex flex-col gap-10 items-center p-8 relative !outline-0 pt-12 [@media(max-width:600px)]:w-[450px] [@media(max-width:500px)]:px-4 [@media(max-width:500px)]:!w-full overflow-y-auto max-h-[90%]`,
-          innerContainer?.className
-        )}
-      >
-        {displayExitButton && (
-          <IconButton
-            {...iconButton}
-            className={twMerge(
-              `!absolute right-[16px] top-[12px] mediumMobile::right-2 mediumMobile::top-2`,
-              iconButton?.className
-            )}
-            onClick={muiModal.onClose as () => void}
-          >
-            <IoClose />
-          </IconButton>
-        )}
-        {children}
-      </div>
-    </MuiModal>
+      {children}
+    </Dialog>
   );
 }

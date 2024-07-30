@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { InputLabel } from "@mui/material";
+import { DialogContent, DialogTitle, InputLabel } from "@mui/material";
 import { ImFilePicture } from "react-icons/im";
 import Modal from "~/components/modal";
 import { notifyError } from "~/utils/toast";
@@ -14,13 +14,6 @@ import TextEditorField from "~/components/fields/text-editor-field";
 type CreateProps = {
   modal: NewsModal;
   setModal: (obj: NewsModal) => void;
-  pagination: Pagination;
-  queryParams: {
-    search: string;
-    filter: {
-      status: string;
-    };
-  };
 };
 
 const validationSchema = Yup.object({
@@ -34,39 +27,38 @@ const validationSchema = Yup.object({
     .min(3, "Description must be atleast 3 characters"),
 });
 
-export default function Create({ modal, setModal, pagination, queryParams }: CreateProps) {
+export default function Create({ modal, setModal }: CreateProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [formCompleted, setFormCompleted] = useState(false);
   const [image, setImage] = useState<File | null>(null);
 
-  const createNews = useCreateNews(pagination, queryParams);
-  const editNews = useEditNews(pagination, queryParams);
-  const changeNewsStatus = useChangeNewsStatus(pagination, queryParams);
+  const createNews = useCreateNews();
+  const editNews = useEditNews();
+  const changeNewsStatus = useChangeNewsStatus();
 
-  function onClose() {
+  const onClose = useCallback(() => {
     setFormCompleted(false);
     setModal({
       state: null,
       data: null,
     });
     setImage(null);
-  }
+  }, [setModal]);
 
   const isEditState = modal.state === "edit";
 
   return (
     <Modal
-      muiModal={{
-        open: modal.state === "create" || isEditState,
-        onClose,
+      open
+      onClose={onClose}
+      exitIcon={{
+        display: true,
       }}
-      innerContainer={{
-        className: "pt-[2rem] w-[600px]",
-      }}
+      scroll="body"
     >
-      <div className="flex flex-col gap-2 w-full">
-        <h1 className="text-xl font-semibold">{isEditState ? "Edit News" : "Add News"}</h1>
-        {formCompleted ? (
+      <DialogTitle>{isEditState ? "Edit News" : "Add News"}</DialogTitle>
+      <DialogContent>
+        {!isEditState && formCompleted ? (
           <div className="p-6 pt-2 w-full flex flex-col items-center gap-4">
             <figure className="max-w-[7rem]">
               <img src={SuccessIllustration} alt="Success illustrion" />
@@ -241,7 +233,7 @@ export default function Create({ modal, setModal, pagination, queryParams }: Cre
             )}
           </Formik>
         )}
-      </div>
+      </DialogContent>
     </Modal>
   );
 }
