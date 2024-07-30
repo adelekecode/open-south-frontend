@@ -274,7 +274,7 @@ export default function DatasetDetails() {
           onDownload={(id: string) => fileDownload.mutateAsync(id)}
         />
       )}
-      {agreeTerms && <DatasetAgreement />}
+      {!agreeTerms && <DatasetAgreement />}
     </>
   );
 }
