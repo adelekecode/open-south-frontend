@@ -10,6 +10,6 @@ COPY . .
 
 RUN yarn build
 
-EXPOSE 5050
+EXPOSE 4040
 
 CMD ["yarn", "preview"]

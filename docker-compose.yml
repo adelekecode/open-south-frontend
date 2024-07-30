@@ -3,9 +3,7 @@ version: "3.8"
 services:
   web:
     build: .
-    image: open-south
-    container_name: open-south-client
+    image: open-south-production
+    container_name: open-south-client-production
     ports:
-      - "5050:5050"
-    env_file:
-      - .env.production
+      - "4040:4040"
