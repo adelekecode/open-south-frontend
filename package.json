@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview --port 7891",
+    "preview": "vite preview --port 4040",
     "format": "prettier --write .",
     "prepare": "husky install"
   },
