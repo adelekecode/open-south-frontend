@@ -14,7 +14,7 @@ export default ({ mode }) => {
       },
     },
     server: {
-      port: parseInt(process.env.VITE_PORT) || 5173,
+      port: parseInt(process.env.VITE_PORT) || 7891,
       host: true,
     },
   });
