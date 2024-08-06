@@ -99,8 +99,8 @@ export default function Resources() {
   const columns: GridColDef[] = [
     createIdColumn(paginationModel),
     createColumn({
-      field: "first_name",
-      headerName: "Name",
+      field: "file_name",
+      headerName: "Title",
     }),
     createColumn({
       field: "format",
