@@ -1,26 +1,45 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { IoIosArrowRoundBack } from "react-icons/io";
 import moment from "moment";
 import Button from "~/components/button";
 import Resources from "./resources";
-import DeleteConfirmation from "./delete-confirmation";
 import { useUserOrganizationDatasetDetails } from "~/queries/dataset";
 import DashboardLoader from "~/components/loader/dashboard-loader";
 import NotFound from "~/pages/404";
+import usePrompt from "~/hooks/usePrompt";
+import { useDeleteDataset } from "~/mutations/dataset";
+
+//? Use confirmation hook instead
 
 export default function DatasetDetails() {
   const navigate = useNavigate();
   const { id, slug } = useParams();
   const descriptionRef = useRef<HTMLParagraphElement>(null);
 
-  const [displayDeleteConfirmationModal, setDisplayDeleteConfirmationModal] = useState(false);
-
   const queryClient = useQueryClient();
   const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
   const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
 
   const { data, isLoading } = useUserOrganizationDatasetDetails(organization?.id || "", id || "");
+
+  const prompt = usePrompt();
+  const { mutateAsync: deleteDataset } = useDeleteDataset();
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      const confirmed = await prompt({
+        title: "Please confirm",
+        description: "Are you sure you want to delete this dataset d djsds?",
+      });
+
+      if (confirmed) {
+        await deleteDataset(id);
+      }
+    },
+    [deleteDataset, prompt]
+  );
 
   useEffect(() => {
     if (!descriptionRef.current) return;
@@ -53,16 +72,10 @@ export default function DatasetDetails() {
     <>
       <main className="p-6 px-8 tablet:px-5 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <header className="flex justify-between items-center">
-          <h1 className="font-medium flex items-center gap-2 text-base">
-            <button
-              onClick={() => navigate("/account/datasets")}
-              className="text-2xl font-semibold largeMobile:text-xl"
-            >
-              Datasets
-            </button>{" "}
-            <span className="text-sm">{">"}</span>{" "}
-            <span className="text-info-800">{data?.title || "-----"}</span>
-          </h1>
+          <button className="flex items-center gap-1 text-zinc-600" onClick={() => navigate(-1)}>
+            <IoIosArrowRoundBack className="text-2xl" />
+            <small className="font-medium">{"Back to datasets"}</small>
+          </button>
           {currentUser?.id === data.user && (
             <div className="flex items-center gap-6">
               <Button
@@ -78,8 +91,8 @@ export default function DatasetDetails() {
                 color="error"
                 className="!py-2 !px-3 !text-xs"
                 variant="outlined"
-                onClick={() => {
-                  setDisplayDeleteConfirmationModal(true);
+                onClick={async () => {
+                  await handleDelete(id || "");
                 }}
               >
                 Delete
@@ -158,10 +171,6 @@ export default function DatasetDetails() {
           </div>
         </div>
       </main>
-      <DeleteConfirmation
-        open={displayDeleteConfirmationModal}
-        setOpen={(bool: boolean) => setDisplayDeleteConfirmationModal(bool)}
-      />
     </>
   );
 }

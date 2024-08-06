@@ -163,8 +163,8 @@ export default function Dataset() {
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-medium flex items-center gap-2">
-            Dashboard <span className="text-sm">{">"}</span>{" "}
-            <span className="text-info-800">{organization?.name || "-----"}</span>
+            <span className="text-info-800 capitalize">{organization?.name || "-----"}</span>
+            <span className="text-sm">{">"}</span> <span className="text-sm">Datasets</span>
           </h1>
         </div>
         <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
