@@ -18,27 +18,33 @@ export type OutletContext = {
     delete: (key: string) => void;
     set: (key: string, value: string) => void;
   };
+  pagination: Record<"limit" | "offset", string>;
 };
 
 export default function Paginated() {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const pagination = {
+    limit: searchParams.get("limit") || "",
+    offset: searchParams.get("offset") || "",
+  };
+
   useEffect(() => {
-    if (!searchParams.get("limit") || !searchParams.get("offset")) {
+    if (!pagination.limit || !pagination.offset) {
       setSearchParams({ limit: "10", offset: "0" }, { replace: true });
     }
-  }, [searchParams, setSearchParams]);
+  }, [pagination.limit, pagination.offset, setSearchParams]);
 
   const paginationModel = useMemo(() => {
-    const offset = parseInt(searchParams.get("offset") || "0");
-    const pageSize = parseInt(searchParams.get("limit") || "10");
+    const offset = parseInt(pagination.offset || "0");
+    const pageSize = parseInt(pagination.limit || "10");
     const page = Math.floor(offset / pageSize);
 
     return {
       page,
       pageSize,
     };
-  }, [searchParams]);
+  }, [pagination.limit, pagination.offset]);
 
   const onPaginationModelChange = useCallback(
     ({ page, pageSize }: GridPaginationModel, { reason }: GridCallbackDetails<any>) => {
@@ -79,7 +85,14 @@ export default function Paginated() {
 
   return (
     <Outlet
-      context={{ paginationModel, onPaginationModelChange, queryParams } satisfies OutletContext}
+      context={
+        {
+          paginationModel,
+          onPaginationModelChange,
+          queryParams,
+          pagination,
+        } satisfies OutletContext
+      }
     />
   );
 }

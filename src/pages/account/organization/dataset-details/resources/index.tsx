@@ -66,18 +66,19 @@ export default function Resources() {
 
       return (
         <>
-          <button
-            onClick={() => {
-              setPreviewFile({
-                open: true,
-                data: row,
-              });
-            }}
-            disabled={!avaliableFormat}
-          >
-            <IoEyeOutline />
-            <span>View</span>
-          </button>
+          {avaliableFormat && (
+            <button
+              onClick={() => {
+                setPreviewFile({
+                  open: true,
+                  data: row,
+                });
+              }}
+            >
+              <IoEyeOutline />
+              <span>View</span>
+            </button>
+          )}
           <button
             onClick={async () => {
               await handleDelete({
@@ -87,7 +88,7 @@ export default function Resources() {
             }}
           >
             <MdOutlineDelete />
-            <span>View</span>
+            <span>Delete</span>
           </button>
         </>
       );
