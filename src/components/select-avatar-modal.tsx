@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import axios from "axios";
 import useAppStore from "~/store/app";
@@ -54,12 +54,15 @@ function getRandomAvatar(): string {
 }
 
 export default function SelectAvatarModal() {
-  const { displaySelectAvatarModal: open, setDisplaySelectAvatarModal: setOpen } = useAppStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { setDisplaySelectAvatarModal: setOpen } = useAppStore();
 
   const baseURL = `${window.location.protocol}//${window.location.host}`;
 
   const [randomAvatar, setRandomAvatar] = useState(getRandomAvatar());
   const [loading, setLoading] = useState(false);
+  const [galleryImage, setGalleryImage] = useState<File | null>(null);
 
   const { mutateAsync: uploadProfileImage } = useImageUpload();
 
@@ -82,13 +85,21 @@ export default function SelectAvatarModal() {
   const handleSave = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`${baseURL}${randomAvatar}`, {
-        responseType: "blob",
-      });
-      const blob = new Blob([data], { type: "image/png" });
-      const file = new File([blob], `avatar-${Date.now()}.png`, {
-        lastModified: Date.now(),
-      });
+
+      let file: File;
+
+      if (galleryImage) {
+        file = galleryImage;
+      } else {
+        const { data } = await axios.get(`${baseURL}${randomAvatar}`, {
+          responseType: "blob",
+        });
+        const blob = new Blob([data], { type: "image/png" });
+
+        file = new File([blob], `avatar-${Date.now()}.png`, {
+          lastModified: Date.now(),
+        });
+      }
 
       const response = await uploadProfileImage({ image: file });
 
@@ -101,10 +112,15 @@ export default function SelectAvatarModal() {
     } finally {
       setLoading(false);
     }
-  }, [baseURL, onClose, randomAvatar, uploadProfileImage]);
+  }, [baseURL, galleryImage, onClose, randomAvatar, uploadProfileImage]);
 
   return (
-    <Modal open={open}>
+    <Modal
+      open
+      PaperProps={{
+        className: "!max-w-[600px]",
+      }}
+    >
       <DialogTitle>Select Avatar</DialogTitle>
       <DialogContent>
         <div className="flex flex-col gap-4 items-center">
@@ -113,7 +129,7 @@ export default function SelectAvatarModal() {
             className="w-40 flex items-center justify-center border border-info-300 rounded-md outline-0 aspect-square overflow-hidden p-1"
           >
             <img
-              src={randomAvatar}
+              src={galleryImage ? URL.createObjectURL(galleryImage) : randomAvatar}
               alt="profile picture"
               className="w-full h-full object-contain"
             />
@@ -124,15 +140,38 @@ export default function SelectAvatarModal() {
                 key={index + 1}
                 id="picture"
                 className={`w-full flex items-center justify-center border border-info-200 rounded outline-0 aspect-square overflow-hidden p-1 ${
-                  randomAvatar === item && "border-primary-600 bg-secondary-50"
+                  randomAvatar === item && !galleryImage && "border-primary-600 bg-secondary-50"
                 }`}
                 onClick={() => {
+                  setGalleryImage(null);
                   setRandomAvatar(item);
                 }}
               >
                 <img src={item} alt="profile picture" className="w-full h-full object-contain" />
               </button>
             ))}
+          </div>
+          <div className="flex justify-start w-full">
+            <p>
+              Didn't find an avatar that suit you?{" "}
+              <button
+                className="text-primary-600 underline"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Select from gallery
+              </button>
+            </p>
+            <input
+              className="hidden"
+              type="file"
+              ref={fileInputRef}
+              accept=".png, .jpg, .jpeg"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+
+                setGalleryImage(file || null);
+              }}
+            />
           </div>
         </div>
       </DialogContent>

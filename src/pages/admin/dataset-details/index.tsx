@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { IoIosArrowRoundBack } from "react-icons/io";
 import moment from "moment";
 import DashboardLoader from "~/components/loader/dashboard-loader";
 import NotFound from "~/pages/404";
@@ -44,16 +45,10 @@ export default function DatasetDetails() {
     <>
       <main className="p-6 px-8 tablet:px-5 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <header className="flex justify-between items-center">
-          <h1 className="font-medium flex items-center gap-2 text-base">
-            <button
-              onClick={() => navigate("/admin/datasets")}
-              className="text-2xl font-semibold largeMobile:text-xl"
-            >
-              Datasets
-            </button>{" "}
-            <span className="text-sm">{">"}</span>{" "}
-            <span className="text-info-800">{data?.title || "-----"}</span>
-          </h1>
+          <button className="flex items-center gap-1 text-zinc-600" onClick={() => navigate(-1)}>
+            <IoIosArrowRoundBack className="text-2xl" />
+            <small className="font-medium">{"Back to datasets"}</small>
+          </button>
         </header>
         <div className="border border-info-100 rounded-md overflow-hidden">
           <div

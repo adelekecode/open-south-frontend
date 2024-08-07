@@ -4,155 +4,71 @@ import { IoCloudDownloadOutline, IoGridOutline } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import { GoOrganization } from "react-icons/go";
 import { useTranslation } from "react-i18next";
-import { twMerge } from "tailwind-merge";
-import moment from "moment";
 import DataGrid from "~/components/data-grid";
 import Button from "~/components/button";
 import { useUserDatasets } from "~/queries/dataset";
 import { useDashboardCards } from "~/queries/user-dashboard";
 import TopTrafficLocations from "./top-traffic-locations";
 import MostAccessedDatasets from "./most-accessed-datasets";
-
-const columns: GridColDef[] = [
-  {
-    field: "id",
-    headerName: "NO.",
-    minWidth: 10,
-    renderCell: ({ api, row }) => {
-      const { getAllRowIds } = api;
-
-      return getAllRowIds().indexOf(row.id) + 1;
-    },
-    sortComparator: (v1, v2, { api }) => {
-      const { getAllRowIds } = api;
-
-      const num1 = parseInt(getAllRowIds().indexOf(v1) + 1, 10);
-      const num2 = parseInt(getAllRowIds().indexOf(v2) + 1, 10);
-
-      return num1 - num2;
-    },
-  },
-  {
-    field: "title",
-    headerName: "TITLE",
-    flex: 1,
-    minWidth: 200,
-  },
-  {
-    field: "created_at",
-    headerName: "CREATED AT",
-    flex: 1,
-    minWidth: 150,
-    valueFormatter: ({ value }) => {
-      return moment(value).format("Do MMM, YYYY");
-    },
-    sortComparator: (v1, v2) => {
-      return new Date(v1).getTime() - new Date(v2).getTime();
-    },
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "updated_at",
-    headerName: "UPDATED AT",
-    minWidth: 150,
-    flex: 1,
-    valueFormatter: ({ value }) => {
-      const date = moment(value).fromNow();
-
-      return date.charAt(0).toUpperCase() + date.slice(1);
-    },
-    sortComparator: (v1, v2) => {
-      return new Date(v1).getTime() - new Date(v2).getTime();
-    },
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "views",
-    headerName: "VIEWS",
-    flex: 1,
-    minWidth: 100,
-    valueFormatter: ({ value }) => {
-      return value.count;
-    },
-    sortComparator: (v1, v2) => {
-      return v1 - v2.count;
-    },
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "files_count",
-    headerName: "FILES",
-    minWidth: 100,
-    valueFormatter: ({ value }) => {
-      return value;
-    },
-    sortComparator: (v1, v2) => {
-      return v1 - v2;
-    },
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    flex: 1,
-    renderCell: ({ value }) => {
-      const obj: {
-        element: any;
-        styles: string;
-      } = {
-        element: "-------",
-        styles: "py-1 px-2 rounded-full border text-xs",
-      };
-
-      if (value === "pending") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-orange-500 border-orange-500`)}>Pending</p>
-        );
-      } else if (value === "published") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-green-500 border-green-500`)}>Published</p>
-        );
-      } else if (value === "unpublished") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-info-500 border-info-500`)}>Unpublished</p>
-        );
-      } else if (value === "rejected") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-red-500 border-red-500`)}>Rejected</p>
-        );
-      } else if (value === "further_review") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-info-800 border-info-800`)}>Further Review</p>
-        );
-      }
-
-      return obj.element;
-    },
-    sortable: false,
-    minWidth: 130,
-    align: "center",
-    headerAlign: "center",
-  },
-];
+import {
+  createColumn,
+  createDatasetStatusColumn,
+  createDateColumn,
+  createIdColumn,
+} from "~/utils/table-helpers";
 
 export default function Dashboard() {
   const { t } = useTranslation("dashboard-layout/account/dashboard");
 
   const navigate = useNavigate();
 
-  const paginationModel = {
-    pageSize: 10,
-    page: 0,
-  };
+  const columns: GridColDef[] = [
+    createIdColumn(
+      {
+        page: 0,
+        pageSize: 10,
+      },
+      {
+        headerName: t("latest-dataset-created.table.header.no"),
+      }
+    ),
+    createColumn({
+      field: "title",
+      headerName: t("latest-dataset-created.table.header.title"),
+    }),
+    createColumn({
+      field: "views",
+      minWidth: 100,
+      headerName: t("latest-dataset-created.table.header.views"),
+    }),
+    createColumn({
+      field: "files_count",
+      headerName: t("latest-dataset-created.table.header.files"),
+      minWidth: 100,
+    }),
+    createDateColumn({
+      field: "created_at",
+      headerName: t("latest-dataset-created.table.header.created-at"),
+    }),
+    createDateColumn({
+      field: "updated_at",
+      headerName: t("latest-dataset-created.table.header.updated-at"),
+    }),
+    createDatasetStatusColumn({
+      field: "status",
+      headerName: t("latest-dataset-created.table.header.status"),
+    }),
+  ];
 
   const { data } = useDashboardCards();
 
-  const { data: datasets, isLoading: isDatasetsLoading } = useUserDatasets(undefined, undefined, {
-    ...paginationModel,
+  const { data: datasets, isLoading: isDatasetsLoading } = useUserDatasets({
+    searchParams: {
+      search: "",
+      status: "",
+      limit: "10",
+      offset: "0",
+    },
   });
 
   return (
