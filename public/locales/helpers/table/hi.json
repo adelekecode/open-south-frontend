@@ -1,0 +1,16 @@
+{
+  "dataset-status-column": {
+    "further-review": "आगे की समीक्षा",
+    "pending": "लंबित",
+    "unpublished": "अप्रकाशित",
+    "published": "प्रकाशित",
+    "rejected": "अस्वीकृत"
+  },
+  "dataset-state-column": {
+    "true": "सत्य",
+    "false": "असत्य"
+  },
+  "date-column": {
+    "yesterday": "कल"
+  }
+}

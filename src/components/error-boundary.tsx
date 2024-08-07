@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useRouteError } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { captureException } from "@sentry/react";
 import Button from "~/components/button";
 import ErrorOccured from "~/assets/illustrations/error-occured.png";
 
@@ -9,6 +11,10 @@ export default function ErrorBoundary() {
   const error = useRouteError();
 
   console.error(error);
+
+  useEffect(() => {
+    captureException(error);
+  }, [error]);
 
   return (
     <>

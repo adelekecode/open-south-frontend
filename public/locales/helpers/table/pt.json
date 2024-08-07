@@ -1,0 +1,16 @@
+{
+  "dataset-status-column": {
+    "further-review": "Revisão adicional",
+    "pending": "Pendente",
+    "unpublished": "Não publicado",
+    "published": "Publicado",
+    "rejected": "Rejeitado"
+  },
+  "dataset-state-column": {
+    "true": "Verdadeiro",
+    "false": "Falso"
+  },
+  "date-column": {
+    "yesterday": "Ontem"
+  }
+}
