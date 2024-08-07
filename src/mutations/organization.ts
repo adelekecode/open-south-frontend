@@ -202,14 +202,14 @@ export function useRequestToJoinOrganization() {
   );
 }
 
-export function useOrganizationRequestAction(orgId: string, searchParams: URLSearchParams) {
+export function useOrganizationRequestAction(orgId: string, _: URLSearchParams) {
   const queryClient = useQueryClient();
 
-  const params = new URLSearchParams({
-    search: searchParams.get("search") || "",
-    limit: searchParams.get("limit") || "10",
-    offset: searchParams.get("offset") || "0",
-  });
+  // const params = new URLSearchParams({
+  //   search: searchParams.get("search") || "",
+  //   limit: searchParams.get("limit") || "10",
+  //   offset: searchParams.get("offset") || "0",
+  // });
 
   return useMutation(
     async ({ id, actions }: { id: string; actions: "reject" | "approve" }) => {
@@ -226,7 +226,7 @@ export function useOrganizationRequestAction(orgId: string, searchParams: URLSea
         }
       },
       onSettled() {
-        queryClient.invalidateQueries([`/organisations/users/${orgId}/?${params.toString()}`]);
+        queryClient.invalidateQueries([`/organisations/users/${orgId}/`]);
 
         return queryClient.invalidateQueries([`/admin/organisation_requests/?pk=${orgId}`]);
       },
