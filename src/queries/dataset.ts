@@ -70,24 +70,14 @@ export function useAdminDatasets(search = "") {
   ]);
 }
 
-export function useUserDatasets(
-  search = "",
-  filterBy: {
-    status: string | null;
-  } = {
-    status: null,
-  },
-  pagination: {
-    pageSize: number;
-    page: number;
-  }
-) {
-  const { pageSize, page } = pagination;
-  const { status } = filterBy;
+export function useUserDatasets({
+  searchParams,
+}: {
+  searchParams: Record<"search" | "status" | "limit" | "offset", string>;
+}) {
+  const params = new URLSearchParams({ ...searchParams });
 
-  return useQuery<PaginatedResponse<Dataset[]>>([
-    `/user/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-  ]);
+  return useQuery<PaginatedResponse<Dataset[]>>([`/user/datasets/?${params.toString()}`]);
 }
 
 export function useUserDatasetDetails(id: string, options?: UseQueryOptions<Dataset>) {
