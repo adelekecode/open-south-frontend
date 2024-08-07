@@ -1,0 +1,42 @@
+{
+  "title": "Dashibodi",
+  "cards": {
+    "datasets": "Seti za Data",
+    "views": "Mionekano",
+    "downloads": "Upakuaji"
+  },
+  "chart": {
+    "most-accessed-datasets": {
+      "title": "Juu 5 Seti za Data Zinazotembelewa Sana",
+      "empty-state": "Hakuna seti za data zilizotembelewa kwa sasa"
+    },
+    "traffic-locations": {
+      "title": "Juu 5 Sehemu za Trafiki",
+      "empty-state": "Hakuna data za trafiki zinazopatikana kwa sasa"
+    }
+  },
+  "latest-dataset-created": {
+    "title": "Seti ya Data ya Hivi Karibuni Iliyoundwa",
+    "view-all": "Tazama Zote",
+    "table": {
+      "header": {
+        "no": "NA.",
+        "title": "Kichwa",
+        "created-at": "Iliundwa Tarehe",
+        "updated-at": "Imesasishwa Tarehe",
+        "views": "Mionekano",
+        "files": "Faili",
+        "status": "Hali"
+      },
+      "body": {
+        "status": {
+          "further-review": "Mapitio Zaidi",
+          "pending": "Inasubiri",
+          "unpublished": "Haijachapishwa",
+          "published": "Imechapishwa",
+          "rejected": "Imekataliwa"
+        }
+      }
+    }
+  }
+}

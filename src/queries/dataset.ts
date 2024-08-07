@@ -92,30 +92,19 @@ export function useUserOrganizationDatasetDetails(
   return useQuery<Dataset>([`/user/organisations/pk/${orgId}/dataset/pk/${id}/details/`], options);
 }
 
-export function useUserOrganizationDatasets(
-  id: string,
-  search = "",
-  filterBy: {
-    status: string | null;
-  } = {
-    status: null,
-  },
-  pagination: {
-    pageSize: number;
-    page: number;
-  } = {
-    page: 0,
-    pageSize: 10,
-  },
-  options?: UseQueryOptions<PaginatedResponse<Dataset[]>>
-) {
-  const { pageSize, page } = pagination;
-  const { status } = filterBy;
+export function useUserOrganizationDatasets({
+  orgId,
+  searchParams,
+  options,
+}: {
+  orgId: string;
+  searchParams: Record<"search" | "status" | "limit" | "offset", string>;
+  options?: UseQueryOptions<PaginatedResponse<Dataset[]>>;
+}) {
+  const params = new URLSearchParams({ ...searchParams });
 
   return useQuery<PaginatedResponse<Dataset[]>>(
-    [
-      `/user/organisations/${id}/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-    ],
+    [`/user/organisations/${orgId}/datasets/?${params.toString()}`],
     options
   );
 }
