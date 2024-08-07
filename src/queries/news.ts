@@ -1,25 +1,23 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export function useAdminNews({
-  search,
-  filterBy: { status },
-  pagination: { page, pageSize },
+  searchParams,
 }: {
-  search: string;
-  filterBy: {
-    status: string;
-  };
-  pagination: Pagination;
+  searchParams: Record<"search" | "status" | "limit" | "offset", string>;
 }) {
-  return useQuery<PaginatedResponse<News[]>>([
-    `/admin/news/list/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-  ]);
+  const params = new URLSearchParams({ ...searchParams });
+
+  return useQuery<PaginatedResponse<News[]>>([`/admin/news/list/?${params.toString()}`]);
 }
 
-export function usePublicNews(pageSize: number = 10, page: number = 1) {
-  return useQuery<PaginatedResponse<News[]>>([
-    `/public/news/?key=public&limit=${pageSize}&offset=${(page - 1) * pageSize}`,
-  ]);
+export function usePublicNews() {
+  const params = new URLSearchParams({
+    key: "public",
+    limit: "10",
+    offset: "0",
+  });
+
+  return useQuery<PaginatedResponse<News[]>>([`/public/news/?${params.toString()}`]);
 }
 
 export function usePublicNewsDetails(slug: string, options?: UseQueryOptions<News>) {
