@@ -32,20 +32,21 @@ export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<
   return useQuery<Dataset>([`/public/datasets/${slug}/?key=public`], options);
 }
 
-export function useDatasetFilePreview(url: string, type: string, options?: UseQueryOptions<any>) {
+export function useDatasetFilePreview(
+  url: string,
+  fileType: string,
+  options?: UseQueryOptions<any>
+) {
   return useQuery<BlobPart>([`${url}`], {
     queryFn: async () => {
-      const { data: response } = await axios.get(
-        url,
-        type === "xlsx"
-          ? {
-              responseType: "arraybuffer",
-            }
-          : {}
-      );
+      const { data: response } = await axios.get(url, {
+        responseType: fileType === "xlsx" ? "arraybuffer" : "blob",
+      });
 
       return response;
     },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
     ...options,
   });
 }

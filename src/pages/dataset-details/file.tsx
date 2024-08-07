@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import moment from "moment";
 import { FaAngleDown } from "react-icons/fa6";
 import { FiFileText } from "react-icons/fi";
@@ -36,6 +36,59 @@ export default function File({
   });
 
   const fileDownload = useDatasetFileDownload();
+
+  const handleDownload = useCallback(async () => {
+    setIsloading(true);
+
+    try {
+      const { data } = await refetch();
+
+      if (!data) return notifyError("File returned nothing");
+
+      let blob;
+
+      if (data instanceof Blob) {
+        blob = data;
+      } else if (typeof data === "string" || data instanceof ArrayBuffer) {
+        blob = new Blob([data], {
+          type:
+            format === "xlsx"
+              ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              : format,
+        });
+      } else {
+        return notifyError("Unexpected data format");
+      }
+
+      let _format = format;
+
+      if (format === "text/csv") {
+        _format = ".csv";
+      } else if (format === "application/zip") {
+        _format = ".zip";
+      }
+
+      downloadFileHandler(
+        {
+          format,
+          file_name,
+          sha256,
+          created_at,
+          size,
+          ...rest,
+        },
+        blob,
+        _format
+      );
+
+      await fileDownload.mutateAsync(rest.id);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      notifyError("Failed to download file");
+    } finally {
+      setIsloading(false);
+    }
+  }, [created_at, fileDownload, file_name, format, refetch, rest, sha256, size]);
 
   return (
     <div>
@@ -117,37 +170,7 @@ export default function File({
               variant="outlined"
               color="inherit"
               className="!px-2 largeMobile:!px-2 !py-1 !rounded !min-w-0 !w-fit"
-              onClick={async () => {
-                setIsloading(true);
-
-                const { data } = await refetch();
-
-                if (!data) return notifyError("File returned nothing");
-
-                const blob = new Blob([data], {
-                  type:
-                    format === "xlsx"
-                      ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                      : format,
-                });
-
-                downloadFileHandler(
-                  {
-                    format,
-                    file_name,
-                    sha256,
-                    created_at,
-                    size,
-                    ...rest,
-                  },
-                  blob,
-                  format === "text/csv" ? ".csv" : `.${format}`
-                );
-
-                await fileDownload.mutateAsync(rest.id);
-
-                setIsloading(false);
-              }}
+              onClick={handleDownload}
               loading={isLoading}
             >
               <MdOutlineFileDownload />
