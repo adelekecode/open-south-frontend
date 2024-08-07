@@ -128,11 +128,17 @@ export function useDeleteNews() {
   );
 }
 
-export function useChangeNewsStatus() {
+export function useChangeNewsStatus({
+  searchParams,
+}: {
+  searchParams: Record<"search" | "status" | "limit" | "offset", string>;
+}) {
   const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
+  // const [searchParams] = useSearchParams();
 
-  const params = generateParams(searchParams);
+  // const params = generateParams(searchParams);
+
+  const params = new URLSearchParams({ ...searchParams });
 
   return useMutation(
     async ({ id, action }: { id: string; action: "publish" | "unpublish" }) => {
@@ -143,8 +149,9 @@ export function useChangeNewsStatus() {
     {
       onSuccess() {
         notifySuccess("Successfully changed news status");
-
-        return queryClient.invalidateQueries([`/admin/news/list/?${params.toString()}`]);
+      },
+      onSettled() {
+        queryClient.invalidateQueries([`/admin/news/list/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {
