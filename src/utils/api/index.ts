@@ -1,4 +1,5 @@
 import axios from "axios";
+import { captureException } from "@sentry/react";
 import { logout } from "./logout";
 import { REFRESH_TOKEN_KEY } from "~/app-constants";
 import refreshToken from "./refresh-token";
@@ -89,8 +90,12 @@ axiosPrivate.interceptors.response.use(
           window.location.reload();
         }
       }
-    } else if (status === 500) {
-      notifyError("Something went wrong. Please try again later.");
+    } else if (status.toString()[0] === "5") {
+      captureException(error);
+
+      if (status === 500) {
+        notifyError("Something went wrong. Please try again later.");
+      }
 
       return Promise.reject(message);
     } else if (message === "Network Error" && !status) {
