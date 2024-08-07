@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { MenuItem, OutlinedInput, Select } from "@mui/material";
+import { MenuItem, OutlinedInput, Select, Tooltip } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { useTranslation } from "react-i18next";
+import { LuInfo } from "react-icons/lu";
 import DataGrid from "~/components/data-grid";
 import { useUserDatasets } from "~/queries/dataset";
 import useDebounce from "~/hooks/debounce";
@@ -68,8 +69,16 @@ export default function Dataset() {
   return (
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
-        <div className="flex justify-between items-center">
+        <div className="flex gap-2 items-start">
           <h1 className="text-2xl font-semibold largeMobile:text-xl">{t("title")}</h1>
+          <Tooltip
+            title="To create a dataset, click on the plus icon in the navbar."
+            placement="top-start"
+          >
+            <button>
+              <LuInfo className="text-sm text-zinc-600" />
+            </button>
+          </Tooltip>
         </div>
         <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
           <div className="flex items-center border-y p-4 py-4 border-info-100">
