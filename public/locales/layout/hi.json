@@ -1,0 +1,62 @@
+{
+  "header": {
+    "links": {
+      "dataset": "डेटासेट",
+      "category": "श्रेणियाँ",
+      "organization": "संगठन",
+      "about": "हमारे बारे में",
+      "partner": "साझेदारों",
+      "contact": "संपर्क करें",
+      "news": "समाचार"
+    },
+    "signup": "साइन अप करें",
+    "login": "लॉग इन करें",
+    "dashboard": "डैशबोर्ड",
+    "search": {
+      "placeholder": "खोज",
+      "dataset": "डेटासेट में \"{{search}}\" खोजें",
+      "organization": "संगठनों में \"{{search}}\" खोजें"
+    },
+    "logout": "लॉगआउट"
+  },
+  "main": {
+    "breadcrumbs": "स्वागत है"
+  },
+  "footer": {
+    "links": {
+      "useful-links": {
+        "title": "उपयोगी लिंक",
+        "body": {
+          "categories": "श्रेणियाँ",
+          "organizations": "संगठन"
+        }
+      },
+      "support": {
+        "title": "सहायता",
+        "body": {
+          "contact": "संपर्क",
+          "faq": "सामान्य प्रश्न",
+          "about-us": "हमारे बारे में",
+          "feedback": "प्रतिक्रिया"
+        }
+      },
+      "social-media": {
+        "title": "सोशल मीडिया"
+      },
+      "developer": {
+        "title": "डेवलपर",
+        "body": {
+          "portal-api": "पोर्टल API"
+        }
+      }
+    },
+    "partners": {
+      "title": "हमारे साझेदार"
+    },
+    "bottom": {
+      "terms": "सेवा की शर्तें",
+      "policy": "गोपनीयता नीति",
+      "license": "ओपन साउथ के तहत लाइसेंस प्राप्त"
+    }
+  }
+}

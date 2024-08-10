@@ -1,0 +1,19 @@
+{
+  "bio": {
+    "title": "जीवनी"
+  },
+  "datasets": {
+    "title": "डेटासेट",
+    "empty-state": "कोई डेटासेट नहीं मिला"
+  },
+  "general-statistics": {
+    "title": "सामान्य सांख्यिकी",
+    "datasets": "डेटासेट",
+    "views": "दृश्य",
+    "downloads": "डाउनलोड"
+  },
+  "technical-details": {
+    "title": "तकनीकी विवरण",
+    "user-joined-date": "उपयोगकर्ता शामिल होने की तारीख"
+  }
+}

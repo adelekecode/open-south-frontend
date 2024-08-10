@@ -1,0 +1,36 @@
+{
+  "title": "Jeux de données",
+  "search": {
+    "placeholder": "Rechercher par titre..."
+  },
+  "filter": {
+    "placeholder": "Filtrer par statut",
+    "options": {
+      "pending": "En attente",
+      "rejected": "Rejeté",
+      "published": "Publié",
+      "unpublished": "Non publié",
+      "further-review": "Examen supplémentaire"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "N°",
+      "title": "Titre",
+      "created-at": "Créé le",
+      "updated-at": "Mis à jour le",
+      "views": "Vues",
+      "files": "Fichiers",
+      "status": "Statut"
+    },
+    "body": {
+      "status": {
+        "further-review": "Examen supplémentaire",
+        "pending": "En attente",
+        "unpublished": "Non publié",
+        "published": "Publié",
+        "rejected": "Rejeté"
+      }
+    }
+  }
+}

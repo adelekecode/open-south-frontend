@@ -1,0 +1,62 @@
+{
+  "header": {
+    "links": {
+      "dataset": "Seti za Takwimu",
+      "category": "Jamii",
+      "organization": "Shirika",
+      "about": "Kuhusu Sisi",
+      "partner": "Washirika",
+      "contact": "Wasiliana Nasi",
+      "news": "Habari"
+    },
+    "signup": "Jisajili",
+    "login": "Ingia",
+    "dashboard": "Dashibodi",
+    "search": {
+      "placeholder": "Tafuta",
+      "dataset": "Tafuta \"{{search}}\" katika seti za takwimu",
+      "organization": "Tafuta \"{{search}}\" katika mashirika"
+    },
+    "logout": "Toka"
+  },
+  "main": {
+    "breadcrumbs": "Karibu"
+  },
+  "footer": {
+    "links": {
+      "useful-links": {
+        "title": "Viungo Vya Kufaa",
+        "body": {
+          "categories": "Jamii",
+          "organizations": "Mashirika"
+        }
+      },
+      "support": {
+        "title": "Msaada",
+        "body": {
+          "contact": "Wasiliana",
+          "faq": "Maswali Yanayoulizwa Sana",
+          "about-us": "Kuhusu sisi",
+          "feedback": "Maoni"
+        }
+      },
+      "social-media": {
+        "title": "Mitandao ya Kijamii"
+      },
+      "developer": {
+        "title": "Mwandishi wa Programu",
+        "body": {
+          "portal-api": "API ya Lango"
+        }
+      }
+    },
+    "partners": {
+      "title": "Washirika Wetu"
+    },
+    "bottom": {
+      "terms": "Sheria ya Huduma",
+      "policy": "Sera ya Faragha",
+      "license": "Open South imepewa leseni chini ya"
+    }
+  }
+}

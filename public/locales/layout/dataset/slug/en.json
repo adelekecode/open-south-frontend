@@ -1,0 +1,25 @@
+{
+  "description": "Description",
+  "file": {
+    "text": {
+      "singular": "File",
+      "plural": "Files"
+    },
+    "view-details-btn": "View Details",
+    "details": {
+      "created-on": "Created on",
+      "size": "Size",
+      "view-file-btn": "View File"
+    }
+  },
+  "author": {
+    "text": "Published By"
+  },
+  "tags": "Tags",
+  "license": "License",
+  "created-on": "Created on",
+  "update-frequency": "Update frequency",
+  "latest-update": "Latest update",
+  "temporal-coverage": "Temporal coverage",
+  "spatial-coverage": "Spatial coverage"
+}

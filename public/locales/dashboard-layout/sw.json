@@ -1,0 +1,27 @@
+{
+  "header": {
+    "admin": "Admin",
+    "profile-dropdown": {
+      "profile": "Profaili",
+      "logout": "Toka"
+    },
+    "create-cta-dropdown": {
+      "dataset": "Ongeza seti ya data",
+      "organization": "Ongeza shirika"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashibodi",
+    "datasets": "Seti za data",
+    "users": "watumiaji",
+    "profile": "Profaili",
+    "organizations": "Mashirika",
+    "categories": "Jamii",
+    "news": "Habari",
+    "organization-dropdown": {
+      "title": "Mashirika",
+      "dashboard": "Dashibodi",
+      "datasets": "Seti za data"
+    }
+  }
+}

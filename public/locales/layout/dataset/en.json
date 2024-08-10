@@ -1,0 +1,57 @@
+{
+  "header": {
+    "title": "Datasets",
+    "subtitle": "Search among all datasets on {{company_name}}",
+    "search": {
+      "placeholder": "Search",
+      "button": "Search"
+    }
+  },
+  "sidebar": {
+    "title": "Filters",
+    "mobile-title": "Filter results",
+    "search": {
+      "organization": {
+        "title": "Organizations",
+        "placeholder": "All Organizations"
+      },
+      "tag": {
+        "title": "Tags",
+        "placeholder": "All Tags"
+      },
+      "category": {
+        "title": "Categories",
+        "placeholder": "All Categories"
+      },
+      "formats": {
+        "title": "Formats",
+        "placeholder": "All Formats"
+      },
+      "license": {
+        "title": "Licenses",
+        "placeholder": "All Licenses"
+      },
+      "spatial-coverage": {
+        "title": "Spatial coverage",
+        "placeholder": "All Spatial Coverage"
+      }
+    }
+  },
+  "main": {
+    "header": {
+      "result": "{{value}} results",
+      "sort-by": {
+        "text": "Sort by",
+        "dropdown": {
+          "relevance": "Relevance",
+          "creation-date": "Creation Date",
+          "last-update": "Last Update"
+        }
+      }
+    },
+    "card": {
+      "by": "by",
+      "updated": "Updated"
+    }
+  }
+}

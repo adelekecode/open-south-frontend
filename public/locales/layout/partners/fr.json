@@ -1,0 +1,34 @@
+{
+  "title": "Nos Partenaires",
+  "show-form-btn": "Devenir partenaire",
+  "form": {
+    "title": "Devenir partenaire",
+    "subtitle": "Veuillez remplir le formulaire ci-dessous.",
+    "inputs": {
+      "organization-name": {
+        "label": "Nom de l'organisation",
+        "placeholder": "Exemple"
+      },
+      "contact-person": {
+        "label": "Personne de contact",
+        "placeholder": "Entrez le nom de la personne de contact"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "exemple@gmail.com"
+      },
+      "phone-number": {
+        "label": "Numéro de téléphone"
+      },
+      "organization-type": {
+        "label": "Type d'organisation",
+        "placeholder": "Précisez si vous êtes une entreprise, une organisation à but non lucratif, une entité gouvernementale, etc."
+      },
+      "purpose-of-partnership": {
+        "label": "But du partenariat",
+        "placeholder": "Décrivez brièvement pourquoi vous souhaitez devenir notre partenaire."
+      }
+    },
+    "submit-btn": "Soumettre"
+  }
+}

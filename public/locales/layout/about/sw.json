@@ -1,0 +1,15 @@
+{
+  "title": "Kuhusu {{company_name}}",
+  "body": {
+    "1": "Karibu kwenye {{company_name}}, jukwaa lako kuu la data huria lililoundwa kuwawezesha watafiti, wasomi, wataalamu, watunga sera, na jamii ndani ya nchi za Kusini mwa Dunia. Dhamira yetu ni kuwezesha upatikanaji wa data muhimu, kukuza ushirikiano, na kuendeleza maendeleo endelevu katika nyanja mbalimbali.",
+    "2": "Katika {{company_name}}, tunaamini kuwa upatikanaji wa data ni kiini cha maendeleo. Tunatambua uwezo mkubwa uliopo ndani ya mazingira tajiri ya taarifa na maarifa Kusini mwa Dunia. Jukwaa letu linatumika kama lango la kufungua uwezo huu kwa kutoa hazina kamili ya data huria.",
+    "3": "Tumejitolea kwa kanuni za uwazi na uwazi. Data zote zinazopatikana kwenye {{company_name}} zinapatikana kwa upakuaji wa bure, kuruhusu urahisi wa kushiriki na kutumia na watumiaji wetu. Tunaamini sana katika nguvu ya ushirikiano na athari zake za kubadilisha jamii. Kwa kuhamasisha kushiriki data, tunakuza utafiti wa taaluma nyingi, maamuzi ya msingi wa ushahidi, na ubunifu katika sekta nyingi.",
+    "4": "Ushirikishwaji wa watumiaji na ujenzi wa uwezo ni msingi wa falsafa yetu. Tunaelewa kuwa jamii inayochangamka na yenye ustawi iko moyoni mwa jukwaa lolote lenye mafanikio. {{company_name}} inatoa vipengele mbalimbali vya maingiliano ya kuona data na uundaji wa mifano. Kupitia vipengele hivi, tunalenga kuhamasisha ushiriki wa kazi, kubadilishana maarifa, na kukuza uelewa bora wa data.",
+    "5": "Upatikanaji na urasimishaji ni nguzo muhimu za jukwaa letu. Tunajitahidi kuhakikisha kuwa {{company_name}} inapatikana kwa watu binafsi na jamii Kusini mwa Dunia. Tunafanya kazi kwa bidii kuboresha upatikanaji wa jukwaa, kushughulikia vikwazo vya lugha, na kuboresha miundombinu mbalimbali ya kiteknolojia. Kwa kufanya hivyo, tunalenga kuunda nafasi shirikishi ambapo maarifa yanaweza kutiririka bila vizuizi vya kijiografia au kiufundi.",
+    "6": "Tunakualika kujiunga na jamii yetu changamfu na kuchunguza utajiri wa data na maarifa yanayopatikana kwenye {{company_name}}. Ikiwa wewe ni mtafiti anayetafuta maarifa muhimu, mtunga sera anayetafuta suluhisho za msingi wa ushahidi, au mshiriki wa jamii mwenye shauku ya kuendesha mabadiliko chanya, jukwaa letu liko hapa kusaidia safari yako. Pamoja, tumieni nguvu ya data huria kuunda mustakabali bora kwa Kusini mwa Dunia.",
+    "footnote": {
+      "welcome": "Karibu kwenye {{company_name}}",
+      "extra": "ambapo data hubadilisha uwezekano"
+    }
+  }
+}

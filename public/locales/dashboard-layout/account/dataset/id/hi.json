@@ -1,0 +1,62 @@
+{
+  "back-btn": {
+    "text": "डेटासेट्स पर वापस जाएं"
+  },
+  "cta-btn": {
+    "edit": "संपादित करें",
+    "delete": "हटाएं"
+  },
+  "processing-banner": {
+    "text": "यह डेटासेट वर्तमान में व्यवस्थापक द्वारा समीक्षाधीन है।"
+  },
+  "details": {
+    "license": "लाइसेंस",
+    "creation": "निर्माण",
+    "update-frequency": "अपडेट आवृत्ति",
+    "latest-update": "नवीनतम अपडेट",
+    "temporal-coverage": "कालिक कवरेज",
+    "spatial-coverage": "स्थानिक कवरेज"
+  },
+  "delete-confirmation-modal": {
+    "contents": "क्या आप वाकई इस डेटासेट को हटाना चाहते हैं?",
+    "cta-btn": {
+      "cancel": "रद्द करें",
+      "confirm": "पुष्टि करें"
+    }
+  },
+  "resourses": {
+    "title": "संसाधन",
+    "add-btn": "जोड़ें",
+    "table": {
+      "header": {
+        "no": "क्रमांक",
+        "name": "शीर्षक",
+        "format": "प्रारूप",
+        "size": "आकार",
+        "downloads": "डाउनलोड",
+        "created-at": "निर्मित तिथि",
+        "action": "कार्य"
+      }
+    },
+    "file-preview": {
+      "cta-btn": {
+        "download": "डाउनलोड करें"
+      }
+    },
+    "delete-confirmation-modal": {
+      "contents": "क्या आप वाकई इस फ़ाइल को हटाना चाहते हैं?",
+      "cta-btn": {
+        "cancel": "रद्द करें",
+        "confirm": "पुष्टि करें"
+      }
+    },
+    "upload-file": {
+      "title": "फाइलें अपलोड करें",
+      "dnd-box": {
+        "text": "अपलोड करने के लिए फाइलों को यहाँ खींचें और छोड़ें। अनुमत फ़ाइल प्रकार: .csv, .json, .xlsx, .zip",
+        "alt": "फाइल अपलोड चित्रण"
+      },
+      "upload-btn": "अपलोड करें"
+    }
+  }
+}

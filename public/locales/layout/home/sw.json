@@ -1,0 +1,27 @@
+{
+  "banner": {
+    "title": "Changia",
+    "subtitle": "Unda au pata seti ya takwimu",
+    "dataset-btn": {
+      "find": "Pata seti ya takwimu",
+      "publish": "Chapisha seti ya takwimu"
+    }
+  },
+  "categories": {
+    "title": "Jamii",
+    "link": "Angalia jamii zaidi",
+    "empty-state": "Hakuna jamii iliyopatikana"
+  },
+  "datasets": {
+    "title": "Seti za Takwimu",
+    "link": "Angalia seti za takwimu zaidi",
+    "empty-state": "Hakuna takwimu za seti"
+  },
+  "panel": {
+    "datasets": "Seti za Takwimu",
+    "files": "Faili",
+    "categories": "Jamii",
+    "users": "Watumiaji",
+    "organizations": "Taasisi"
+  }
+}

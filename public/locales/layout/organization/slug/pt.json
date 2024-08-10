@@ -1,0 +1,25 @@
+{
+  "description": {
+    "title": "Descrição"
+  },
+  "datasets": {
+    "title": "Conjuntos de Dados",
+    "empty-state": "Nenhum conjunto de dados encontrado",
+    "link": "Ver mais conjuntos de dados"
+  },
+  "general-statistics": {
+    "title": "Estatísticas Gerais",
+    "datasets": "Conjuntos de Dados",
+    "views": "Visualizações",
+    "downloads": "Downloads"
+  },
+  "technical-details": {
+    "title": "Detalhes Técnicos",
+    "organization-creation-date": "Data de criação da organização",
+    "id": "ID"
+  },
+  "request": {
+    "text": "Se estiver interessado nesta organização",
+    "button": "Solicitar para participar"
+  }
+}

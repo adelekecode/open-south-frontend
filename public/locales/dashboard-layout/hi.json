@@ -1,0 +1,27 @@
+{
+  "header": {
+    "admin": "व्यवस्थापक",
+    "profile-dropdown": {
+      "profile": "प्रोफ़ाइल",
+      "logout": "लॉग आउट"
+    },
+    "create-cta-dropdown": {
+      "dataset": "एक डेटासेट जोड़ें",
+      "organization": "एक संगठन जोड़ें"
+    }
+  },
+  "sidebar": {
+    "dashboard": "डैशबोर्ड",
+    "datasets": "डेटासेट्स",
+    "users": "डेटासेट्स",
+    "profile": "प्रोफ़ाइल",
+    "organizations": "संगठन",
+    "categories": "श्रेणियाँ",
+    "news": "समाचार",
+    "organization-dropdown": {
+      "title": "संगठन",
+      "dashboard": "डैशबोर्ड",
+      "datasets": "डेटासेट्स"
+    }
+  }
+}

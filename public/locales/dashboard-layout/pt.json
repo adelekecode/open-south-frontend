@@ -1,0 +1,27 @@
+{
+  "header": {
+    "admin": "Admin",
+    "profile-dropdown": {
+      "profile": "Perfil",
+      "logout": "Sair"
+    },
+    "create-cta-dropdown": {
+      "dataset": "Adicionar um conjunto de dados",
+      "organization": "Adicionar uma organização"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Painel",
+    "datasets": "Conjuntos de Dados",
+    "users": "usuários",
+    "profile": "Perfil",
+    "organizations": "Organizações",
+    "categories": "Categorias",
+    "news": "Notícias",
+    "organization-dropdown": {
+      "title": "Organizações",
+      "dashboard": "Painel",
+      "datasets": "Conjuntos de Dados"
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "title": "Seti za Data",
+  "info": "Ili kuunda seti ya data, bonyeza ikoni ya kuongeza kwenye mwambaa wa urambazaji.",
+  "search": {
+    "placeholder": "Tafuta kichwa..."
+  },
+  "filter": {
+    "placeholder": "Chuja kwa hali",
+    "options": {
+      "pending": "Inasubiri",
+      "rejected": "Imekataliwa",
+      "published": "Imechapishwa",
+      "unpublished": "Haijachapishwa",
+      "further-review": "Mapitio Zaidi"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "NA.",
+      "title": "Kichwa",
+      "created-at": "Iliundwa Tarehe",
+      "updated-at": "Imesasishwa Tarehe",
+      "views": "Mionekano",
+      "files": "Faili",
+      "status": "Hali"
+    },
+    "body": {
+      "status": {
+        "further-review": "Mapitio Zaidi",
+        "pending": "Inasubiri",
+        "unpublished": "Haijachapishwa",
+        "published": "Imechapishwa",
+        "rejected": "Imekataliwa"
+      }
+    }
+  }
+}

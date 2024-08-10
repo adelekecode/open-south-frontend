@@ -1,0 +1,18 @@
+{
+  "title": "Contáctenos",
+  "subtitle": "¿Tienes alguna pregunta para Open South? Por favor, contáctanos.",
+  "form": {
+    "name": {
+      "label": "Nombre"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "ejemplo@gmail.com"
+    },
+    "message": {
+      "label": "Mensaje",
+      "placeholder": "Escribe tu mensaje aquí..."
+    },
+    "submit-btn": "Enviar"
+  }
+}

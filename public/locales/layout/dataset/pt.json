@@ -1,0 +1,57 @@
+{
+  "header": {
+    "title": "Conjuntos de Dados",
+    "subtitle": "Procure entre todos os conjuntos de dados em {{company_name}}",
+    "search": {
+      "placeholder": "Buscar",
+      "button": "Buscar"
+    }
+  },
+  "sidebar": {
+    "title": "Filtros",
+    "mobile-title": "Filtrar resultados",
+    "search": {
+      "organization": {
+        "title": "Organizações",
+        "placeholder": "Todas as Organizações"
+      },
+      "tag": {
+        "title": "Tags",
+        "placeholder": "Todas as Tags"
+      },
+      "category": {
+        "title": "Categorias",
+        "placeholder": "Todas as Categorias"
+      },
+      "formats": {
+        "title": "Formatos",
+        "placeholder": "Todos os Formatos"
+      },
+      "license": {
+        "title": "Licenças",
+        "placeholder": "Todas as Licenças"
+      },
+      "spatial-coverage": {
+        "title": "Cobertura Espacial",
+        "placeholder": "Toda a Cobertura Espacial"
+      }
+    }
+  },
+  "main": {
+    "header": {
+      "result": "{{value}} resultados",
+      "sort-by": {
+        "text": "Ordenar por",
+        "dropdown": {
+          "relevance": "Relevância",
+          "creation-date": "Data de Criação",
+          "last-update": "Última Atualização"
+        }
+      }
+    },
+    "card": {
+      "by": "por",
+      "updated": "Atualizado"
+    }
+  }
+}

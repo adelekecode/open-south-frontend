@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    image: open-south-production
+    container_name: open-south-client-production
+    ports:
+      - "4040:4040"

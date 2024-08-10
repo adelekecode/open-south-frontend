@@ -1,0 +1,42 @@
+{
+  "title": "Registrarse",
+  "subtitle": "¡Bienvenido a nuestra plataforma! Por favor, complete el formulario a continuación para comenzar.",
+  "form": {
+    "inputs": {
+      "first-name": {
+        "label": "Nombre",
+        "placeholder": "John"
+      },
+      "last-name": {
+        "label": "Apellido",
+        "placeholder": "Doe"
+      },
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "ejemplo@gmail.com"
+      },
+      "password": {
+        "label": "Contraseña"
+      },
+      "confirm-password": {
+        "label": "Confirmar contraseña"
+      }
+    },
+    "submit-btn": "Registrarse",
+    "cta-text": {
+      "text": "¿Ya tienes una cuenta?",
+      "link": "Iniciar sesión"
+    },
+    "or": "O",
+    "google-btn": "Iniciar sesión con Google"
+  },
+  "otp-modal": {
+    "title": "Ingrese el Código",
+    "subtitle": "Enviamos un código a",
+    "submit-btn": "Verificar",
+    "cta-text": {
+      "text": "¿No recibiste un código?",
+      "btn": "Reenviar"
+    }
+  }
+}

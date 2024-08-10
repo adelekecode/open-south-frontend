@@ -1,0 +1,27 @@
+{
+  "header": {
+    "admin": "Admin",
+    "profile-dropdown": {
+      "profile": "Profil",
+      "logout": "Déconnexion"
+    },
+    "create-cta-dropdown": {
+      "dataset": "Ajouter un jeu de données",
+      "organization": "Ajouter une organisation"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "datasets": "Jeux de données",
+    "users": "utilisateur",
+    "profile": "Profil",
+    "organizations": "Organisations",
+    "categories": "Catégories",
+    "news": "Actualités",
+    "organization-dropdown": {
+      "title": "Organisations",
+      "dashboard": "Tableau de bord",
+      "datasets": "Jeux de données"
+    }
+  }
+}

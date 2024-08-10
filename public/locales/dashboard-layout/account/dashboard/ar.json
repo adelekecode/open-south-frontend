@@ -1,0 +1,43 @@
+{
+  "title": "لوحة القيادة",
+  "cards": {
+    "datasets": "مجموعات البيانات",
+    "organizations": "المنظمات",
+    "views": "المشاهدات",
+    "downloads": "التنزيلات"
+  },
+  "chart": {
+    "most-accessed-datasets": {
+      "title": "أعلى 5 مجموعات بيانات أكثر وصولاً",
+      "empty-state": "لا توجد مجموعات بيانات تم الوصول إليها في الوقت الحالي"
+    },
+    "traffic-locations": {
+      "title": "أعلى 5 مواقع لحركة المرور",
+      "empty-state": "لا توجد بيانات حركة مرور متاحة في الوقت الحالي"
+    }
+  },
+  "latest-dataset-created": {
+    "title": "أحدث مجموعة بيانات تم إنشاؤها",
+    "view-all": "عرض الكل",
+    "table": {
+      "header": {
+        "no": "رقم.",
+        "title": "العنوان",
+        "created-at": "تم إنشاؤه في",
+        "updated-at": "تم التحديث في",
+        "views": "المشاهدات",
+        "files": "الملفات",
+        "status": "الحالة"
+      },
+      "body": {
+        "status": {
+          "further-review": "مراجعة إضافية",
+          "pending": "قيد الانتظار",
+          "unpublished": "غير منشور",
+          "published": "منشور",
+          "rejected": "مرفوض"
+        }
+      }
+    }
+  }
+}

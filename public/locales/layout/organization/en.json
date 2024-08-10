@@ -1,0 +1,19 @@
+{
+  "title": "Organization",
+  "subtitle": "Search among organizations on {{company_name}}.",
+  "search": {
+    "placeholder": "Search...",
+    "button": "Search"
+  },
+  "result": "{{value}} results",
+  "sort-by": {
+    "text": "Sort by",
+    "dropdown": {
+      "relevance": "Relevance",
+      "most-recent": "Most Recent"
+    }
+  },
+  "org-card": {
+    "datasets": "datasets"
+  }
+}

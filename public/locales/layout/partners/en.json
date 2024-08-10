@@ -1,0 +1,34 @@
+{
+  "title": "Our Partners",
+  "show-form-btn": "Become a partner",
+  "form": {
+    "title": "Become a partner",
+    "subtitle": "Please fill the form below.",
+    "inputs": {
+      "organization-name": {
+        "label": "Organization Name",
+        "placeholder": "Example"
+      },
+      "contact-person": {
+        "label": "Contact Person",
+        "placeholder": "Enter contact person's name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "example@gmail.com"
+      },
+      "phone-number": {
+        "label": "Phone Number"
+      },
+      "organization-type": {
+        "label": "Organization Type",
+        "placeholder": "Specify if you are a company, nonprofit, government entity, etc."
+      },
+      "purpose-of-partnership": {
+        "label": "Purpose of partnership",
+        "placeholder": "Briefly describe why you want to be our partner."
+      }
+    },
+    "submit-btn": "Submit"
+  }
+}
