@@ -14,17 +14,16 @@ type ResourceProps = {
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
-type FileType = {
-  id: string;
-  fileName: string;
-  fileSize: string;
-  fileType: string;
-  file: File;
-  base64: string;
-};
-
 export default function Resource({ setActiveIndex }: ResourceProps) {
-  const [files, setFiles] = useState<FileType[]>([]);
+  const [files, setFiles] = useState<
+    {
+      id: string;
+      fileName: string;
+      fileSize: string;
+      fileType: string;
+      file: File;
+    }[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [filesSuccessfullyUploaded, setFilesSuccessfullyUploaded] = useState<string[]>([]);
 
@@ -40,7 +39,7 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
 
       reader.onload = () => {
         setFiles((prev) => {
-          const newAttachment: FileType = {
+          const newAttachment = {
             id: uuidv4(),
             fileName: file.name,
             fileSize: formatFileSize(file.size),
@@ -49,12 +48,7 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
                 ? "xlsx"
                 : file.type,
             file,
-            base64: reader.result as string,
           };
-
-          // if (file.size > 10 * 1024 * 1024) {
-          //   newAttachment.base64 = reader.result as string;
-          // }
 
           return [newAttachment, ...prev];
         });
@@ -153,10 +147,9 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
                     try {
                       await uploadDatasetFile.mutateAsync({
                         datasetId: dataset?.id || "",
-                        base64: item.base64,
+                        file: item.file,
                         format: item.fileType,
                         size: item.fileSize,
-                        file_name: item.fileName,
                       });
 
                       setFilesSuccessfullyUploaded((prev) => [...prev, item.id]);
@@ -166,14 +159,15 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
                     }
                   })
               );
-              setActiveIndex((prev) => prev + 1);
-              setOrganization(null);
             } catch (error) {
               console.error(error);
               throw error;
             } finally {
+              setOrganization(null);
               setIsLoading(false);
             }
+
+            setActiveIndex((prev) => prev + 1);
           }}
           disabled={!(files.length > 0)}
         >
