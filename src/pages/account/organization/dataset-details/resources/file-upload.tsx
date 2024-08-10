@@ -21,6 +21,7 @@ type FileObj = {
   fileSize: string;
   fileType: string;
   file: File;
+  base64: string;
 };
 
 export default function FileUpload({ open, setOpen }: FileUploadProps) {
@@ -55,6 +56,7 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
                 ? "xlsx"
                 : file.type,
             file,
+            base64: reader.result as string,
           };
 
           return [newAttachment, ...prev];
@@ -93,7 +95,8 @@ export default function FileUpload({ open, setOpen }: FileUploadProps) {
           try {
             await uploadDatasetFile.mutateAsync({
               datasetId: id || "",
-              file: item.file,
+              base64: item.base64,
+              file_name: item.fileName,
               format: item.fileType,
               size: item.fileSize,
             });

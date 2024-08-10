@@ -183,20 +183,25 @@ export function useUploadDatasetFile() {
   return useMutation(
     async ({
       datasetId,
-      file,
+      // file,
+      file_name,
+      base64,
       format,
       size,
     }: {
       datasetId: string;
-      file: File;
+      // file: File;
+      file_name: string;
+      base64: string;
       format: string;
       size: string;
     }) => {
       const { data: response } = await axiosPrivate.postForm(
         `/datasets/files/${datasetId}/`,
         {
-          file,
+          base64,
           format,
+          file_name,
           size,
         },
         {
