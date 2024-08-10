@@ -7,6 +7,8 @@ import Seo from "~/components/seo";
 import { usePublicNews } from "~/queries/news";
 import NoData from "~/assets/illustrations/no-data.png";
 
+//? integrate endless scrolling
+
 export default function News() {
   const navigate = useNavigate();
 

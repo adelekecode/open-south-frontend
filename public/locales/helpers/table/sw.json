@@ -1,0 +1,16 @@
+{
+  "dataset-status-column": {
+    "further-review": "Ukaguzi zaidi",
+    "pending": "Inasubiri",
+    "unpublished": "Haijachapishwa",
+    "published": "Imechapishwa",
+    "rejected": "Imekataliwa"
+  },
+  "dataset-state-column": {
+    "true": "Kweli",
+    "false": "Si kweli"
+  },
+  "date-column": {
+    "yesterday": "Jana"
+  }
+}

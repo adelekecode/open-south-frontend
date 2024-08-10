@@ -1,0 +1,37 @@
+{
+  "title": "مجموعات البيانات",
+  "info": "لإنشاء مجموعة بيانات، انقر على أيقونة الزائد في شريط التنقل.",
+  "search": {
+    "placeholder": "البحث عن عنوان..."
+  },
+  "filter": {
+    "placeholder": "تصفية حسب الحالة",
+    "options": {
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوض",
+      "published": "منشور",
+      "unpublished": "غير منشور",
+      "further-review": "مراجعة إضافية"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "رقم",
+      "title": "العنوان",
+      "created-at": "تاريخ الإنشاء",
+      "updated-at": "تاريخ التحديث",
+      "views": "المشاهدات",
+      "files": "الملفات",
+      "status": "الحالة"
+    },
+    "body": {
+      "status": {
+        "further-review": "مراجعة إضافية",
+        "pending": "قيد الانتظار",
+        "unpublished": "غير منشور",
+        "published": "منشور",
+        "rejected": "مرفوض"
+      }
+    }
+  }
+}

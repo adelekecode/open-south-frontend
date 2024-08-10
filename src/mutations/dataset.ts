@@ -310,8 +310,8 @@ export function useChangeDatasetStatus(searchParams: URLSearchParams) {
       onSuccess: () => {
         notifySuccess("Successfully changed dataset status");
       },
-      async onSettled() {
-        return await queryClient.invalidateQueries([`/admin/datasets/?${params.toString()}`]);
+      onSettled() {
+        queryClient.invalidateQueries([`/admin/datasets/?${params.toString()}`]);
       },
       onError(error) {
         if (isAxiosError(error)) {

@@ -1,0 +1,37 @@
+{
+  "title": "Conjuntos de datos",
+  "info": "Para crear un conjunto de datos, haga clic en el ícono de más en la barra de navegación.",
+  "search": {
+    "placeholder": "Buscar título..."
+  },
+  "filter": {
+    "placeholder": "Filtrar por estado",
+    "options": {
+      "pending": "Pendiente",
+      "rejected": "Rechazado",
+      "published": "Publicado",
+      "unpublished": "No Publicado",
+      "further-review": "Revisión Adicional"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "N°",
+      "title": "Título",
+      "created-at": "Creado en",
+      "updated-at": "Actualizado en",
+      "views": "Vistas",
+      "files": "Archivos",
+      "status": "Estado"
+    },
+    "body": {
+      "status": {
+        "further-review": "Revisión Adicional",
+        "pending": "Pendiente",
+        "unpublished": "No Publicado",
+        "published": "Publicado",
+        "rejected": "Rechazado"
+      }
+    }
+  }
+}

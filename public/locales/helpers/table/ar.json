@@ -1,0 +1,16 @@
+{
+  "dataset-status-column": {
+    "further-review": "مراجعة إضافية",
+    "pending": "قيد الانتظار",
+    "unpublished": "غير منشور",
+    "published": "منشور",
+    "rejected": "مرفوض"
+  },
+  "dataset-state-column": {
+    "true": "صحيح",
+    "false": "خطأ"
+  },
+  "date-column": {
+    "yesterday": "أمس"
+  }
+}

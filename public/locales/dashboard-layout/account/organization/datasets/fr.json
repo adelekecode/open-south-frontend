@@ -1,0 +1,37 @@
+{
+  "title": "Ensembles de données",
+  "info": "Pour créer un ensemble de données, cliquez sur l'icône plus dans la barre de navigation.",
+  "search": {
+    "placeholder": "Rechercher un titre..."
+  },
+  "filter": {
+    "placeholder": "Filtrer par statut",
+    "options": {
+      "pending": "En attente",
+      "rejected": "Rejeté",
+      "published": "Publié",
+      "unpublished": "Non publié",
+      "further-review": "Examen complémentaire"
+    }
+  },
+  "table": {
+    "header": {
+      "no": "N°",
+      "title": "Titre",
+      "created-at": "Créé le",
+      "updated-at": "Mis à jour le",
+      "views": "Vues",
+      "files": "Fichiers",
+      "status": "Statut"
+    },
+    "body": {
+      "status": {
+        "further-review": "Examen complémentaire",
+        "pending": "En attente",
+        "unpublished": "Non publié",
+        "published": "Publié",
+        "rejected": "Rejeté"
+      }
+    }
+  }
+}

@@ -32,20 +32,21 @@ export function usePublicDatasetDetails(slug: string, options?: UseQueryOptions<
   return useQuery<Dataset>([`/public/datasets/${slug}/?key=public`], options);
 }
 
-export function useDatasetFilePreview(url: string, type: string, options?: UseQueryOptions<any>) {
+export function useDatasetFilePreview(
+  url: string,
+  fileType: string,
+  options?: UseQueryOptions<any>
+) {
   return useQuery<BlobPart>([`${url}`], {
     queryFn: async () => {
-      const { data: response } = await axios.get(
-        url,
-        type === "xlsx"
-          ? {
-              responseType: "arraybuffer",
-            }
-          : {}
-      );
+      const { data: response } = await axios.get(url, {
+        responseType: fileType === "xlsx" ? "arraybuffer" : "blob",
+      });
 
       return response;
     },
+    refetchOnWindowFocus: false,
+    staleTime: Infinity,
     ...options,
   });
 }
@@ -69,24 +70,14 @@ export function useAdminDatasets(search = "") {
   ]);
 }
 
-export function useUserDatasets(
-  search = "",
-  filterBy: {
-    status: string | null;
-  } = {
-    status: null,
-  },
-  pagination: {
-    pageSize: number;
-    page: number;
-  }
-) {
-  const { pageSize, page } = pagination;
-  const { status } = filterBy;
+export function useUserDatasets({
+  searchParams,
+}: {
+  searchParams: Record<"search" | "status" | "limit" | "offset", string>;
+}) {
+  const params = new URLSearchParams({ ...searchParams });
 
-  return useQuery<PaginatedResponse<Dataset[]>>([
-    `/user/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-  ]);
+  return useQuery<PaginatedResponse<Dataset[]>>([`/user/datasets/?${params.toString()}`]);
 }
 
 export function useUserDatasetDetails(id: string, options?: UseQueryOptions<Dataset>) {
@@ -101,30 +92,19 @@ export function useUserOrganizationDatasetDetails(
   return useQuery<Dataset>([`/user/organisations/pk/${orgId}/dataset/pk/${id}/details/`], options);
 }
 
-export function useUserOrganizationDatasets(
-  id: string,
-  search = "",
-  filterBy: {
-    status: string | null;
-  } = {
-    status: null,
-  },
-  pagination: {
-    pageSize: number;
-    page: number;
-  } = {
-    page: 0,
-    pageSize: 10,
-  },
-  options?: UseQueryOptions<PaginatedResponse<Dataset[]>>
-) {
-  const { pageSize, page } = pagination;
-  const { status } = filterBy;
+export function useUserOrganizationDatasets({
+  orgId,
+  searchParams,
+  options,
+}: {
+  orgId: string;
+  searchParams: Record<"search" | "status" | "limit" | "offset", string>;
+  options?: UseQueryOptions<PaginatedResponse<Dataset[]>>;
+}) {
+  const params = new URLSearchParams({ ...searchParams });
 
   return useQuery<PaginatedResponse<Dataset[]>>(
-    [
-      `/user/organisations/${id}/datasets/?search=${search}&status=${status || ""}&limit=${pageSize}&offset=${page * pageSize}`,
-    ],
+    [`/user/organisations/${orgId}/datasets/?${params.toString()}`],
     options
   );
 }

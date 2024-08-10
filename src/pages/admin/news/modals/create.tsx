@@ -10,6 +10,9 @@ import SuccessIllustration from "~/assets/illustrations/success.png";
 import FormField from "~/components/fields/form-field";
 import { useChangeNewsStatus, useCreateNews, useEditNews } from "~/mutations/news";
 import TextEditorField from "~/components/fields/text-editor-field";
+import useDebounce from "~/hooks/debounce";
+import { OutletContext } from "~/layouts/paginated";
+import { useOutletContext } from "react-router-dom";
 
 type CreateProps = {
   modal: NewsModal;
@@ -28,13 +31,21 @@ const validationSchema = Yup.object({
 });
 
 export default function Create({ modal, setModal }: CreateProps) {
+  const { queryParams, pagination } = useOutletContext<OutletContext>();
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [formCompleted, setFormCompleted] = useState(false);
   const [image, setImage] = useState<File | null>(null);
 
-  const createNews = useCreateNews();
-  const editNews = useEditNews();
-  const changeNewsStatus = useChangeNewsStatus();
+  const { mutateAsync: createNews, data: newsData } = useCreateNews();
+  const { mutateAsync: editNews } = useEditNews();
+  const { mutateAsync: changeNewsStatus, isLoading: isChangingNewsStatus } = useChangeNewsStatus({
+    searchParams: {
+      search: useDebounce(queryParams.get("q")).trim(),
+      status,
+      ...pagination,
+    },
+  });
 
   const onClose = useCallback(() => {
     setFormCompleted(false);
@@ -78,9 +89,9 @@ export default function Create({ modal, setModal }: CreateProps) {
                 <Button
                   className="!text-xs !p-2"
                   onClick={async () => {
-                    if (createNews.data) {
-                      const response = await changeNewsStatus.mutateAsync({
-                        id: createNews.data?.id || "",
+                    if (newsData) {
+                      const response = await changeNewsStatus({
+                        id: newsData.id,
                         action: "publish",
                       });
 
@@ -89,7 +100,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                       }
                     }
                   }}
-                  loading={changeNewsStatus.isLoading}
+                  loading={isChangingNewsStatus}
                 >
                   Yes
                 </Button>
@@ -117,7 +128,7 @@ export default function Create({ modal, setModal }: CreateProps) {
                   data.image = image;
                 }
 
-                const response = await editNews.mutateAsync({
+                const response = await editNews({
                   id: modal.data?.id || "",
                   data,
                 });
@@ -129,7 +140,7 @@ export default function Create({ modal, setModal }: CreateProps) {
 
               if (!image) return notifyError("Image field is required");
 
-              const response = await createNews.mutateAsync({
+              const response = await createNews({
                 title: values.title,
                 body: values.description,
                 image,

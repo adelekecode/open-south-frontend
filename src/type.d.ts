@@ -104,6 +104,7 @@ type Organization = {
   created_at: string;
   updated_at: string;
   is_verified: boolean;
+  user: string;
   is_active: boolean;
 };
 

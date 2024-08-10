@@ -138,6 +138,43 @@ export const createStateColumn = ({ field, headerName, ...rest }: GridColDef): G
   };
 };
 
+export const createDatasetStatusColumn = ({
+  field,
+  headerName,
+  ...rest
+}: GridColDef): GridColDef => {
+  return {
+    field,
+    headerName,
+    flex: 1,
+    cellClassName: "[&_p]:py-1 [&_p]:px-2 [&_p]:!rounded-full [&_p]:text-xs [&_p]:border",
+    sortable: false,
+    minWidth: 130,
+    align: "center",
+    headerAlign: "center",
+    renderCell: ({ value }) => {
+      if (value === "published") {
+        return <p className={`text-green-500 border-green-500`}>Published</p>;
+      }
+
+      if (value === "unpublished") {
+        return <p className={`text-info-500 border-info-500`}>Unpublished</p>;
+      }
+
+      if (value === "rejected") {
+        return <p className={`text-red-500 border-red-500`}>Rejected</p>;
+      }
+
+      if (value === "further_review") {
+        return <p className={`text-info-800 border-info-800`}>Further Review</p>;
+      }
+
+      return <p className={`text-orange-500 border-orange-500`}>Pending</p>;
+    },
+    ...rest,
+  };
+};
+
 export const createMenuColumn = ({ ...rest }: Partial<GridColDef>): GridColDef => {
   return {
     field: "_",

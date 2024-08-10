@@ -1,0 +1,42 @@
+{
+  "title": "Tableau de bord",
+  "cards": {
+    "datasets": "Ensembles de données",
+    "views": "Vues",
+    "downloads": "Téléchargements"
+  },
+  "chart": {
+    "most-accessed-datasets": {
+      "title": "Top 5 des ensembles de données les plus consultés",
+      "empty-state": "Aucun ensemble de données consulté pour le moment"
+    },
+    "traffic-locations": {
+      "title": "Top 5 des emplacements de trafic",
+      "empty-state": "Aucune donnée de trafic disponible pour le moment"
+    }
+  },
+  "latest-dataset-created": {
+    "title": "Dernier ensemble de données créé",
+    "view-all": "Voir tout",
+    "table": {
+      "header": {
+        "no": "N°",
+        "title": "Titre",
+        "created-at": "Créé le",
+        "updated-at": "Mis à jour le",
+        "views": "Vues",
+        "files": "Fichiers",
+        "status": "Statut"
+      },
+      "body": {
+        "status": {
+          "further-review": "Examen complémentaire",
+          "pending": "En attente",
+          "unpublished": "Non publié",
+          "published": "Publié",
+          "rejected": "Rejeté"
+        }
+      }
+    }
+  }
+}

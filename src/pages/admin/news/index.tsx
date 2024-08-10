@@ -25,7 +25,7 @@ import { useChangeNewsStatus, useDeleteNews } from "~/mutations/news";
 import usePrompt from "~/hooks/usePrompt";
 
 export default function News() {
-  const { paginationModel, onPaginationModelChange, queryParams } =
+  const { paginationModel, onPaginationModelChange, queryParams, pagination } =
     useOutletContext<OutletContext>();
 
   const [menuObj, setMenuObj] = useState<{
@@ -40,15 +40,22 @@ export default function News() {
 
   const prompt = usePrompt();
 
+  const search = queryParams.get("q");
+  const status = queryParams.get("status");
+
+  const searchParams = {
+    search: useDebounce(search).trim(),
+    status,
+    ...pagination,
+  };
+
   const { isLoading, data } = useAdminNews({
-    search: useDebounce(queryParams.get("q")).trim(),
-    filterBy: {
-      status: queryParams.get("status"),
-    },
-    pagination: paginationModel,
+    searchParams,
   });
 
-  const { mutateAsync: changeNewsStatus } = useChangeNewsStatus();
+  const { mutateAsync: changeNewsStatus } = useChangeNewsStatus({
+    searchParams,
+  });
   const { mutateAsync: deleteNews } = useDeleteNews();
 
   const handlePublish = useCallback(
@@ -211,7 +218,7 @@ export default function News() {
             <div className="flex items-center gap-4">
               <OutlinedInput
                 placeholder="Search for title..."
-                value={queryParams.get("q")}
+                value={search}
                 onChange={(e) => {
                   const value = e.target.value;
 
@@ -225,7 +232,7 @@ export default function News() {
               />
               <Select
                 className="w-[200px] !text-sm !py-0 !px-0 !h-full"
-                value={queryParams.get("status")}
+                value={status}
                 onChange={async (e) => {
                   const value = e.target.value;
 

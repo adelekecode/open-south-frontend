@@ -1,170 +1,92 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { MenuItem, OutlinedInput, Select } from "@mui/material";
+import { MenuItem, OutlinedInput, Select, Tooltip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { GridColDef } from "@mui/x-data-grid";
-import moment from "moment";
-import { twMerge } from "tailwind-merge";
+import { LuInfo } from "react-icons/lu";
 import DataGrid from "~/components/data-grid";
 import { useUserOrganizationDatasets } from "~/queries/dataset";
 import useDebounce from "~/hooks/debounce";
-
-const columns: GridColDef[] = [
-  {
-    field: "id",
-    headerName: "NO.",
-    minWidth: 10,
-    renderCell: ({ api, row }) => {
-      const { getAllRowIds } = api;
-
-      return getAllRowIds().indexOf(row.id) + 1;
-    },
-  },
-  {
-    field: "title",
-    headerName: "TITLE",
-    flex: 1,
-    minWidth: 200,
-  },
-  {
-    field: "created_at",
-    headerName: "CREATED AT",
-    flex: 1,
-    minWidth: 150,
-    valueFormatter: ({ value }) => {
-      return moment(value).format("Do MMM, YYYY");
-    },
-    sortComparator: (v1, v2) => {
-      return new Date(v1).getTime() - new Date(v2).getTime();
-    },
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "updated_at",
-    headerName: "UPDATED AT",
-    minWidth: 150,
-    flex: 1,
-    valueFormatter: ({ value }) => {
-      return moment(value).fromNow();
-    },
-    sortComparator: (v1, v2) => {
-      return new Date(v1).getTime() - new Date(v2).getTime();
-    },
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "views",
-    headerName: "VIEWS",
-    flex: 1,
-    minWidth: 70,
-    valueFormatter: ({ value }) => {
-      return value.count;
-    },
-    sortComparator: (v1, v2) => {
-      return v1 - v2.count;
-    },
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "files_count",
-    headerName: "FILES",
-    minWidth: 70,
-    valueFormatter: ({ value }) => {
-      return value;
-    },
-    sortComparator: (v1, v2) => {
-      return v1 - v2;
-    },
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "status",
-    headerName: "Status",
-    flex: 1,
-    renderCell: ({ value }) => {
-      const obj: {
-        element: any;
-        styles: string;
-      } = {
-        element: "-------",
-        styles: "py-1 px-2 rounded-full text-xs",
-      };
-
-      if (value === "pending") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-orange-500 border border-orange-500`)}>Pending</p>
-        );
-      } else if (value === "published") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-green-500 border border-green-500`)}>Published</p>
-        );
-      } else if (value === "rejected") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-red-500 border border-red-500`)}>Rejected</p>
-        );
-      } else if (value === "further_review") {
-        obj.element = (
-          <p className={twMerge(obj.styles, `text-info-800 border border-info-800`)}>
-            Further Review
-          </p>
-        );
-      }
-
-      return obj.element;
-    },
-    sortable: false,
-    minWidth: 130,
-    align: "center",
-    headerAlign: "center",
-  },
-];
+import {
+  createColumn,
+  createDatasetStatusColumn,
+  createDateColumn,
+  createIdColumn,
+} from "~/utils/table-helpers";
+import { OutletContext } from "~/layouts/paginated";
 
 export default function Dataset() {
+  const { t } = useTranslation("dashboard-layout/account/organization/datasets");
+
   const { slug } = useParams();
 
   const navigate = useNavigate();
 
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const search = searchParams.get("q") || "";
-  const status = searchParams.get("status") || "";
-
-  const [pagination, setPagination] = useState({
-    page: 0,
-    pageSize: 10,
-  });
-
-  const searchParamsOption = {
-    replace: true,
-  };
+  const { paginationModel, onPaginationModelChange, queryParams, pagination } =
+    useOutletContext<OutletContext>();
 
   const queryClient = useQueryClient();
   const organization = queryClient.getQueryData<Organization>([`/organisations/${slug}/`]);
+
+  const columns: GridColDef[] = [
+    createIdColumn(paginationModel),
+    createColumn({
+      field: "title",
+      headerName: "Title",
+    }),
+    createColumn({
+      field: "views",
+      minWidth: 100,
+      headerName: t("table.header.views"),
+    }),
+    createColumn({
+      field: "files_count",
+      headerName: t("table.header.files"),
+      minWidth: 100,
+    }),
+    createDateColumn({
+      field: "created_at",
+      headerName: t("table.header.created-at"),
+    }),
+    createDateColumn({
+      field: "updated_at",
+      headerName: t("table.header.updated-at"),
+    }),
+    createDatasetStatusColumn({ field: "status", headerName: t("table.header.status") }),
+  ];
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  const { data, isLoading } = useUserOrganizationDatasets(
-    organization?.id || "",
-    useDebounce(search).trim(),
-    {
+  const search = queryParams.get("q");
+  const status = queryParams.get("status");
+
+  const { data, isLoading } = useUserOrganizationDatasets({
+    orgId: organization?.id || "",
+    searchParams: {
+      search: useDebounce(search).trim(),
       status,
+      ...pagination,
     },
-    pagination
-  );
+  });
 
   return (
     <>
       <main className="p-6 px-8 tablet:px-6 largeMobile:!px-4 pb-16 flex flex-col gap-6 w-full">
         <div className="flex justify-between items-center">
           <h1 className="text-xl font-medium flex items-center gap-2">
-            Dashboard <span className="text-sm">{">"}</span>{" "}
-            <span className="text-info-800">{organization?.name || "-----"}</span>
+            <span className="text-info-800 capitalize">{organization?.name || "-----"}</span>
+            <span className="text-sm">{">"}</span> <span className="text-sm">Datasets</span>
+            <Tooltip
+              title="To create a dataset, click on the plus icon in the navbar."
+              placement="top-start"
+            >
+              <button>
+                <LuInfo className="text-sm text-zinc-600" />
+              </button>
+            </Tooltip>
           </h1>
         </div>
         <div className="bg-white w-full border border-info-100 pb-8 rounded-md flex flex-col">
@@ -178,18 +100,10 @@ export default function Dataset() {
                   const value = e.target.value;
 
                   if (!value) {
-                    return setSearchParams((params) => {
-                      params.delete("q");
-
-                      return params;
-                    });
+                    return queryParams.delete("q");
                   }
 
-                  setSearchParams((params) => {
-                    params.set("q", value);
-
-                    return params;
-                  }, searchParamsOption);
+                  queryParams.set("q", value);
                 }}
               />
               <Select
@@ -199,18 +113,10 @@ export default function Dataset() {
                   const chosenValue = e.target.value;
 
                   if (!chosenValue) {
-                    return setSearchParams((params) => {
-                      params.delete("status");
-
-                      return params;
-                    });
+                    return queryParams.delete("status");
                   }
 
-                  setSearchParams((params) => {
-                    params.set("status", chosenValue);
-
-                    return params;
-                  }, searchParamsOption);
+                  queryParams.set("status", chosenValue);
                 }}
                 displayEmpty
               >
@@ -235,15 +141,8 @@ export default function Dataset() {
               getRowClassName={() => `cursor-pointer`}
               columns={columns}
               rowCount={data?.count || 0}
-              paginationModel={pagination}
-              onPaginationModelChange={({ page, pageSize }, { reason }) => {
-                if (!reason) return;
-
-                setPagination({
-                  page,
-                  pageSize,
-                });
-              }}
+              paginationModel={paginationModel}
+              onPaginationModelChange={onPaginationModelChange}
               paginationMode="server"
             />
           </div>
