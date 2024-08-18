@@ -9,6 +9,7 @@ import { formatFileSize } from "~/utils/helper";
 import { useUploadDatasetFile } from "~/mutations/dataset";
 import { notifyError } from "~/utils/toast";
 import useCreateDatasetStore from "~/store/create-dataset";
+import ProgressBar from "~/components/progress-bar";
 
 type ResourceProps = {
   setActiveIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -23,14 +24,17 @@ type FileType = {
   base64: string;
 };
 
+const chunkSize = 5 * 1024 * 1024;
+
 export default function Resource({ setActiveIndex }: ResourceProps) {
   const [files, setFiles] = useState<FileType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [filesSuccessfullyUploaded, setFilesSuccessfullyUploaded] = useState<string[]>([]);
+  const [progress, setProgress] = useState<{ [key: string]: number }>({});
 
   const { dataset, setOrganization } = useCreateDatasetStore();
 
-  const uploadDatasetFile = useUploadDatasetFile();
+  const { mutateAsync: uploadDatasetFile } = useUploadDatasetFile();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const files = Array.from(acceptedFiles);
@@ -52,10 +56,6 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
             base64: reader.result as string,
           };
 
-          // if (file.size > 10 * 1024 * 1024) {
-          //   newAttachment.base64 = reader.result as string;
-          // }
-
           return [newAttachment, ...prev];
         });
       };
@@ -74,6 +74,65 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
     },
     onDrop,
   });
+
+  const submitHandler = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await Promise.all(
+        files
+          .filter((file) => !filesSuccessfullyUploaded.includes(file.id))
+          .map(async (file) => {
+            try {
+              const totalChunks = Math.ceil(file.file.size / chunkSize);
+
+              for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+                const chunk = file.file.slice(chunkIndex * chunkSize, (chunkIndex + 1) * chunkSize);
+
+                await uploadDatasetFile({
+                  datasetId: dataset?.id || "",
+                  data: {
+                    chunk_number: chunkIndex + 1,
+                    total_chunks: totalChunks,
+                    format: file.fileType,
+                    file: chunk,
+                    file_name: file.fileName,
+                    size: file.fileSize,
+                  },
+                  config: {
+                    onUploadProgress: () => {
+                      const percentCompleted = ((chunkIndex + 1) / totalChunks) * 100;
+
+                      setProgress((prev) => ({
+                        ...prev,
+                        [file.id]: percentCompleted,
+                      }));
+                    },
+                  },
+                });
+              }
+              setFilesSuccessfullyUploaded((prev) => [...prev, file.id]);
+            } catch (error) {
+              notifyError(`File "${file.fileName}" already exist`);
+              throw error;
+            }
+          })
+      );
+      setActiveIndex((prev) => prev + 1);
+      setOrganization(null);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [
+    dataset?.id,
+    files,
+    filesSuccessfullyUploaded,
+    setActiveIndex,
+    setOrganization,
+    uploadDatasetFile,
+  ]);
 
   return (
     <div className="pt-4 flex flex-col">
@@ -97,22 +156,27 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
       </div>
       {files.length > 0 && (
         <div className="flex flex-col gap-4 p-4">
-          {files.map((item, index) => (
+          {files.map((file, index) => (
             <div
               key={index + 1}
               className="flex justify-between items-center border p-2 rounded-md border-info-300"
             >
               <div className="flex gap-8 items-center">
-                <div className="flex flex-col gap-2">
-                  <h4 className="text-sm font-semibold">
-                    {item.fileName.replace(/\.[^/.]+$/, "")}
-                  </h4>
-                  <div className="[&>p]:text-xs [&>p]:font-medium">
-                    <p>File size: {item.fileSize}</p>
-                    <p>File Type: {item.fileType}</p>
+                <div className="flex gap-2 flex-col w-full">
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-sm font-semibold">
+                      {file.fileName.replace(/\.[^/.]+$/, "")}
+                    </h4>
+                    <div className="[&>p]:text-xs [&>p]:font-medium">
+                      <p>File size: {file.fileSize}</p>
+                      <p>File Type: {file.fileType}</p>
+                    </div>
                   </div>
+                  {progress[file.id] && (
+                    <ProgressBar value={Number(progress[file.id].toFixed(2))} />
+                  )}
                 </div>
-                {filesSuccessfullyUploaded.includes(item.id) && (
+                {filesSuccessfullyUploaded.includes(file.id) && (
                   <p className="text-xs px-3 py-1 border border-green-500 text-green-500 rounded-full">
                     uploaded
                   </p>
@@ -143,38 +207,7 @@ export default function Resource({ setActiveIndex }: ResourceProps) {
         <Button
           className="!py-2"
           loading={isLoading}
-          onClick={async () => {
-            setIsLoading(true);
-            try {
-              await Promise.all(
-                files
-                  .filter((item) => !filesSuccessfullyUploaded.includes(item.id))
-                  .map(async (item) => {
-                    try {
-                      await uploadDatasetFile.mutateAsync({
-                        datasetId: dataset?.id || "",
-                        base64: item.base64,
-                        format: item.fileType,
-                        size: item.fileSize,
-                        file_name: item.fileName,
-                      });
-
-                      setFilesSuccessfullyUploaded((prev) => [...prev, item.id]);
-                    } catch (error) {
-                      notifyError(`File "${item.fileName}" already exist`);
-                      throw error;
-                    }
-                  })
-              );
-              setActiveIndex((prev) => prev + 1);
-              setOrganization(null);
-            } catch (error) {
-              console.error(error);
-              throw error;
-            } finally {
-              setIsLoading(false);
-            }
-          }}
+          onClick={submitHandler}
           disabled={!(files.length > 0)}
         >
           Next

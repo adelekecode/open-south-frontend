@@ -143,7 +143,7 @@ export default function Dashboard() {
           </div>
           <div className="min-h-[500px]">
             <DataGrid
-              rows={datasets ? datasets.results : []}
+              rows={datasets?.results || []}
               loading={isDatasetsLoading}
               onRowClick={(params) => {
                 navigate(`/account/${organization?.slug}/datasets/${params.id}`);
