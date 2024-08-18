@@ -90,7 +90,7 @@ axiosPrivate.interceptors.response.use(
           window.location.reload();
         }
       }
-    } else if (status.toString()[0] === "5") {
+    } else if (status?.toString()[0] === "5") {
       captureException(error);
 
       if (status === 500) {

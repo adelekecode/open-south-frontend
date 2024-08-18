@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { isAxiosError } from "axios";
+import { AxiosRequestConfig, isAxiosError } from "axios";
 import { notifyError, notifySuccess } from "~/utils/toast";
 import { axiosPrivate } from "~/utils/api";
 
@@ -183,26 +183,28 @@ export function useUploadDatasetFile() {
   return useMutation(
     async ({
       datasetId,
-      file,
-      format,
-      size,
+      data,
+      config,
     }: {
       datasetId: string;
-      file: File;
-      format: string;
-      size: string;
+      data: {
+        format: string;
+        file_name: string;
+        size: string;
+        file: Blob;
+        chunk_number: number;
+        total_chunks: number;
+      };
+      config: AxiosRequestConfig;
     }) => {
       const { data: response } = await axiosPrivate.postForm(
-        `/datasets/files/${datasetId}/`,
-        {
-          file,
-          format,
-          size,
-        },
+        `/datasets/files/chunked-upload/${datasetId}/`,
+        data,
         {
           validateStatus: (status) => {
             return status < 500;
           },
+          ...config,
         }
       );
 
