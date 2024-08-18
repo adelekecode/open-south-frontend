@@ -124,7 +124,7 @@ export default function Dataset() {
           </div>
           <div className="min-h-[500px] p-4">
             <DataGrid
-              rows={data ? data.results : []}
+              rows={data?.results || []}
               loading={isLoading}
               onRowClick={(params) => {
                 navigate(`./${params.id}`);
