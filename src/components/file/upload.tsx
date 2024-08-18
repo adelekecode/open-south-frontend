@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { DialogActions, DialogContent, DialogTitle, IconButton } from "@mui/material";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDropzone } from "react-dropzone";
 import { IoClose } from "react-icons/io5";
 import { v4 as uuidv4 } from "uuid";
@@ -10,6 +11,7 @@ import { formatFileSize } from "~/utils/helper";
 import FileUploadIllustration from "~/assets/illustrations/file-upload.png";
 import Button from "~/components/button";
 import { useUploadDatasetFile } from "~/mutations/dataset";
+import ProgressBar from "~/components/progress-bar";
 
 type FileUploadProps = {
   setOpen: (bool: boolean) => void;
@@ -24,13 +26,18 @@ type FileObj = {
   base64: string;
 };
 
+const chunkSize = 5 * 1024 * 1024;
+
 export default function FileUpload({ setOpen }: FileUploadProps) {
   const { t } = useTranslation("dashboard-layout/account/dataset/id");
 
-  const { id } = useParams();
+  const { id: datasetId } = useParams();
+
+  const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState<FileObj[]>([]);
+  const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const [filesUploaded, setFilesUploaded] = useState<{
     success: FileObj[];
     failed: (FileObj & { reason: string })[];
@@ -39,7 +46,7 @@ export default function FileUpload({ setOpen }: FileUploadProps) {
     failed: [],
   });
 
-  const uploadDatasetFile = useUploadDatasetFile();
+  const { mutateAsync: uploadDatasetFile } = useUploadDatasetFile();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const files = Array.from(acceptedFiles);
@@ -93,18 +100,41 @@ export default function FileUpload({ setOpen }: FileUploadProps) {
     setIsLoading(true);
     try {
       await Promise.all(
-        files.map(async (item) => {
+        files.map(async (file) => {
           try {
-            await uploadDatasetFile.mutateAsync({
-              datasetId: id || "",
-              base64: item.base64,
-              file_name: item.fileName,
-              format: item.fileType,
-              size: item.fileSize,
-            });
+            const totalChunks = Math.ceil(file.file.size / chunkSize);
 
-            setFilesUploaded((prev) => ({ ...prev, success: [...prev.success, item] }));
-            setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
+            for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+              const chunk = file.file.slice(chunkIndex * chunkSize, (chunkIndex + 1) * chunkSize);
+
+              await uploadDatasetFile({
+                datasetId: datasetId!,
+                data: {
+                  chunk_number: chunkIndex + 1,
+                  total_chunks: totalChunks,
+                  format: file.fileType,
+                  file: chunk,
+                  file_name: file.fileName,
+                  size: file.fileSize,
+                },
+                config: {
+                  onUploadProgress: () => {
+                    const percentCompleted = ((chunkIndex + 1) / totalChunks) * 100;
+
+                    setProgress((prev) => ({
+                      ...prev,
+                      [file.id]: percentCompleted,
+                    }));
+                  },
+                },
+              });
+            }
+            queryClient.invalidateQueries([
+              `/user/dataset/pk/${datasetId}/files/?limit=10&offset=0`,
+            ]);
+
+            setFilesUploaded((prev) => ({ ...prev, success: [...prev.success, file] }));
+            setFiles((prev) => prev.filter((obj) => !(obj.id === file.id)));
           } catch (error: any) {
             const errMsg = error.response?.data?.error || "";
 
@@ -113,12 +143,12 @@ export default function FileUpload({ setOpen }: FileUploadProps) {
               failed: [
                 ...prev.failed,
                 {
-                  ...item,
+                  ...file,
                   reason: errMsg,
                 },
               ],
             }));
-            setFiles((prev) => prev.filter((obj) => !(obj.id === item.id)));
+            setFiles((prev) => prev.filter((obj) => !(obj.id === file.id)));
           }
         })
       );
@@ -128,12 +158,18 @@ export default function FileUpload({ setOpen }: FileUploadProps) {
     } finally {
       setIsLoading(false);
     }
-  }, [files, id, uploadDatasetFile]);
+  }, [datasetId, files, queryClient, uploadDatasetFile]);
 
   return (
-    <Modal open onClose={onClose}>
+    <Modal
+      open
+      onClose={onClose}
+      exitIcon={{
+        display: true,
+      }}
+    >
       <DialogTitle>{t("resources.upload-file.title")}</DialogTitle>
-      <DialogContent>
+      <DialogContent className="flex flex-col gap-4">
         <div
           className="border border-info-300 rounded-md flex flex-col items-center justify-center w-full p-8 cursor-pointer outline-0 gap-4"
           {...getRootProps()}
@@ -150,27 +186,31 @@ export default function FileUpload({ setOpen }: FileUploadProps) {
         </div>
         {files.length > 0 && (
           <div className="flex flex-col gap-4">
-            {files.map((item, index) => (
+            {files.map((file, index) => (
               <div
                 key={index + 1}
                 className="flex justify-between items-center border p-2 rounded-md border-info-300"
               >
-                <div className="flex gap-8 items-center">
+                <div className="flex gap-2 flex-col w-full">
                   <div className="flex flex-col gap-2">
                     <h4 className="text-sm font-medium">
-                      {item.fileName.replace(/\.[^/.]+$/, "")}
+                      {file.fileName.replace(/\.[^/.]+$/, "")}
                     </h4>
                     <div className="[&>p]:text-xs">
-                      <p>File size: {item.fileSize}</p>
-                      <p>File Type: {item.fileType}</p>
+                      <p>File size: {file.fileSize}</p>
+                      <p>File Type: {file.fileType}</p>
                     </div>
                   </div>
+                  {progress[file.id] && (
+                    <ProgressBar value={Number(progress[file.id].toFixed(2))} />
+                  )}
                 </div>
                 <IconButton
                   onClick={() => {
                     setFiles((prev) => prev.filter((_, i) => i !== index));
                   }}
                   size="small"
+                  className="self-start"
                 >
                   <IoClose />
                 </IconButton>
@@ -179,7 +219,10 @@ export default function FileUpload({ setOpen }: FileUploadProps) {
           </div>
         )}
         {[...filesUploaded.failed, ...filesUploaded.success].map(
-          (item: (typeof filesUploaded.success)[0] | (typeof filesUploaded.failed)[0], index) => (
+          (
+            item: (typeof filesUploaded.success)[number] | (typeof filesUploaded.failed)[number],
+            index
+          ) => (
             <div key={index + 1} className="rounded-md border-info-300 overflow-hidden">
               {"reason" in item && (
                 <p className="bg-red-300 w-full p-1 px-2 text-xs font-medium">
@@ -223,7 +266,7 @@ export default function FileUpload({ setOpen }: FileUploadProps) {
       </DialogContent>
       <DialogActions>
         <Button
-          className="!py-2 !mt-4"
+          className="!py-2"
           loading={isLoading}
           onClick={uploadHandler}
           disabled={!(files.length > 0)}
