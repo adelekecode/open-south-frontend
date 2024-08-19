@@ -36,9 +36,11 @@ export default function DatasetDetails() {
 
       if (confirmed) {
         await deleteDataset(id);
+
+        navigate(`/account/${organization?.id}/datasets`);
       }
     },
-    [deleteDataset, prompt]
+    [deleteDataset, navigate, organization?.id, prompt]
   );
 
   useEffect(() => {
