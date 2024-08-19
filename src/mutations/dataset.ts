@@ -225,7 +225,7 @@ export function useUploadDatasetFile() {
 export function useDeleteDataset() {
   return useMutation(
     async (id: string) => {
-      const { data: response } = await axiosPrivate.delete(`/dataset/${id}/`);
+      const { data: response } = await axiosPrivate.delete(`/user/datasets/${id}/`);
 
       return response;
     },
@@ -249,6 +249,8 @@ export function useDeleteDataset() {
 }
 
 export function useDeleteDatasetFile() {
+  const queryClient = useQueryClient();
+
   return useMutation(
     async ({ datasetId, fileId }: { datasetId: string; fileId: string }) => {
       const { data: response } = await axiosPrivate.delete(
@@ -271,6 +273,15 @@ export function useDeleteDatasetFile() {
             }
           }
         }
+      },
+      onSettled() {
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey as string[];
+
+            return queryKey[0].startsWith("/user/dataset/pk/");
+          },
+        });
       },
     }
   );
