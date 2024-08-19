@@ -106,6 +106,7 @@ export default function Resources() {
       field: "format",
       headerName: "Format",
       minWidth: 200,
+      cellClassName: "normal-case",
     }),
     createColumn({
       field: "size",

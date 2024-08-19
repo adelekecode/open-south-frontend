@@ -109,6 +109,7 @@ export default function Resources() {
     createColumn({
       field: "format",
       headerName: t("resources.table.header.format"),
+      cellClassName: "normal-case",
     }),
     createColumn({
       field: "size",

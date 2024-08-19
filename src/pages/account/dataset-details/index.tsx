@@ -45,9 +45,11 @@ export default function DatasetDetails() {
 
       if (confirmed) {
         await deleteDataset(id);
+
+        navigate("/account/datasets");
       }
     },
-    [deleteDataset, prompt, t]
+    [deleteDataset, navigate, prompt, t]
   );
 
   if (isLoading) {
