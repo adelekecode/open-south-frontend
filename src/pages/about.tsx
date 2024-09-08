@@ -22,6 +22,13 @@ export default function About() {
             <p key={index + 1}>{t(`body.${index + 1}`, option)}</p>
           ))}
           <p className="mt-4 text-lg tablet:text-base largeMobile:!text-sm">
+            <a
+              className="hover:underline"
+              href="https://opensouth.io/#about"
+              rel="noopener noreferrer"
+            >
+              <span className="font-medium">{t("body.footnote.team", option)}</span>
+            </a>{" "}
             <span className="font-medium">{t("body.footnote.welcome", option)}</span> –{" "}
             <span className="font-Marhey">{t("body.footnote.extra", option)}</span>
           </p>
