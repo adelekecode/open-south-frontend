@@ -17,6 +17,9 @@ export default function Footer() {
           <div>
             <h3>{t("footer.links.useful-links.title")}</h3>
             <div>
+              <Link className="hover:underline" to="/datasets">
+                {t("footer.links.useful-links.body.datasets")}
+              </Link>
               <Link className="hover:underline" to="/categories">
                 {t("footer.links.useful-links.body.categories")}
               </Link>
@@ -44,6 +47,14 @@ export default function Footer() {
                 rel="noopener noreferrer"
               >
                 {t("footer.links.support.body.feedback")}
+              </a>
+              <a
+                className="hover:underline"
+                href="https://documenter.getpostman.com/view/23812062/2sA3dyjBdN"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("footer.links.support.body.api-docs")}
               </a>
             </div>
           </div>

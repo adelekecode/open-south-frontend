@@ -8,7 +8,8 @@
     "5": "Accessibility and localization are key pillars of our platform. We strive to ensure that {{company_name}} is accessible to individuals and communities across the Global South. We actively work towards enhancing platform accessibility, addressing language barriers, and accommodating diverse technological infrastructures. By doing so, we aim to create an inclusive space where knowledge can flow freely, unencumbered by geographical or technical limitations.",
     "6": "We invite you to join our vibrant community and explore the wealth of data and knowledge available on {{company_name}}. Whether you are a researcher seeking valuable insights, a policymaker in pursuit of evidence-based solutions, or a community member passionate about driving positive change, our platform is here to support your journey. Together, let us harness the power of open data to shape a brighter future for the Global South.",
     "footnote": {
-      "welcome": "Welcome to {{company_name}}",
+      "team": "Our Team",
+      "welcome": "welcomes your to {{company_name}}",
       "extra": "where data transforms possibilities"
     }
   }

@@ -27,6 +27,7 @@
       "useful-links": {
         "title": "Useful Links",
         "body": {
+          "datasets": "Datasets",
           "categories": "Categories",
           "organizations": "Organizations"
         }
@@ -37,7 +38,8 @@
           "contact": "Contact",
           "faq": "FAQ",
           "about-us": "About us",
-          "feedback": "Feedback"
+          "feedback": "Feedback",
+          "api-docs": "Documentation"
         }
       },
       "social-media": {

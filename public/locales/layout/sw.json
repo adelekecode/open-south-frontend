@@ -1,7 +1,7 @@
 {
   "header": {
     "links": {
-      "dataset": "Seti za Takwimu",
+      "dataset": "Seti za data",
       "category": "Jamii",
       "organization": "Shirika",
       "about": "Kuhusu Sisi",
@@ -14,10 +14,10 @@
     "dashboard": "Dashibodi",
     "search": {
       "placeholder": "Tafuta",
-      "dataset": "Tafuta \"{{search}}\" katika seti za takwimu",
-      "organization": "Tafuta \"{{search}}\" katika mashirika"
+      "dataset": "Tafuta \"{{search}}\" kwenye seti za data",
+      "organization": "Tafuta \"{{search}}\" kwenye mashirika"
     },
-    "logout": "Toka"
+    "logout": "Ondoka"
   },
   "main": {
     "breadcrumbs": "Karibu"
@@ -25,8 +25,9 @@
   "footer": {
     "links": {
       "useful-links": {
-        "title": "Viungo Vya Kufaa",
+        "title": "Viungo vya muhimu",
         "body": {
+          "datasets": "Seti za data",
           "categories": "Jamii",
           "organizations": "Mashirika"
         }
@@ -37,16 +38,17 @@
           "contact": "Wasiliana",
           "faq": "Maswali Yanayoulizwa Sana",
           "about-us": "Kuhusu sisi",
-          "feedback": "Maoni"
+          "feedback": "Maoni",
+          "api-docs": "Nyaraka"
         }
       },
       "social-media": {
-        "title": "Mitandao ya Kijamii"
+        "title": "Mitandao ya kijamii"
       },
       "developer": {
-        "title": "Mwandishi wa Programu",
+        "title": "Mendelezaji",
         "body": {
-          "portal-api": "API ya Lango"
+          "portal-api": "API ya Portal"
         }
       }
     },
@@ -54,9 +56,9 @@
       "title": "Washirika Wetu"
     },
     "bottom": {
-      "terms": "Sheria ya Huduma",
+      "terms": "Masharti ya Huduma",
       "policy": "Sera ya Faragha",
-      "license": "Open South imepewa leseni chini ya"
+      "license": "Open South imesajiliwa chini ya"
     }
   }
 }

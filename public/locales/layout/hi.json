@@ -1,21 +1,21 @@
 {
   "header": {
     "links": {
-      "dataset": "डेटासेट",
+      "dataset": "डेटासेट्स",
       "category": "श्रेणियाँ",
       "organization": "संगठन",
       "about": "हमारे बारे में",
-      "partner": "साझेदारों",
-      "contact": "संपर्क करें",
+      "partner": "साझेदार",
+      "contact": "हमसे संपर्क करें",
       "news": "समाचार"
     },
     "signup": "साइन अप करें",
     "login": "लॉग इन करें",
     "dashboard": "डैशबोर्ड",
     "search": {
-      "placeholder": "खोज",
-      "dataset": "डेटासेट में \"{{search}}\" खोजें",
-      "organization": "संगठनों में \"{{search}}\" खोजें"
+      "placeholder": "खोजें",
+      "dataset": "\"{{search}}\" को डेटासेट्स में खोजें",
+      "organization": "\"{{search}}\" को संगठनों में खोजें"
     },
     "logout": "लॉगआउट"
   },
@@ -27,6 +27,7 @@
       "useful-links": {
         "title": "उपयोगी लिंक",
         "body": {
+          "datasets": "डेटासेट्स",
           "categories": "श्रेणियाँ",
           "organizations": "संगठन"
         }
@@ -34,10 +35,11 @@
       "support": {
         "title": "सहायता",
         "body": {
-          "contact": "संपर्क",
-          "faq": "सामान्य प्रश्न",
+          "contact": "संपर्क करें",
+          "faq": "पूछे जाने वाले प्रश्न",
           "about-us": "हमारे बारे में",
-          "feedback": "प्रतिक्रिया"
+          "feedback": "प्रतिपुष्टि",
+          "api-docs": "प्रलेखन"
         }
       },
       "social-media": {
@@ -46,12 +48,12 @@
       "developer": {
         "title": "डेवलपर",
         "body": {
-          "portal-api": "पोर्टल API"
+          "portal-api": "पोर्टल एपीआई"
         }
       }
     },
     "partners": {
-      "title": "हमारे साझेदार"
+      "title": "हमारे साथी"
     },
     "bottom": {
       "terms": "सेवा की शर्तें",
