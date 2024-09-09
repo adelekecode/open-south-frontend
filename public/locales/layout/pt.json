@@ -1,7 +1,7 @@
 {
   "header": {
     "links": {
-      "dataset": "Conjuntos de Dados",
+      "dataset": "Conjuntos de dados",
       "category": "Categorias",
       "organization": "Organização",
       "about": "Sobre nós",
@@ -9,13 +9,13 @@
       "contact": "Contato",
       "news": "Notícias"
     },
-    "signup": "Cadastre-se",
+    "signup": "Inscrever-se",
     "login": "Entrar",
-    "dashboard": "Painel",
+    "dashboard": "Painel de controle",
     "search": {
-      "placeholder": "Buscar",
-      "dataset": "Buscar por \"{{search}}\" em conjuntos de dados",
-      "organization": "Buscar por \"{{search}}\" em organizações"
+      "placeholder": "Pesquisar",
+      "dataset": "Pesquisar \"{{search}}\" em conjuntos de dados",
+      "organization": "Pesquisar \"{{search}}\" em organizações"
     },
     "logout": "Sair"
   },
@@ -25,8 +25,9 @@
   "footer": {
     "links": {
       "useful-links": {
-        "title": "Links Úteis",
+        "title": "Links úteis",
         "body": {
+          "datasets": "Conjuntos de dados",
           "categories": "Categorias",
           "organizations": "Organizações"
         }
@@ -35,13 +36,14 @@
         "title": "Suporte",
         "body": {
           "contact": "Contato",
-          "faq": "Perguntas Frequentes",
+          "faq": "FAQ",
           "about-us": "Sobre nós",
-          "feedback": "Feedback"
+          "feedback": "Feedback",
+          "api-docs": "Documentação"
         }
       },
       "social-media": {
-        "title": "Redes Sociais"
+        "title": "Mídia social"
       },
       "developer": {
         "title": "Desenvolvedor",
@@ -51,12 +53,12 @@
       }
     },
     "partners": {
-      "title": "Nossos Parceiros"
+      "title": "Nossos parceiros"
     },
     "bottom": {
       "terms": "Termos de Serviço",
       "policy": "Política de Privacidade",
-      "license": "Open South é licenciado sob"
+      "license": "Open South está licenciado sob"
     }
   }
 }

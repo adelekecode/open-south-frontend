@@ -9,7 +9,7 @@
       "contact": "اتصل بنا",
       "news": "الأخبار"
     },
-    "signup": "سجل",
+    "signup": "اشتراك",
     "login": "تسجيل الدخول",
     "dashboard": "لوحة القيادة",
     "search": {
@@ -17,16 +17,17 @@
       "dataset": "ابحث عن \"{{search}}\" في مجموعات البيانات",
       "organization": "ابحث عن \"{{search}}\" في المنظمات"
     },
-    "logout": "تسجيل خروج"
+    "logout": "تسجيل الخروج"
   },
   "main": {
-    "breadcrumbs": "مرحبا"
+    "breadcrumbs": "أهلا بك"
   },
   "footer": {
     "links": {
       "useful-links": {
         "title": "روابط مفيدة",
         "body": {
+          "datasets": "مجموعات البيانات",
           "categories": "الفئات",
           "organizations": "المنظمات"
         }
@@ -37,7 +38,8 @@
           "contact": "اتصال",
           "faq": "الأسئلة الشائعة",
           "about-us": "معلومات عنا",
-          "feedback": "التغذية الراجعة"
+          "feedback": "ملاحظات",
+          "api-docs": "التوثيق"
         }
       },
       "social-media": {
