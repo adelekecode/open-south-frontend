@@ -40,6 +40,13 @@ export function useChangePassword() {
       onSuccess() {
         notifySuccess("Password successfully updated");
       },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Invalid old password");
+          }
+        }
+      },
     }
   );
 }
