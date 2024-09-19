@@ -1,12 +1,12 @@
 {
   "header": {
     "links": {
-      "dataset": "Ensembles de données",
+      "dataset": "Jeux de données",
       "category": "Catégories",
       "organization": "Organisation",
       "about": "À propos de nous",
       "partner": "Partenaires",
-      "contact": "Nous contacter",
+      "contact": "Contactez-nous",
       "news": "Actualités"
     },
     "signup": "S'inscrire",
@@ -14,10 +14,10 @@
     "dashboard": "Tableau de bord",
     "search": {
       "placeholder": "Rechercher",
-      "dataset": "Rechercher \"{{search}}\" dans les ensembles de données",
+      "dataset": "Rechercher \"{{search}}\" dans les jeux de données",
       "organization": "Rechercher \"{{search}}\" dans les organisations"
     },
-    "logout": "Se déconnecter"
+    "logout": "Déconnexion"
   },
   "main": {
     "breadcrumbs": "Bienvenue"
@@ -27,6 +27,7 @@
       "useful-links": {
         "title": "Liens utiles",
         "body": {
+          "datasets": "Jeux de données",
           "categories": "Catégories",
           "organizations": "Organisations"
         }
@@ -37,7 +38,8 @@
           "contact": "Contact",
           "faq": "FAQ",
           "about-us": "À propos de nous",
-          "feedback": "Retour d'information"
+          "feedback": "Retour",
+          "api-docs": "Documentation"
         }
       },
       "social-media": {

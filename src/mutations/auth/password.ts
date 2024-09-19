@@ -30,11 +30,25 @@ export function useForgotPassword() {
 }
 
 export function useChangePassword() {
-  return useMutation(async (data: Record<string, any>) => {
-    const { data: response } = await axiosPrivate.post("/auth/users/set_password/", data);
+  return useMutation(
+    async (data: Record<"new_password" | "current_password" | "re_new_password", string>) => {
+      const { data: response } = await axiosPrivate.post("/auth/users/set_password/", data);
 
-    return response.data;
-  });
+      return response;
+    },
+    {
+      onSuccess() {
+        notifySuccess("Password successfully updated");
+      },
+      onError(error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            notifyError("Invalid old password");
+          }
+        }
+      },
+    }
+  );
 }
 
 export function useResetPassword() {

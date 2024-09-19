@@ -17,6 +17,9 @@ export default function Footer() {
           <div>
             <h3>{t("footer.links.useful-links.title")}</h3>
             <div>
+              <Link className="hover:underline" to="/datasets">
+                {t("footer.links.useful-links.body.datasets")}
+              </Link>
               <Link className="hover:underline" to="/categories">
                 {t("footer.links.useful-links.body.categories")}
               </Link>
@@ -44,6 +47,14 @@ export default function Footer() {
                 rel="noopener noreferrer"
               >
                 {t("footer.links.support.body.feedback")}
+              </a>
+              <a
+                className="hover:underline"
+                href="https://documenter.getpostman.com/view/23812062/2sA3dyjBdN"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("footer.links.support.body.api-docs")}
               </a>
             </div>
           </div>
@@ -79,9 +90,24 @@ export default function Footer() {
       </div>
       <div className="max-w-maxAppWidth mx-auto px-6 tablet:px-0 w-full border-b-[1.5px] border-zinc-200 flex items-center justify-center">
         <div className=" w-full max-w-maxAppWidth flex [@media(max-width:580px)]:grid [@media(max-width:580px)]:grid-cols-1 largeMobile:!grid-cols-1 largeMobile:gap-8 items-end justify-between gap-4 p-4 px-6 [@media(max-width:580px)]:px-4">
-          <Link to={"/"} className="p-6 [@media(max-width:580px)]:p-4 w-fit hover:bg-zinc-100">
-            <Logo className="w-40 [@media(max-width:580px)]:w-36 largeMobile:!w-32" />
-          </Link>
+          <div className="flex flex-col gap-4">
+            <Link to={"/"} className="p-6 [@media(max-width:580px)]:p-4 w-fit hover:bg-zinc-100">
+              <Logo className="w-40 [@media(max-width:580px)]:w-36 largeMobile:!w-32" />
+            </Link>
+            <small>
+              Open South is an{" "}
+              <a
+                href="https://www.eaamo.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                EAAMO
+              </a>{" "}
+              initiative, which is fiscally sponsored by <br /> the Hack Foundation (d.b.a. Hack
+              Club), a 501(c)(3) nonprofit (EIN: 81-2908499).
+            </small>
+          </div>
           <div className="flex flex-col gap-4 max-w-[70%] [@media(max-width:580px)]:max-w-[none]">
             <p className="text-sm font-medium text-center">{t("footer.partners.title")}</p>
             <div className="flex flex-wrap [@media(max-width:960px)]:grid [@media(max-width:960px)]:grid-cols-2 gap-6 largeMobile:flex largeMobile:flex-wrap [&_div]:flex [&_img]:h-[4rem] [&_img]:min-w-[4rem]">
@@ -109,16 +135,16 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="px-6 flex items-center py-3 max-w-maxAppWidth mx-auto">
+      <div className="px-6 flex flex-col gap-3 py-3 max-w-maxAppWidth mx-auto">
         <div className="flex gap-4 items-center [&>span]:h-4 [&>span]:w-[1px] [&>span]:rounded-full [&>span]:bg-zinc-300 [&>a]:text-xs flex-wrap">
           <Link to="/terms" className="hover:underline">
             {t("footer.bottom.terms")}
           </Link>
-          <span></span>
+          <span />
           <Link to="/privacy-policy" className="hover:underline">
             {t("footer.bottom.policy")}
           </Link>
-          <span></span>
+          <span />
           <div className="flex items-center gap-2 flex-wrap">
             <p className="text-xs">{t("footer.bottom.license")}</p>
             <a
