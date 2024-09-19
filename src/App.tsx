@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
   createRoutesFromElements,
   Route,
+  Navigate,
 } from "react-router-dom";
 import "./App.css";
 import Protected from "./layouts/protected";
@@ -32,6 +34,8 @@ import {
   CreateDataset,
   CreateOrganization,
   Developer as AccountDeveloper,
+  ChangePassword,
+  DeleteAccount,
 } from "./pages/account";
 import News from "./pages/news";
 import NewsDetails from "./pages/news-details";
@@ -62,6 +66,7 @@ import EditDataset from "./pages/account/edit-dataset";
 import CheckLocationPermission from "./layouts/check-location-permission";
 import Paginated from "./layouts/paginated";
 import DeveloperPermission from "./layouts/developer-permission";
+import SettingsLayout from "./layouts/settings";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -96,6 +101,25 @@ const router = createBrowserRouter(
                 </Route>
                 <Route path="/account/organizations/new" element={<CreateOrganization />} />
                 <Route path="/account/profile" element={<Profile />} />
+                <Route element={<SettingsLayout />} path="/account/settings">
+                  <Route index element={<Navigate to="change-password" replace />} />
+                  <Route
+                    path="change-password"
+                    element={
+                      <Suspense fallback={<AppLoader />}>
+                        <ChangePassword />
+                      </Suspense>
+                    }
+                  />
+                  <Route
+                    path="delete-account"
+                    element={
+                      <Suspense fallback={<AppLoader />}>
+                        <DeleteAccount />
+                      </Suspense>
+                    }
+                  />
+                </Route>
                 <Route element={<DeveloperPermission />}>
                   <Route path="/account/developer" element={<AccountDeveloper />} />
                 </Route>
