@@ -1,6 +1,8 @@
-import { useState } from "react";
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { useCallback, useState } from "react";
+import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import Button from "~/components/button";
+import usePrompt from "~/hooks/usePrompt";
+import { useDeleteAccount } from "~/mutations/auth/profile";
 
 const choicesArr = [
   {
@@ -14,7 +16,23 @@ const choicesArr = [
 ];
 
 export default function DeleteAccount() {
-  const [choice, setChoice] = useState<string | null>(null);
+  const [choice, setChoice] = useState<"leave_data" | "delete_data" | null>(null);
+
+  const { mutateAsync: deleteAccount, isLoading } = useDeleteAccount();
+
+  const prompt = usePrompt();
+
+  const handleDelete = useCallback(async () => {
+    const confirmed = await prompt({
+      title: "Please confirm",
+      description: "To delete your account please type fill the form below:",
+      isLoading,
+    });
+
+    if (confirmed && choice) {
+      await deleteAccount({ choice });
+    }
+  }, [choice, deleteAccount, isLoading, prompt]);
 
   return (
     <div className="bg-white w-full border border-info-100 p-6 largeMobile:px-4 rounded-md">
@@ -24,30 +42,29 @@ export default function DeleteAccount() {
           you've created:
         </p>
         <div className="flex flex-col gap-2 largeMobile:gap-4">
-          {choicesArr.map(({ name, label }, index) => (
-            <FormControlLabel
-              key={index}
-              control={
-                <Checkbox
-                  onChange={() => {
-                    setChoice(name);
-                  }}
-                  checked={choice === name}
-                  color="primary"
-                  name={name}
-                  size="small"
-                />
-              }
-              label={label}
-              slotProps={{
-                typography: {
-                  className: "!text-xs",
-                },
+          <FormControl>
+            <RadioGroup
+              onChange={(e) => {
+                setChoice(e.target.value as typeof choice);
               }}
-            />
-          ))}
+            >
+              {choicesArr.map(({ name, label }, index) => (
+                <FormControlLabel
+                  key={index}
+                  value={name}
+                  control={<Radio size="small" />}
+                  label={label}
+                  slotProps={{
+                    typography: {
+                      className: "!text-xs",
+                    },
+                  }}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
         </div>
-        <Button disabled={!choice} size="small" className="!w-fit !ml-auto">
+        <Button disabled={!choice} onClick={handleDelete} size="small" className="!w-fit !ml-auto">
           Delete Account
         </Button>
       </div>

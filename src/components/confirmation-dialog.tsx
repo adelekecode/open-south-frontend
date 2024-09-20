@@ -7,6 +7,7 @@ type Props = {
   open: boolean;
   title: string;
   description: string;
+  isLoading?: boolean;
   onConfirm: () => void;
   onClose: () => void;
 };
@@ -15,6 +16,7 @@ export default function ConfirmationDialog({
   open,
   title,
   description,
+  isLoading,
   onConfirm,
   onClose,
 }: Props) {
@@ -27,10 +29,22 @@ export default function ConfirmationDialog({
         <p className="text-xs">{description}</p>
       </header>
       <DialogActions>
-        <Button size="small" variant="outlined" onClick={onClose}>
+        <Button size="small" variant="outlined" onClick={onClose} disabled={isLoading}>
           {t("actions.cancel")}
         </Button>
-        <Button size="small" onClick={onConfirm}>
+        <Button
+          size="small"
+          onClick={() => {
+            onConfirm();
+
+            if (typeof isLoading === "boolean" && !isLoading) {
+              return onClose();
+            }
+
+            onClose();
+          }}
+          loading={isLoading}
+        >
           {t("actions.confirm")}
         </Button>
       </DialogActions>
