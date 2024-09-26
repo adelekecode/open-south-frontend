@@ -54,16 +54,11 @@ export default function ChangePassword() {
           }}
           validationSchema={validationSchema}
           onSubmit={async (values, { resetForm }) => {
-            await changePassword(
-              {
-                ...values,
+            await changePassword(values, {
+              onSuccess: () => {
+                resetForm();
               },
-              {
-                onSuccess: () => {
-                  resetForm();
-                },
-              }
-            );
+            });
           }}
           validateOnChange={false}
         >

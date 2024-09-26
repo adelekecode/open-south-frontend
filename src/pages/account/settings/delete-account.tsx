@@ -6,11 +6,11 @@ import { useDeleteAccount } from "~/mutations/auth/profile";
 
 const choicesArr = [
   {
-    label: "I wish to leave the data I created and all data related to my account",
+    label: "I wish to retain the data I created and all data related to my account.",
     name: "leave_data",
   },
   {
-    label: "I wish to delete all data I created and every data related to my account",
+    label: "I wish to delete all the data I created and any data related to my account.",
     name: "delete_data",
   },
 ];
