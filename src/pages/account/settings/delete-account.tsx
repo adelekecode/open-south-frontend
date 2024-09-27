@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { FormControl, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { useQueryClient } from "@tanstack/react-query";
 import Button from "~/components/button";
 import usePrompt from "~/hooks/usePrompt";
 import { useDeleteAccount } from "~/mutations/auth/profile";
@@ -20,19 +21,24 @@ export default function DeleteAccount() {
 
   const { mutateAsync: deleteAccount, isLoading } = useDeleteAccount();
 
+  const queryClient = useQueryClient();
+
+  const currentUser = queryClient.getQueryData<CurrentUser>(["/auth/users/me/"]);
+
   const prompt = usePrompt();
 
   const handleDelete = useCallback(async () => {
     const confirmed = await prompt({
       title: "Please confirm",
-      description: "To delete your account please type fill the form below:",
+      description: "Are you sure you want to delete your account?",
       isLoading,
+      confirmationText: `${currentUser?.first_name?.toLowerCase()}-${currentUser?.last_name?.toLowerCase()}`,
     });
 
     if (confirmed && choice) {
       await deleteAccount({ choice });
     }
-  }, [choice, deleteAccount, isLoading, prompt]);
+  }, [choice, currentUser?.first_name, currentUser?.last_name, deleteAccount, isLoading, prompt]);
 
   return (
     <div className="bg-white w-full border border-info-100 p-6 largeMobile:px-4 rounded-md">

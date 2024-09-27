@@ -31,18 +31,6 @@ export default function FormField({ label, className, labelProps, ...props }: Fo
             )}
             {...field}
             {...props}
-            sx={{
-              input: {
-                fontSize: "1rem",
-              },
-              "& .MuiOutlinedInput-input": {
-                padding: "11px 13.5px",
-                borderColor: `${props.readOnly ? "transparent" : "#0071B9"}`,
-              },
-              "& .Mui-focused": {
-                borderColor: "#0071B9",
-              },
-            }}
           />
           <ErrorMessage
             name={props.name}
