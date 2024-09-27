@@ -88,8 +88,18 @@ const theme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
+          input: {
+            fontSize: "1rem",
+          },
           "& .MuiOutlinedInput-input": {
             padding: "11px 13.5px",
+          },
+          "& .Mui-focused": {
+            borderColor: "#0071B9",
+          },
+          "& .MuiInputBase-inputSizeSmall": {
+            padding: "8px 13.5px",
+            fontSize: "0.8rem",
           },
         },
       },

@@ -4,6 +4,7 @@ import { DialogContext } from "~/providers/dialog";
 type DialogProps = {
   title: string;
   description: string;
+  confirmationText?: string;
   isLoading?: boolean;
 };
 
@@ -16,8 +17,7 @@ const usePrompt = () => {
 
   const { openDialog } = context;
 
-  return ({ title, description, isLoading }: DialogProps) =>
-    openDialog({ title, description, isLoading });
+  return ({ ...props }: DialogProps) => openDialog({ ...props });
 };
 
 export default usePrompt;
