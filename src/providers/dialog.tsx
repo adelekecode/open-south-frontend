@@ -4,6 +4,8 @@ import ConfirmationDialog from "~/components/confirmation-dialog";
 type DialogProps = {
   title: string;
   description: string;
+  isLoading?: boolean;
+  confirmationText?: string;
 };
 
 type DialogState = DialogProps & {
@@ -20,10 +22,10 @@ export const DialogContext = createContext<DialogContextProps | undefined>(undef
 export const DialogProvider = ({ children }: { children: ReactNode }) => {
   const [dialog, setDialog] = useState<DialogState | null>(null);
 
-  const openDialog = ({ title, description }: DialogProps) => {
+  const openDialog = ({ ...props }: DialogProps) => {
     return new Promise<boolean>((resolve) => {
       startTransition(() => {
-        setDialog({ open: true, title, description, resolve });
+        setDialog({ open: true, ...props, resolve });
       });
     });
   };
@@ -35,7 +37,6 @@ export const DialogProvider = ({ children }: { children: ReactNode }) => {
   const handleConfirm = () => {
     if (dialog) {
       dialog.resolve(true);
-      closeDialog();
     }
   };
 
@@ -51,9 +52,8 @@ export const DialogProvider = ({ children }: { children: ReactNode }) => {
       {children}
       {dialog && dialog.open && (
         <ConfirmationDialog
+          {...dialog}
           open={true}
-          title={dialog.title}
-          description={dialog.description}
           onConfirm={handleConfirm}
           onClose={handleClose}
         />

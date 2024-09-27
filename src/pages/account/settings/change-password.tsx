@@ -53,9 +53,11 @@ export default function ChangePassword() {
             re_new_password: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values) => {
-            await changePassword({
-              ...values,
+          onSubmit={async (values, { resetForm }) => {
+            await changePassword(values, {
+              onSuccess: () => {
+                resetForm();
+              },
             });
           }}
           validateOnChange={false}

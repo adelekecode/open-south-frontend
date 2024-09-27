@@ -14,7 +14,7 @@ export default function Protected() {
   if (!data) {
     return (
       <Navigate
-        to="/login/d"
+        to="/login"
         state={{
           from: pathname,
         }}

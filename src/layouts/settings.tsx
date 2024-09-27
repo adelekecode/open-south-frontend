@@ -22,7 +22,7 @@ export default function SettingsLayout() {
               to={to}
               key={index}
               className={({ isActive }) =>
-                `px-4 py-2 rounded-md flex items-center border border-transparent w-fit ${isActive ? "bg-zinc-500/5 border-black/10" : ""}`
+                `px-4 py-2 rounded-md flex items-center border border-transparent w-fit ${isActive ? "bg-zinc-500/5 border-black/30" : ""}`
               }
             >
               <small className="whitespace-nowrap">{text}</small>

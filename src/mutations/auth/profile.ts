@@ -42,6 +42,22 @@ export function useImageUpload() {
   );
 }
 
+export function useDeleteAccount() {
+  return useMutation(
+    async (data: { choice: "leave_data" | "delete_data" }) => {
+      const { data: response } = await axiosPrivate.postForm("/auth/user/delete/account/", data);
+
+      return response;
+    },
+    {
+      onSuccess() {
+        axiosPrivate.defaults.headers.common["Authorization"] = null;
+        window.location.href = "/login";
+      },
+    }
+  );
+}
+
 // function fileToBase64(file: File) {
 //   return new Promise<string>((resolve, reject) => {
 //     const reader = new FileReader();
