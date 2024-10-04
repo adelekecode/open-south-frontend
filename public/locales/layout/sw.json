@@ -1,8 +1,8 @@
 {
   "header": {
     "links": {
-      "dataset": "Seti za data",
-      "category": "Jamii",
+      "dataset": "Seti za Data",
+      "category": "Kategoria",
       "organization": "Shirika",
       "about": "Kuhusu Sisi",
       "partner": "Washirika",
@@ -14,8 +14,8 @@
     "dashboard": "Dashibodi",
     "search": {
       "placeholder": "Tafuta",
-      "dataset": "Tafuta \"{{search}}\" kwenye seti za data",
-      "organization": "Tafuta \"{{search}}\" kwenye mashirika"
+      "dataset": "Tafuta \"{{search}}\" katika seti za data",
+      "organization": "Tafuta \"{{search}}\" katika mashirika"
     },
     "logout": "Ondoka"
   },
@@ -25,10 +25,10 @@
   "footer": {
     "links": {
       "useful-links": {
-        "title": "Viungo vya muhimu",
+        "title": "Viungo Muhimu",
         "body": {
-          "datasets": "Seti za data",
-          "categories": "Jamii",
+          "datasets": "Seti za Data",
+          "categories": "Kategoria",
           "organizations": "Mashirika"
         }
       },
@@ -36,17 +36,18 @@
         "title": "Msaada",
         "body": {
           "contact": "Wasiliana",
-          "faq": "Maswali Yanayoulizwa Sana",
+          "faq": "Maswali Yanayoulizwa Mara kwa Mara",
           "about-us": "Kuhusu sisi",
           "feedback": "Maoni",
-          "api-docs": "Nyaraka"
+          "knowledge-base": "Sehemu ya Maarifa",
+          "api-docs": "Hati za API"
         }
       },
       "social-media": {
-        "title": "Mitandao ya kijamii"
+        "title": "Mitandao ya Kijamii"
       },
       "developer": {
-        "title": "Mendelezaji",
+        "title": "Mjenzi",
         "body": {
           "portal-api": "API ya Portal"
         }
@@ -58,7 +59,7 @@
     "bottom": {
       "terms": "Masharti ya Huduma",
       "policy": "Sera ya Faragha",
-      "license": "Open South imesajiliwa chini ya"
+      "license": "Open South ina leseni chini ya"
     }
   }
 }

@@ -50,6 +50,14 @@ export default function Footer() {
               </a>
               <a
                 className="hover:underline"
+                href="https://opensouthdata.github.io/opensouth-docs"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("footer.links.support.body.knowledge-base")}
+              </a>
+              <a
+                className="hover:underline"
                 href="https://documenter.getpostman.com/view/23812062/2sA3dyjBdN"
                 target="_blank"
                 rel="noopener noreferrer"
