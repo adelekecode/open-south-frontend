@@ -2,13 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
+  ClickAwayListener,
   Divider,
+  Fade,
   IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
+  Popper,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { BiLock } from "react-icons/bi";
@@ -43,11 +47,19 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
   const [search, setSearch] = useState("");
   const [showList, setShowList] = useState(false);
 
+  const [anchorEl, setAnchorEl] = useState<HTMLAnchorElement | null>(null);
+
+  const open = Boolean(anchorEl);
+
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
 
   function handleInputBlur() {
     setShowList(false);
+  }
+
+  function onClose() {
+    setAnchorEl(null);
   }
 
   useEffect(() => {
@@ -265,24 +277,84 @@ export default function Header({ routes, setRoutePath, setOpenSidebar }: HeaderP
         </div>
       </div>
       <div className="px-6 tablet:px-2 flex items-start w-full max-w-maxAppWidth tablet:hidden overflow-x-auto">
-        {routes.map((item, index) => (
-          <NavLink
-            to={item.to}
-            key={index + 1}
-            className={({ isActive }) =>
-              twMerge(
-                `p-4 hover:bg-zinc-100 border-b-2 border-transparent`,
-                isActive && "border-primary-700"
-              )
-            }
-          >
-            {({ isActive }) => (
-              <p className={twMerge(`text-sm text-nowrap`, isActive && "text-primary-700")}>
-                {item.name}
-              </p>
-            )}
-          </NavLink>
-        ))}
+        {routes.map((item, index) => {
+          if (item.to === "/about") {
+            return (
+              <ClickAwayListener onClickAway={onClose}>
+                <div className="flex items-center justify-center">
+                  <NavLink
+                    to={item.to}
+                    key={index + 1}
+                    className={({ isActive }) =>
+                      twMerge(
+                        `hover:bg-zinc-100 border-b-2 border-transparent p-4`,
+                        isActive && "border-primary-700"
+                      )
+                    }
+                    onMouseEnter={(e) => {
+                      setAnchorEl(e.currentTarget);
+                    }}
+                  >
+                    {({ isActive }) => (
+                      <p className={twMerge(`text-sm text-nowrap`, isActive && "text-primary-700")}>
+                        {item.name}
+                      </p>
+                    )}
+                  </NavLink>
+                  <Popper
+                    open={open}
+                    anchorEl={anchorEl}
+                    transition
+                    placement="bottom-start"
+                    onMouseLeave={onClose}
+                    className="!mt-0"
+                    slotProps={{
+                      root: {
+                        className: "z-30",
+                      },
+                    }}
+                  >
+                    {({ TransitionProps }) => (
+                      <Fade {...TransitionProps} timeout={350}>
+                        <Paper className="!p-0">
+                          <div className="flex">
+                            <a
+                              className="text-xs hover:bg-zinc-100 p-4"
+                              href="https://opensouth.io/#team"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              The Team
+                            </a>
+                          </div>
+                        </Paper>
+                      </Fade>
+                    )}
+                  </Popper>
+                </div>
+              </ClickAwayListener>
+            );
+          }
+
+          return (
+            <NavLink
+              to={item.to}
+              key={index + 1}
+              className={({ isActive }) =>
+                twMerge(
+                  `p-4 hover:bg-zinc-100 border-b-2 border-transparent`,
+                  isActive && "border-primary-700"
+                )
+              }
+            >
+              {({ isActive }) => (
+                <p className={twMerge(`text-sm text-nowrap`, isActive && "text-primary-700")}>
+                  {item.name}
+                </p>
+              )}
+            </NavLink>
+          );
+        })}
       </div>
     </nav>
   );
