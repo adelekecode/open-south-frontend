@@ -9,9 +9,9 @@
       "contact": "اتصل بنا",
       "news": "الأخبار"
     },
-    "signup": "اشتراك",
+    "signup": "اشترك",
     "login": "تسجيل الدخول",
-    "dashboard": "لوحة القيادة",
+    "dashboard": "لوحة التحكم",
     "search": {
       "placeholder": "بحث",
       "dataset": "ابحث عن \"{{search}}\" في مجموعات البيانات",
@@ -20,7 +20,7 @@
     "logout": "تسجيل الخروج"
   },
   "main": {
-    "breadcrumbs": "أهلا بك"
+    "breadcrumbs": "مرحبًا بك"
   },
   "footer": {
     "links": {
@@ -39,16 +39,17 @@
           "faq": "الأسئلة الشائعة",
           "about-us": "معلومات عنا",
           "feedback": "ملاحظات",
-          "api-docs": "التوثيق"
+          "knowledge-base": "قاعدة المعرفة",
+          "api-docs": "وثائق API"
         }
       },
       "social-media": {
         "title": "وسائل التواصل الاجتماعي"
       },
       "developer": {
-        "title": "المطور",
+        "title": "مطور",
         "body": {
-          "portal-api": "واجهة برمجة التطبيقات للبوابة"
+          "portal-api": "بوابة API"
         }
       }
     },
@@ -58,7 +59,7 @@
     "bottom": {
       "terms": "شروط الخدمة",
       "policy": "سياسة الخصوصية",
-      "license": "مرخصة تحت Open South"
+      "license": "Open South مرخصة بموجب"
     }
   }
 }

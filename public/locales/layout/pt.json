@@ -1,21 +1,21 @@
 {
   "header": {
     "links": {
-      "dataset": "Conjuntos de dados",
+      "dataset": "Conjuntos de Dados",
       "category": "Categorias",
       "organization": "Organização",
-      "about": "Sobre nós",
+      "about": "Sobre Nós",
       "partner": "Parceiros",
-      "contact": "Contato",
+      "contact": "Contate-nos",
       "news": "Notícias"
     },
     "signup": "Inscrever-se",
     "login": "Entrar",
-    "dashboard": "Painel de controle",
+    "dashboard": "Painel",
     "search": {
-      "placeholder": "Pesquisar",
-      "dataset": "Pesquisar \"{{search}}\" em conjuntos de dados",
-      "organization": "Pesquisar \"{{search}}\" em organizações"
+      "placeholder": "Procurar",
+      "dataset": "Procurar \"{{search}}\" em conjuntos de dados",
+      "organization": "Procurar \"{{search}}\" em organizações"
     },
     "logout": "Sair"
   },
@@ -25,9 +25,9 @@
   "footer": {
     "links": {
       "useful-links": {
-        "title": "Links úteis",
+        "title": "Links Úteis",
         "body": {
-          "datasets": "Conjuntos de dados",
+          "datasets": "Conjuntos de Dados",
           "categories": "Categorias",
           "organizations": "Organizações"
         }
@@ -37,13 +37,14 @@
         "body": {
           "contact": "Contato",
           "faq": "FAQ",
-          "about-us": "Sobre nós",
-          "feedback": "Feedback",
-          "api-docs": "Documentação"
+          "about-us": "Sobre Nós",
+          "feedback": "Comentários",
+          "knowledge-base": "Base de Conhecimento",
+          "api-docs": "Docs API"
         }
       },
       "social-media": {
-        "title": "Mídia social"
+        "title": "Mídias Sociais"
       },
       "developer": {
         "title": "Desenvolvedor",
@@ -53,10 +54,10 @@
       }
     },
     "partners": {
-      "title": "Nossos parceiros"
+      "title": "Nossos Parceiros"
     },
     "bottom": {
-      "terms": "Termos de Serviço",
+      "terms": "Termos de Serviços",
       "policy": "Política de Privacidade",
       "license": "Open South está licenciado sob"
     }
